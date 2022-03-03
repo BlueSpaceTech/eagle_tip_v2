@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -28,7 +26,8 @@ class ChatListTile extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 25,
-            backgroundImage: AssetImage("assets/image1.png"),
+            backgroundImage: NetworkImage(
+                doc["photo1"] == user.dpurl ? doc["photo2"] : doc["photo1"]),
           ),
           SizedBox(
             width: 10,

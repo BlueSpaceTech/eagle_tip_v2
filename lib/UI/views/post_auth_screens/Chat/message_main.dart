@@ -6,17 +6,21 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class MessageMain extends StatefulWidget {
-  MessageMain(
-      {Key? key,
-      required this.index,
-      required this.frienduid,
-      required this.friendname,
-      required this.currentusername})
-      : super(key: key);
+  MessageMain({
+    Key? key,
+    required this.index,
+    required this.frienduid,
+    required this.friendname,
+    required this.currentusername,
+    required this.photourluser,
+    required this.photourlfriend,
+  }) : super(key: key);
   int index;
   final friendname;
   final frienduid;
   final currentusername;
+  final photourluser;
+  final photourlfriend;
 
   @override
   _MessageMainState createState() => _MessageMainState();
@@ -48,6 +52,8 @@ class _MessageMainState extends State<MessageMain> {
                       Expanded(
                           flex: 5,
                           child: ChatScreenn(
+                            photourlfriend: widget.photourlfriend,
+                            photourluser: widget.photourluser,
                             currentusername: widget.currentusername,
                             frienduid: widget.frienduid,
                             friendname: widget.friendname,
@@ -99,6 +105,8 @@ class _NewChatMainState extends State<NewChatMain> {
                     Expanded(
                         flex: 5,
                         child: ChatScreenn(
+                          photourlfriend: "f",
+                          photourluser: "f",
                           currentusername: "f",
                           friendname: "selected a cchat",
                           frienduid: "",

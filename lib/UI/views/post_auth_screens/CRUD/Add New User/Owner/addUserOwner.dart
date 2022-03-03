@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/invitation.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -21,7 +23,7 @@ class AddNewUserByOwner extends StatefulWidget {
 
 class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
   bool isselect = false;
-
+  FToast? fToast;
   List sites = [
     "All",
     "Acers Marathon",
@@ -99,6 +101,14 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
       ));
     });
     return choicess;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
   }
 
   @override
@@ -295,14 +305,32 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => Invitation(
-                                          sites: selectedsites,
-                                          role: selectedrOLE,
-                                        ),
-                                      ));
+                                  if (selectedrOLE == "" ||
+                                      selectedsites.isEmpty) {
+                                    fToast!.showToast(
+                                        child: ToastMessage().show(width,
+                                            context, "Please input all fields"),
+                                        gravity: ToastGravity.BOTTOM,
+                                        toastDuration: Duration(seconds: 3));
+                                  } else if (selectedrOLE == "SiteUser" &&
+                                      selectedsites.length > 1) {
+                                    fToast!.showToast(
+                                        child: ToastMessage().show(
+                                            width,
+                                            context,
+                                            "Mutiple sites selected for Site User"),
+                                        gravity: ToastGravity.BOTTOM,
+                                        toastDuration: Duration(seconds: 3));
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Invitation(
+                                            sites: selectedsites,
+                                            role: selectedrOLE,
+                                          ),
+                                        ));
+                                  }
                                 },
                                 child: Card(
                                   elevation: 5.0,

@@ -11,14 +11,12 @@ class User {
   final bool phoneisverified;
   final String dpurl;
   final String uid;
-  final String tokenID;
 
   const User({
     required this.name,
     required this.email,
     required this.userRole,
     required this.Phonenumber,
-    required this.tokenID,
     required this.employerCode,
     required this.dpurl,
     required this.phoneisverified,
@@ -28,7 +26,6 @@ class User {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "token": tokenID,
       "email": email,
       "dpUrl": dpurl,
       "employerCode": employerCode,
@@ -43,7 +40,6 @@ class User {
   static User fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return User(
-      tokenID: snapshot["token"],
       name: snapshot["name"],
       email: snapshot["email"],
       Phonenumber: snapshot["phonenumber"],

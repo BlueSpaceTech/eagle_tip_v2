@@ -15,11 +15,15 @@ class ChatScreenn extends StatefulWidget {
     required this.frienduid,
     required this.friendname,
     required this.currentusername,
+    required this.photourluser,
+    required this.photourlfriend,
   }) : super(key: key);
   int index;
   final frienduid;
   final friendname;
   final currentusername;
+  final photourluser;
+  final photourlfriend;
   @override
   _ChatScreennState createState() => _ChatScreennState(frienduid, friendname);
 }
@@ -153,6 +157,8 @@ class _ChatScreennState extends State<ChatScreenn> {
               "user2": widget.currentusername,
               "uid1": currentUserUID,
               "uid2": frienduid,
+              "photo1":widget.photourluser,
+              "photo2":widget.photourlfriend,
             }).then((value) => {chatDocId = value.id});
           }
         })

@@ -65,8 +65,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-      // Replace with actual values
-/*
+    // Replace with actual values
+
     options: FirebaseOptions(
       storageBucket: "eagle-tip.appspot.com",
       apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
@@ -74,8 +74,7 @@ void main() async {
       messagingSenderId: "168073462322",
       projectId: "eagle-tip",
     ),
-    */
-      );
+  );
   runApp(MyApp());
 }
 
@@ -135,6 +134,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.siteDetails: (context) => SiteDetails(),
           // AppRoutes.settings: (context) => Settings(),
           AppRoutes.chattingscreen: (context) => ChatScreenn(
+                photourlfriend: "",
+                photourluser: "",
                 currentusername: "",
                 friendname: "",
                 frienduid: "",
@@ -157,6 +158,8 @@ class MyApp extends StatelessWidget {
                   "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. "),
           AppRoutes.webfinaltour: (context) => FinalTourWeb(),
           AppRoutes.messagemain: (context) => MessageMain(
+                photourlfriend: "",
+                photourluser: "",
                 currentusername: "",
                 index: 0,
                 friendname: "",

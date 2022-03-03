@@ -78,7 +78,6 @@ class AuthFunctions {
 
         //add user to database
         Model.User user = Model.User(
-          tokenID: "",
           name: username,
           email: email,
           Phonenumber: phoneno,
@@ -86,7 +85,7 @@ class AuthFunctions {
           sites: Sites,
           employerCode: employercode,
           phoneisverified: isverified,
-          dpurl: "r",
+          dpurl: photoUrl,
           userRole: role,
         );
         _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());

@@ -27,6 +27,8 @@ class _BottomNavState extends State<BottomNav> {
     HomeScreen(),
     Notifications(),
     MessageMain(
+      photourlfriend: "",
+      photourluser: "",
       currentusername: "s",
       friendname: "noname",
       frienduid: "no uid",

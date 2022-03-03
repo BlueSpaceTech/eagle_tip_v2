@@ -29,18 +29,23 @@ class _AllChatScreenState extends State<AllChatScreen> {
   List siteName = ["Acres Marathon", "Akron Marathon"];
 
   List sitelocation = ["Tampa,FL", "Leesburg,FL"];
-  void callChatScreen(String uid, String name, String currentusername) {
+  void callChatScreen(String uid, String name, String currentusername,
+      String photoUrlfriend, String photourluser) {
     Responsive.isDesktop(context)
         ? Navigator.push(
             context,
             CupertinoPageRoute(
                 builder: (context) => MessageMain(
+                      photourlfriend: photoUrlfriend,
+                      photourluser: photourluser,
                       index: 0,
                       frienduid: uid,
                       friendname: name,
                       currentusername: currentusername,
                     )))
         : ChatScreenn(
+            photourlfriend: photoUrlfriend,
+            photourluser: photourluser,
             index: 0,
             frienduid: uid,
             friendname: name,
@@ -239,7 +244,11 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                   document['name1'] == user.name
                                       ? document["name2"]
                                       : document["name1"],
-                                  user.name);
+                                  user.name,
+                                  document['photo1'] == user.name
+                                      ? document["photo2"]
+                                      : document["photo2"],
+                                  user.dpurl);
                             },
                             child: MouseRegion(
                               cursor: SystemMouseCursors.text,
