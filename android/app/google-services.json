@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "168073462322",
+    "project_id": "eagle-tip",
+    "storage_bucket": "eagle-tip.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:168073462322:android:364f09407678105ceeb22b",
+        "android_client_info": {
+          "package_name": "eagletip.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "168073462322-e9hhiplgn1ef8dm0mevm24okmtn81q16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eagletip.com",
+            "certificate_hash": "302fe07f382700889c43d1f0fb61f3ad3cca01f8"
+          }
+        },
+        {
+          "client_id": "168073462322-l9og3sh6pr0ep998io7qk88jd9p3687n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eagletip.com",
+            "certificate_hash": "38627e288f2a79715b78efba0c46501318e38e17"
+          }
+        },
+        {
+          "client_id": "168073462322-ehb1as8fnfmdcnqharoqh0175g66vjor.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIaG56XX_XS3SGy06SXmTG8jDFhs1M2O8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "168073462322-ehb1as8fnfmdcnqharoqh0175g66vjor.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
