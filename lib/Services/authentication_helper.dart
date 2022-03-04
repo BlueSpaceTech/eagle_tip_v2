@@ -2,6 +2,8 @@
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:testttttt/Models/TokenModel.dart';
 
 import 'package:testttttt/Services/storagemethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +11,7 @@ import 'package:testttttt/Models/user.dart' as Model;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class AuthFunctions {
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -89,6 +92,15 @@ class AuthFunctions {
           userRole: role,
         );
         _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
+        final fcmToken = await _fcm.getToken();
+        await _firestore
+            .collection("users")
+            .doc(cred.user!.uid)
+            .collection("tokens")
+            .doc(fcmToken)
+            .set(TokenModel(
+                    createdAt: FieldValue.serverTimestamp(), token: fcmToken!)
+                .toJson());
 
         res = "success";
         _firestore.collection("users").doc(employercode).delete();

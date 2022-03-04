@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:testttttt/Services/pushNotificationService.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/login_screen.dart';
@@ -16,9 +17,12 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  PushNotificationService _pushNotificationService = PushNotificationService();
+
   @override
   void initState() {
     super.initState();
+    _pushNotificationService.initialize();
   }
 
   checkscreen() {}
