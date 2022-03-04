@@ -36,13 +36,16 @@ class _NewChatScreenState extends State<NewChatScreen> {
                       friendname: name,
                       currentusername: currentusername,
                     )))
-        : ChatScreenn(
-            photourlfriend: photoUrlfriend,
-            photourluser: photourluser,
-            index: 0,
-            frienduid: uid,
-            friendname: name,
-            currentusername: currentusername);
+        : Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ChatScreenn(
+                    photourlfriend: photoUrlfriend,
+                    photourluser: photourluser,
+                    index: 0,
+                    frienduid: uid,
+                    friendname: name,
+                    currentusername: currentusername)));
   }
 
   @override

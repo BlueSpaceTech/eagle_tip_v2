@@ -137,6 +137,7 @@ class _ChatScreennState extends State<ChatScreenn> {
     );
   }
 
+  Stream<QuerySnapshot>? _stream;
   var chatDocId;
   @override
   void initState() {
@@ -148,7 +149,9 @@ class _ChatScreennState extends State<ChatScreenn> {
         .get()
         .then((QuerySnapshot querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
-            chatDocId = querySnapshot.docs.single.id;
+            setState(() {
+              chatDocId = querySnapshot.docs.single.id;
+            });
           } else {
             chat.add({
               'users': {frienduid: null, currentUserUID: null},
@@ -157,13 +160,25 @@ class _ChatScreennState extends State<ChatScreenn> {
               "user2": widget.currentusername,
               "uid1": currentUserUID,
               "uid2": frienduid,
-              "photo1":widget.photourluser,
-              "photo2":widget.photourlfriend,
+              "photo1": widget.photourluser,
+              "photo2": widget.photourlfriend,
             }).then((value) => {chatDocId = value.id});
           }
         })
         .catchError((err) {});
+    // _stream = getchats();
   }
+/*
+  getchats() async {
+    Stream<QuerySnapshot> doc = await FirebaseFirestore.instance
+        .collection("chats")
+        .doc(chatDocId)
+        .collection("messages")
+        .orderBy("createdOn", descending: true)
+        .snapshots();
+    return doc;
+  }
+*/
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +224,7 @@ class _ChatScreennState extends State<ChatScreenn> {
                       children: [
                         CircleAvatar(
                           radius: 20,
-                          backgroundImage: AssetImage("assets/image1.png"),
+                          backgroundImage: NetworkImage(widget.photourlfriend),
                         ),
                         SizedBox(
                           width: 10,
@@ -240,9 +255,14 @@ class _ChatScreennState extends State<ChatScreenn> {
               .orderBy("createdOn", descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text("There's some error");
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              );
             }
+            /*
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: CircularProgressIndicator(
@@ -250,6 +270,7 @@ class _ChatScreennState extends State<ChatScreenn> {
                 ),
               );
             }
+            */
             return Column(
               children: <Widget>[
                 Expanded(

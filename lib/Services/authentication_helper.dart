@@ -19,10 +19,13 @@ class AuthFunctions {
   //fetch user
   Future<Model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
-    DocumentSnapshot snap =
-        await _firestore.collection("users").doc(currentUser.uid).get();
-
-    return Model.User.fromSnap(snap);
+    DocumentSnapshot? snapp;
+    try {
+      snapp = await _firestore.collection("users").doc(currentUser.uid).get();
+    } catch (e) {
+      print("error in provider");
+    }
+    return Model.User.fromSnap(snapp!);
   }
 
   static genrateemployercode() {

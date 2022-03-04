@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/Services/storagemethods.dart';
@@ -10,6 +13,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +49,30 @@ class _UploadImageState extends State<UploadImage> {
     });
   }
 
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
+  route() {
+    Responsive.isDesktop(context)
+        ? Navigator.pushNamed(context, AppRoutes.homeScreen)
+        : Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => BottomNav()));
+  }
+
   void signupUser(double width) async {
+    showDialog(
+      builder: (ctx) {
+        return Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+          ),
+        );
+      },
+      context: context,
+    );
+
     String res = await AuthFunctions().signupuser(
       // token: widget.doc.get("token"),
       email: widget.doc.get("email"),
@@ -59,9 +86,17 @@ class _UploadImageState extends State<UploadImage> {
 
       file: _image!,
     );
+    startTime() async {
+      var duration = new Duration(seconds: 3);
+      return Timer(duration, route);
+    }
+
     //  StorageMethods().uploadStorageImage(_image!, "filePath");
 
     if (res != "success") {
+      addData();
+      startTime();
+
       fToast!.showToast(
         child: ToastMessage().show(width, context, res),
         gravity: ToastGravity.BOTTOM,
@@ -74,7 +109,6 @@ class _UploadImageState extends State<UploadImage> {
         gravity: ToastGravity.BOTTOM,
         toastDuration: Duration(seconds: 3),
       );
-      Navigator.pushNamed(context, AppRoutes.homeScreen);
     }
   }
 

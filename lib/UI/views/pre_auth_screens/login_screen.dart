@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/Services/storagemethods.dart';
@@ -10,6 +13,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -36,11 +40,45 @@ class _LoginScreenState extends State<LoginScreen> {
     fToast!.init(context);
   }
 
+  bool isactive = false;
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
+  route() {
+    Responsive.isDesktop(context)
+        ? Navigator.pushNamed(context, AppRoutes.homeScreen)
+        : Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => BottomNav()));
+  }
+
+  startTime() async {
+    var duration = new Duration(seconds: 3);
+    return new Timer(duration, route);
+  }
+
   void loginuser(double width) async {
     String res = await AuthFunctions()
         .loginuser(email: _email.text, password: _password.text);
     if (res == "success") {
-      Navigator.pushNamed(context, AppRoutes.homeScreen);
+      showDialog(
+        builder: (ctx) {
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          );
+        },
+        context: context,
+      );
+      addData();
+      startTime();
+      /*
+      Responsive.isDesktop(context)
+          ? Navigator.pushNamed(context, AppRoutes.homeScreen)
+          : Navigator.pushNamed(context, AppRoutes.bottomNav);
+*/
       fToast!.showToast(
         child: ToastMessage().show(width, context, res),
         gravity: ToastGravity.BOTTOM,

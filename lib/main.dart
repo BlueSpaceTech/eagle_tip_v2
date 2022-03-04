@@ -75,6 +75,7 @@ void main() async {
       projectId: "eagle-tip",
     ),
   );
+
   runApp(MyApp());
 }
 

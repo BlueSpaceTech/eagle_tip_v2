@@ -27,8 +27,35 @@ class _AllChatScreenState extends State<AllChatScreen> {
   List siteImg = ["site1", "site2"];
 
   List siteName = ["Acres Marathon", "Akron Marathon"];
+  Future? resultsLoaded;
 
   List sitelocation = ["Tampa,FL", "Leesburg,FL"];
+  List _allChats = [];
+  getUserChats() async {
+    var data = await FirebaseFirestore.instance
+        .collection("chats")
+        .where("between", arrayContainsAny: [currentUserUID]).get();
+    setState(() {
+      _allChats = data.docs;
+    });
+    print(_allChats.first);
+    return "complete";
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getUserChats();
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    resultsLoaded = getUserChats();
+  }
+
   void callChatScreen(String uid, String name, String currentusername,
       String photoUrlfriend, String photourluser) {
     Responsive.isDesktop(context)
@@ -60,14 +87,15 @@ class _AllChatScreenState extends State<AllChatScreen> {
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: () {
-          Navigator.pop(context);
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NewChatMain(
-                  index: 0,
-                ),
-              ));
+          Responsive.isDesktop(context)
+              ? Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewChatMain(
+                      index: 0,
+                    ),
+                  ))
+              : Navigator.pushNamed(context, AppRoutes.newchat);
         },
         child: Container(
           alignment: Alignment.center,
@@ -97,7 +125,9 @@ class _AllChatScreenState extends State<AllChatScreen> {
         ),
       ),
       backgroundColor: Color(0xff2B343B),
-      body: StreamBuilder<QuerySnapshot>(
+      body:
+          /*
+       StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("chats")
               .where("between", arrayContainsAny: [currentUserUID]).snapshots(),
@@ -112,159 +142,155 @@ class _AllChatScreenState extends State<AllChatScreen> {
                 ),
               );
             }
+*/
 
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: Responsive.isDesktop(context)
-                        ? width * 0.01
-                        : width * 0.09,
-                    right: Responsive.isDesktop(context)
-                        ? width * 0.01
-                        : width * 0.09,
-                    top: Responsive.isDesktop(context)
-                        ? height * 0.01
-                        : height * 0.1),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+              left: Responsive.isDesktop(context) ? width * 0.01 : width * 0.09,
+              right:
+                  Responsive.isDesktop(context) ? width * 0.01 : width * 0.09,
+              top:
+                  Responsive.isDesktop(context) ? height * 0.01 : height * 0.1),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Visibility(
+                visible: !Responsive.isDesktop(context),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Visibility(
-                      visible: !Responsive.isDesktop(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(""),
-                          Logo(width: width),
-                          Padding(
-                            padding: EdgeInsets.only(top: 10.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
+                    Text(""),
+                    Logo(width: width),
+                    Padding(
+                      padding: EdgeInsets.only(top: 10.0),
+                      child: Icon(
+                        Icons.search,
+                        color: Colors.white,
                       ),
-                    ),
-                    SizedBox(
-                      height: height * 0.04,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Container(
-                              height: height * 0.5,
-                              color: Color(0xff3F4850),
-                              child: Column(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: height * 0.03,
-                                  ),
-                                  Text(
-                                    "Choose another site",
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontSize: 18),
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.05,
-                                  ),
-                                  ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: width * 0.08),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return SiteDett(
-                                          width: width,
-                                          siteImg: siteImg,
-                                          index: index,
-                                          siteName: siteName,
-                                          sitelocation: sitelocation);
-                                    },
-                                    itemCount: siteImg.length,
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      child: MouseRegion(
-                        cursor: SystemMouseCursors.click,
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Acers Marathon",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Image.asset("assets/down.png"),
-                                ],
-                              ),
-                              Text(
-                                "Tampa, FL",
-                                style: TextStyle(
-                                    color: Color(0xff6E7191),
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data?.docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          final document = snapshot.data?.docs[index];
-
-                          return GestureDetector(
-                            onTap: () {
-                              callChatScreen(
-                                  document!['uid1'] == user.name
-                                      ? document["uid2"]
-                                      : document["uid1"],
-                                  document['name1'] == user.name
-                                      ? document["name2"]
-                                      : document["name1"],
-                                  user.name,
-                                  document['photo1'] == user.name
-                                      ? document["photo2"]
-                                      : document["photo2"],
-                                  user.dpurl);
-                            },
-                            child: MouseRegion(
-                              cursor: SystemMouseCursors.text,
-                              child: ChatListTile(
-                                doc: document!,
-                                height: height,
-                                width: width,
-                              ),
-                            ),
-                          );
-                        }),
+                    )
                   ],
                 ),
               ),
-            );
-          }),
+              SizedBox(
+                height: height * 0.04,
+              ),
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        height: height * 0.5,
+                        color: Color(0xff3F4850),
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: height * 0.03,
+                            ),
+                            Text(
+                              "Choose another site",
+                              style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontSize: 18),
+                            ),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: width * 0.08),
+                              itemBuilder: (BuildContext context, int index) {
+                                return SiteDett(
+                                    width: width,
+                                    siteImg: siteImg,
+                                    index: index,
+                                    siteName: siteName,
+                                    sitelocation: sitelocation);
+                              },
+                              itemCount: siteImg.length,
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Acers Marathon",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Image.asset("assets/down.png"),
+                          ],
+                        ),
+                        Text(
+                          "Tampa, FL",
+                          style: TextStyle(
+                              color: Color(0xff6E7191),
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _allChats.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    //  final document = snapshot.data?.docs[index];
+                    var document = _allChats[index];
+
+                    return GestureDetector(
+                      onTap: () {
+                        callChatScreen(
+                            document!['uid1'] == user.name
+                                ? document["uid2"]
+                                : document["uid1"],
+                            document['name1'] == user.name
+                                ? document["name2"]
+                                : document["name1"],
+                            user.name,
+                            document['photo1'] == user.name
+                                ? document["photo2"]
+                                : document["photo2"],
+                            user.dpurl);
+                      },
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: ChatListTile(
+                          doc: document!,
+                          height: height,
+                          width: width,
+                        ),
+                      ),
+                    );
+                  }),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

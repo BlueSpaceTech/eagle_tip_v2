@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore, unused_import, prefer_const_literals_to_create_immutables
 
+import 'dart:async';
+
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 
@@ -30,8 +32,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool? isTapped = false;
+
+  bool isLoading = false;
+
   @override
   void initState() {
+    //addData();
     // TODO: implement initState
     super.initState();
     // model.User user = Provider.of<UserProvider>(context).getUser;
@@ -42,8 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
     //   print(value);
     //   // tokens.doc(user.userRole).update(data);
     // });
-
-    addData();
   }
 
   addData() async {
@@ -61,84 +65,90 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
-      body: SingleChildScrollView(
-        child: Container(
-          height: Responsive.isDesktop(context) ? height : height * 1.5,
-          color: backGround_color,
-          child: Responsive.isDesktop(context)
-              ? Stack(
-                  children: [
-                    Opacity(opacity: 0.2, child: WebBg()),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Navbar(
-                          width: width,
-                          height: height,
-                          text1: "Home",
-                          text2: "Chat",
-                        ),
-                        SizedBox(
-                          height: height * 0.05,
-                        ),
-                        SiteNameAndLocation(fontSize: 17.0, fontSize2: 13.0),
-                        SizedBox(
-                          height: height * 0.05,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.siteDetails,
-                            );
-                          },
-                          child: Stack(
-                            alignment: Alignment.center,
+      body: isLoading == true
+          ? CircularProgressIndicator()
+          : SingleChildScrollView(
+              child: Container(
+                height: Responsive.isDesktop(context) ? height : height * 1.5,
+                color: backGround_color,
+                child: Responsive.isDesktop(context)
+                    ? Stack(
+                        children: [
+                          Opacity(opacity: 0.2, child: WebBg()),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image.asset(
-                                Common.assetImages + "Ellipse 49.png",
-                                width: width * 0.15,
+                              Navbar(
+                                width: width,
+                                height: height,
+                                text1: "Home",
+                                text2: "Chat",
                               ),
                               SizedBox(
-                                width: width * 0.068,
-                                child: Text(
-                                  user.employerCode.toString(),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: width * 0.016,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      fontFamily: "Poppins"),
+                                height: height * 0.05,
+                              ),
+                              SiteNameAndLocation(
+                                  fontSize: 17.0, fontSize2: 13.0),
+                              SizedBox(
+                                height: height * 0.05,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.siteDetails,
+                                  );
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      Common.assetImages + "Ellipse 49.png",
+                                      width: width * 0.15,
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.068,
+                                      child: Text(
+                                        user.employerCode.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: width * 0.016,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
+                              SizedBox(
+                                height: height * 0.07,
+                              ),
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.siteScreen);
+                                  },
+                                  child: SiteContainer(
+                                      width: width,
+                                      text: "Sites",
+                                      height: height)),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.crudscreen);
+                                },
+                                child: SiteContainer(
+                                    width: width,
+                                    text: "Edit Employees",
+                                    height: height),
+                              )
                             ],
                           ),
-                        ),
-                        SizedBox(
-                          height: height * 0.07,
-                        ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.siteScreen);
-                            },
-                            child: SiteContainer(
-                                width: width, text: "Sites", height: height)),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.crudscreen);
-                          },
-                          child: SiteContainer(
-                              width: width,
-                              text: "Edit Employees",
-                              height: height),
-                        )
-                      ],
-                    ),
-                    /*
+                          /*
                     Positioned(
                       bottom: height * 0.02,
                       right: width * 0.03,
@@ -146,79 +156,85 @@ class _HomeScreenState extends State<HomeScreen> {
                           MenuButton(isTapped: !isTapped!, width: width * 0.34),
                     ),
                     */
-                  ],
-                )
-              : Padding(
-                  padding: EdgeInsets.only(top: height * 0.1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      CustomAppheader(width: width),
-                      SizedBox(
-                        height: height * 0.05,
-                      ),
-                      SiteNameAndLocation(
-                        fontSize2: 13.0,
-                        fontSize: 17.0,
-                      ),
-                      SizedBox(
-                        height: height * 0.05,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.siteDetails,
-                          );
-                        },
-                        child: Stack(
-                          alignment: Alignment.center,
+                        ],
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(top: height * 0.1),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Image.asset(
-                              Common.assetImages + "Ellipse 49.png",
-                              width: width * 0.7,
+                            CustomAppheader(width: width),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            SiteNameAndLocation(
+                              fontSize2: 13.0,
+                              fontSize: 17.0,
                             ),
                             SizedBox(
-                              width: width * 0.4,
-                              child: Text(
-                                user.name != null ? user.name : "Rquest fuel",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 34.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    fontFamily: "Poppins"),
+                              height: height * 0.05,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  AppRoutes.siteDetails,
+                                );
+                              },
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Image.asset(
+                                    Common.assetImages + "Ellipse 49.png",
+                                    width: width * 0.7,
+                                  ),
+                                  SizedBox(
+                                    width: width * 0.4,
+                                    child: Text(
+                                      user.name != null
+                                          ? user.name
+                                          : "Rquest fuel",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 34.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
+                            SizedBox(
+                              height: height * 0.07,
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.siteScreen);
+                                },
+                                child: SiteContainer(
+                                    width: width,
+                                    text: "Sites",
+                                    height: height)),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.crudscreen);
+                              },
+                              child: SiteContainer(
+                                  width: width,
+                                  text: "Edit Employees",
+                                  height: height),
+                            )
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: height * 0.07,
-                      ),
-                      InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoutes.siteScreen);
-                          },
-                          child: SiteContainer(
-                              width: width, text: "Sites", height: height)),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.crudscreen);
-                        },
-                        child: SiteContainer(
-                            width: width,
-                            text: "Edit Employees",
-                            height: height),
-                      )
-                    ],
-                  ),
-                ),
-        ),
-      ),
+              ),
+            ),
     );
   }
 }
