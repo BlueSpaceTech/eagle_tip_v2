@@ -48,7 +48,7 @@ class User {
       sites: snapshot["sites"],
       userRole: snapshot["userRole"],
       uid: snapshot["uid"],
-      dpurl: snapshot["dpurl"],
+      dpurl: snapshot["dpUrl"],
     );
   }
 }
