@@ -92,7 +92,9 @@ class AuthFunctions {
           userRole: role,
         );
         _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
-        final fcmToken = await _fcm.getToken();
+        final fcmToken = await _fcm.getToken(
+            vapidKey:
+                "BLNGqXgTqC0begtlTvH532MHDnIiL7zOQwIIqj8QbEM5qZWGejX0GsMbejbqPRSDnxzRnu0STkU0AN4asyC8ujI");
         await _firestore
             .collection("users")
             .doc(cred.user!.uid)
