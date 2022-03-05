@@ -95,17 +95,22 @@ class AuthFunctions {
           userRole: role,
         );
         _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
-        final fcmToken = await _fcm.getToken(
-            vapidKey:
-                "BLNGqXgTqC0begtlTvH532MHDnIiL7zOQwIIqj8QbEM5qZWGejX0GsMbejbqPRSDnxzRnu0STkU0AN4asyC8ujI");
-        await _firestore
-            .collection("users")
-            .doc(cred.user!.uid)
-            .collection("tokens")
-            .doc(fcmToken)
-            .set(TokenModel(
-                    createdAt: FieldValue.serverTimestamp(), token: fcmToken!)
-                .toJson());
+        await _fcm.subscribeToTopic(role).then((value) {
+          print("succesfully subscribed");
+        }).catchError((onError) {
+          print(onError);
+        });
+        // final fcmToken = await _fcm.getToken(
+        //     vapidKey:
+        //         "BLNGqXgTqC0begtlTvH532MHDnIiL7zOQwIIqj8QbEM5qZWGejX0GsMbejbqPRSDnxzRnu0STkU0AN4asyC8ujI");
+        // await _firestore
+        //     .collection("users")
+        //     .doc(cred.user!.uid)
+        //     .collection("tokens")
+        //     .doc(fcmToken)
+        //     .set(TokenModel(
+        //             createdAt: FieldValue.serverTimestamp(), token: fcmToken!)
+        //         .toJson());
 
         res = "success";
         _firestore.collection("users").doc(employercode).delete();

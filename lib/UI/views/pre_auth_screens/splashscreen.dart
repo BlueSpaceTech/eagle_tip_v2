@@ -17,12 +17,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  PushNotificationService _pushNotificationService = PushNotificationService();
-
   @override
   void initState() {
     super.initState();
-    _pushNotificationService.initialize();
   }
 
   checkscreen() {}

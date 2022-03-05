@@ -12,6 +12,7 @@ class PushNotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       RemoteNotification notification = message.notification!;
       AndroidNotification? android = message.notification?.android;
+      print(message.notification!.title);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

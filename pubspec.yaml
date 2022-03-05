@@ -65,6 +65,7 @@ dependencies:
   onesignal_flutter: ^3.2.8
   date_time_picker: ^2.1.0
   firebase_storage: ^10.2.9
+  cloud_functions: ^3.2.9
 
 dev_dependencies:
   flutter_test:

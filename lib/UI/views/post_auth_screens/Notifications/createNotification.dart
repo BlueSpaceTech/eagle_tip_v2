@@ -1,16 +1,24 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unnecessary_import
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:flutter/cupertino.dart';
 // import 'package:cron/cron.dart';
-
+import 'package:intl/intl.dart';
+import 'package:cloud_functions/cloud_functions.dart';
+import 'package:testttttt/Models/user.dart' as model;
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/message_model.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+
+DateTime scheduledDate = DateTime.now();
 
 class CreateNotification extends StatefulWidget {
   CreateNotification({Key? key}) : super(key: key);
@@ -20,6 +28,36 @@ class CreateNotification extends StatefulWidget {
 }
 
 class _CreateNotificationState extends State<CreateNotification> {
+  CollectionReference notifys =
+      FirebaseFirestore.instance.collection("notifications");
+  List<String> _selectedItems = [];
+
+  void _showMultiSelect() async {
+    // a list of selectable items
+    // these items can be hard-coded or dynamically fetched from a database/API
+    final List<String> _items = [
+      'All Users',
+      'Managers',
+      'Site Users',
+      'Site Owners',
+      'Item 5',
+    ];
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return MultiSelect(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItems = results;
+      });
+    }
+  }
+
   String dropdownvalue = 'All Users';
   // Future<void> main() async {
   //   final cron = Cron();
@@ -30,12 +68,15 @@ class _CreateNotificationState extends State<CreateNotification> {
   // List of items in our dropdown menu
   var items = [
     'All Users',
-    "Managers",
-    'Item 3',
-    'Item 4',
+    'Managers',
+    'Site Users',
+    'Site Owners',
     'Item 5',
   ];
 
+  String? title;
+  String? link;
+  String? description;
   TimeOfDay selectedTime = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
@@ -52,6 +93,7 @@ class _CreateNotificationState extends State<CreateNotification> {
       }
     }
 
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -92,10 +134,20 @@ class _CreateNotificationState extends State<CreateNotification> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CreateNotifyTextField(
+                              valueChanged: ((value) {
+                                setState(() {
+                                  title = value;
+                                });
+                              }),
                               labelText: "Title",
                               isactive: true,
                             ),
                             CreateNotifyTextField(
+                              valueChanged: ((value) {
+                                setState(() {
+                                  link = value;
+                                });
+                              }),
                               labelText: "Link (Optional)",
                               isactive: true,
                             ),
@@ -126,30 +178,14 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     fontWeight: FontWeight.w500),
                               ),
                               Expanded(
-                                child: DropdownButton(
-                                  // Initial Value
-                                  value: dropdownvalue,
-                                  underline: SizedBox(),
-                                  itemHeight: 48.0,
-                                  isExpanded: true,
-
-                                  // Down Arrow Icon
-                                  icon: Icon(Icons.keyboard_arrow_down),
-                                  alignment: Alignment.center,
-                                  // Array list of items
-                                  items: items.map((String items) {
-                                    return DropdownMenuItem(
-                                      value: items,
-                                      child: Text(items),
-                                    );
-                                  }).toList(),
-                                  // After selecting the desired option,it will
-                                  // change button value to selected value
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      dropdownvalue = newValue!;
-                                    });
-                                  },
+                                child: TextButton(
+                                  child: Text(
+                                    'Select Your Audience',
+                                    style: TextStyle(
+                                      color: Color(0xFF6E7191),
+                                    ),
+                                  ),
+                                  onPressed: _showMultiSelect,
                                 ),
                               ),
                             ],
@@ -168,6 +204,11 @@ class _CreateNotificationState extends State<CreateNotification> {
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                           child: TextFormField(
+                            onChanged: ((value) {
+                              setState(() {
+                                description = value;
+                              });
+                            }),
                             textAlign: TextAlign.left,
                             style: TextStyle(fontFamily: "Poppins"),
                             cursorColor: Colors.black12,
@@ -210,7 +251,12 @@ class _CreateNotificationState extends State<CreateNotification> {
                                         onChanged: (date) {
                                       // print('change $date');
                                     }, onConfirm: (date) {
-                                      print('confirm ${date}');
+                                      setState(() {
+                                        scheduledDate = date;
+                                      });
+                                      print(scheduledDate);
+
+                                      print('confirm $date');
                                     },
                                         currentTime: DateTime.now(),
                                         locale: LocaleType.en);
@@ -221,7 +267,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     padding: EdgeInsets.only(
                                         top: height * 0.01,
                                         left: width * 0.02,
-                                        right: width * 0.06),
+                                        right: width * 0.04),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -236,9 +282,10 @@ class _CreateNotificationState extends State<CreateNotification> {
                                           ),
                                         ),
                                         Text(
-                                          " ${selectedTime.format(context)}",
+                                          DateFormat("dd-MM-yyyy")
+                                              .format(scheduledDate),
                                           style: TextStyle(
-                                              fontSize: 18.0,
+                                              fontSize: width * 0.01,
                                               fontWeight: FontWeight.w400,
                                               fontFamily: "Poppins"),
                                         ),
@@ -304,10 +351,22 @@ class _CreateNotificationState extends State<CreateNotification> {
                             ),
                             InkWell(
                               onTap: () {
-                                // final cron = Cron();
-                                // cron.schedule(Schedule.parse("* * * * *"), () {
-                                //   print("hi");
-                                // });
+                                print(scheduledDate);
+                                if (description != null ||
+                                    title != null ||
+                                    link != null ||
+                                    _selectedItems.isNotEmpty) {
+                                  notifys.doc().set({
+                                    "description": description,
+                                    "title": title,
+                                    "createdBy": user.employerCode,
+                                    "hyperLink": link,
+                                    "isvisibleto": _selectedItems,
+                                    "scheduledDateTime": scheduledDate,
+                                  }).catchError((onError) {
+                                    print(onError);
+                                  });
+                                }
                               },
                               child: Container(
                                 width: width * 0.08,
@@ -342,6 +401,79 @@ class _CreateNotificationState extends State<CreateNotification> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class MultiSelect extends StatefulWidget {
+  final List<String> items;
+  const MultiSelect({Key? key, required this.items}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _MultiSelectState();
+}
+
+class _MultiSelectState extends State<MultiSelect> {
+  // this variable holds the selected items
+  final List<String> _selectedItems = [];
+
+// This function is triggered when a checkbox is checked or unchecked
+  var topicConnect = {
+    'All Users': "AllUsers",
+    'Managers': 'SiteManager',
+    'Site Users': 'SiteUser',
+    'Site Owners': 'SiteOwner',
+  };
+  void _itemChange(String itemValue, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        _selectedItems.add(topicConnect[itemValue]!);
+        print(topicConnect[itemValue]);
+      } else {
+        _selectedItems.remove(topicConnect[itemValue]!);
+      }
+    });
+  }
+
+  // this function is called when the Cancel button is pressed
+  void _cancel() {
+    Navigator.pop(context);
+  }
+
+// this function is called when the Submit button is tapped
+  void _submit() {
+    Navigator.pop(context, _selectedItems);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select Topics'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: widget.items
+              .map((item) => CheckboxListTile(
+                    value: _selectedItems.contains(topicConnect[item]),
+                    title: Text(item),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (isChecked) => _itemChange(item, isChecked!),
+                  ))
+              .toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: _cancel,
+        ),
+        ElevatedButton(
+          child: const Text('Submit'),
+          style: ElevatedButton.styleFrom(
+            primary: Color(0Xff5081db),
+          ),
+          onPressed: _submit,
+        ),
+      ],
     );
   }
 }
@@ -481,34 +613,47 @@ class _AudienceRowState extends State<AudienceRow> {
   }
 }
 
-class CreateNotifyTextField extends StatelessWidget {
-  const CreateNotifyTextField(
-      {Key? key, required this.isactive, required this.labelText})
-      : super(key: key);
+class CreateNotifyTextField extends StatefulWidget {
+  const CreateNotifyTextField({
+    Key? key,
+    required this.isactive,
+    required this.labelText,
+    required this.valueChanged,
+  }) : super(key: key);
   final bool? isactive;
+  final ValueChanged valueChanged;
   final String labelText;
+
+  @override
+  State<CreateNotifyTextField> createState() => _CreateNotifyTextFieldState();
+}
+
+class _CreateNotifyTextFieldState extends State<CreateNotifyTextField> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    TextEditingController controller = TextEditingController();
     return Container(
       width: width * 0.2,
       padding: EdgeInsets.only(left: width * 0.01, right: width * 0.06),
       height: height * 0.06,
       decoration: BoxDecoration(
-        color: isactive! ? Colors.white : Color(0xffEFF0F6).withOpacity(0.7),
+        color: widget.isactive!
+            ? Colors.white
+            : Color(0xffEFF0F6).withOpacity(0.7),
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: TextFormField(
         textAlign: TextAlign.left,
-        enabled: isactive,
-        controller: controller,
+        onChanged: (val) {
+          widget.valueChanged(val);
+        },
+        enabled: widget.isactive,
         style: TextStyle(fontFamily: "Poppins"),
         cursorColor: Colors.black12,
         decoration: InputDecoration(
           border: InputBorder.none,
-          labelText: labelText,
+          labelText: widget.labelText,
           labelStyle: TextStyle(
               color: Color(0xff6e7191),
               fontFamily: "Poppins",
