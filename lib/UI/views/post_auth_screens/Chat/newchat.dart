@@ -48,6 +48,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
                     currentusername: currentusername)));
   }
 
+  final TextEditingController _SEARCH = new TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -59,25 +61,32 @@ class _NewChatScreenState extends State<NewChatScreen> {
     return Scaffold(
       backgroundColor: Color(0xff2B343B),
       body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("users")
-              .where(
-                "isverified",
-                isEqualTo: true,
-              )
-              .where("sites", arrayContainsAny: user.sites)
-              .snapshots(),
+          stream: (_SEARCH.text.isEmpty)
+              ? FirebaseFirestore.instance
+                  .collection("users")
+                  .where(
+                    "isverified",
+                    isEqualTo: true,
+                  )
+                  .where("sites", arrayContainsAny: user.sites)
+                  .snapshots()
+              : FirebaseFirestore.instance
+                  .collection("users")
+                  .where(
+                    "isverified",
+                    isEqualTo: true,
+                  )
+                  .where("sites", arrayContainsAny: user.sites)
+                  .where("name", isGreaterThan: _SEARCH.text)
+                  .where("name", isLessThan: _SEARCH.text + 'z')
+                  .snapshots(),
           builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text("There's some error");
-            }
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
+                child: CircularProgressIndicator(),
               );
             }
+
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -235,6 +244,9 @@ class _NewChatScreenState extends State<NewChatScreen> {
                               ),
                             ),
                           ),
+                        ),
+                        TextField(
+                          controller: _SEARCH,
                         ),
                         ListView.builder(
                             physics: NeverScrollableScrollPhysics(),

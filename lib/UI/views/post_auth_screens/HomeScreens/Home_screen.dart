@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     SizedBox(
                                       width: width * 0.068,
                                       child: Text(
-                                        user.employerCode.toString(),
+                                        "Request fuel",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: width * 0.016,
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: height * 0.02,
                               ),
-                              GestureDetector(
+                              InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
                                       context, AppRoutes.crudscreen);
@@ -191,9 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                     width: width * 0.4,
                                     child: Text(
-                                      user.name != null
-                                          ? user.name
-                                          : "Rquest fuel",
+                                      "Request fuel",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 34.0,

@@ -25,15 +25,25 @@ class ChatScreenn extends StatefulWidget {
   final photourluser;
   final photourlfriend;
   @override
-  _ChatScreennState createState() => _ChatScreennState(frienduid, friendname);
+  _ChatScreennState createState() => _ChatScreennState(
+      frienduid, friendname, currentusername, photourluser, photourlfriend);
 }
 
 class _ChatScreennState extends State<ChatScreenn> {
   final frienduid;
   final friendname;
+  final currentusername;
+  final photourluser;
+  final photourlfriend;
   final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _sendcontroller = new TextEditingController();
-  _ChatScreennState(this.frienduid, this.friendname);
+  _ChatScreennState(
+    this.frienduid,
+    this.friendname,
+    this.currentusername,
+    this.photourluser,
+    this.photourlfriend,
+  );
   CollectionReference chat = FirebaseFirestore.instance.collection("chats");
   void sendmessage(String message) {
     print("entered in send");
@@ -157,11 +167,11 @@ class _ChatScreennState extends State<ChatScreenn> {
               'users': {frienduid: null, currentUserUID: null},
               "between": [frienduid, currentUserUID],
               "user1": friendname,
-              "user2": widget.currentusername,
+              "user2": currentusername,
               "uid1": currentUserUID,
               "uid2": frienduid,
-              "photo1": widget.photourluser,
-              "photo2": widget.photourlfriend,
+              "photo1": photourluser,
+              "photo2": photourlfriend,
             }).then((value) => {chatDocId = value.id});
           }
         })

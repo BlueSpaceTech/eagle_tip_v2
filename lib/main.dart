@@ -151,7 +151,15 @@ class MyApp extends StatelessWidget {
           // AppRoutes.chattingscreen: (context) => ChatScreenn(),
           AppRoutes.crudscreen: (context) => CrudScreen(),
           AppRoutes.editUser: (context) => EditUser(),
-          AppRoutes.useprofile: (context) => UserProfile(),
+          AppRoutes.useprofile: (context) => UserProfile(
+                name: "eerr",
+                email: "err",
+                dpUrl: "ff",
+                phonenumber: "f",
+                sites: [],
+                userRole: "",
+                uid: "",
+              ),
           AppRoutes.splashscreen: (context) => SplashScreen(),
           AppRoutes.createNotification: (context) => CreateNotification(),
           AppRoutes.specificNotification: (context) => SpecificNotification(

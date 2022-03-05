@@ -34,7 +34,7 @@ class customfab extends StatelessWidget {
                 fontWeight: FontWeight.w600),
           ),
           SizedBox(
-            width: width * 0.018,
+            width: width * 0.012,
           ),
           Icon(Icons.add, color: Colors.white),
         ],

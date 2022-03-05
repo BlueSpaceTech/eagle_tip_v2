@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/Crud_functions.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
+import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -133,6 +137,125 @@ class _CrudScreenState extends State<CrudScreen> {
     );
   }
 
+  String selectedrOLE = "";
+
+  List<dynamic> selectedsites = [];
+
+  _buildsiteschip(List site) {
+    bool issel = false;
+
+    List<Widget> choices = [];
+    site.forEach((item) {
+      choices.add(Container(
+        padding: const EdgeInsets.all(8),
+       
+        child: ChoiceChip(
+          label: Text(
+            item,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+          selectedColor: Color(0xFF5081db),
+          disabledColor: Color(0xFF535c65),
+          backgroundColor: Color(0xFF535c65),
+          selected: selectedsites.contains(item),
+          onSelected: (selected) {
+            setState(() {
+              issel = selected;
+
+              print("else");
+              selectedsites.contains(item)
+                  ? selectedsites.remove(item)
+                  : selectedsites.add(item);
+              print(selectedsites);
+
+              // +added
+            });
+          },
+        ),
+      ));
+    });
+    return choices;
+  }
+
+  _buildall(List site) {
+    bool issel = false;
+    List items = ["All"];
+
+    List<Widget> choices = [];
+    items.forEach((item) {
+      choices.add(Container(
+        padding: const EdgeInsets.all(8.0),
+        child: ChoiceChip(
+          label: Text(
+            item,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+          selectedColor: Color(0xFF5081db),
+          disabledColor: Color(0xFF535c65),
+          backgroundColor: Color(0xFF535c65),
+          selected: issel,
+          onSelected: (selected) {
+            setState(() {
+              issel != selected;
+              if (selectedsites.length == site.length) {
+                selectedsites.clear();
+                print(selectedsites.length);
+                print(site.length);
+              } else {
+                selectedsites = List.from(site);
+              }
+
+              print(selectedsites);
+              // +added
+            });
+          },
+        ),
+      ));
+    });
+    return choices;
+  }
+
+  _buildRolechip(List role) {
+    bool isroleselected = false;
+    List<Widget> choicess = [];
+    role.forEach((item) {
+      choicess.add(Container(
+        padding: const EdgeInsets.all(8.0),
+        child: ChoiceChip(
+          label: Text(
+            item,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+          selectedColor: Color(0xFF5081db),
+          disabledColor: Color(0xFF535c65),
+          backgroundColor: Color(0xFF535c65),
+          selected: selectedrOLE == item,
+          onSelected: (selected) {
+            setState(() {
+              isroleselected = selected;
+              selectedrOLE = item;
+              print(selectedrOLE);
+              // +added
+            });
+          },
+        ),
+      ));
+    });
+    return choicess;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -148,6 +271,22 @@ class _CrudScreenState extends State<CrudScreen> {
     super.dispose();
   }
 
+  callUserInfoScreen(String name, String email, String userRole, String dpUrl,
+      List sites, String phonenumber, String uid) {
+    Navigator.push(
+        context,
+        CupertinoPageRoute(
+            builder: (context) => UserProfile(
+                  name: name,
+                  email: email,
+                  userRole: userRole,
+                  dpUrl: dpUrl,
+                  sites: sites,
+                  phonenumber: phonenumber,
+                  uid: uid,
+                )));
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -161,7 +300,7 @@ class _CrudScreenState extends State<CrudScreen> {
       "Huntington Marathon"
     ];
     List Roles = ["Site Manager", "Site User"];
-    List name = ["rAKSHTI", "FF", "ABHISEKHUI", "rAKSHTI", "FF", "ABHISEKHUI"];
+    List namee = ["rAKSHTI", "FF", "ABHISEKHUI", "rAKSHTI", "FF", "ABHISEKHUI"];
 
     return Scaffold(
       floatingActionButton: Visibility(
@@ -178,355 +317,381 @@ class _CrudScreenState extends State<CrudScreen> {
         ),
       ),
       backgroundColor: Color(0xff2B343B),
-      body: Column(
-        children: [
-          Navbar(width: width, height: height, text1: "text1", text2: "text2"),
-          Expanded(
-            child: Stack(clipBehavior: Clip.none, children: [
-              //  WebBg(),
-              SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal:
-                          Responsive.isDesktop(context) ? width * 0.1 : 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: height * 0.05,
-                      ),
-                      Visibility(
-                        visible: !Responsive.isDesktop(context),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              left: Responsive.isDesktop(context)
-                                  ? 0
-                                  : width * 0.01,
-                              right: Responsive.isDesktop(context)
-                                  ? 0
-                                  : width * 0.01,
-                              top: Responsive.isDesktop(context)
-                                  ? height * 0.015
-                                  : height * 0.04),
-                          child: CustomAppheader(width: width),
-                        ),
-                      ),
-                      SizedBox(
-                        height: height * 0.076,
-                      ),
-                      Padding(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection("users")
+              .where(
+                "isverified",
+                isEqualTo: true,
+              )
+              .where("sites", arrayContainsAny: user.sites)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(
+                  color: Colors.blue,
+                ),
+              );
+            }
+            return Column(
+              children: [
+                Navbar(
+                    width: width,
+                    height: height,
+                    text1: "text1",
+                    text2: "text2"),
+                Expanded(
+                  child: Stack(clipBehavior: Clip.none, children: [
+                    //  WebBg(),
+                    SingleChildScrollView(
+                      child: Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: Responsive.isDesktop(context)
-                                ? 0
-                                : width * 0.04),
+                                ? width * 0.1
+                                : 0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
                             Visibility(
-                              visible: Responsive.isDesktop(context),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                              visible: !Responsive.isDesktop(context),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    left: Responsive.isDesktop(context)
+                                        ? 0
+                                        : width * 0.01,
+                                    right: Responsive.isDesktop(context)
+                                        ? 0
+                                        : width * 0.01,
+                                    top: Responsive.isDesktop(context)
+                                        ? height * 0.015
+                                        : height * 0.04),
+                                child: CustomAppheader(width: width),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.076,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: Responsive.isDesktop(context)
+                                      ? 0
+                                      : width * 0.04),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Visibility(
+                                    visible: Responsive.isDesktop(context),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "         ",
+                                              style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 25),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          "Edit Employers",
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        Text("                       "),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 60,
+                                  ),
                                   Row(
                                     children: [
-                                      Text(
-                                        "         ",
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontSize: 25),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(
+                                            left: width * 0.06,
+                                            right: width * 0.06),
+                                        height: height * 0.064,
+                                        width: Responsive.isDesktop(context)
+                                            ? width * 0.6
+                                            : width * 0.9,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff535C65),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        child: TextField(
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              color: Colors.white),
+                                          cursorColor: Colors.white,
+                                          decoration: InputDecoration(
+                                            hintText: "Search by name",
+                                            hintStyle: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.5)),
+                                            border: InputBorder.none,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Visibility(
+                                        visible: Responsive.isDesktop(context),
+                                        child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  AppRoutes.addUserOwner);
+                                            },
+                                            child: customfab(
+                                              height: height,
+                                              width: width,
+                                              text: "Add new user",
+                                            )),
                                       ),
                                     ],
                                   ),
+                                  SizedBox(height: height * 0.02),
                                   Text(
-                                    "Edit Employers",
+                                    "Site",
                                     style: TextStyle(
-                                        fontFamily: "Poppins",
                                         color: Colors.white,
-                                        fontSize: 20),
+                                        fontFamily: "Poppins",
+                                        fontSize: 15),
                                   ),
-                                  Text("                       "),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Wrap(
+                                        children: _buildall(user.sites),
+                                      ),
+                                      Wrap(
+                                        children: _buildsiteschip(user.sites),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Text(
+                                    "Role",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Poppins",
+                                        fontSize: 15),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Wrap(
+                                    children: _buildRolechip(
+                                        CrudFunction().visibleRole(user)),
+                                  ),
                                 ],
                               ),
                             ),
                             SizedBox(
-                              height: 60,
+                              height: 25,
                             ),
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  padding: EdgeInsets.only(
-                                      left: width * 0.06, right: width * 0.06),
-                                  height: height * 0.064,
-                                  width: Responsive.isDesktop(context)
-                                      ? width * 0.6
-                                      : width * 0.9,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff535C65),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  child: TextField(
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        color: Colors.white),
-                                    cursorColor: Colors.white,
-                                    decoration: InputDecoration(
-                                      hintText: user.employerCode,
-                                      hintStyle: TextStyle(
-                                          color: Colors.white.withOpacity(0.5)),
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Visibility(
-                                  visible: Responsive.isDesktop(context),
-                                  child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, AppRoutes.addUserOwner);
-                                      },
-                                      child: customfab(
-                                        height: height,
-                                        width: width,
-                                        text: "Add new user",
-                                      )),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: height * 0.02),
-                            Text(
-                              "Site",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                  fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Wrap(
-                              runSpacing: 10,
-                              children: [
-                                for (int i = 0; i < Site.length; i++) ...{
-                                  SiteChip(
-                                    function: () {},
-                                    siteName: Site[i],
-                                    height: height,
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                },
-                              ],
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Text(
-                              "Role",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                  fontSize: 15),
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Wrap(
-                              runSpacing: 10,
-                              children: [
-                                for (int i = 0; i < Roles.length; i++) ...{
-                                  SiteChip(
-                                    function: () {},
-                                    siteName: Roles[i],
-                                    height: height,
-                                  ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
-                                },
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                      ),
-                      SingleChildScrollView(
-                        controller: _letters,
-                        scrollDirection: Axis.horizontal,
-                        child: Container(
-                          height: 40,
-                          color: Color(0xff2B343B),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: Responsive.isDesktop(context)
-                                    ? width * 0.08
-                                    : width * 0.2,
-                                child: Text(
-                                  "",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white.withOpacity(0.5),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Container(
-                                width: Responsive.isDesktop(context)
-                                    ? width * 0.22
-                                    : width * 0.56,
-                                child: Text(
-                                  "Name",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white.withOpacity(0.5),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Container(
-                                width: Responsive.isDesktop(context)
-                                    ? width * 0.2
-                                    : width * 0.2,
-                                child: Text(
-                                  "role",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white.withOpacity(0.5),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Container(
-                                width: Responsive.isDesktop(context)
-                                    ? width * 0.24
-                                    : width * 0.44,
-                                child: Text(
-                                  "Site",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white.withOpacity(0.5),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                              Container(
-                                width: width * 0.2,
-                                child: Text(
-                                  "Profile Info",
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white.withOpacity(0.5),
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Divider(
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                      ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          padding: EdgeInsets.only(top: 0),
-                          shrinkWrap: true,
-                          itemCount: name.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return SingleChildScrollView(
-                              physics: Responsive.isDesktop(context)
-                                  ? NeverScrollableScrollPhysics()
-                                  : BouncingScrollPhysics(),
-                              controller: _numbers,
+                            SingleChildScrollView(
+                              controller: _letters,
                               scrollDirection: Axis.horizontal,
                               child: Container(
-                                decoration: BoxDecoration(
-                                  color: index % 2 == 0
-                                      ? Color(0xff2B343B)
-                                      : Color(0xff24292E),
-                                ),
-                                height: 60,
+                                height: 40,
+                                color: Color(0xff2B343B),
                                 child: Row(
                                   children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        deletUserDialog(height, width);
-                                      },
-                                      child: Container(
-                                          width: Responsive.isDesktop(context)
-                                              ? width * 0.08
-                                              : width * 0.2,
-                                          child:
-                                              Image.asset("assets/delete.png")),
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, AppRoutes.useprofile);
-                                      },
-                                      child: Container(
-                                        width: Responsive.isDesktop(context)
-                                            ? width * 0.22
-                                            : width * 0.56,
-                                        child: Text(
-                                          '${index + 1}. ${name[index]}',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Poppins"),
-                                        ),
+                                    Container(
+                                      width: Responsive.isDesktop(context)
+                                          ? width * 0.08
+                                          : width * 0.2,
+                                      child: Text(
+                                        "",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
                                       ),
                                     ),
                                     Container(
                                       width: Responsive.isDesktop(context)
-                                          ? width * 0.2
-                                          : width * 0.2,
-                                      child: Text('Site User',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Poppins")),
+                                          ? width * 0.22
+                                          : width * 0.56,
+                                      child: Text(
+                                        "Name",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                     Container(
                                       width: Responsive.isDesktop(context)
-                                          ? width * 0.24
-                                          : width * 0.44,
-                                      child: Text('Acers Marathon',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "Poppins")),
+                                          ? width * 0.12
+                                          : width * 0.12,
+                                      child: Text(
+                                        "Role",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
-                                    GestureDetector(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.useprofile);
-                                        },
-                                        child: Image.asset("assets/info.png")),
-                                    SizedBox(
-                                      width: width * 0.04,
+                                    Container(
+                                      width: Responsive.isDesktop(context)
+                                          ? width * 0.32
+                                          : width * 0.52,
+                                      child: Text(
+                                        "Sites",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    Container(
+                                      width: width * 0.2,
+                                      child: Text(
+                                        "Profile Info",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color:
+                                                Colors.white.withOpacity(0.5),
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ],
                                 ),
                               ),
-                            );
-                          }),
-                    ],
-                  ),
+                            ),
+                            Divider(
+                              color: Colors.white.withOpacity(0.5),
+                            ),
+                            ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.only(top: 0),
+                                shrinkWrap: true,
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final document = snapshot.data?.docs[index];
+                                  List site = document!["sites"];
+
+                                  return SingleChildScrollView(
+                                    physics: Responsive.isDesktop(context)
+                                        ? NeverScrollableScrollPhysics()
+                                        : BouncingScrollPhysics(),
+                                    controller: _numbers,
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: index % 2 == 0
+                                            ? Color(0xff2B343B)
+                                            : Color(0xff24292E),
+                                      ),
+                                      height: 60,
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              deletUserDialog(height, width);
+                                            },
+                                            child: Container(
+                                                width: Responsive.isDesktop(
+                                                        context)
+                                                    ? width * 0.08
+                                                    : width * 0.2,
+                                                child: Image.asset(
+                                                    "assets/delete.png")),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  AppRoutes.useprofile);
+                                            },
+                                            child: Container(
+                                              width:
+                                                  Responsive.isDesktop(context)
+                                                      ? width * 0.22
+                                                      : width * 0.56,
+                                              child: Text(
+                                                '${index + 1}. ${document["name"]}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins"),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.12
+                                                : width * 0.12,
+                                            child: Text(document["userRole"],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins")),
+                                          ),
+                                          Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.32
+                                                : width * 0.52,
+                                            child: Text(site.join(", "),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins")),
+                                          ),
+                                          InkWell(
+                                              onTap: () {
+                                                callUserInfoScreen(
+                                                    document["name"],
+                                                    document["email"],
+                                                    document["userRole"],
+                                                    document["dpUrl"],
+                                                    document["sites"],
+                                                    document["phonenumber"],
+                                                    document["uid"]);
+                                              },
+                                              child: Image.asset(
+                                                  "assets/info.png")),
+                                          SizedBox(
+                                            width: width * 0.04,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
                 ),
-              ),
-            ]),
-          ),
-        ],
-      ),
+              ],
+            );
+          }),
     );
   }
 }

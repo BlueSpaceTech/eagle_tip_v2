@@ -1,8 +1,12 @@
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/Utils/common.dart';
+import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 int index = 0;
 
@@ -27,6 +31,7 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return Visibility(
       visible: Responsive.isDesktop(context),
       child: Container(
@@ -126,15 +131,20 @@ class _NavbarState extends State<Navbar> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(Common.assetImages + "search.png"),
+                    Text(""),
                     SizedBox(
                       width: widget.width * 0.02,
                     ),
                     InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.myProfile);
-                        },
-                        child: Image.asset(Common.assetImages + "image1.png")),
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.myProfile);
+                      },
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: backGround_color,
+                        backgroundImage: NetworkImage(user.dpurl),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/Crud_functions.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
@@ -13,6 +16,7 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class AddNewUserByOwner extends StatefulWidget {
   AddNewUserByOwner({Key? key}) : super(key: key);
@@ -24,23 +28,19 @@ class AddNewUserByOwner extends StatefulWidget {
 class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
   bool isselect = false;
   FToast? fToast;
-  List sites = [
-    "All",
-    "Acers Marathon",
-    "Bridge Marathon",
-    "Clarks Marathon",
-    "Huntington Marathon"
-  ];
+
   List Roles = ["SiteManager", "SiteUser"];
   String selectedrOLE = "";
 
-  List<String> selectedsites = [];
-  _buildsiteschip() {
+  List<dynamic> selectedsites = [];
+
+  _buildsiteschip(List site) {
     bool issel = false;
+
     List<Widget> choices = [];
-    sites.forEach((item) {
+    site.forEach((item) {
       choices.add(Container(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(8.0),
         child: ChoiceChip(
           label: Text(
             item,
@@ -57,9 +57,54 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
           onSelected: (selected) {
             setState(() {
               issel = selected;
+
+              print("else");
               selectedsites.contains(item)
                   ? selectedsites.remove(item)
                   : selectedsites.add(item);
+              print(selectedsites);
+
+              // +added
+            });
+          },
+        ),
+      ));
+    });
+    return choices;
+  }
+
+  _buildall(List site) {
+    bool issel = false;
+    List items = ["All"];
+
+    List<Widget> choices = [];
+    items.forEach((item) {
+      choices.add(Container(
+        padding: const EdgeInsets.all(8.0),
+        child: ChoiceChip(
+          label: Text(
+            item,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+          selectedColor: Color(0xFF5081db),
+          disabledColor: Color(0xFF535c65),
+          backgroundColor: Color(0xFF535c65),
+          selected: issel,
+          onSelected: (selected) {
+            setState(() {
+              issel != selected;
+              if (selectedsites.length == site.length) {
+                selectedsites.clear();
+                print(selectedsites.length);
+                print(site.length);
+              } else {
+                selectedsites = List.from(site);
+              }
+
               print(selectedsites);
               // +added
             });
@@ -70,12 +115,12 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
     return choices;
   }
 
-  _buildRolechip() {
+  _buildRolechip(List role) {
     bool isroleselected = false;
     List<Widget> choicess = [];
-    Roles.forEach((item) {
+    role.forEach((item) {
       choicess.add(Container(
-        padding: const EdgeInsets.all(2.0),
+        padding: const EdgeInsets.all(8.0),
         child: ChoiceChip(
           label: Text(
             item,
@@ -113,15 +158,11 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    List<String> sites = [
-      "All",
-      "Acers Marathon",
-      "Bridge Marathon",
-      "Clarks Marathon",
-      "Huntington Marathon"
-    ];
+    List sites;
+    sites = user.sites;
 
     bool isTapped = false;
     List Roles = ["Site Manager", "Site User"];
@@ -233,9 +274,17 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                             ),
                           ),
                           */
-                          Wrap(
-                            children: _buildsiteschip(),
+                          Row(
+                            children: [
+                              Wrap(
+                                children: _buildall(sites),
+                              ),
+                              Wrap(
+                                children: _buildsiteschip(sites),
+                              ),
+                            ],
                           ),
+
                           /*
                           Wrap(
                             runSpacing: 10,
@@ -295,7 +344,8 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                           ),
                           */
                           Wrap(
-                            children: _buildRolechip(),
+                            children: _buildRolechip(
+                                CrudFunction().visibleRole(user)),
                           ),
                           SizedBox(
                             height: height * 0.32,

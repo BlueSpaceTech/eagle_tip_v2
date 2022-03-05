@@ -2,22 +2,66 @@
 
 // import 'dart:ffi';
 
+import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class UserProfile extends StatelessWidget {
-  const UserProfile({Key? key}) : super(key: key);
+  UserProfile({
+    Key? key,
+    required this.name,
+    required this.email,
+    required this.userRole,
+    required this.dpUrl,
+    required this.sites,
+    required this.phonenumber,
+    required this.uid,
+  }) : super(key: key);
+  final String name, email, phonenumber, dpUrl, userRole, uid;
+  final List sites;
+  void callChatScreen(String uid, String name, String currentusername,
+      String photoUrlfriend, String photourluser, BuildContext context) {
+    Responsive.isDesktop(context)
+        ? Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => MessageMain(
+                      photourlfriend: photoUrlfriend,
+                      photourluser: photourluser,
+                      index: 0,
+                      frienduid: uid,
+                      friendname: name,
+                      currentusername: currentusername,
+                    )))
+        : Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ChatScreenn(
+                      photourlfriend: photoUrlfriend,
+                      photourluser: photourluser,
+                      index: 0,
+                      frienduid: uid,
+                      friendname: name,
+                      currentusername: currentusername,
+                    )));
+  }
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -79,35 +123,46 @@ class UserProfile extends StatelessWidget {
                             Responsive.isDesktop(context)
                                 ? Row(
                                     children: [
-                                      Image.asset(
-                                        Common.assetImages + "Ellipse 45.png",
-                                        width: width * 0.045,
+                                      CircleAvatar(
+                                        radius: 35,
+                                        backgroundColor: backGround_color,
+                                        backgroundImage: NetworkImage(dpUrl),
                                       ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
-                                      UserNameandDet(width: width),
+                                      UserNameandDet(
+                                        width: width,
+                                        name: name,
+                                        userRole: userRole,
+                                      ),
                                       SizedBox(
                                         width: width * 0.1,
                                       ),
-                                      Container(
-                                        width: width * 0.06,
-                                        height: height * 0.05,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          color: Color(0xFF5081DB),
-                                        ),
-                                        child: Center(
-                                            child: Text(
-                                          "Chat",
-                                          style: TextStyle(
-                                            fontSize: width * 0.008,
-                                            fontFamily: "Poppins",
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
+                                      InkWell(
+                                        onTap: () {
+                                          callChatScreen(uid, name, user.name,
+                                              dpUrl, user.dpurl, context);
+                                        },
+                                        child: Container(
+                                          width: width * 0.06,
+                                          height: height * 0.05,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            color: Color(0xFF5081DB),
                                           ),
-                                        )),
+                                          child: Center(
+                                              child: Text(
+                                            "Chat",
+                                            style: TextStyle(
+                                              fontSize: width * 0.008,
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          )),
+                                        ),
                                       ),
                                     ],
                                   )
@@ -116,33 +171,44 @@ class UserProfile extends StatelessWidget {
                                     width: width,
                                     child: Column(
                                       children: [
-                                        Image.asset(
-                                          Common.assetImages + "Ellipse 45.png",
-                                          width: width * 0.18,
+                                        CircleAvatar(
+                                          radius: 22,
+                                          backgroundColor: backGround_color,
+                                          backgroundImage: NetworkImage(dpUrl),
                                         ),
                                         SizedBox(
                                           height: height * 0.005,
                                         ),
-                                        UserNameandDet(width: width),
+                                        UserNameandDet(
+                                          width: width,
+                                          userRole: userRole,
+                                          name: name,
+                                        ),
                                         SizedBox(
                                           height: height * 0.004,
                                         ),
-                                        Container(
-                                          width: width * 0.2,
-                                          height: height * 0.035,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            color: Color(0xFF5081DB),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "Chat",
-                                              style: TextStyle(
-                                                fontSize: 13.0,
-                                                fontFamily: "Poppins",
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white,
+                                        InkWell(
+                                          onTap: () {
+                                            callChatScreen(uid, name, user.name,
+                                                dpUrl, user.dpurl, context);
+                                          },
+                                          child: Container(
+                                            width: width * 0.2,
+                                            height: height * 0.035,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              color: Color(0xFF5081DB),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Chat",
+                                                style: TextStyle(
+                                                  fontSize: 13.0,
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -168,6 +234,8 @@ class UserProfile extends StatelessWidget {
                               ),
                             ),
                             ContactInfo(
+                                email: email,
+                                phonenumber: phonenumber,
                                 height: Responsive.isDesktop(context)
                                     ? height * 1.06
                                     : height,
@@ -223,9 +291,13 @@ class UserNameandDet extends StatelessWidget {
   const UserNameandDet({
     Key? key,
     required this.width,
+    required this.name,
+    required this.userRole,
   }) : super(key: key);
 
   final double width;
+  final String name;
+  final String userRole;
 
   @override
   Widget build(BuildContext context) {
@@ -235,7 +307,7 @@ class UserNameandDet extends StatelessWidget {
           : CrossAxisAlignment.center,
       children: [
         Text(
-          "Ahmad Elizondo",
+          name,
           style: TextStyle(
               fontSize: Responsive.isDesktop(context) ? width * 0.011 : 18.0,
               fontWeight: FontWeight.w600,
@@ -246,7 +318,7 @@ class UserNameandDet extends StatelessWidget {
           height: 4.0,
         ),
         Text(
-          "Manager",
+          userRole,
           style: TextStyle(
               fontSize: Responsive.isDesktop(context) ? width * 0.01 : 14.0,
               color: Color(0xFFD9DBE9),

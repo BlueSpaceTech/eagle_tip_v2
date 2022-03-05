@@ -2,6 +2,8 @@
 
 // import 'dart:html';
 
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
@@ -15,6 +17,7 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class MyProfile extends StatefulWidget {
   @override
@@ -46,6 +49,7 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -108,14 +112,20 @@ class _MyProfileState extends State<MyProfile> {
                               Responsive.isDesktop(context)
                                   ? Row(
                                       children: [
-                                        Image.asset(
-                                          Common.assetImages + "Ellipse 45.png",
-                                          width: width * 0.045,
+                                        CircleAvatar(
+                                          radius: 35,
+                                          backgroundColor: backGround_color,
+                                          backgroundImage:
+                                              NetworkImage(user.dpurl),
                                         ),
                                         SizedBox(
                                           width: width * 0.02,
                                         ),
-                                        UserNameandDet(width: width),
+                                        UserNameandDet(
+                                          width: width,
+                                          name: user.name,
+                                          userRole: user.userRole,
+                                        ),
                                         SizedBox(
                                           width: width * 0.1,
                                         ),
@@ -151,15 +161,20 @@ class _MyProfileState extends State<MyProfile> {
                                       width: width,
                                       child: Column(
                                         children: [
-                                          Image.asset(
-                                            Common.assetImages +
-                                                "Ellipse 45.png",
-                                            width: width * 0.18,
+                                          CircleAvatar(
+                                            radius: 22,
+                                            backgroundColor: backGround_color,
+                                            backgroundImage:
+                                                NetworkImage(user.dpurl),
                                           ),
                                           SizedBox(
                                             height: height * 0.005,
                                           ),
-                                          UserNameandDet(width: width),
+                                          UserNameandDet(
+                                            width: width,
+                                            name: user.name,
+                                            userRole: user.userRole,
+                                          ),
                                           SizedBox(
                                             height: height * 0.004,
                                           ),
@@ -212,6 +227,8 @@ class _MyProfileState extends State<MyProfile> {
                                 ),
                               ),
                               ContactInfo(
+                                  email: user.email,
+                                  phonenumber: user.Phonenumber,
                                   height: Responsive.isDesktop(context)
                                       ? height * 1.06
                                       : height,
@@ -641,10 +658,14 @@ class ContactInfo extends StatelessWidget {
     Key? key,
     required this.height,
     required this.width,
+    required this.email,
+    required this.phonenumber,
   }) : super(key: key);
 
   final double height;
   final double width;
+  final String email;
+  final String phonenumber;
 
   @override
   Widget build(BuildContext context) {
@@ -668,7 +689,7 @@ class ContactInfo extends StatelessWidget {
                   height: height * 0.02,
                 ),
                 DetailsRow(
-                    detail: "(209) 555-0104",
+                    detail: phonenumber,
                     height: height,
                     imgpath: "call",
                     width: width),
@@ -676,7 +697,7 @@ class ContactInfo extends StatelessWidget {
                   height: height * 0.02,
                 ),
                 DetailsRow(
-                    detail: "ahmad@site.com",
+                    detail: email,
                     height: height,
                     imgpath: "mail",
                     width: width),
@@ -692,13 +713,13 @@ class ContactInfo extends StatelessWidget {
                 DetailsRow(
                   height: height,
                   width: width,
-                  detail: "(209) 555-0104",
+                  detail: phonenumber,
                   imgpath: 'call',
                 ),
                 DetailsRow(
                   height: height,
                   width: width,
-                  detail: "ahmad@site.com",
+                  detail: email,
                   imgpath: 'mail',
                 ),
               ],
