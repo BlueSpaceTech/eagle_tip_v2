@@ -21,6 +21,15 @@ class CrudFunction {
           "SiteManager",
           "SiteUser"
         ];
+      case "SuperAdmin":
+      return [
+        "AppAdmin",
+          "TerminalManager",
+          "TerminalUser",
+          "SiteOwner",
+          "SiteManager",
+          "SiteUser"
+        ];
     }
     return [];
   }

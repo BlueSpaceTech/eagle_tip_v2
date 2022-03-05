@@ -64,16 +64,18 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
       // Replace with actual values
-
-      // options: FirebaseOptions(
-      //   storageBucket: "eagle-tip.appspot.com",
-      //   apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
-      //   appId: "1:168073462322:android:364f09407678105ceeb22b",
-      //   messagingSenderId: "168073462322",
-      //   projectId: "eagle-tip",
-      // ),
+/*
+    options: FirebaseOptions(
+      storageBucket: "eagle-tip.appspot.com",
+      apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
+      appId: "1:168073462322:android:364f09407678105ceeb22b",
+      messagingSenderId: "168073462322",
+      projectId: "eagle-tip",
+    ),
+    */
       );
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
@@ -176,6 +178,7 @@ class MyApp extends StatelessWidget {
                 frienduid: "",
               ),
           AppRoutes.terminalhome: (context) => TerminalHome(),
+          AppRoutes.settings: (context) => Setting(),
         },
       ),
     );

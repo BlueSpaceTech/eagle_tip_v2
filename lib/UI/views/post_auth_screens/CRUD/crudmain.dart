@@ -7,6 +7,7 @@ import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
+import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
@@ -30,7 +31,7 @@ class _CrudScreenState extends State<CrudScreen> {
   ScrollController? _numbers;
   late ScrollController SCROL;
 
-  deletUserDialog(double height, double width) {
+  deletUserDialog(double height, double width, String name, String uid) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -62,7 +63,7 @@ class _CrudScreenState extends State<CrudScreen> {
                             fontFamily: "Poppins",
                             color: Color(0xff14142B))),
                     TextSpan(
-                        text: ' Ahmad Elizondo ?',
+                        text: ' ${name} ?',
                         style: TextStyle(
                             color: Color(0xff14142B),
                             fontSize: 18,
@@ -71,8 +72,14 @@ class _CrudScreenState extends State<CrudScreen> {
                   ],
                 ),
               ),
+              Text(
+                  "After deleting the user will no longer be able to use the app",
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontFamily: "Poppins",
+                      color: Color(0xff14142B))),
               SizedBox(
-                height: height * 0.06,
+                height: height * 0.04,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -147,8 +154,7 @@ class _CrudScreenState extends State<CrudScreen> {
     List<Widget> choices = [];
     site.forEach((item) {
       choices.add(Container(
-        padding: const EdgeInsets.all(8),
-       
+        padding: const EdgeInsets.all(3),
         child: ChoiceChip(
           label: Text(
             item,
@@ -188,7 +194,7 @@ class _CrudScreenState extends State<CrudScreen> {
     List<Widget> choices = [];
     items.forEach((item) {
       choices.add(Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: ChoiceChip(
           label: Text(
             item,
@@ -228,7 +234,7 @@ class _CrudScreenState extends State<CrudScreen> {
     List<Widget> choicess = [];
     role.forEach((item) {
       choicess.add(Container(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(3.0),
         child: ChoiceChip(
           label: Text(
             item,
@@ -289,6 +295,7 @@ class _CrudScreenState extends State<CrudScreen> {
 
   @override
   Widget build(BuildContext context) {
+    bool? isTapped = false;
     model.User user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
@@ -369,11 +376,33 @@ class _CrudScreenState extends State<CrudScreen> {
                                     top: Responsive.isDesktop(context)
                                         ? height * 0.015
                                         : height * 0.04),
-                                child: CustomAppheader(width: width),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.08),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Icon(
+                                            Icons.arrow_back,
+                                            color: Colors.white,
+                                          )),
+                                      Logo(width: width),
+                                      MenuButton(
+                                          isTapped: isTapped, width: width),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                             SizedBox(
-                              height: height * 0.076,
+                              height: Responsive.isDesktop(context)
+                                  ? height * 0.076
+                                  : height * 0.02,
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
@@ -518,7 +547,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                     Container(
                                       width: Responsive.isDesktop(context)
                                           ? width * 0.08
-                                          : width * 0.2,
+                                          : width * 0.16,
                                       child: Text(
                                         "",
                                         style: TextStyle(
@@ -532,7 +561,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                     Container(
                                       width: Responsive.isDesktop(context)
                                           ? width * 0.22
-                                          : width * 0.56,
+                                          : width * 0.4,
                                       child: Text(
                                         "Name",
                                         style: TextStyle(
@@ -546,7 +575,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                     Container(
                                       width: Responsive.isDesktop(context)
                                           ? width * 0.12
-                                          : width * 0.12,
+                                          : width * 0.24,
                                       child: Text(
                                         "Role",
                                         style: TextStyle(
@@ -616,13 +645,17 @@ class _CrudScreenState extends State<CrudScreen> {
                                         children: [
                                           InkWell(
                                             onTap: () {
-                                              deletUserDialog(height, width);
+                                              deletUserDialog(
+                                                  height,
+                                                  width,
+                                                  document["name"],
+                                                  document["uid"]);
                                             },
                                             child: Container(
                                                 width: Responsive.isDesktop(
                                                         context)
                                                     ? width * 0.08
-                                                    : width * 0.2,
+                                                    : width * 0.16,
                                                 child: Image.asset(
                                                     "assets/delete.png")),
                                           ),
@@ -635,7 +668,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                               width:
                                                   Responsive.isDesktop(context)
                                                       ? width * 0.22
-                                                      : width * 0.56,
+                                                      : width * 0.4,
                                               child: Text(
                                                 '${index + 1}. ${document["name"]}',
                                                 style: TextStyle(
@@ -647,7 +680,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                           Container(
                                             width: Responsive.isDesktop(context)
                                                 ? width * 0.12
-                                                : width * 0.12,
+                                                : width * 0.24,
                                             child: Text(document["userRole"],
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -683,6 +716,9 @@ class _CrudScreenState extends State<CrudScreen> {
                                     ),
                                   );
                                 }),
+                            SizedBox(
+                              height: height * 0.1,
+                            ),
                           ],
                         ),
                       ),

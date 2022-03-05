@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -7,14 +8,16 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 
-class Settings extends StatefulWidget {
-  Settings({Key? key}) : super(key: key);
+import '../../../Services/authentication_helper.dart';
+
+class Setting extends StatefulWidget {
+  Setting({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<Setting> createState() => _SettingState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingState extends State<Setting> {
   bool? switchVal1 = false;
 
   bool? switchVal2 = false;
@@ -176,14 +179,20 @@ class _SettingsState extends State<Settings> {
                 SizedBox(
                   height: height * 0.05,
                 ),
-                Text(
-                  "Log out",
-                  style: TextStyle(
-                      fontSize: 20.0,
-                      color: Color(0xFF92b8ff),
-                      decoration: TextDecoration.underline,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: "Poppins"),
+                InkWell(
+                  onTap: () {
+                    AuthFunctions.signOut();
+                    Navigator.pushNamed(context, AppRoutes.loginscreen);
+                  },
+                  child: Text(
+                    "Log out",
+                    style: TextStyle(
+                        fontSize: 20.0,
+                        color: Color(0xFF92b8ff),
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Poppins"),
+                  ),
                 ),
               ],
             ),

@@ -251,10 +251,7 @@ class SiteNameAndLocation extends StatelessWidget {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {
-            AuthFunctions.signOut();
-            Navigator.pushNamed(context, AppRoutes.loginscreen);
-          },
+          onTap: () {},
           child: Text(
             "Acres Marathon",
             style: TextStyle(

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:testttttt/Models/TokenModel.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 
 import 'package:testttttt/Services/storagemethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -113,6 +114,7 @@ class AuthFunctions {
         //         .toJson());
 
         res = "success";
+
         _firestore.collection("users").doc(employercode).delete();
       }
     } on FirebaseAuthException catch (err) {

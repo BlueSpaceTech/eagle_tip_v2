@@ -15,17 +15,16 @@ class CustomAppheader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool? isTapped = false;
-    return Row(
-      children: [
-        SizedBox(
-          width: width * 0.27,
-        ),
-        Logo(width: width),
-        SizedBox(
-          width: width * 0.14,
-        ),
-        MenuButton(isTapped: isTapped, width: width),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: width * 0.08),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(""),
+          Logo(width: width),
+          MenuButton(isTapped: isTapped, width: width),
+        ],
+      ),
     );
   }
 }
