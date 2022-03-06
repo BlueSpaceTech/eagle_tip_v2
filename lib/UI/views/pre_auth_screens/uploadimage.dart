@@ -13,6 +13,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/Widgets/password_textfield.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -209,7 +210,7 @@ class _UploadImageState extends State<UploadImage> {
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
-                            child: GestureDetector(
+                            child: InkWell(
                                 onTap: selectImage,
                                 child: Image.asset("assets/addblue.png")),
                           )
@@ -226,7 +227,7 @@ class _UploadImageState extends State<UploadImage> {
                               color: Colors.white,
                               shape: BoxShape.circle,
                             ),
-                            child: GestureDetector(
+                            child: InkWell(
                                 onTap: selectImage,
                                 child: Image.asset("assets/addblue.png")),
                           ),
@@ -244,7 +245,7 @@ class _UploadImageState extends State<UploadImage> {
                     SizedBox(
                       height: height * 0.02,
                     ),
-                    CustomTextField(
+                    CustomPasswordTextField(
                         isactive: true,
                         controller: _password,
                         width: width,
@@ -253,7 +254,7 @@ class _UploadImageState extends State<UploadImage> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () => signupUser(width),
                       child: CustomSubmitButton(
                         width: width,

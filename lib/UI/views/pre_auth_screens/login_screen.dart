@@ -13,6 +13,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/Widgets/password_textfield.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -102,6 +103,8 @@ class _LoginScreenState extends State<LoginScreen> {
     print(_image);
   }
 
+  bool isvisible = false;
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -156,13 +159,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    CustomTextField(
-                      isactive: true,
-                      controller: _password,
-                      width: width,
-                      height: height,
-                      labelText: "Password",
-                    ),
+                    CustomPasswordTextField(
+                        width: width,
+                        height: height,
+                        labelText: "Password",
+                        controller: _password,
+                        isactive: true),
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -179,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () => loginuser(width),
                       //   onTap: () async {
                       //   String url = await StorageMethods()
@@ -217,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, AppRoutes.employercode);
 /*

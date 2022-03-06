@@ -52,6 +52,7 @@ import 'package:testttttt/UI/views/pre_auth_screens/splashscreen.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/uploadimage.dart';
 import 'package:testttttt/UI/views/user_navigator.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:firebase_messaging/firebase_messaging.dart';
@@ -64,19 +65,19 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PlatformInfo().isWeb()
+      ? await Firebase.initializeApp(
+          // Replace with actual values
 
-  await Firebase.initializeApp(
-      // Replace with actual values
-/*
-    options: FirebaseOptions(
-      storageBucket: "eagle-tip.appspot.com",
-      apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
-      appId: "1:168073462322:android:364f09407678105ceeb22b",
-      messagingSenderId: "168073462322",
-      projectId: "eagle-tip",
-    ),
-    */
-      );
+          options: FirebaseOptions(
+            storageBucket: "eagle-tip.appspot.com",
+            apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
+            appId: "1:168073462322:android:364f09407678105ceeb22b",
+            messagingSenderId: "168073462322",
+            projectId: "eagle-tip",
+          ),
+        )
+      : await Firebase.initializeApp();
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
   runApp(MyApp());

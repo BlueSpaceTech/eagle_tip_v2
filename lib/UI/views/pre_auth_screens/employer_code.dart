@@ -125,7 +125,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                     SizedBox(
                       height: height * 0.015,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         String res = "Data Fetched";
                         DocumentReference dbRef = FirebaseFirestore.instance

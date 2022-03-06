@@ -269,7 +269,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                         itemBuilder: (BuildContext context, int index) {
                           // var document = _allChats[index];
 
-                          return GestureDetector(
+                          return InkWell(
                             onTap: () {
                               callChatScreen(
                                   document![index]['uid1'] == user.uid
@@ -284,13 +284,10 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                       : document[index]["photo2"],
                                   user.dpurl);
                             },
-                            child: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: ChatListTile(
-                                doc: document![index],
-                                height: height,
-                                width: width,
-                              ),
+                            child: ChatListTile(
+                              doc: document![index],
+                              height: height,
+                              width: width,
                             ),
                           );
                         }),

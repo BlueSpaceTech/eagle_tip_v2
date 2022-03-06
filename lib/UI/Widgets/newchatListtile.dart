@@ -14,7 +14,7 @@ class NewChatListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Ink(
       padding: EdgeInsets.only(top: height * 0.03),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

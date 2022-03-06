@@ -19,7 +19,7 @@ class ChatListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
-    return Container(
+    return Ink(
       padding: EdgeInsets.only(top: height * 0.03),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,

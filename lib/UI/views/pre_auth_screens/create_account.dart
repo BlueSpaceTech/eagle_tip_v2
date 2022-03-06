@@ -6,8 +6,10 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/phone_verification.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/phoneverificationmob.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/uploadimage.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -127,17 +129,20 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: height * 0.05,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
-                        // ConfirmationResult res = OtpFucnctions()
-                        //     .sendOTP("+91 92052 60904", context, widget.doc);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VerificationScreen(
-                                doc: widget.doc,
-                              ),
-                            ));
+                        ConfirmationResult res;
+
+                        PlatformInfo().isWeb()
+                            ? res = OtpFucnctions()
+                                .sendOTP("+91 92052 60904", context, widget.doc)
+                            : Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VerificationMobScreen(
+                                    doc: widget.doc,
+                                  ),
+                                ));
                       },
                       /*
                         await FirebaseAuth.instance.verifyPhoneNumber(

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/phone_verification.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/uploadimage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,26 +20,27 @@ class OtpFucnctions {
             MaterialPageRoute(
               builder: (context) => VerificationScreen(
                 doc: doc,
-//verid: confirmationResult,
+                confirmationResult: confirmationResult,
               ),
             ))
         : print("there's soem error");
     return confirmationResult;
   }
 
-  authenticateMe(ConfirmationResult confirmationResult, String otp,
-      BuildContext context, DocumentSnapshot doc) async {
-    UserCredential userCredential = await confirmationResult.confirm(otp);
+  authenticateMe(
+    ConfirmationResult confirmationResult,
+    String otp,
+    BuildContext context,
+    DocumentSnapshot doc,
+  ) async {
+    String res = "success";
+    UserCredential userCredential =
+        await confirmationResult.confirm(otp).catchError((error, stackTrace) {
+      res = "Some Error Occurred";
+      return res;
+    });
 
-    userCredential.additionalUserInfo!.isNewUser
-        ? Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => UploadImage(
-                doc: doc,
-              ),
-            ))
-        : print("err");
     userCredential.user!.delete();
+    return res;
   }
 }

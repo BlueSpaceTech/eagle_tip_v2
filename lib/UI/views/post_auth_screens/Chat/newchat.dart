@@ -254,7 +254,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                             itemCount: snapshot.data?.docs.length,
                             itemBuilder: (BuildContext context, int index) {
                               final document = snapshot.data?.docs[index];
-                              return GestureDetector(
+                              return InkWell(
                                 onTap: () {
                                   callChatScreen(
                                       document!["uid"],
@@ -263,13 +263,10 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                       document["dpUrl"],
                                       user.dpurl);
                                 },
-                                child: MouseRegion(
-                                  cursor: SystemMouseCursors.click,
-                                  child: NewChatListTile(
-                                    doc: document!,
-                                    height: height,
-                                    width: width,
-                                  ),
+                                child: NewChatListTile(
+                                  doc: document!,
+                                  height: height,
+                                  width: width,
                                 ),
                               );
                             }),

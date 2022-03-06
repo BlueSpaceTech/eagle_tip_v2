@@ -1,3 +1,10 @@
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
+import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/otp_provider.dart';
@@ -18,19 +25,15 @@ import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 
-class VerificationScreen extends StatefulWidget {
-  VerificationScreen(
-      {Key? key, required this.doc, required this.confirmationResult})
-      : super(key: key);
+class VerificationMobScreen extends StatefulWidget {
+  VerificationMobScreen({Key? key, required this.doc}) : super(key: key);
   DocumentSnapshot doc;
 
-  ConfirmationResult confirmationResult;
-
   @override
-  _VerificationScreenState createState() => _VerificationScreenState();
+  _VerificationMobScreenState createState() => _VerificationMobScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _VerificationMobScreenState extends State<VerificationMobScreen> {
   final OtpFieldController _otp = new OtpFieldController();
   FToast? fToast;
   Future<void> signIn(String otp, double width) async {
@@ -67,15 +70,17 @@ class _VerificationScreenState extends State<VerificationScreen> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
-    PlatformInfo().isAppOS() ? registerUser("", context) : null;
+    registerUser("", context);
   }
+
+  String? verificationId;
 
   Future registerUser(String mobile, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     await _auth.verifyPhoneNumber(
-        phoneNumber: "+9813382163",
-        timeout: Duration(seconds: 60),
+        phoneNumber: "+919205260904",
+        timeout: Duration(seconds: 120),
         verificationCompleted: (uthCredential) {
           Navigator.push(
               context,
@@ -85,7 +90,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         },
         verificationFailed: (authException) {
           fToast!.showToast(
-              child: ToastMessage().show(200, context, "Error"),
+              child: ToastMessage().show(200, context, "error"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
         },
@@ -94,11 +99,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
               child: ToastMessage().show(200, context, "Code Sent"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
+          setState(() {
+            verificationId = verificationid;
+          });
         },
         codeAutoRetrievalTimeout: (verificationId) {
           verificationId = verificationId;
           print(verificationId);
           print("Timout");
+          fToast!.showToast(
+              child: ToastMessage().show(300, context, "Time Out"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
         });
   }
 
@@ -196,24 +208,29 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               OtpFieldStyle(backgroundColor: Colors.white),
                           onCompleted: (pin) {
                             print("Completed: " + pin);
+                            FirebaseAuth auth = FirebaseAuth.instance;
                             //OtpFucnctions().authenticateMe(confirmationResult, _otp)
-                            String res = OtpFucnctions().authenticateMe(
-                                widget.confirmationResult,
-                                pin,
-                                context,
-                                widget.doc);
-                            res == "success"
-                                ? Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          UploadImage(doc: widget.doc),
-                                    ))
-                                : fToast!.showToast(
-                                    child: ToastMessage()
-                                        .show(200, context, "Error"),
-                                    gravity: ToastGravity.BOTTOM,
-                                    toastDuration: Duration(seconds: 3));
+
+                            auth
+                                .signInWithCredential(
+                                    PhoneAuthProvider.credential(
+                                        verificationId: verificationId!,
+                                        smsCode: pin))
+                                .then((value) {
+                              value.user!.delete();
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        UploadImage(doc: widget.doc),
+                                  ));
+                            }).catchError((e) {
+                              fToast!.showToast(
+                                  child: ToastMessage().show(
+                                      width, context, "There's some error"),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: Duration(seconds: 3));
+                            });
                           },
                         ),
                       ],
