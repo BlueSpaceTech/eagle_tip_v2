@@ -15,6 +15,7 @@ import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/password_textfield.dart';
+import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -64,6 +65,11 @@ class _UploadImageState extends State<UploadImage> {
             context, MaterialPageRoute(builder: (context) => BottomNav()));
   }
 
+  route2() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => WelcomeTour()));
+  }
+
   void signupUser(double width) async {
     showDialog(
       builder: (ctx) {
@@ -91,7 +97,7 @@ class _UploadImageState extends State<UploadImage> {
     );
     startTime() async {
       var duration = new Duration(seconds: 3);
-      return Timer(duration, route);
+      return Timer(duration, route2);
     }
 
     //  StorageMethods().uploadStorageImage(_image!, "filePath");

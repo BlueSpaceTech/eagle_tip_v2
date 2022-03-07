@@ -16,7 +16,7 @@ class WelcomeTour extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(Responsive.isDesktop(context)
-                  ? "webtour/tour0web.png"
+                  ? "assets/tour0web.png"
                   : "assets/tour0.png"),
               fit: BoxFit.fill),
         ),

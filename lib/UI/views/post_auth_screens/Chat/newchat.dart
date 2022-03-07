@@ -54,7 +54,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
   List _allResults = [];
   List _resultList = [];
 
-  getUserdetails(List sites) async {
+  getUserdetails(List sites, String uid) async {
     var data = await FirebaseFirestore.instance
         .collection("users")
         .where(
@@ -62,6 +62,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
           isEqualTo: true,
         )
         .where("sites", arrayContainsAny: sites)
+        .where("uid", isNotEqualTo: uid)
         .get();
     setState(() {
       _allResults = data.docs;
@@ -75,7 +76,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites);
+    resultsloaded = getUserdetails(user.sites, user.uid);
   }
 
   _onsearchange() {

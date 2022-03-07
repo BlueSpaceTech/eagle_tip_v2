@@ -124,14 +124,45 @@ class AuthFunctions {
     return res;
   }
 
+  bool checkEmpoyerCode(String EmployerCode) {
+    DocumentReference dbRef =
+        FirebaseFirestore.instance.collection('users').doc(EmployerCode);
+    dbRef.get().then((data) {
+      if (data.exists) {
+        return true;
+      }
+    });
+    return false;
+  }
+
+  bool checkECafterlogin(String uid, String employercode) {
+    DocumentReference dbRef =
+        FirebaseFirestore.instance.collection('users').doc(uid);
+    dbRef.get().then((data) {
+      if (data.get("employerCode") == employercode) {
+        return true;
+      }
+    });
+    return false;
+  }
 //login in user
+
   Future<String> loginuser(
-      {required String email, required String password}) async {
+      {required String email,
+      required String password,
+      required String EmployerCode}) async {
     String res = "Some error occurred";
     try {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth.signInWithEmailAndPassword(
             email: email, password: password);
+/*
+        if (checkECafterlogin(_auth.currentUser!.uid, EmployerCode)) {
+          res = "success";
+        } else {
+          res = "Account not exists";
+        }
+        */
         res = "success";
       }
     } on FirebaseAuthException catch (err) {

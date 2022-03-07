@@ -14,6 +14,7 @@ import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/password_textfield.dart';
+import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -54,14 +55,21 @@ class _LoginScreenState extends State<LoginScreen> {
             context, MaterialPageRoute(builder: (context) => BottomNav()));
   }
 
+  route2() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => WelcomeTour()));
+  }
+
   startTime() async {
-    var duration = new Duration(seconds: 3);
-    return new Timer(duration, route);
+    var duration = new Duration(seconds: 4);
+    return new Timer(duration, route2);
   }
 
   void loginuser(double width) async {
-    String res = await AuthFunctions()
-        .loginuser(email: _email.text, password: _password.text);
+    String res = await AuthFunctions().loginuser(
+        email: _email.text,
+        password: _password.text,
+        EmployerCode: _employercode.text);
     if (res == "success") {
       showDialog(
         builder: (ctx) {

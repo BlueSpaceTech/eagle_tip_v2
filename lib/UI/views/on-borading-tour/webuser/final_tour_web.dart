@@ -1,5 +1,6 @@
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour1.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class FinalTourWeb extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(Responsive.isDesktop(context)
-                  ? "webtour/tourlastweb.png"
+                  ? "assets/tourlastweb.png"
                   : "assets/retour.png"),
               fit: BoxFit.fill),
         ),
@@ -28,7 +29,8 @@ class FinalTourWeb extends StatelessWidget {
               right: -100,
               child: TourUpContainer1(
                 onnext: () {
-                  Navigator.pushNamed(context, AppRoutes.homeScreen);
+                  Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
                 containertype: "right",
                 distance: height * 0.028,

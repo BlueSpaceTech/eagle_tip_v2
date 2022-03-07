@@ -17,7 +17,7 @@ class Tour3 extends StatelessWidget {
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage(Responsive.isDesktop(context)
-                  ? "webtour/tour3web.png"
+                  ? "assets/tour3web.png"
                   : "assets/tour3.png"),
               fit: BoxFit.fill),
         ),

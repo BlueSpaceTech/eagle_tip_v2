@@ -65,17 +65,26 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    // Replace with actual values
+  PlatformInfo().isWeb()
+      ? await Firebase.initializeApp(
+          options: FirebaseOptions(
+            storageBucket: "eagle-tip.appspot.com",
+            apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
+            appId: "1:168073462322:android:364f09407678105ceeb22b",
+            messagingSenderId: "168073462322",
+            projectId: "eagle-tip",
+          ),
+        )
+      : await Firebase.initializeApp(
+          options: FirebaseOptions(
+            storageBucket: "eagle-tip.appspot.com",
+            apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
+            appId: "1:168073462322:android:364f09407678105ceeb22b",
+            messagingSenderId: "168073462322",
+            projectId: "eagle-tip",
+          ),
+        );
 
-    options: FirebaseOptions(
-      storageBucket: "eagle-tip.appspot.com",
-      apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
-      appId: "1:168073462322:android:364f09407678105ceeb22b",
-      messagingSenderId: "168073462322",
-      projectId: "eagle-tip",
-    ),
-  );
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
   runApp(MyApp());
@@ -110,7 +119,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xff2B343B),
         ),
         initialRoute: AppRoutes.loginscreen,
-        // home: UserNavigator(),
+        //  home: UserNavigator(),
         routes: {
           AppRoutes.support: (context) => SupportScreen(),
           AppRoutes.addFAQ: (context) => AddFAQ(),
