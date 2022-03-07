@@ -11,8 +11,19 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class ParticularRequest extends StatelessWidget {
-  const ParticularRequest({Key? key}) : super(key: key);
-
+  ParticularRequest({
+    Key? key,
+    required this.tanksData,
+    required this.name,
+    required this.orderid,
+    required this.date,
+    required this.sitename,
+  }) : super(key: key);
+  late final List tanksData;
+  late final String name;
+  late final String sitename;
+  late final String date;
+  late final String orderid;
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -59,7 +70,7 @@ class ParticularRequest extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Order ID: 654681",
+                                  "Order ID: $orderid",
                                   style: TextStyle(
                                     fontSize: width * 0.013,
                                     color: Colors.white,
@@ -90,7 +101,7 @@ class ParticularRequest extends StatelessWidget {
                                       color: Colors.white),
                                   children: [
                                     TextSpan(
-                                      text: "  #3456345",
+                                      text: "  #$orderid",
                                       style: TextStyle(
                                         fontSize: Responsive.isDesktop(context)
                                             ? width * 0.01
@@ -115,7 +126,7 @@ class ParticularRequest extends StatelessWidget {
                                       color: Colors.white),
                                   children: [
                                     TextSpan(
-                                      text: "  5/27/15",
+                                      text: "  $date",
                                       style: TextStyle(
                                         fontSize: Responsive.isDesktop(context)
                                             ? width * 0.01
@@ -145,7 +156,7 @@ class ParticularRequest extends StatelessWidget {
                                   color: Colors.white),
                               children: [
                                 TextSpan(
-                                  text: "  Acres Marathon",
+                                  text: "  $sitename",
                                   style: TextStyle(
                                     fontSize: Responsive.isDesktop(context)
                                         ? width * 0.01
@@ -173,7 +184,7 @@ class ParticularRequest extends StatelessWidget {
                                   color: Colors.white),
                               children: [
                                 TextSpan(
-                                  text: "  Ahmed Elizando",
+                                  text: "  $name",
                                   style: TextStyle(
                                     fontSize: Responsive.isDesktop(context)
                                         ? width * 0.01
@@ -191,46 +202,7 @@ class ParticularRequest extends StatelessWidget {
                                 ? height * 0.04
                                 : height * 0.04,
                           ),
-                          TankDet(
-                            tankDet: "Tank 1: Regular",
-                            productID: "132",
-                            requestedAmount: "4,500 Gal",
-                          ),
-                          SizedBox(
-                            height: Responsive.isDesktop(context)
-                                ? height * 0.04
-                                : height * 0.02,
-                          ),
-                          TankDet(
-                            tankDet: "Tank 2: Midgrade",
-                            productID: "132",
-                            requestedAmount: "5,500 Gal",
-                          ),
-                          SizedBox(
-                            height: Responsive.isDesktop(context)
-                                ? height * 0.04
-                                : height * 0.02,
-                          ),
-                          TankDet(
-                            tankDet: "Tank 3: Premium",
-                            productID: "132",
-                            requestedAmount: "8,000 Gal",
-                          ),
-                          SizedBox(
-                            height: Responsive.isDesktop(context)
-                                ? height * 0.04
-                                : height * 0.02,
-                          ),
-                          TankDet(
-                            tankDet: "Tank 4: ULSD",
-                            productID: "132",
-                            requestedAmount: "8,000 Gal",
-                          ),
-                          SizedBox(
-                            height: Responsive.isDesktop(context)
-                                ? height * 0.04
-                                : height * 0.02,
-                          ),
+                          Tankss(tanksdata: tanksData, height: height),
                           Visibility(
                             visible: Responsive.isDesktop(context),
                             child: Row(
@@ -274,6 +246,37 @@ class ParticularRequest extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class Tankss extends StatelessWidget {
+  Tankss({Key? key, required this.tanksdata, required this.height})
+      : super(key: key);
+  final List tanksdata;
+  final double height;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height * 0.45,
+      child: ListView.separated(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          itemCount: tanksdata.length,
+          separatorBuilder: (context, index) {
+            return SizedBox(
+              height:
+                  Responsive.isDesktop(context) ? height * 0.04 : height * 0.02,
+            );
+          },
+          itemBuilder: (context, index) {
+            return TankDet(
+              tankDet:
+                  "Tank ${tanksdata[index]["tanknumber"]}: ${tanksdata[index]["fueltype"]}",
+              productID: "${tanksdata[index]["tankid"]}",
+              requestedAmount: "${tanksdata[index]["amount"]}",
+            );
+          }),
     );
   }
 }

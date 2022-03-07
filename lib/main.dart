@@ -147,7 +147,6 @@ class MyApp extends StatelessWidget {
           AppRoutes.addUserOwner: (context) => AddNewUserByOwner(),
           AppRoutes.addUserManager: (context) => AddUserByManager(),
 
-          AppRoutes.particularRequest: (context) => ParticularRequest(),
           AppRoutes.newchat: (context) => NewChatScreen(),
           // AppRoutes.chattingscreen: (context) => ChatScreenn(),
           AppRoutes.crudscreen: (context) => CrudScreen(),

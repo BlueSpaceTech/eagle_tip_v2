@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/editFaq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -69,32 +73,7 @@ class TerminalFAQ extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Responsive.isDesktop(context)
-                                  ? Padding(
-                                      padding: EdgeInsets.only(top: 0.0),
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.arrow_back,
-                                            color: Colors.white,
-                                            size: width * 0.02,
-                                          ),
-                                          SizedBox(
-                                            width: width * 0.014,
-                                          ),
-                                          Text(
-                                            "Back",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: width * 0.014,
-                                              fontWeight: FontWeight.bold,
-                                              fontFamily: "Poppins",
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  : SizedBox(),
+                              SizedBox(),
                               SizedBox(
                                 width: Responsive.isDesktop(context)
                                     ? width * 0.02
@@ -177,19 +156,34 @@ class TerminalFAQ extends StatelessWidget {
                                         ),
                                         Container(
                                           height: height * 0.6,
-                                          child: ListView.builder(
-                                              itemCount: FAQNames.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                return FAQTerminal(
-                                                  widht: width,
-                                                  FAQdata: FAQdata,
-                                                  height: height,
-                                                  FAQNames: FAQNames,
-                                                  index: index,
-                                                );
-                                              }),
+                                          child: StreamBuilder(
+                                            stream: FirebaseFirestore.instance
+                                                .collection("faq")
+                                                .snapshots(),
+                                            builder: (BuildContext context,
+                                                AsyncSnapshot<QuerySnapshot>
+                                                    snapshot) {
+                                              return ListView.builder(
+                                                  itemCount: snapshot
+                                                      .data?.docs.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    final document = snapshot
+                                                        .data?.docs[index];
+                                                    return FAQTerminal(
+                                                      widht: width,
+                                                      docid: document!.id,
+                                                      FAQdesc: document[
+                                                          "description"],
+                                                      height: height,
+                                                      FAQName:
+                                                          document["title"],
+                                                      index: index,
+                                                    );
+                                                  });
+                                            },
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -247,23 +241,33 @@ class FAQTerminal extends StatefulWidget {
   FAQTerminal({
     Key? key,
     required this.index,
-    required this.FAQNames,
+    required this.FAQName,
     required this.widht,
-    required this.FAQdata,
+    required this.FAQdesc,
     required this.height,
+    required this.docid,
   }) : super(key: key);
 
-  final List FAQNames;
+  final String FAQName;
   final int index;
-  final List FAQdata;
+  final String FAQdesc;
   final double widht;
   final double height;
+  final String? docid;
 
   @override
   State<FAQTerminal> createState() => _FAQTerminalState();
 }
 
 class _FAQTerminalState extends State<FAQTerminal> {
+  FToast? fToast;
+  @override
+  void initState() {
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
+
   bool? isExpanded = false;
   @override
   Widget build(BuildContext context) {
@@ -277,7 +281,7 @@ class _FAQTerminalState extends State<FAQTerminal> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.FAQNames[widget.index],
+                  widget.FAQName,
                   style: TextStyle(
                       fontSize: Responsive.isDesktop(context)
                           ? widget.widht * 0.01
@@ -316,7 +320,7 @@ class _FAQTerminalState extends State<FAQTerminal> {
                                 child: Column(
                                   children: [
                                     Text(
-                                      "Are you sure you want to delete Risus, adipiscing accumsan?",
+                                      "Are you sure you want to delete this FAQ?",
                                       style: TextStyle(
                                           fontSize: 18.0,
                                           fontWeight: FontWeight.w400,
@@ -354,22 +358,40 @@ class _FAQTerminalState extends State<FAQTerminal> {
                                         SizedBox(
                                           width: 12.0,
                                         ),
-                                        Container(
-                                          width: widget.widht * 0.145,
-                                          height: widget.height * 0.055,
-                                          decoration: BoxDecoration(
-                                            color: Color(0Xff5081db),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              "Yes",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 13.0,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontFamily: "Poppins"),
+                                        InkWell(
+                                          onTap: () {
+                                            FirebaseFirestore.instance
+                                                .collection("faq")
+                                                .doc(widget.docid)
+                                                .delete();
+                                            fToast!.showToast(
+                                              child: ToastMessage().show(
+                                                  widget.widht,
+                                                  context,
+                                                  "Faq Added successfully"),
+                                              gravity: ToastGravity.BOTTOM,
+                                              toastDuration:
+                                                  Duration(seconds: 3),
+                                            );
+                                            Navigator.pop(context);
+                                          },
+                                          child: Container(
+                                            width: widget.widht * 0.145,
+                                            height: widget.height * 0.055,
+                                            decoration: BoxDecoration(
+                                              color: Color(0Xff5081db),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Yes",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 13.0,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontFamily: "Poppins"),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -390,7 +412,13 @@ class _FAQTerminalState extends State<FAQTerminal> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.addFAQ);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditFAQ(
+                                      answertext: widget.FAQdesc,
+                                      docid: widget.docid!,
+                                      questiontext: widget.FAQName)));
                         },
                         child: Image.asset(
                           Common.assetImages + "edit_pen.png",
@@ -443,7 +471,7 @@ class _FAQTerminalState extends State<FAQTerminal> {
               child: Container(
                   width: widget.widht * 0.85,
                   child: Text(
-                    widget.FAQdata[widget.index],
+                    widget.FAQdesc,
                     style: TextStyle(
                         fontSize: Responsive.isDesktop(context)
                             ? widget.widht * 0.008

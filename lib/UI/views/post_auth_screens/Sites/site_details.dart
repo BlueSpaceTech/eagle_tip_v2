@@ -61,7 +61,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    double height = MediaQuery.of(context).size.height;
     return Responsive.isDesktop(context)
         ? Scaffold(
             floatingActionButton: Responsive.isDesktop(context)

@@ -14,22 +14,7 @@ import 'package:provider/provider.dart';
 
 class TicketHistory extends StatelessWidget {
   TicketHistory({Key? key}) : super(key: key);
-  List openTickets = [
-    "Can't open app",
-    "Can't open app",
-  ];
-  List openTicketsDates = [
-    "5/27/15",
-    "5/27/15",
-  ];
-  List closedTickets = [
-    "Can't open app",
-    "Invalid Passworrd",
-  ];
-  List closedTicketsDates = [
-    "5/27/15",
-    "5/27/15",
-  ];
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;

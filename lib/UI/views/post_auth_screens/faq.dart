@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -67,6 +68,8 @@ class MobileFAQ extends StatefulWidget {
 class _MobileFAQState extends State<MobileFAQ> {
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Container(
         color: backGround_color,
@@ -111,17 +114,25 @@ class _MobileFAQState extends State<MobileFAQ> {
               ),
               Container(
                 height: widget.height * 0.6,
-                child: ListView.builder(
-                    itemCount: widget.FAQNames.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return FAQ(
-                        widht: widget.width,
-                        FAQdata: widget.FAQdata,
-                        height: widget.height,
-                        FAQNames: widget.FAQNames,
-                        index: index,
-                      );
-                    }),
+                child: StreamBuilder(
+                  stream:
+                      FirebaseFirestore.instance.collection("faq").snapshots(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    return ListView.builder(
+                        itemCount: snapshot.data?.docs.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final document = snapshot.data?.docs[index];
+                          return FAQ(
+                            widht: width,
+                            FAQdesc: document!["description"],
+                            height: height,
+                            FAQName: document["title"],
+                            index: index,
+                          );
+                        });
+                  },
+                ),
               ),
             ],
           ),
@@ -243,17 +254,27 @@ class DesktopFAQ extends StatelessWidget {
                         ),
                         Container(
                           height: height * 0.6,
-                          child: ListView.builder(
-                              itemCount: FAQNames.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return FAQ(
-                                  widht: width,
-                                  FAQdata: FAQdata,
-                                  height: height,
-                                  FAQNames: FAQNames,
-                                  index: index,
-                                );
-                              }),
+                          child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection("faq")
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              return ListView.builder(
+                                  itemCount: snapshot.data?.docs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    final document = snapshot.data?.docs[index];
+                                    return FAQ(
+                                      widht: width,
+                                      FAQdesc: document!["description"],
+                                      height: height,
+                                      FAQName: document["title"],
+                                      index: index,
+                                    );
+                                  });
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -272,15 +293,15 @@ class FAQ extends StatefulWidget {
   FAQ({
     Key? key,
     required this.index,
-    required this.FAQNames,
+    required this.FAQName,
     required this.widht,
-    required this.FAQdata,
+    required this.FAQdesc,
     required this.height,
   }) : super(key: key);
 
-  final List FAQNames;
+  final String FAQName;
   final int index;
-  final List FAQdata;
+  final String FAQdesc;
   final double widht;
   final double height;
 
@@ -308,7 +329,7 @@ class _FAQState extends State<FAQ> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    widget.FAQNames[widget.index],
+                    widget.FAQName,
                     style: TextStyle(
                         fontSize: Responsive.isDesktop(context)
                             ? widget.widht * 0.01
@@ -345,7 +366,7 @@ class _FAQState extends State<FAQ> {
               child: Container(
                   width: widget.widht * 0.85,
                   child: Text(
-                    widget.FAQdata[widget.index],
+                    widget.FAQdesc,
                     style: TextStyle(
                         fontSize: Responsive.isDesktop(context)
                             ? widget.widht * 0.008

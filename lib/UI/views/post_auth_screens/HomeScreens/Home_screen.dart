@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
-                                        context, AppRoutes.siteScreen);
+                                        context, AppRoutes.faqTerminal);
                                   },
                                   child: SiteContainer(
                                       width: width,

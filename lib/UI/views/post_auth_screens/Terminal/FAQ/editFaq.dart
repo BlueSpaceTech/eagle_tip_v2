@@ -16,22 +16,24 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
-class AddFAQ extends StatefulWidget {
+class EditFAQ extends StatefulWidget {
+  late final String answertext;
+  final String docid;
+  late final String questiontext;
+
+  EditFAQ({
+    Key? key,
+    required this.answertext,
+    required this.docid,
+    required this.questiontext,
+  }) : super(key: key);
   @override
-  State<AddFAQ> createState() => _AddFAQState();
+  State<EditFAQ> createState() => _EditFAQState();
 }
 
-class _AddFAQState extends State<AddFAQ> {
+class _EditFAQState extends State<EditFAQ> {
   String dropdownvalue = 'All Users';
 
-  // List of items in our dropdown menu
-  var items = [
-    'All Users',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
   FToast? fToast;
 
   String? question = "";
@@ -42,10 +44,14 @@ class _AddFAQState extends State<AddFAQ> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _answerController.text = widget.answertext;
+    _questionController.text = widget.questiontext;
     fToast = FToast();
     fToast!.init(context);
   }
 
+  TextEditingController _questionController = TextEditingController();
+  TextEditingController _answerController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -80,6 +86,32 @@ class _AddFAQState extends State<AddFAQ> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Responsive.isDesktop(context)
+                            ? Padding(
+                                padding: EdgeInsets.only(top: 0.0),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                      size: width * 0.02,
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.014,
+                                    ),
+                                    Text(
+                                      "Back",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: width * 0.014,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Poppins",
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : SizedBox(),
                         SizedBox(
                           width: Responsive.isDesktop(context)
                               ? width * 0.02
@@ -106,6 +138,7 @@ class _AddFAQState extends State<AddFAQ> {
                               child: Column(
                                 children: [
                                   AddFAQTextField(
+                                    controller: _questionController,
                                     labelText: "Question",
                                     valueChanged: (val) {
                                       setState(() {
@@ -129,6 +162,7 @@ class _AddFAQState extends State<AddFAQ> {
                                           BorderRadius.all(Radius.circular(15)),
                                     ),
                                     child: TextFormField(
+                                      controller: _answerController,
                                       maxLines: 5,
                                       textAlign: TextAlign.left,
                                       onChanged: (value) {
@@ -178,34 +212,20 @@ class _AddFAQState extends State<AddFAQ> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          if (question!.isNotEmpty &&
-                                              answer!.isNotEmpty) {
-                                            faqs.doc().set({
-                                              "id": user.uid,
-                                              "title": question,
-                                              "description": answer,
-                                            });
-                                            fToast!.showToast(
-                                              child: ToastMessage().show(
-                                                  width,
-                                                  context,
-                                                  "Faq Added successfully"),
-                                              gravity: ToastGravity.BOTTOM,
-                                              toastDuration:
-                                                  Duration(seconds: 3),
-                                            );
-                                            Navigator.pop(context);
-                                          } else {
-                                            fToast!.showToast(
-                                              child: ToastMessage().show(
-                                                  width,
-                                                  context,
-                                                  "Please enter full details"),
-                                              gravity: ToastGravity.BOTTOM,
-                                              toastDuration:
-                                                  Duration(seconds: 3),
-                                            );
-                                          }
+                                          faqs.doc(widget.docid).update({
+                                            "id": user.uid,
+                                            "title": question,
+                                            "description": answer,
+                                          });
+                                          fToast!.showToast(
+                                            child: ToastMessage().show(
+                                                width,
+                                                context,
+                                                "Faq Edited successfully"),
+                                            gravity: ToastGravity.BOTTOM,
+                                            toastDuration: Duration(seconds: 3),
+                                          );
+                                          Navigator.pop(context);
                                         },
                                         child: Container(
                                           width: width * 0.08,
@@ -254,12 +274,14 @@ class AddFAQTextField extends StatefulWidget {
   const AddFAQTextField(
       {Key? key,
       required this.isactive,
+      required this.controller,
       required this.labelText,
       required this.valueChanged})
       : super(key: key);
   final bool? isactive;
   final ValueChanged valueChanged;
   final String labelText;
+  final TextEditingController controller;
 
   @override
   State<AddFAQTextField> createState() => _AddFAQTextFieldState();
@@ -270,7 +292,6 @@ class _AddFAQTextFieldState extends State<AddFAQTextField> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    TextEditingController controller = TextEditingController();
     return Container(
       width: Responsive.isDesktop(context) ? width * 0.42 : width * 0.1,
       padding: EdgeInsets.only(left: width * 0.01, right: width * 0.06),
@@ -283,6 +304,7 @@ class _AddFAQTextFieldState extends State<AddFAQTextField> {
       ),
       child: TextFormField(
         textAlign: TextAlign.left,
+        controller: widget.controller,
         enabled: widget.isactive,
         style: TextStyle(fontFamily: "Poppins"),
         cursorColor: Colors.black12,

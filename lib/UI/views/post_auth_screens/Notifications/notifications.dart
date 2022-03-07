@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
@@ -212,24 +213,30 @@ class _NotificationsState extends State<Notifications> {
                                   child: Container(
                                     height: height * 0.6,
                                     width: width * 0.5,
-                                    child: ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: notifyNames.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return Notify(
-                                              valueChanged: (val) {
-                                                setState(() {
-                                                  isNew[index] = val;
-                                                });
-                                              },
-                                              width: width,
-                                              isnew: isNew[index],
-                                              index: index,
-                                              height: height,
-                                              notifyNames: notifyNames,
-                                              notifyDates: notifyDates);
-                                        }),
+                                    child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection("notifications")
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final document = snapshot.data?.docs[index];
+                                  return Notify(
+                                      valueChanged: (val) {
+                                        FirebaseFirestore.instance.collection("notifications").doc(document!.id).update({"isNew":val});
+                                      },
+                                      width: width,
+                                      isnew: document!["isNew"],
+                                    notifyContent: document["description"],
+                                      // index: index,
+                                      height: height,
+                                      notifyName: document["title"],
+                                      notifyDate: document["description"]);
+                                });
+                          }),
                                   ),
                                 ),
                               ],
@@ -300,22 +307,31 @@ class _NotificationsState extends State<Notifications> {
                       height: height * 0.6,
                       width:
                           Responsive.isDesktop(context) ? width * 0.5 : width,
-                      child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: notifyNames.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Notify(
-                                valueChanged: (val) {
-                                  setState(() {
-                                    isNew[index] = val;
-                                  });
-                                },
-                                width: width,
-                                isnew: isNew[index],
-                                index: index,
-                                height: height,
-                                notifyNames: notifyNames,
-                                notifyDates: notifyDates);
+                      child: StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection("notifications")
+                              .snapshots(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<QuerySnapshot> snapshot) {
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data?.docs.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final document = snapshot.data?.docs[index];
+                                  return Notify(
+                                      valueChanged: (val) {
+                                        setState(() {
+                                          isNew[index] = val;
+                                        });
+                                      },
+                                      width: width,
+                                      isnew: document!["isNew"],
+                                    notifyContent: document["description"],
+                                      // index: index,
+                                      height: height,
+                                      notifyName: document["title"],
+                                      notifyDate: document["description"]);
+                                });
                           }),
                     ),
                   ),
@@ -330,24 +346,26 @@ class _NotificationsState extends State<Notifications> {
 }
 
 class Notify extends StatefulWidget {
-  const Notify({
+   Notify({
     Key? key,
     required this.width,
     required this.height,
-    required this.notifyNames,
-    required this.index,
+    required this.notifyContent,
+    required this.notifyName,
+    // required this.index,
     required this.isnew,
-    required this.notifyDates,
+    required this.notifyDate,
     required this.valueChanged,
   }) : super(key: key);
 
   final double width;
   final bool isnew;
   final double height;
-  final List<String> notifyNames;
-  final int index;
+  final String notifyName;
+  // final int index;
   final ValueChanged valueChanged;
-  final List<String> notifyDates;
+  final String notifyDate;
+  final String notifyContent;
 
   @override
   State<Notify> createState() => _NotifyState();
@@ -362,9 +380,9 @@ class _NotifyState extends State<Notify> {
             context,
             MaterialPageRoute(
                 builder: (context) => SpecificNotification(
-                    notifyName: widget.notifyNames[widget.index],
+                    notifyName: widget.notifyName,
                     notifyContent:
-                        "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. Diam aenean ullamcorper viverra sed tincidunt. Volutpat amet et scelerisque lacus, vitae rhoncus iaculis. In egestas a cras orci cras. Neque at magna nunc turpis. Leo mattis porttitor sed nisl. Tortor tincidunt et sit nullam cras fames ac. Eget ac ultrices phasellus diam nam massa. Egestas risus amet, convallis felis faucibus. Quis odio non duis sollicitudin massa urna luctus vel. Est maecenas a diam et tellus. Pellentesque lobortis tincidunt aliquet quam et turpis. Erat in eget tortor, morbi a venenatis.")));
+                        widget.notifyContent),),);
         setState(() {
           if (newNotify != null) {
             widget.valueChanged(newNotify);
@@ -402,7 +420,7 @@ class _NotifyState extends State<Notify> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.notifyNames[widget.index],
+                          widget.notifyName,
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14.0,
@@ -411,7 +429,7 @@ class _NotifyState extends State<Notify> {
                           ),
                         ),
                         Text(
-                          widget.notifyDates[widget.index],
+                          widget.notifyDate,
                           style: TextStyle(
                             color: Color(0xFFD9DBE9),
                             fontSize: 10.0,
