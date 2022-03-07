@@ -109,7 +109,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        initialRoute: AppRoutes.addFAQ,
+        initialRoute: AppRoutes.loginscreen,
         // home: UserNavigator(),
         routes: {
           AppRoutes.support: (context) => SupportScreen(),

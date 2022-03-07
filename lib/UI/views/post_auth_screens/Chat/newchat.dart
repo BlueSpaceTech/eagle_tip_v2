@@ -49,6 +49,82 @@ class _NewChatScreenState extends State<NewChatScreen> {
   }
 
   final TextEditingController _SEARCH = new TextEditingController();
+  Future? resultsloaded;
+
+  List _allResults = [];
+  List _resultList = [];
+
+  getUserdetails(List sites) async {
+    var data = await FirebaseFirestore.instance
+        .collection("users")
+        .where(
+          "isverified",
+          isEqualTo: true,
+        )
+        .where("sites", arrayContainsAny: sites)
+        .get();
+    setState(() {
+      _allResults = data.docs;
+    });
+    searchresult();
+    return "done";
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    model.User user = Provider.of<UserProvider>(context).getUser;
+    resultsloaded = getUserdetails(user.sites);
+  }
+
+  _onsearchange() {
+    searchresult();
+  }
+
+  serchrole() {
+    searchresult();
+  }
+
+  searchresult() {
+    var showResults = [];
+    if (_SEARCH.text != "") {
+      //we have a search parameter
+      for (var usersnap in _allResults) {
+        var name = model.User.fromSnap(usersnap).name.toLowerCase();
+
+        if (name.contains(_SEARCH.text.toLowerCase())) {
+          showResults.add(usersnap);
+        }
+
+        /*
+        if (sites.contains(selectedsites)) {
+          showResults.add(usersnap);
+        }
+        */
+      }
+    } else {
+      showResults = List.from(_allResults);
+    }
+    setState(() {
+      _resultList = showResults;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _SEARCH.addListener(_onsearchange);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _SEARCH.removeListener(_onsearchange);
+    _SEARCH.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,224 +135,210 @@ class _NewChatScreenState extends State<NewChatScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(0xff2B343B),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: (_SEARCH.text.isEmpty)
-              ? FirebaseFirestore.instance
-                  .collection("users")
-                  .where(
-                    "isverified",
-                    isEqualTo: true,
-                  )
-                  .where("sites", arrayContainsAny: user.sites)
-                  .snapshots()
-              : FirebaseFirestore.instance
-                  .collection("users")
-                  .where(
-                    "isverified",
-                    isEqualTo: true,
-                  )
-                  .where("sites", arrayContainsAny: user.sites)
-                  .where("name", isGreaterThan: _SEARCH.text)
-                  .where("name", isLessThan: _SEARCH.text + 'z')
-                  .snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Visibility(
-                    visible: Responsive.isDesktop(context),
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: EdgeInsets.symmetric(horizontal: 30),
-                      width: width * 0.3,
-                      height: 80,
-                      color: Color(0xff5081DB),
+        backgroundColor: Color(0xff2B343B),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Visibility(
+                visible: Responsive.isDesktop(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  width: width * 0.3,
+                  height: 80,
+                  color: Color(0xff5081DB),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, AppRoutes.messagemain);
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Text("New Chat",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 22)),
+                      Text("   "),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: Responsive.isDesktop(context)
+                        ? width * 0.01
+                        : width * 0.09,
+                    right: Responsive.isDesktop(context)
+                        ? width * 0.01
+                        : width * 0.09,
+                    top: Responsive.isDesktop(context)
+                        ? height * 0.01
+                        : height * 0.1),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Visibility(
+                      visible: !Responsive.isDesktop(context),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.pop(context);
-                              Navigator.pushNamed(
-                                  context, AppRoutes.messagemain);
-                            },
+                          Text(""),
+                          Logo(width: width),
+                          Padding(
+                            padding: EdgeInsets.only(top: 10.0),
                             child: Icon(
-                              Icons.arrow_back,
+                              Icons.search,
                               color: Colors.white,
                             ),
-                          ),
-                          Text("New Chat",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 22)),
-                          Text("   "),
+                          )
                         ],
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: Responsive.isDesktop(context)
-                            ? width * 0.01
-                            : width * 0.09,
-                        right: Responsive.isDesktop(context)
-                            ? width * 0.01
-                            : width * 0.09,
-                        top: Responsive.isDesktop(context)
-                            ? height * 0.01
-                            : height * 0.1),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Visibility(
-                          visible: !Responsive.isDesktop(context),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(""),
-                              Logo(width: width),
-                              Padding(
-                                padding: EdgeInsets.only(top: 10.0),
-                                child: Icon(
-                                  Icons.search,
-                                  color: Colors.white,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: Responsive.isDesktop(context)
-                              ? height * 0.01
-                              : height * 0.04,
-                        ),
-                        Visibility(
-                          visible: !Responsive.isDesktop(context),
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    height: height * 0.5,
-                                    color: Color(0xff3F4850),
-                                    child: Column(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: height * 0.03,
-                                        ),
-                                        Text(
-                                          "Choose another site",
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.white,
-                                              fontSize: 18),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.05,
-                                        ),
-                                        ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          shrinkWrap: true,
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: width * 0.08),
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            return SiteDett(
-                                                width: width,
-                                                siteImg: siteImg,
-                                                index: index,
-                                                siteName: siteName,
-                                                sitelocation: sitelocation);
-                                          },
-                                          itemCount: siteImg.length,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: MouseRegion(
-                              cursor: SystemMouseCursors.click,
-                              child: Container(
+                    SizedBox(
+                      height: Responsive.isDesktop(context)
+                          ? height * 0.01
+                          : height * 0.04,
+                    ),
+                    Visibility(
+                      visible: !Responsive.isDesktop(context),
+                      child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: height * 0.5,
+                                color: Color(0xff3F4850),
                                 child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Acers Marathon",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Image.asset("assets/down.png"),
-                                      ],
+                                  children: <Widget>[
+                                    SizedBox(
+                                      height: height * 0.03,
                                     ),
                                     Text(
-                                      "Tampa, FL",
+                                      "Choose another site",
                                       style: TextStyle(
-                                          color: Color(0xff6E7191),
                                           fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w500),
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontSize: 18),
+                                    ),
+                                    SizedBox(
+                                      height: height * 0.05,
+                                    ),
+                                    ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: width * 0.08),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return SiteDett(
+                                            width: width,
+                                            siteImg: siteImg,
+                                            index: index,
+                                            siteName: siteName,
+                                            sitelocation: sitelocation);
+                                      },
+                                      itemCount: siteImg.length,
                                     ),
                                   ],
                                 ),
-                              ),
+                              );
+                            },
+                          );
+                        },
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Acers Marathon",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Image.asset("assets/down.png"),
+                                  ],
+                                ),
+                                Text(
+                                  "Tampa, FL",
+                                  style: TextStyle(
+                                      color: Color(0xff6E7191),
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        TextField(
-                          controller: _SEARCH,
-                        ),
-                        ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data?.docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final document = snapshot.data?.docs[index];
-                              return InkWell(
-                                onTap: () {
-                                  callChatScreen(
-                                      document!["uid"],
-                                      document["name"],
-                                      user.name,
-                                      document["dpUrl"],
-                                      user.dpurl);
-                                },
-                                child: NewChatListTile(
-                                  doc: document!,
-                                  height: height,
-                                  width: width,
-                                ),
-                              );
-                            }),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      alignment: Alignment.center,
+                      padding: EdgeInsets.only(
+                          left: width * 0.06, right: width * 0.06),
+                      height: height * 0.064,
+                      width: Responsive.isDesktop(context)
+                          ? width * 0.3
+                          : width * 0.8,
+                      decoration: BoxDecoration(
+                        color: Color(0xff535C65),
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ),
+                      child: TextField(
+                        controller: _SEARCH,
+                        style: TextStyle(
+                            fontFamily: "Poppins", color: Colors.white),
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                          hintText: "Search by name",
+                          hintStyle:
+                              TextStyle(color: Colors.white.withOpacity(0.5)),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _resultList.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final document = _resultList[index];
+                          return InkWell(
+                            onTap: () {
+                              callChatScreen(document!["uid"], document["name"],
+                                  user.name, document["dpUrl"], user.dpurl);
+                            },
+                            child: NewChatListTile(
+                              doc: document!,
+                              height: height,
+                              width: width,
+                            ),
+                          );
+                        }),
+                  ],
+                ),
               ),
-            );
-          }),
-    );
+            ],
+          ),
+        ));
   }
 }
