@@ -94,6 +94,19 @@ class _CreateNotificationState extends State<CreateNotification> {
     }
 
     model.User user = Provider.of<UserProvider>(context).getUser;
+    Future<void> writeMessage(String message) async {
+      HttpsCallable callable =
+          FirebaseFunctions.instance.httpsCallable('setdocument');
+      final resp = await callable.call(<String, dynamic>{
+        'role': user.userRole,
+        "visibleto": _selectedItems,
+        "title": title,
+        "description": description,
+        "timenow": "DateTime.now()",
+      });
+      print("result: ${resp.data}");
+    }
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -350,23 +363,35 @@ class _CreateNotificationState extends State<CreateNotification> {
                               width: width * 0.01,
                             ),
                             InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 print(scheduledDate);
-                                if (description != null ||
-                                    title != null ||
-                                    link != null ||
-                                    _selectedItems.isNotEmpty) {
-                                  notifys.doc().set({
-                                    "description": description,
-                                    "title": title,
-                                    "createdBy": user.employerCode,
-                                    "hyperLink": link,
-                                    "isvisibleto": _selectedItems,
-                                    "scheduledDateTime": scheduledDate,
-                                  }).catchError((onError) {
-                                    print(onError);
-                                  });
-                                }
+                                // if (description != null ||
+                                //     title != null ||
+                                //     link != null ||
+                                //     _selectedItems.isNotEmpty) {
+                                //   notifys.doc().set({
+                                //     "description": description,
+                                //     "title": title,
+                                //     "createdBy": user.employerCode,
+                                //     "hyperLink": link,
+                                //     "visibleto": _selectedItems,
+                                //     "scheduledDateTime": scheduledDate,
+                                //   }).catchError((onError) {
+                                //     print(onError);
+                                //   });
+                                // }
+                                writeMessage("message");
+                                // HttpsCallable callable = FirebaseFunctions
+                                //     .instance
+                                //     .httpsCallable('setdocument');
+                                // await callable.call(<String, dynamic>{
+                                //   'time': "15 1 6 3 *",
+                                //   'title': title,
+                                //   'description': description,
+                                //   'visibleto': _selectedItems,
+                                //   'role': user.userRole,
+                                //   'timenow': DateTime.now(),
+                                // });
                               },
                               child: Container(
                                 width: width * 0.08,
@@ -419,7 +444,7 @@ class _MultiSelectState extends State<MultiSelect> {
 
 // This function is triggered when a checkbox is checked or unchecked
   var topicConnect = {
-    'All Users': "AllUsers",
+    'All Users': 'AllUsers',
     'Managers': 'SiteManager',
     'Site Users': 'SiteUser',
     'Site Owners': 'SiteOwner',

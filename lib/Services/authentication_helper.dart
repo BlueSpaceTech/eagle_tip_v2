@@ -12,7 +12,6 @@ import 'package:testttttt/Models/user.dart' as Model;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 class AuthFunctions {
-  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -96,11 +95,7 @@ class AuthFunctions {
           userRole: role,
         );
         _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
-        await _fcm.subscribeToTopic(role).then((value) {
-          print("succesfully subscribed");
-        }).catchError((onError) {
-          print(onError);
-        });
+
         // final fcmToken = await _fcm.getToken(
         //     vapidKey:
         //         "BLNGqXgTqC0begtlTvH532MHDnIiL7zOQwIIqj8QbEM5qZWGejX0GsMbejbqPRSDnxzRnu0STkU0AN4asyC8ujI");

@@ -65,6 +65,7 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+<<<<<<< Updated upstream
   PlatformInfo().isWeb()
       ? await Firebase.initializeApp(
           // Replace with actual values
@@ -78,6 +79,19 @@ void main() async {
           ),
         )
       : await Firebase.initializeApp();
+=======
+  await Firebase.initializeApp(
+    // Replace with actual values
+
+    options: FirebaseOptions(
+      storageBucket: "eagle-tip.appspot.com",
+      apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
+      appId: "1:168073462322:android:364f09407678105ceeb22b",
+      messagingSenderId: "168073462322",
+      projectId: "eagle-tip",
+    ),
+  );
+>>>>>>> Stashed changes
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
   runApp(MyApp());
@@ -111,7 +125,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        initialRoute: AppRoutes.loginscreen,
+        initialRoute: AppRoutes.addFAQ,
         // home: UserNavigator(),
         routes: {
           AppRoutes.support: (context) => SupportScreen(),

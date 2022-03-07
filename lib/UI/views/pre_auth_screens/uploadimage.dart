@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -30,6 +31,7 @@ class UploadImage extends StatefulWidget {
 }
 
 class _UploadImageState extends State<UploadImage> {
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
   FToast? fToast;
   final TextEditingController _password = TextEditingController();
   Uint8List? _image;
@@ -254,8 +256,22 @@ class _UploadImageState extends State<UploadImage> {
                     SizedBox(
                       height: height * 0.01,
                     ),
+<<<<<<< Updated upstream
                     InkWell(
                       onTap: () => signupUser(width),
+=======
+                    GestureDetector(
+                      onTap: () async {
+                        signupUser(width);
+                        await _fcm
+                            .subscribeToTopic(widget.doc.get("userRole"))
+                            .then((value) {
+                          print("succesfully subscribed");
+                        }).catchError((onError) {
+                          print(onError);
+                        });
+                      },
+>>>>>>> Stashed changes
                       child: CustomSubmitButton(
                         width: width,
                         title: "Done",
