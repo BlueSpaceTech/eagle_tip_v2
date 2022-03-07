@@ -256,10 +256,6 @@ class _UploadImageState extends State<UploadImage> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-<<<<<<< Updated upstream
-                    InkWell(
-                      onTap: () => signupUser(width),
-=======
                     GestureDetector(
                       onTap: () async {
                         signupUser(width);
@@ -271,7 +267,6 @@ class _UploadImageState extends State<UploadImage> {
                           print(onError);
                         });
                       },
->>>>>>> Stashed changes
                       child: CustomSubmitButton(
                         width: width,
                         title: "Done",
