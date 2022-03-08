@@ -19,20 +19,6 @@ class FAQScreen extends StatefulWidget {
 }
 
 class _FAQScreenState extends State<FAQScreen> {
-  List FAQNames = [
-    "Risus, adipiscing accumsan",
-    "Eleifend tellus amet",
-    "Nunc, non sagittis",
-    "Proin interdum eget",
-    "Felis suspendisse amet"
-  ];
-  List FAQdata = [
-    "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. ",
-    "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. ",
-    "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. ",
-    "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. ",
-    "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. "
-  ];
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -40,10 +26,14 @@ class _FAQScreenState extends State<FAQScreen> {
     return Scaffold(
       body: Responsive(
         mobile: MobileFAQ(
-            width: width, height: height, FAQNames: FAQNames, FAQdata: FAQdata),
+          width: width,
+          height: height,
+        ),
         tablet: Container(),
         desktop: DesktopFAQ(
-            width: width, height: height, FAQNames: FAQNames, FAQdata: FAQdata),
+          width: width,
+          height: height,
+        ),
       ),
     );
   }
@@ -54,13 +44,9 @@ class MobileFAQ extends StatefulWidget {
     Key? key,
     required this.width,
     required this.height,
-    required this.FAQNames,
-    required this.FAQdata,
   }) : super(key: key);
   final double width;
   final double height;
-  final List FAQNames;
-  final List FAQdata;
   @override
   _MobileFAQState createState() => _MobileFAQState();
 }
@@ -147,14 +133,10 @@ class DesktopFAQ extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
-    required this.FAQNames,
-    required this.FAQdata,
   }) : super(key: key);
 
   final double width;
   final double height;
-  final List FAQNames;
-  final List FAQdata;
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +163,7 @@ class DesktopFAQ extends StatelessWidget {
                   opacity: 0.2,
                   topPad: 0.0,
                   width: width * 0.9,
-                  height: height,
+                  height: height * 0.9,
                   child: Padding(
                     padding: EdgeInsets.only(
                       left: Responsive.isDesktop(context) ? width * 0.04 : 0.0,

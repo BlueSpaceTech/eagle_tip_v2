@@ -258,7 +258,7 @@ class Tankss extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height * 0.45,
+      height: height * 0.4,
       child: ListView.separated(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),

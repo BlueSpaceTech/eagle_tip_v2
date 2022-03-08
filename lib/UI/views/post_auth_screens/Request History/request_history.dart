@@ -38,6 +38,9 @@ class Requests extends StatelessWidget {
             .where("site", whereIn: user.sites)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return CircularProgressIndicator();
+          }
           return ListView.builder(
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,

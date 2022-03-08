@@ -115,8 +115,9 @@ class SpecificNotification extends StatelessWidget {
                           ),
                           width: width,
                           topPad: 10.0,
-                          height: height)
+                          height: height * 0.9)
                       : Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               notifyName,
@@ -131,6 +132,7 @@ class SpecificNotification extends StatelessWidget {
                             ),
                             Container(
                               width: width * 0.9,
+                              height: height * 0.55,
                               child: Text(
                                 notifyContent,
                                 style: TextStyle(

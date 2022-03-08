@@ -120,7 +120,11 @@ class TourUpContainer extends StatelessWidget {
                     ] else ...[
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.finaltour);
+                          Responsive.isDesktop(context)
+                              ? Navigator.pushNamed(
+                                  context, AppRoutes.webfinaltour)
+                              : Navigator.pushNamed(
+                                  context, AppRoutes.finaltour);
                         },
                         child: Text(
                           "skip",

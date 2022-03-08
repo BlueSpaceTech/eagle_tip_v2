@@ -59,7 +59,11 @@ class _SupportScreenState extends State<SupportScreen> {
         case "TerminalUser":
           return "TerminalManager";
         case "TerminalManager":
-          return "admin";
+          return "AppAdmin";
+        case "AppAdmin":
+          return "SuperAdmin";
+        case "SuperAdmin":
+          return "SuperAdmin";
       }
       return "";
     }
@@ -119,7 +123,9 @@ class _SupportScreenState extends State<SupportScreen> {
                       )
                     : TopRow(width: width),
                 SizedBox(
-                  height: height * 0.05,
+                  height: Responsive.isDesktop(context)
+                      ? height * 0.013
+                      : height * 0.05,
                 ),
                 CustomContainer(
                     child: Column(

@@ -86,32 +86,7 @@ class _EditFAQState extends State<EditFAQ> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Responsive.isDesktop(context)
-                            ? Padding(
-                                padding: EdgeInsets.only(top: 0.0),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.arrow_back,
-                                      color: Colors.white,
-                                      size: width * 0.02,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.014,
-                                    ),
-                                    Text(
-                                      "Back",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: width * 0.014,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Poppins",
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : SizedBox(),
+                        SizedBox(),
                         SizedBox(
                           width: Responsive.isDesktop(context)
                               ? width * 0.02

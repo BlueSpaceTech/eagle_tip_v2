@@ -214,29 +214,46 @@ class _NotificationsState extends State<Notifications> {
                                     height: height * 0.6,
                                     width: width * 0.5,
                                     child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("notifications")
-                              .snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            return ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: snapshot.data?.docs.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final document = snapshot.data?.docs[index];
-                                  return Notify(
-                                      valueChanged: (val) {
-                                        FirebaseFirestore.instance.collection("notifications").doc(document!.id).update({"isNew":val});
-                                      },
-                                      width: width,
-                                      isnew: document!["isNew"],
-                                    notifyContent: document["description"],
-                                      // index: index,
-                                      height: height,
-                                      notifyName: document["title"],
-                                      notifyDate: document["description"]);
-                                });
-                          }),
+                                        stream: FirebaseFirestore.instance
+                                            .collection("notifications")
+                                            .snapshots(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot) {
+                                          if (!snapshot.hasData) {
+                                            return CircularProgressIndicator();
+                                          }
+                                          return ListView.builder(
+                                              physics:
+                                                  NeverScrollableScrollPhysics(),
+                                              itemCount:
+                                                  snapshot.data?.docs.length,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                final document =
+                                                    snapshot.data?.docs[index];
+                                                return Notify(
+                                                    valueChanged: (val) {
+                                                      FirebaseFirestore.instance
+                                                          .collection(
+                                                              "notifications")
+                                                          .doc(document!.id)
+                                                          .update(
+                                                              {"isNew": val});
+                                                    },
+                                                    width: width,
+                                                    isnew: document!["isNew"],
+                                                    notifyContent:
+                                                        document["description"],
+                                                    // index: index,
+                                                    height: height,
+                                                    notifyName:
+                                                        document["title"],
+                                                    notifyDate: document[
+                                                        "description"]);
+                                              });
+                                        }),
                                   ),
                                 ),
                               ],
@@ -313,6 +330,9 @@ class _NotificationsState extends State<Notifications> {
                               .snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
                             return ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: snapshot.data?.docs.length,
@@ -320,13 +340,14 @@ class _NotificationsState extends State<Notifications> {
                                   final document = snapshot.data?.docs[index];
                                   return Notify(
                                       valueChanged: (val) {
-                                        setState(() {
-                                          isNew[index] = val;
-                                        });
+                                        FirebaseFirestore.instance
+                                            .collection("notifications")
+                                            .doc(document!.id)
+                                            .update({"isNew": val});
                                       },
                                       width: width,
                                       isnew: document!["isNew"],
-                                    notifyContent: document["description"],
+                                      notifyContent: document["description"],
                                       // index: index,
                                       height: height,
                                       notifyName: document["title"],
@@ -346,7 +367,7 @@ class _NotificationsState extends State<Notifications> {
 }
 
 class Notify extends StatefulWidget {
-   Notify({
+  Notify({
     Key? key,
     required this.width,
     required this.height,
@@ -377,12 +398,13 @@ class _NotifyState extends State<Notify> {
     return InkWell(
       onTap: () async {
         final newNotify = await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => SpecificNotification(
-                    notifyName: widget.notifyName,
-                    notifyContent:
-                        widget.notifyContent),),);
+          context,
+          MaterialPageRoute(
+            builder: (context) => SpecificNotification(
+                notifyName: widget.notifyName,
+                notifyContent: widget.notifyContent),
+          ),
+        );
         setState(() {
           if (newNotify != null) {
             widget.valueChanged(newNotify);
