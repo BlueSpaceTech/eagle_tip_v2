@@ -55,6 +55,7 @@ class _ChatScreennState extends State<ChatScreenn> {
         "createdOn": FieldValue.serverTimestamp(),
         "uid": currentUserUID,
         "message": message,
+        "isNew": true,
       }).then((value) {
         print("entered in send2");
         _sendcontroller.text = "";
