@@ -166,6 +166,7 @@ class _OpenTicketsState extends State<OpenTickets> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => TicketDetail(
+                                doc: document,
                                   ticketTitle: document["messages"][0]["title"],
                                   status:
                                       document["isopen"] ? "Open" : "Closed",
@@ -294,6 +295,7 @@ class _ClosedTicketsState extends State<ClosedTickets> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => TicketDetail(
+                                doc: document,
                                   ticketTitle: document["messages"][0]["title"],
                                   status:
                                       document["isopen"] ? "Open" : "Closed",

@@ -8,54 +8,36 @@ import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
 
-class ChatScreenn extends StatefulWidget {
-  ChatScreenn({
+class SupportChatScreenn extends StatefulWidget {
+  SupportChatScreenn({
     Key? key,
-    required this.index,
-    required this.frienduid,
-    required this.friendname,
-    required this.currentusername,
-    required this.photourluser,
-    required this.photourlfriend,
+    required this.docid,
   }) : super(key: key);
-  int index;
-  final frienduid;
-  final friendname;
-  final currentusername;
-  final photourluser;
-  final photourlfriend;
+
+  final DocumentSnapshot docid;
+
   @override
-  _ChatScreennState createState() => _ChatScreennState(
-      frienduid, friendname, currentusername, photourluser, photourlfriend);
+  _SupportChatScreennState createState() => _SupportChatScreennState(docid);
 }
 
-class _ChatScreennState extends State<ChatScreenn> {
-  final frienduid;
-  final friendname;
-  final currentusername;
-  final photourluser;
-  final photourlfriend;
+class _SupportChatScreennState extends State<SupportChatScreenn> {
+  final DocumentSnapshot docid;
   final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _sendcontroller = new TextEditingController();
-  _ChatScreennState(
-    this.frienduid,
-    this.friendname,
-    this.currentusername,
-    this.photourluser,
-    this.photourlfriend,
+  _SupportChatScreennState(
+    this.docid,
   );
-  CollectionReference chat = FirebaseFirestore.instance.collection("chats");
+  CollectionReference ticket = FirebaseFirestore.instance.collection("tickets");
   void sendmessage(String message) {
     print("entered in send");
     if (message == "") {
       return;
     } else {
       print("entered in send1");
-      chat.doc(chatDocId).collection("messages").add({
+      ticket.doc(docid.id).collection("messages").add({
         "createdOn": FieldValue.serverTimestamp(),
-        "uid": currentUserUID,
+        "by": currentUserUID,
         "message": message,
-        "isNew": true,
       }).then((value) {
         print("entered in send2");
         _sendcontroller.text = "";
@@ -121,7 +103,7 @@ class _ChatScreennState extends State<ChatScreenn> {
 
   _sendMessageArea(double height, double width) {
     return Visibility(
-      visible: friendname != "Start chat by clicking on user",
+      visible: true,
       child: Container(
         margin: EdgeInsets.only(bottom: 5),
         padding: EdgeInsets.only(left: 15, right: 10),
@@ -152,34 +134,29 @@ class _ChatScreennState extends State<ChatScreenn> {
   }
 
   Stream<QuerySnapshot>? _stream;
-  var chatDocId;
+  // var docid;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    chat
-        .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
+    /*
+    ticket
+        .where("docid", isEqualTo: docid)
         .limit(1)
         .get()
         .then((QuerySnapshot querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
             setState(() {
-              chatDocId = querySnapshot.docs.single.id;
+              docid = querySnapshot.docs.single.id;
             });
           } else {
-            chat.add({
-              'users': {frienduid: null, currentUserUID: null},
-              "between": [frienduid, currentUserUID],
-              "user1": friendname,
-              "user2": currentusername,
-              "uid1": currentUserUID,
-              "uid2": frienduid,
-              "photo1": photourluser,
-              "photo2": photourlfriend,
-            }).then((value) => {chatDocId = value.id});
+            ticket.add({
+              "messae":
+            }).then((value) => {docid = value.id});
           }
         })
         .catchError((err) {});
+        */
     // _stream = getchats();
   }
 /*
@@ -236,15 +213,8 @@ class _ChatScreennState extends State<ChatScreenn> {
                     width: width * 0.5,
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(widget.photourlfriend),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
                         Text(
-                          friendname,
+                          "Support",
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -263,8 +233,8 @@ class _ChatScreennState extends State<ChatScreenn> {
       backgroundColor: Color(0XFF3F4850),
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
-              .collection("chats")
-              .doc(chatDocId)
+              .collection("tickets")
+              .doc(docid.id)
               .collection("messages")
               .orderBy("createdOn", descending: true)
               .snapshots(),
@@ -302,7 +272,7 @@ class _ChatScreennState extends State<ChatScreenn> {
                     prevUserId = message.sender.id;
                     f
       */
-                      final bool isMe = document!["uid"] == currentUserUID;
+                      final bool isMe = document!["by"] == currentUserUID;
                       return _chatBubble(document["message"], isMe);
                     },
                   ),

@@ -75,15 +75,7 @@ void main() async {
             projectId: "eagle-tip",
           ),
         )
-      : await Firebase.initializeApp(
-          options: FirebaseOptions(
-            storageBucket: "eagle-tip.appspot.com",
-            apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
-            appId: "1:168073462322:android:364f09407678105ceeb22b",
-            messagingSenderId: "168073462322",
-            projectId: "eagle-tip",
-          ),
-        );
+      : await Firebase.initializeApp();
 
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
@@ -181,7 +173,7 @@ class MyApp extends StatelessWidget {
                 photourluser: "",
                 currentusername: "",
                 index: 0,
-                friendname: "",
+                friendname: "Start chat by clicking on user",
                 frienduid: "",
               ),
           AppRoutes.terminalhome: (context) => TerminalHome(),

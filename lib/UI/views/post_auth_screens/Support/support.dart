@@ -69,24 +69,31 @@ class _SupportScreenState extends State<SupportScreen> {
     }
 
     Future<void> addTicket(context) {
-      return tickets
-          .add({
-            "employerCode": EmployerCode,
-            "email": Email,
-            "isopen": true,
-            "messages": [
-              {
-                "title": Subject,
-                "description": Message,
-              }
-            ],
-            "name": Name,
-            "sites": user.sites,
-            "timestamp": DateTime.now(),
-            "visibleto": visible(user),
-          })
-          .then((value) => print("Ticket Added"))
-          .catchError((error) => print("Failed to add ticket: $error"));
+      return tickets.add({
+        "byid": user.uid,
+        "employerCode": EmployerCode,
+        "email": Email,
+        "isopen": true,
+        "messages": [
+          {
+            "title": Subject,
+            "description": Message,
+          }
+        ],
+        "name": Name,
+        "sites": user.sites,
+        "timestamp": FieldValue.serverTimestamp(),
+        "visibleto": visible(user),
+      }).then((value) {
+        tickets.doc(value.id).update({
+          "docid": value.id,
+        });
+        tickets.doc(value.id).collection("messages").add({
+          "createdOn": FieldValue.serverTimestamp(),
+          "message": Message,
+          "by": user.uid,
+        });
+      }).catchError((error) => print("Failed to add ticket: $error"));
     }
 
     double width = MediaQuery.of(context).size.width;
