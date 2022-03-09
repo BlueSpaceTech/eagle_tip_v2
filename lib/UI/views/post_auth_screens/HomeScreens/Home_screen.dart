@@ -124,27 +124,33 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: height * 0.07,
                               ),
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.faqTerminal);
-                                  },
-                                  child: SiteContainer(
-                                      width: width,
-                                      text: "Sites",
-                                      height: height)),
+                              Visibility(
+                                visible: user.userRole != "SiteUser",
+                                child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.faqTerminal);
+                                    },
+                                    child: SiteContainer(
+                                        width: width,
+                                        text: "Sites",
+                                        height: height)),
+                              ),
                               SizedBox(
                                 height: height * 0.02,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.crudscreen);
-                                },
-                                child: SiteContainer(
-                                    width: width,
-                                    text: "Edit Employees",
-                                    height: height),
+                              Visibility(
+                                visible: user.userRole != "SiteUser",
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.crudscreen);
+                                  },
+                                  child: SiteContainer(
+                                      width: width,
+                                      text: "Edit Employees",
+                                      height: height),
+                                ),
                               )
                             ],
                           ),

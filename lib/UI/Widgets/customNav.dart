@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors, await_only_futures
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -7,6 +10,7 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
+import 'package:badges/badges.dart';
 
 int index = 0;
 
@@ -102,21 +106,38 @@ class _NavbarState extends State<Navbar> {
                           MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.notifications);
-                                setState(() {
-                                  index = 2;
-                                });
-                              },
-                              child: Navtext(
-                                color: index == 2
-                                    ? Colors.white
-                                    : Color(0xFFA0A3BD),
-                                text: "Notifications",
-                                width: widget.width,
-                              ),
-                            ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.notifications);
+                                  setState(() {
+                                    index = 2;
+                                  });
+                                },
+                                child: StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("notifications")
+                                        .where("isNew", isEqualTo: true)
+                                        .snapshots(),
+                                    builder: (context,
+                                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      final documentlen =
+                                          snapshot.data?.docs.length;
+                                      return Badge(
+                                        showBadge:
+                                            documentlen == 0 ? false : true,
+                                        badgeContent: Text(
+                                          documentlen.toString(),
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        child: Navtext(
+                                          color: index == 2
+                                              ? Colors.white
+                                              : Color(0xFFA0A3BD),
+                                          text: "Notifications",
+                                          width: widget.width,
+                                        ),
+                                      );
+                                    })),
                           ),
                         ],
                       ),

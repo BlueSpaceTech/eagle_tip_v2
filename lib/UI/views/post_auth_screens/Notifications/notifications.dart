@@ -41,16 +41,7 @@ class _NotificationsState extends State<Notifications> {
   ];
 
   List isNew = [true, true, false, false, false];
-
-  int _notifyNumberGenerator() {
-    int counter = 0;
-    for (int i = 0; i < isNew.length; i++) {
-      if (isNew[i] == true) {
-        counter = counter + 1;
-      }
-    }
-    return counter;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +139,8 @@ class _NotificationsState extends State<Notifications> {
                             radius: 8.0,
                             child: Center(
                               child: Text(
-                                _notifyNumberGenerator().toString(),
+                                
+                                "",
                                 style: TextStyle(fontSize: 10.0),
                               ),
                             ),

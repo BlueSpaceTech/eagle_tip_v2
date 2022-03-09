@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:provider/provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -16,6 +17,9 @@ import 'package:lottie/lottie.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../../../Providers/user_provider.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class SiteDetails extends StatelessWidget {
   SiteDetails({Key? key}) : super(key: key);
@@ -60,6 +64,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Responsive.isDesktop(context)
@@ -267,11 +272,14 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                               requestDate: requestDate,
                               requestId: requestId,
                             ),
-                            RequestHistoryPart(
-                                width: width,
-                                height: height,
-                                requestId: requestId,
-                                requestDate: requestDate)
+                            Visibility(
+                              visible: user.userRole != "SiteUser",
+                              child: RequestHistoryPart(
+                                  width: width,
+                                  height: height,
+                                  requestId: requestId,
+                                  requestDate: requestDate),
+                            )
                           ],
                         ),
                       ),

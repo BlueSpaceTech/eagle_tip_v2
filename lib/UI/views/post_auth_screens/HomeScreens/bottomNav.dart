@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_final_fields, unused_field, prefer_const_literals_to_create_immutables, unused_local_variable
 
+import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
@@ -55,7 +57,7 @@ class _BottomNavState extends State<BottomNav> {
         backgroundColor: Color(0xFF1A1F23),
         unselectedItemColor: Color(0xFFA0A3BD),
         selectedItemColor: Colors.white,
-        items: <BottomNavigationBarItem>[
+        items: [
           BottomNavigationBarItem(
             activeIcon: Image.asset(
               Common.assetImages + "activeProfile.png",
@@ -79,14 +81,44 @@ class _BottomNavState extends State<BottomNav> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              Common.assetImages + "activeNotification.png",
-              width: width * 0.05,
-            ),
-            icon: Image.asset(
-              Common.assetImages + "Group 308.png",
-              width: width * 0.05,
-            ),
+            activeIcon: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("notifications")
+                    .where("isNew", isEqualTo: true)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  final documentlen = snapshot.data?.docs.length;
+                  return Badge(
+                    showBadge: documentlen == 0 ? false : true,
+                    badgeContent: Text(
+                      documentlen.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    child: Image.asset(
+                      Common.assetImages + "activeNotification.png",
+                      width: width * 0.05,
+                    ),
+                  );
+                }),
+            icon: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("notifications")
+                    .where("isNew", isEqualTo: true)
+                    .snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  final documentlen = snapshot.data?.docs.length;
+                  return Badge(
+                    showBadge: documentlen == 0 ? false : true,
+                    badgeContent: Text(
+                      documentlen.toString(),
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    child: Image.asset(
+                      Common.assetImages + "Group 308.png",
+                      width: width * 0.05,
+                    ),
+                  );
+                }),
             label: 'Notifications',
           ),
           BottomNavigationBarItem(

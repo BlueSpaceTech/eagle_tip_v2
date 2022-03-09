@@ -45,12 +45,17 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isactive = false;
   addData() async {
     UserProvider _userProvider = Provider.of(context, listen: false);
+
     await _userProvider.refreshUser();
   }
 
   route() {
+    UserProvider _userProvider = Provider.of(context, listen: false);
     Responsive.isDesktop(context)
-        ? Navigator.pushNamed(context, AppRoutes.homeScreen)
+        ? (_userProvider.getUser.userRole == "TerminalUser" ||
+                _userProvider.getUser.userRole == "TerminalManager")
+            ? Navigator.pushNamed(context, AppRoutes.terminalhome)
+            : Navigator.pushNamed(context, AppRoutes.homeScreen)
         : Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
   }

@@ -1,5 +1,7 @@
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Support/support_desktop.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Support/support_message.dart';
 
 class CustomFAQbottom extends StatelessWidget {
   const CustomFAQbottom({
@@ -51,7 +53,12 @@ class CustomFAQbottom extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.support);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: ((context) {
+                      return SupportDesktop();
+                    })),
+                  );
                 },
                 child: Text(
                   "Support",

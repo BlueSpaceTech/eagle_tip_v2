@@ -56,15 +56,30 @@ class ChatListTile extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-            alignment: Alignment.center,
-            width: 20,
-            decoration:
-                BoxDecoration(shape: BoxShape.circle, color: Color(0xff5081DB)),
-            child: Text(
-              "2",
-              style: TextStyle(color: Colors.white, fontFamily: "Poppins"),
-            ),
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("chats")
+                .doc(doc.id)
+                .collection("messages")
+                .where("isNew", isEqualTo: true)
+                .snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              final documentlen = snapshot.data?.docs.length;
+              if (snapshot.hasData) {
+                return Container(
+                  alignment: Alignment.center,
+                  width: 20,
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Color(0xff5081DB)),
+                  child: Text(
+                    documentlen.toString(),
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                  ),
+                );
+              }
+              return Text("");
+            },
           ),
         ],
       ),

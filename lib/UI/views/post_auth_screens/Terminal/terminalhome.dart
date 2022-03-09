@@ -49,12 +49,24 @@ class _TerminalHomeState extends State<TerminalHome> {
                             SizedBox(
                               height: height * 0.02,
                             ),
-                            CustomSubmitButton(width: width, title: "Edit FAQ"),
+                            InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.faqTerminal);
+                                },
+                                child: CustomSubmitButton(
+                                    width: width, title: "Edit FAQ")),
                             SizedBox(
                               height: height * 0.02,
                             ),
-                            CustomSubmitButton(
-                                width: width, title: "Send Notification"),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.createNotification);
+                              },
+                              child: CustomSubmitButton(
+                                  width: width, title: "Send Notification"),
+                            ),
                           ],
                         ),
                       ),
