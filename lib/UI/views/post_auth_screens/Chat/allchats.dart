@@ -146,7 +146,13 @@ class _AllChatScreenState extends State<AllChatScreen> {
               );
             }
             var document = snapshot.data?.docs;
-            var docid = document!.single.id;
+            // var docid = document!.single.id;
+            List docids = [];
+            document!.forEach(
+              (element) {
+                docids.add(element);
+              },
+            );
 
             return SingleChildScrollView(
               child: Padding(
@@ -286,7 +292,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                   user.dpurl);
                               FirebaseFirestore.instance
                                   .collection("chats")
-                                  .doc(docid)
+                                  .doc(docids[index])
                                   .collection("messages")
                                   .doc()
                                   .update({
