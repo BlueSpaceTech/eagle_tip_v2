@@ -27,20 +27,22 @@ class OtpFucnctions {
     return confirmationResult;
   }
 
-  authenticateMe(
+  Future<String> authenticateMe(
     ConfirmationResult confirmationResult,
     String otp,
     BuildContext context,
     DocumentSnapshot doc,
   ) async {
     String res = "success";
-    UserCredential userCredential =
-        await confirmationResult.confirm(otp).catchError((error, stackTrace) {
-      res = "Some Error Occurred";
-      return res;
-    });
+    if (phononumber.isNotEmpty) {
+      UserCredential userCredential =
+          await confirmationResult.confirm(otp).catchError((error, stackTrace) {
+        res = "Some Error Occurred";
+        return res;
+      });
+      userCredential.user!.delete();
+    }
 
-    userCredential.user!.delete();
     return res;
   }
 }

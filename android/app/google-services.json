@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "168073462322",
+    "firebase_url": "https://eagle-tip-default-rtdb.firebaseio.com",
     "project_id": "eagle-tip",
     "storage_bucket": "eagle-tip.appspot.com"
   },

@@ -138,12 +138,12 @@ class _CreateAccountState extends State<CreateAccount> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => VerificationMobScreen(
-                                  doc: widget.doc,
-                                ),
+                                    doc: widget.doc, phone: phoneno.text),
                               ));
                         } else {
                           ConfirmationResult res = await OtpFucnctions()
-                              .sendOTP("+91 98133 82163", context, widget.doc);
+                              .sendOTP(
+                                  "+1 ${phoneno.text}", context, widget.doc);
                           Navigator.push(
                               context,
                               MaterialPageRoute(

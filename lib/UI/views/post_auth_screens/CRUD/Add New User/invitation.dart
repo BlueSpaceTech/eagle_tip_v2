@@ -303,7 +303,7 @@ class _InvitationState extends State<Invitation> {
                           cursorColor: Colors.black12,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            labelText: "Name",
+                            labelText: "Phone number",
                             labelStyle: TextStyle(
                                 color: Color(0xff5e8be0),
                                 fontFamily: "Poppins",

@@ -74,7 +74,7 @@ class AuthFunctions {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          phoneno.toString().isNotEmpty ||
+          phoneno.isNotEmpty ||
           role.isNotEmpty ||
           Sites.isNotEmpty ||
           employercode.isNotEmpty) {
@@ -119,6 +119,8 @@ class AuthFunctions {
         res = "The email is not valid";
       } else if (err.code == "weak-password") {
         res = "Password is weak";
+      } else {
+        res = err.code;
       }
     } catch (err) {
       res = err.toString();

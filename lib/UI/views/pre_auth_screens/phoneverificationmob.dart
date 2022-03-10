@@ -26,8 +26,10 @@ import 'package:otp_text_field/style.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 
 class VerificationMobScreen extends StatefulWidget {
-  VerificationMobScreen({Key? key, required this.doc}) : super(key: key);
+  VerificationMobScreen({Key? key, required this.doc, required this.phone})
+      : super(key: key);
   DocumentSnapshot doc;
+  String phone;
 
   @override
   _VerificationMobScreenState createState() => _VerificationMobScreenState();
@@ -70,7 +72,7 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
-    registerUser("", context);
+    registerUser(widget.phone, context);
   }
 
   String? verificationId;
@@ -79,7 +81,7 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     await _auth.verifyPhoneNumber(
-        phoneNumber: "+919205260904",
+        phoneNumber: "+1 ${mobile}",
         timeout: Duration(seconds: 120),
         verificationCompleted: (uthCredential) {
           Navigator.push(

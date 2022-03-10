@@ -19,9 +19,11 @@ import 'package:otp_text_field/style.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 
 class VerificationScreen extends StatefulWidget {
-  VerificationScreen(
-      {Key? key, required this.doc, required this.confirmationResult})
-      : super(key: key);
+  VerificationScreen({
+    Key? key,
+    required this.doc,
+    required this.confirmationResult,
+  }) : super(key: key);
   DocumentSnapshot doc;
 
   ConfirmationResult confirmationResult;
@@ -68,6 +70,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
     fToast = FToast();
     fToast!.init(context);
   }
+
+  String? pinn;
 
   Future registerUser(String mobile, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -195,24 +199,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                               OtpFieldStyle(backgroundColor: Colors.white),
                           onCompleted: (pin) {
                             print("Completed: " + pin);
+                            setState(() {
+                              pinn = pin;
+                            });
                             //OtpFucnctions().authenticateMe(confirmationResult, _otp)
-                            String res = OtpFucnctions().authenticateMe(
-                                widget.confirmationResult,
-                                pin,
-                                context,
-                                widget.doc);
-                            res == "success"
-                                ? Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          UploadImage(doc: widget.doc),
-                                    ))
-                                : fToast!.showToast(
-                                    child: ToastMessage()
-                                        .show(200, context, "Error"),
-                                    gravity: ToastGravity.BOTTOM,
-                                    toastDuration: Duration(seconds: 3));
                           },
                         ),
                       ],
@@ -221,16 +211,34 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       height: height * 0.04,
                     ),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         // signIn(_otp.toString(), width);
-
-                        Navigator.push(
+                        print(pinn);
+                        String res = await OtpFucnctions().authenticateMe(
+                            widget.confirmationResult,
+                            pinn!,
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => UploadImage(
-                                doc: widget.doc,
-                              ),
-                            ));
+                            widget.doc);
+                        res == "success"
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      UploadImage(doc: widget.doc),
+                                ))
+                            : fToast!.showToast(
+                                child: ToastMessage()
+                                    .show(200, context, "Wrong otp"),
+                                gravity: ToastGravity.BOTTOM,
+                                toastDuration: Duration(seconds: 3));
+
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => UploadImage(
+                        //         doc: widget.doc,
+                        //       ),
+                        //     ));
                       },
                       child: CustomSubmitButton(
                         width: width,
@@ -240,6 +248,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     SizedBox(
                       height: height * 0.04,
                     ),
+                    /*
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -273,6 +282,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         ],
                       ),
                     ),
+                     */
                   ],
                 ),
               ),

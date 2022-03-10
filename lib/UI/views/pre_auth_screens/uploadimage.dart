@@ -18,6 +18,7 @@ import 'package:testttttt/UI/Widgets/password_textfield.dart';
 import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -101,20 +102,20 @@ class _UploadImageState extends State<UploadImage> {
     }
 
     //  StorageMethods().uploadStorageImage(_image!, "filePath");
-
-    if (res != "success") {
+    print(res);
+    if (res == "success") {
       addData();
       startTime();
 
       fToast!.showToast(
-        child: ToastMessage().show(width, context, res),
+        child: ToastMessage().show(width, context, "Your Account is Created"),
         gravity: ToastGravity.BOTTOM,
         toastDuration: Duration(seconds: 3),
       );
     } else {
       //Uri url = await StorageMethods().uploadImageFile(_image!);
       fToast!.showToast(
-        child: ToastMessage().show(width, context, "Your Account is Created"),
+        child: ToastMessage().show(width, context, res),
         gravity: ToastGravity.BOTTOM,
         toastDuration: Duration(seconds: 3),
       );
@@ -265,13 +266,15 @@ class _UploadImageState extends State<UploadImage> {
                     GestureDetector(
                       onTap: () async {
                         signupUser(width);
-                        await _fcm
-                            .subscribeToTopic(widget.doc.get("userRole"))
-                            .then((value) {
-                          print("succesfully subscribed");
-                        }).catchError((onError) {
-                          print(onError);
-                        });
+                        PlatformInfo().isWeb()
+                            ? null
+                            : await _fcm
+                                .subscribeToTopic(widget.doc.get("userRole"))
+                                .then((value) {
+                                print("succesfully subscribed");
+                              }).catchError((onError) {
+                                print(onError);
+                              });
                       },
                       child: CustomSubmitButton(
                         width: width,
