@@ -10,6 +10,8 @@ import 'package:testttttt/Services/storagemethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testttttt/Models/user.dart' as Model;
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class AuthFunctions {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -194,10 +196,15 @@ class AuthFunctions {
   }
 
   sendinvite() {}
-  static String addUserTodb(String name, String email, String phonenumber,
-      String userRole, String dpUrl, bool phoneisverified, List sites) {
+  String addUserTodb(
+      {required String name,
+      required String email,
+      required String phonenumber,
+      required String userRole,
+      required bool phoneisverified,
+      required List sites}) {
     String code = genrateemployercode();
-    String res = "Successfully added";
+    String res = "Invite Sent Successfully";
     if (name.isNotEmpty || email.isNotEmpty || phonenumber.isNotEmpty) {
       FirebaseFirestore.instance.collection("users").doc(code).set({
         "name": name,
@@ -207,9 +214,38 @@ class AuthFunctions {
         "isverified": phoneisverified,
         "sites": sites,
         "employercode": code,
-      });
+      }).then((value) =>
+          sendemailinvite(name: name, employercode: code, email: email));
     }
-    return code;
+    return res;
+  }
+
+  Future sendemailinvite(
+      {required String name,
+      required String employercode,
+      required String email}) async {
+    final serviceId = "service_2ithqza";
+    final templateId = "template_2i1vt1n";
+    final userId = "lBxWSwKqkpay5kZ7H";
+    final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'to_name': name,
+          'employer_code': employercode,
+          'to_email': email,
+        }
+      }),
+    );
+    print(response.body);
   }
 
   //SIGN UP METHOD
