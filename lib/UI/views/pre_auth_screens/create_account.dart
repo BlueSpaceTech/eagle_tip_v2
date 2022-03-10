@@ -132,15 +132,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     InkWell(
                       onTap: () async {
-                        if (defaultTargetPlatform == TargetPlatform.android ||
-                            defaultTargetPlatform == TargetPlatform.iOS) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerificationMobScreen(
-                                    doc: widget.doc, phone: phoneno.text),
-                              ));
-                        } else {
+                        if (PlatformInfo().isWeb()) {
                           ConfirmationResult res = await OtpFucnctions()
                               .sendOTP(
                                   "+1 ${phoneno.text}", context, widget.doc);
@@ -151,6 +143,13 @@ class _CreateAccountState extends State<CreateAccount> {
                                   doc: widget.doc,
                                   confirmationResult: res,
                                 ),
+                              ));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerificationMobScreen(
+                                    doc: widget.doc, phone: phoneno.text),
                               ));
                         }
                       },

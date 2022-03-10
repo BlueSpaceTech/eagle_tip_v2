@@ -11,8 +11,9 @@ class OtpFucnctions {
       String phonenumber, BuildContext context, DocumentSnapshot doc) async {
     this.phononumber = phonenumber;
     FirebaseAuth auth = FirebaseAuth.instance;
-    ConfirmationResult confirmationResult =
-        await auth.signInWithPhoneNumber(phonenumber);
+    ConfirmationResult confirmationResult = await auth.signInWithPhoneNumber(
+      phonenumber,
+    );
 
     confirmationResult != null
         ? Navigator.push(

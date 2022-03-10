@@ -65,17 +65,16 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  PlatformInfo().isWeb()
-      ? await Firebase.initializeApp(
-          options: FirebaseOptions(
-            storageBucket: "eagle-tip.appspot.com",
-            apiKey: "AIzaSyDVMUtzjQx29o2lMKZx0IHSJ_5v_z4mqnk",
-            appId: "1:168073462322:android:364f09407678105ceeb22b",
-            messagingSenderId: "168073462322",
-            projectId: "eagle-tip",
-          ),
-        )
-      : await Firebase.initializeApp();
+
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+      storageBucket: "eagle-tip.appspot.com",
+      apiKey: "AIzaSyDIaG56XX_XS3SGy06SXmTG8jDFhs1M2O8",
+      appId: "1:168073462322:android:364f09407678105ceeb22b",
+      messagingSenderId: "168073462322",
+      projectId: "eagle-tip",
+    ),
+  );
 
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();

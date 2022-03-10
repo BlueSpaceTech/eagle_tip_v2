@@ -15,19 +15,19 @@
       },
       "oauth_client": [
         {
+          "client_id": "168073462322-ck49csc2qcmdfgl2ouivbk9220pkfrho.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eagletip.com",
+            "certificate_hash": "38627e288f2a79715b78efba0c46501318e38e17"
+          }
+        },
+        {
           "client_id": "168073462322-e9hhiplgn1ef8dm0mevm24okmtn81q16.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "eagletip.com",
             "certificate_hash": "302fe07f382700889c43d1f0fb61f3ad3cca01f8"
-          }
-        },
-        {
-          "client_id": "168073462322-l9og3sh6pr0ep998io7qk88jd9p3687n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "eagletip.com",
-            "certificate_hash": "38627e288f2a79715b78efba0c46501318e38e17"
           }
         },
         {
