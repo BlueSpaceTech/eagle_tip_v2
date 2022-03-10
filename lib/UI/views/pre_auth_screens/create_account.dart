@@ -130,19 +130,27 @@ class _CreateAccountState extends State<CreateAccount> {
                       height: height * 0.05,
                     ),
                     InkWell(
-                      onTap: () {
-                        ConfirmationResult res;
-
-                        PlatformInfo().isWeb()
-                            ? res = OtpFucnctions()
-                                .sendOTP("+91 92052 60904", context, widget.doc)
-                            : Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => VerificationMobScreen(
-                                    doc: widget.doc,
-                                  ),
-                                ));
+                      onTap: () async {
+                        if (PlatformInfo().isWeb()) {
+                          ConfirmationResult res = await OtpFucnctions()
+                              .sendOTP("+91 92052 60904", context, widget.doc);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerificationScreen(
+                                  doc: widget.doc,
+                                  confirmationResult: res,
+                                ),
+                              ));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerificationMobScreen(
+                                  doc: widget.doc,
+                                ),
+                              ));
+                        }
                       },
                       /*
                         await FirebaseAuth.instance.verifyPhoneNumber(

@@ -108,7 +108,7 @@ class _NewChatMainState extends State<NewChatMain> {
                           photourlfriend: "f",
                           photourluser: "f",
                           currentusername: "f",
-                          friendname: "selected a cchat",
+                          friendname: "Start chat by clicking on user",
                           frienduid: "",
                           index: widget.index,
                         )),

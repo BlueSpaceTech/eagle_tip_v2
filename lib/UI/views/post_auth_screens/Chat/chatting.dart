@@ -123,7 +123,7 @@ class _ChatScreennState extends State<ChatScreenn> {
     return Visibility(
       visible: friendname != "Start chat by clicking on user",
       child: Container(
-        margin: EdgeInsets.only(bottom: 5),
+        margin: EdgeInsets.only(bottom: 5, left: 5, right: 5),
         padding: EdgeInsets.only(left: 15, right: 10),
         alignment: Alignment.centerLeft,
         height: height * 0.08,
@@ -236,9 +236,14 @@ class _ChatScreennState extends State<ChatScreenn> {
                     width: width * 0.5,
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(widget.photourlfriend),
+                        Visibility(
+                          visible:
+                              friendname != "Start chat by clicking on user",
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundImage:
+                                NetworkImage(widget.photourlfriend),
+                          ),
                         ),
                         SizedBox(
                           width: 10,
