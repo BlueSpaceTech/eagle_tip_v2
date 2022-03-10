@@ -135,9 +135,9 @@ class _EmployerCodeState extends State<EmployerCode> {
                         dbRef.get().then((data) {
                           if (data.exists) {
                             setState(() {
-                              name = data.get("name");
-                              email = data.get("email");
-                              phone = data.get("phonenumber");
+                              // name = data.get("name");
+                              // email = data.get("email");
+                              // phone = data.get("phonenumber");
                             });
                             Navigator.push(
                                 context,

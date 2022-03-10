@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -14,6 +16,8 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:http/http.dart' as http;
 
 class Invitation extends StatefulWidget {
   Invitation({Key? key, required this.sites, required this.role})
@@ -45,6 +49,34 @@ class _InvitationState extends State<Invitation> {
     _name.dispose();
     _email.dispose();
     _phone.dispose();
+  }
+
+  Future sendemailinvite(
+      {required String name,
+      required String employercode,
+      required String email}) async {
+    final serviceId = "service_2ithqza";
+    final templateId = "template_2i1vt1n";
+    final userId = "lBxWSwKqkpay5kZ7H";
+    final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'to_name': name,
+          'employer_code': employercode,
+          'to_email': email,
+        }
+      }),
+    );
+    print(response.body);
   }
 
   @override
@@ -260,14 +292,11 @@ class _InvitationState extends State<Invitation> {
                             gravity: ToastGravity.BOTTOM,
                             toastDuration: Duration(seconds: 3),
                           );
-                          if (res == "Successfully added") {
-                            if (Responsive.isDesktop(context)) {
-                              Navigator.pushNamed(
-                                  context, AppRoutes.homeScreen);
-                            } else {
-                              Navigator.pushNamed(context, AppRoutes.bottomNav);
-                            }
-                          }
+
+                          sendemailinvite(
+                              name: _name.text,
+                              employercode: res,
+                              email: _email.text);
                         },
                         child: CustomSubmitButton(
                           width: width,

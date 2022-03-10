@@ -135,15 +135,21 @@ class AuthFunctions {
     return false;
   }
 
-  bool checkECafterlogin(String uid, String employercode) {
+  Future checkECafterlogin(String uid, String employercode) async {
     DocumentReference dbRef =
-        FirebaseFirestore.instance.collection('users').doc(uid);
-    dbRef.get().then((data) {
-      if (data.get("employerCode") == employercode) {
-        return true;
+        await FirebaseFirestore.instance.collection('users').doc(uid);
+    String? check;
+    bool returnn = false;
+    await dbRef.get().then((data) {
+      if (data.exists) {
+        check = data.get("employerCode");
+        print(employercode);
+        returnn = data.get("employerCode") == employercode;
+        print(returnn);
       }
     });
-    return false;
+    print("${returnn} is is ");
+    return returnn;
   }
 //login in user
 
@@ -153,9 +159,19 @@ class AuthFunctions {
       required String EmployerCode}) async {
     String res = "Some error occurred";
     try {
-      if (email.isNotEmpty || password.isNotEmpty) {
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
+      if (email.isNotEmpty || password.isNotEmpty || EmployerCode.isNotEmpty) {
+        print(EmployerCode);
+        await _auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((value) async {
+          bool check = await checkECafterlogin(value.user!.uid, EmployerCode);
+          if (check) {
+            res = "success";
+          } else {
+            res = "Wrong Employer code";
+            _auth.signOut();
+          }
+        });
 /*
         if (checkECafterlogin(_auth.currentUser!.uid, EmployerCode)) {
           res = "success";
@@ -163,7 +179,7 @@ class AuthFunctions {
           res = "Account not exists";
         }
         */
-        res = "success";
+        //  res = "success";
       }
     } on FirebaseAuthException catch (err) {
       if (err.code == "user-not-found") {
@@ -192,11 +208,8 @@ class AuthFunctions {
         "sites": sites,
         "employercode": code,
       });
-      return res;
-    } else {
-      res = "Please input all fields";
     }
-    return res;
+    return code;
   }
 
   //SIGN UP METHOD
