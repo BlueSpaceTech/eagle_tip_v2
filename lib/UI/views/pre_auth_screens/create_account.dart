@@ -15,6 +15,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:flutter/foundation.dart';
 
 class CreateAccount extends StatefulWidget {
   CreateAccount({
@@ -131,23 +132,24 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     InkWell(
                       onTap: () async {
-                        if (PlatformInfo().isWeb()) {
+                        if (defaultTargetPlatform == TargetPlatform.android ||
+                            defaultTargetPlatform == TargetPlatform.iOS) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerificationMobScreen(
+                                  doc: widget.doc,
+                                ),
+                              ));
+                        } else {
                           ConfirmationResult res = await OtpFucnctions()
-                              .sendOTP("+91 92052 60904", context, widget.doc);
+                              .sendOTP("+91 98133 82163", context, widget.doc);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => VerificationScreen(
                                   doc: widget.doc,
                                   confirmationResult: res,
-                                ),
-                              ));
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerificationMobScreen(
-                                  doc: widget.doc,
                                 ),
                               ));
                         }

@@ -67,7 +67,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
-    PlatformInfo().isAppOS() ? registerUser("", context) : null;
   }
 
   Future registerUser(String mobile, BuildContext context) async {
