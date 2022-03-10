@@ -44,8 +44,14 @@ class _TerminalHomeState extends State<TerminalHome> {
                             SizedBox(
                               height: height * 0.2,
                             ),
-                            CustomSubmitButton(
-                                width: width, title: "Edit Employees"),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, AppRoutes.crudscreen);
+                              },
+                              child: CustomSubmitButton(
+                                  width: width, title: "Edit Employees"),
+                            ),
                             SizedBox(
                               height: height * 0.02,
                             ),

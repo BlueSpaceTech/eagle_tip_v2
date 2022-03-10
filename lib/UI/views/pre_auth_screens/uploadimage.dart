@@ -17,6 +17,7 @@ import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/password_textfield.dart';
 import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -67,8 +68,15 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   route2() {
+    UserProvider _userProvider = Provider.of(context, listen: false);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => WelcomeTour()));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                (_userProvider.getUser.userRole == "TerminalUser" ||
+                        _userProvider.getUser.userRole == "TerminalManager")
+                    ? TerminalHome()
+                    : WelcomeTour()));
   }
 
   void signupUser(double width) async {
@@ -266,15 +274,18 @@ class _UploadImageState extends State<UploadImage> {
                     GestureDetector(
                       onTap: () async {
                         signupUser(width);
-                        PlatformInfo().isWeb()
-                            ? null
-                            : await _fcm
-                                .subscribeToTopic(widget.doc.get("userRole"))
-                                .then((value) {
-                                print("succesfully subscribed");
-                              }).catchError((onError) {
-                                print(onError);
-                              });
+                        await _fcm
+                            .subscribeToTopic(widget.doc.get("userRole"))
+                            .then((value) {
+                          print("succesfully subscribed");
+                        }).catchError((onError) {
+                          print(onError);
+                        });
+                        await _fcm.subscribeToTopic("AllUsers").then((value) {
+                          print("succesfully subscribed");
+                        }).catchError((onError) {
+                          print(onError);
+                        });
                       },
                       child: CustomSubmitButton(
                         width: width,

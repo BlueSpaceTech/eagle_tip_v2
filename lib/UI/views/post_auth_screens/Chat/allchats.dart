@@ -147,12 +147,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
             }
             var document = snapshot.data?.docs;
             // var docid = document!.single.id;
-            List docids = [];
-            document!.forEach(
-              (element) {
-                docids.add(element);
-              },
-            );
+            // List docids = [];
 
             return SingleChildScrollView(
               child: Padding(
@@ -279,7 +274,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                           return InkWell(
                             onTap: () {
                               callChatScreen(
-                                  document[index]['uid1'] == user.uid
+                                  document![index]['uid1'] == user.uid
                                       ? document[index]["uid2"]
                                       : document[index]["uid1"],
                                   document[index]['user1'] == user.name
@@ -290,17 +285,9 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                       ? document[index]["photo2"]
                                       : document[index]["photo2"],
                                   user.dpurl);
-                              FirebaseFirestore.instance
-                                  .collection("chats")
-                                  .doc(docids[index])
-                                  .collection("messages")
-                                  .doc()
-                                  .update({
-                                "isNew": false,
-                              });
                             },
                             child: ChatListTile(
-                              doc: document[index],
+                              doc: document![index],
                               height: height,
                               width: width,
                             ),

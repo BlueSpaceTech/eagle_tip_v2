@@ -163,6 +163,9 @@ class TerminalFAQ extends StatelessWidget {
                                             builder: (BuildContext context,
                                                 AsyncSnapshot<QuerySnapshot>
                                                     snapshot) {
+                                              if (!snapshot.hasData) {
+                                                return CircularProgressIndicator();
+                                              }
                                               return ListView.builder(
                                                   itemCount: snapshot
                                                       .data?.docs.length,

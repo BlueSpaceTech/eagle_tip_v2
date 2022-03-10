@@ -130,7 +130,10 @@ class _OpenTicketsState extends State<OpenTickets> {
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("tickets").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("tickets")
+            .where("sites", arrayContains: user.sites)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something Went wrong");
@@ -144,29 +147,17 @@ class _OpenTicketsState extends State<OpenTickets> {
               final document = snapshot.data?.docs[index];
 
               List docSiteslen = document!["sites"];
-              bool? visibleTo() {
-                for (int i = 0; i < docSiteslen.length; i++) {
-                  for (int j = 0; j < user.sites.length; j++) {
-                    if (document["sites"][i] == user.sites[j]) {
-                      return true;
-                    } else {
-                      continue;
-                    }
-                  }
-                }
-                return false;
-              }
 
               if (document["isopen"]) {
                 if (document["employerCode"] == user.employerCode ||
-                    (document["visibleto"] == user.userRole && visibleTo()!)) {
+                    document["visibleto"] == user.userRole) {
                   return InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => TicketDetail(
-                                doc: document,
+                                  doc: document,
                                   ticketTitle: document["messages"][0]["title"],
                                   status:
                                       document["isopen"] ? "Open" : "Closed",
@@ -259,7 +250,10 @@ class _ClosedTicketsState extends State<ClosedTickets> {
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
     return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection("tickets").snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection("tickets")
+            .where("sites", arrayContains: user.sites)
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something Went wrong");
@@ -272,30 +266,17 @@ class _ClosedTicketsState extends State<ClosedTickets> {
             itemCount: snapshot.data?.docs.length.toInt(),
             itemBuilder: (BuildContext context, int index) {
               final document = snapshot.data?.docs[index];
-              List docSiteslen = document!["sites"];
-              bool? visibleTo() {
-                for (int i = 0; i < docSiteslen.length; i++) {
-                  for (int j = 0; j < user.sites.length; j++) {
-                    if (document["sites"][i] == user.sites[j]) {
-                      return true;
-                    } else {
-                      continue;
-                    }
-                  }
-                }
-                return false;
-              }
 
-              if (!document["isopen"]) {
+              if (!document!["isopen"]) {
                 if ((document["employerCode"] == user.employerCode) ||
-                    (document["visibleto"] == user.userRole && visibleTo()!)) {
+                    (document["visibleto"] == user.userRole)) {
                   return InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => TicketDetail(
-                                doc: document,
+                                  doc: document,
                                   ticketTitle: document["messages"][0]["title"],
                                   status:
                                       document["isopen"] ? "Open" : "Closed",

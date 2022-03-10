@@ -101,6 +101,7 @@ class _CreateNotificationState extends State<CreateNotification> {
         'role': user.userRole,
         "visibleto": _selectedItems,
         "title": title,
+        "sites": user.sites,
         "description": description,
         "timenow": "DateTime.now()",
       });

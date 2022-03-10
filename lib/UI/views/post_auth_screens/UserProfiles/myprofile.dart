@@ -735,7 +735,7 @@ class DetailsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Responsive.isDesktop(context)
         ? Container(
-            width: width * 0.113,
+            width: width * 0.143,
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

@@ -38,13 +38,13 @@ export const sendToCondition =functions.firestore.document('/notifications/{noti
 
 
 exports.setdocument=functions.region("us-central1").https.onCall(async (data,context)=>{
-                     schedule.scheduleJob("job1",`46 21 6 3 *`,async ()=>{
                         await db.doc("/notifications/{notificaitonId}").set({
                             "title":data.title,
+                            "sites":data.sites,
                             "description":data.description,
                             "visibleto":data.visibleto,
                             "createdby":data.role,
                             "scheduledDateandTime":data.timenow,
                         });
-                    })
+                    
             });

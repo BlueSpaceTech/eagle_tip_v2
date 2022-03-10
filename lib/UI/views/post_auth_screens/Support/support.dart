@@ -71,8 +71,8 @@ class _SupportScreenState extends State<SupportScreen> {
     Future<void> addTicket(context) {
       return tickets.add({
         "byid": user.uid,
-        "employerCode": EmployerCode,
-        "email": Email,
+        "employerCode": user.userRole,
+        "email": user.email,
         "isopen": true,
         "messages": [
           {
@@ -80,7 +80,7 @@ class _SupportScreenState extends State<SupportScreen> {
             "description": Message,
           }
         ],
-        "name": Name,
+        "name": user.name,
         "sites": user.sites,
         "timestamp": FieldValue.serverTimestamp(),
         "visibleto": visible(user),
@@ -150,39 +150,6 @@ class _SupportScreenState extends State<SupportScreen> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                EmployerCode = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Employer Code"),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Name = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Name"),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Email = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Email"),
                         SizedBox(
                           height: height * 0.012,
                         ),

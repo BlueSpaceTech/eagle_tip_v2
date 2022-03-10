@@ -69,8 +69,12 @@ class _NavbarState extends State<Navbar> {
                             cursor: SystemMouseCursors.click,
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.homeScreen);
+                                (user.userRole == "TerminalManager" ||
+                                        user.userRole == "TerminalUser")
+                                    ? Navigator.pushNamed(
+                                        context, AppRoutes.terminalhome)
+                                    : Navigator.pushNamed(
+                                        context, AppRoutes.homeScreen);
                                 setState(() {
                                   index = 0;
                                 });

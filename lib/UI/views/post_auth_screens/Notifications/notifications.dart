@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
@@ -15,6 +19,7 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class Notifications extends StatefulWidget {
   Notifications({Key? key}) : super(key: key);
@@ -41,10 +46,10 @@ class _NotificationsState extends State<Notifications> {
   ];
 
   List isNew = [true, true, false, false, false];
-  
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -139,7 +144,6 @@ class _NotificationsState extends State<Notifications> {
                             radius: 8.0,
                             child: Center(
                               child: Text(
-                                
                                 "",
                                 style: TextStyle(fontSize: 10.0),
                               ),
@@ -208,7 +212,10 @@ class _NotificationsState extends State<Notifications> {
                                     child: StreamBuilder(
                                         stream: FirebaseFirestore.instance
                                             .collection("notifications")
-                                            .snapshots(),
+                                            .where("visibleto",
+                                                arrayContainsAny: [
+                                              user.userRole
+                                            ]).snapshots(),
                                         builder: (BuildContext context,
                                             AsyncSnapshot<QuerySnapshot>
                                                 snapshot) {
@@ -225,25 +232,51 @@ class _NotificationsState extends State<Notifications> {
                                                       int index) {
                                                 final document =
                                                     snapshot.data?.docs[index];
-                                                return Notify(
-                                                    valueChanged: (val) {
-                                                      FirebaseFirestore.instance
-                                                          .collection(
-                                                              "notifications")
-                                                          .doc(document!.id)
-                                                          .update(
-                                                              {"isNew": val});
-                                                    },
-                                                    width: width,
-                                                    isnew: document!["isNew"],
-                                                    notifyContent:
-                                                        document["description"],
-                                                    // index: index,
-                                                    height: height,
-                                                    notifyName:
-                                                        document["title"],
-                                                    notifyDate: document[
-                                                        "description"]);
+                                                List docSiteslen =
+                                                    document!["sites"];
+                                                bool? visibleTo() {
+                                                  for (int i = 0;
+                                                      i < docSiteslen.length;
+                                                      i++) {
+                                                    for (int j = 0;
+                                                        j < user.sites.length;
+                                                        j++) {
+                                                      if (document["sites"]
+                                                              [i] ==
+                                                          user.sites[j]) {
+                                                        return true;
+                                                      } else {
+                                                        continue;
+                                                      }
+                                                    }
+                                                  }
+                                                  return false;
+                                                }
+
+                                                if (visibleTo()!) {
+                                                  return Notify(
+                                                      valueChanged: (val) {
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                "notifications")
+                                                            .doc(document.id)
+                                                            .update(
+                                                                {"isNew": val});
+                                                      },
+                                                      width: width,
+                                                      isnew: document["isNew"],
+                                                      notifyContent: document[
+                                                          "description"],
+                                                      // index: index,
+                                                      height: height,
+                                                      notifyName:
+                                                          document["title"],
+                                                      notifyDate: document[
+                                                          "description"]);
+                                                } else {
+                                                  return Text("");
+                                                }
                                               });
                                         }),
                                   ),
@@ -319,7 +352,9 @@ class _NotificationsState extends State<Notifications> {
                       child: StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection("notifications")
-                              .snapshots(),
+                              .where("visibleto", arrayContainsAny: [
+                            user.userRole
+                          ]).snapshots(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData) {

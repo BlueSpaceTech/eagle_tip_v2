@@ -462,15 +462,22 @@ class _EditUserState extends State<EditUser> {
                                       SizedBox(
                                         height: height * 0.04,
                                       ),
-                                      Text(
-                                        "Log out",
-                                        style: TextStyle(
-                                            fontSize: 20.0,
-                                            color: Color(0xFF92b8ff),
-                                            decoration:
-                                                TextDecoration.underline,
-                                            fontWeight: FontWeight.w600,
-                                            fontFamily: "Poppins"),
+                                      InkWell(
+                                        onTap: () {
+                                          AuthFunctions.signOut();
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.loginscreen);
+                                        },
+                                        child: Text(
+                                          "Log out",
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Color(0xFF92b8ff),
+                                              decoration:
+                                                  TextDecoration.underline,
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: "Poppins"),
+                                        ),
                                       ),
                                     ],
                                   ),

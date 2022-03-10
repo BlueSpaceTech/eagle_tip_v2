@@ -16,6 +16,7 @@ import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/password_textfield.dart';
 import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -50,19 +51,22 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   route() {
-    UserProvider _userProvider = Provider.of(context, listen: false);
     Responsive.isDesktop(context)
-        ? (_userProvider.getUser.userRole == "TerminalUser" ||
-                _userProvider.getUser.userRole == "TerminalManager")
-            ? Navigator.pushNamed(context, AppRoutes.terminalhome)
-            : Navigator.pushNamed(context, AppRoutes.homeScreen)
+        ? Navigator.pushNamed(context, AppRoutes.homeScreen)
         : Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => BottomNav()));
   }
 
   route2() {
+    UserProvider _userProvider = Provider.of(context, listen: false);
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => WelcomeTour()));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                (_userProvider.getUser.userRole == "TerminalUser" ||
+                        _userProvider.getUser.userRole == "TerminalManager")
+                    ? TerminalHome()
+                    : WelcomeTour()));
   }
 
   startTime() async {
