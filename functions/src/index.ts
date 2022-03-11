@@ -38,13 +38,19 @@ export const sendToCondition =functions.firestore.document('/notifications/{noti
 
 
 exports.setdocument=functions.region("us-central1").https.onCall(async (data,context)=>{
-                        await db.doc("/notifications/{notificaitonId}").set({
-                            "title":data.title,
-                            "sites":data.sites,
-                            "description":data.description,
-                            "visibleto":data.visibleto,
-                            "createdby":data.role,
-                            "scheduledDateandTime":data.timenow,
-                        });
+        return functions.pubsub.schedule("every 2 minutes").onRun( async (context)=>
+        console.log("tesy")
+        // await db.doc("/notifications/{notificaitonId}").set({
+        //     "title":data.title,
+        //     "sites":data.sites,
+        //     "description":data.description,
+        //     "visibleto":data.visibleto,
+        //     "createdby":data.role,
+        //     "scheduledDateandTime":data.timenow,
+        // })
+        );
+                        
                     
             });
+exports.schedulefunc=functions.pubsub.schedule("every 1 minutes").onRun((context)=>
+console.log("Test"));

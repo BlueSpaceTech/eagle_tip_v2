@@ -34,14 +34,18 @@ class _SupportDesktopState extends State<SupportDesktop> {
   String? Message;
   FToast? fToast;
   String? site;
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
     fToast = FToast();
     fToast!.init(context);
   }
 
+  FocusNode myFocusNode = FocusNode();
   CollectionReference tickets =
       FirebaseFirestore.instance.collection("tickets");
 
@@ -56,7 +60,7 @@ class _SupportDesktopState extends State<SupportDesktop> {
     Future<void> addTicket(context) {
       return tickets.add({
         "employerCode": EmployerCode,
-        "email": Email,
+        "email": email.text,
         "isopen": true,
         "messages": [
           {
@@ -64,7 +68,7 @@ class _SupportDesktopState extends State<SupportDesktop> {
             "description": Message,
           }
         ],
-        "name": Name,
+        "name": name.text,
         "sites": site,
         "timestamp": FieldValue.serverTimestamp(),
         // "visibleto": visible(user),
@@ -122,39 +126,167 @@ class _SupportDesktopState extends State<SupportDesktop> {
                         SizedBox(
                           height: height * 0.02,
                         ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                EmployerCode = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Employer Code"),
+                        Container(
+                          width: Responsive.isDesktop(context)
+                              ? width * 0.3
+                              : Responsive.isTablet(context)
+                                  ? width * 0.6
+                                  : width * 0.9,
+                          padding: EdgeInsets.only(
+                              top: Responsive.isDesktop(context)
+                                  ? height * 0.006
+                                  : Responsive.isTablet(context)
+                                      ? height * 0.006
+                                      : 0.0,
+                              left: Responsive.isDesktop(context)
+                                  ? width * 0.014
+                                  : Responsive.isTablet(context)
+                                      ? width * 0.021
+                                      : width * 0.06,
+                              right: width * 0.06),
+                          height: height * 0.07,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  focusNode: myFocusNode,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      EmployerCode = value;
+                                    });
+                                  },
+                                  style: TextStyle(fontFamily: "Poppins"),
+                                  cursorColor: Colors.black12,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: "Employer Code",
+                                    labelStyle: TextStyle(
+                                        fontSize: Responsive.isDesktop(context)
+                                            ? width * 0.009
+                                            : width * 0.023,
+                                        color: myFocusNode.hasFocus
+                                            ? Color(0xFF5E8BE0)
+                                            : Color(0xffAEB0C3),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                              InkWell(
+                                  onTap: () async {
+                                    final doc = await FirebaseFirestore.instance
+                                        .collection("users")
+                                        .doc(EmployerCode)
+                                        .get()
+                                        .then((value) => value);
+                                    setState(() {
+                                      name.text = doc.get("name").toString();
+                                      email.text = doc.get("email").toString();
+                                    });
+                                  },
+                                  child: Icon(
+                                    Icons.search,
+                                    color: Colors.black,
+                                  )),
+                            ],
+                          ),
+                        ),
                         SizedBox(
                           height: height * 0.012,
                         ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Name = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Name"),
+                        Container(
+                          width: Responsive.isDesktop(context)
+                              ? width * 0.3
+                              : Responsive.isTablet(context)
+                                  ? width * 0.6
+                                  : width * 0.9,
+                          padding: EdgeInsets.only(
+                              top: Responsive.isDesktop(context)
+                                  ? height * 0.006
+                                  : Responsive.isTablet(context)
+                                      ? height * 0.006
+                                      : 0.0,
+                              left: Responsive.isDesktop(context)
+                                  ? width * 0.014
+                                  : Responsive.isTablet(context)
+                                      ? width * 0.021
+                                      : width * 0.06,
+                              right: width * 0.06),
+                          height: height * 0.07,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: TextField(
+                            enabled: false,
+                            controller: name,
+                            style: TextStyle(fontFamily: "Poppins"),
+                            cursorColor: Colors.black12,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: "Name",
+                              labelStyle: TextStyle(
+                                  fontSize: Responsive.isDesktop(context)
+                                      ? width * 0.009
+                                      : width * 0.023,
+                                  color: myFocusNode.hasFocus
+                                      ? Color(0xFF5E8BE0)
+                                      : Color(0xffAEB0C3),
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
                         SizedBox(
                           height: height * 0.012,
                         ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Email = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Email"),
+                        Container(
+                          width: Responsive.isDesktop(context)
+                              ? width * 0.3
+                              : Responsive.isTablet(context)
+                                  ? width * 0.6
+                                  : width * 0.9,
+                          padding: EdgeInsets.only(
+                              top: Responsive.isDesktop(context)
+                                  ? height * 0.006
+                                  : Responsive.isTablet(context)
+                                      ? height * 0.006
+                                      : 0.0,
+                              left: Responsive.isDesktop(context)
+                                  ? width * 0.014
+                                  : Responsive.isTablet(context)
+                                      ? width * 0.021
+                                      : width * 0.06,
+                              right: width * 0.06),
+                          height: height * 0.07,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: TextField(
+                            enabled: false,
+                            controller: email,
+                            style: TextStyle(fontFamily: "Poppins"),
+                            cursorColor: Colors.black12,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              labelText: "Email",
+                              labelStyle: TextStyle(
+                                  fontSize: Responsive.isDesktop(context)
+                                      ? width * 0.009
+                                      : width * 0.023,
+                                  color: myFocusNode.hasFocus
+                                      ? Color(0xFF5E8BE0)
+                                      : Color(0xffAEB0C3),
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ),
                         SizedBox(
                           height: height * 0.012,
                         ),

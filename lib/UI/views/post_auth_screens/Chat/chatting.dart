@@ -51,7 +51,7 @@ class _ChatScreennState extends State<ChatScreenn> {
       return;
     } else {
       print("entered in send1");
-      chat.doc(chatDocId).collection("messages").add({
+      chat.doc(chatDocId).collection("messages").doc(chatDocId + "sent").set({
         "createdOn": FieldValue.serverTimestamp(),
         "uid": currentUserUID,
         "message": message,

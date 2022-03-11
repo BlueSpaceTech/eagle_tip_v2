@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,14 @@ class ChatListTile extends StatelessWidget {
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               final documentlen = snapshot.data?.docs.length;
+              final doclist = [];
+              final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+              final docs = snapshot.data!.docs;
+              docs.forEach((element) {
+                if (element["uid"] != currentUserUID) {
+                  doclist.add(element);
+                }
+              });
               if (snapshot.hasData) {
                 return Container(
                   alignment: Alignment.center,
@@ -72,7 +81,7 @@ class ChatListTile extends StatelessWidget {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: Color(0xff5081DB)),
                   child: Text(
-                    documentlen.toString(),
+                    doclist.isEmpty ? "" : doclist.length.toString(),
                     style:
                         TextStyle(color: Colors.white, fontFamily: "Poppins"),
                   ),
