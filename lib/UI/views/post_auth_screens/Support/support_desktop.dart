@@ -46,34 +46,54 @@ class _SupportDesktopState extends State<SupportDesktop> {
   }
 
   FocusNode myFocusNode = FocusNode();
+  late List sites = [];
+
+  String userRole = "";
+  String visible(userrole) {
+    switch (userrole) {
+      case "SiteUser":
+        return "SiteManager";
+      case "SiteManager":
+        return "SiteOwner";
+      case "SiteOwner":
+        return "TerminalUser";
+      case "TerminalUser":
+        return "TerminalManager";
+      case "TerminalManager":
+        return "AppAdmin";
+      case "AppAdmin":
+        return "SuperAdmin";
+      case "SuperAdmin":
+        return "SuperAdmin";
+    }
+    return "";
+  }
+
+  Future<void> addTicket(context) {
+    return tickets.add({
+      "employerCode": EmployerCode,
+      "email": email.text,
+      "isopen": true,
+      "messages": [
+        {
+          "title": Subject,
+          "description": Message,
+        }
+      ],
+      "visibleto": visible(userRole),
+      "name": name.text,
+      "sites": sites,
+      "timestamp": FieldValue.serverTimestamp(),
+      // "visibleto": visible(user),
+    });
+  }
+
   CollectionReference tickets =
       FirebaseFirestore.instance.collection("tickets");
 
   @override
   Widget build(BuildContext context) {
     // model.User user = Provider.of<UserProvider>(context).getUser;
-
-    String visible() {
-      return "SiteUser";
-    }
-
-    Future<void> addTicket(context) {
-      return tickets.add({
-        "employerCode": EmployerCode,
-        "email": email.text,
-        "isopen": true,
-        "messages": [
-          {
-            "title": Subject,
-            "description": Message,
-          }
-        ],
-        "name": name.text,
-        "sites": site,
-        "timestamp": FieldValue.serverTimestamp(),
-        // "visibleto": visible(user),
-      });
-    }
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -186,6 +206,9 @@ class _SupportDesktopState extends State<SupportDesktop> {
                                     setState(() {
                                       name.text = doc.get("name").toString();
                                       email.text = doc.get("email").toString();
+                                      userRole = doc.get("userRole").toString();
+                                      sites = doc["sites"];
+                                      print(sites);
                                     });
                                   },
                                   child: Icon(
@@ -218,8 +241,9 @@ class _SupportDesktopState extends State<SupportDesktop> {
                               right: width * 0.06),
                           height: height * 0.07,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            // color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(15)),
+                            color: Color(0xffEFF0F6).withOpacity(0.7),
                           ),
                           child: TextField(
                             enabled: false,
@@ -230,12 +254,7 @@ class _SupportDesktopState extends State<SupportDesktop> {
                               border: InputBorder.none,
                               labelText: "Name",
                               labelStyle: TextStyle(
-                                  fontSize: Responsive.isDesktop(context)
-                                      ? width * 0.009
-                                      : width * 0.023,
-                                  color: myFocusNode.hasFocus
-                                      ? Color(0xFF5E8BE0)
-                                      : Color(0xffAEB0C3),
+                                  color: Color(0xff5e8be0),
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w500),
                             ),
@@ -264,7 +283,8 @@ class _SupportDesktopState extends State<SupportDesktop> {
                               right: width * 0.06),
                           height: height * 0.07,
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            // color: Colors.white,
+                            color: Color(0xffEFF0F6).withOpacity(0.7),
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                           child: TextField(
@@ -276,29 +296,12 @@ class _SupportDesktopState extends State<SupportDesktop> {
                               border: InputBorder.none,
                               labelText: "Email",
                               labelStyle: TextStyle(
-                                  fontSize: Responsive.isDesktop(context)
-                                      ? width * 0.009
-                                      : width * 0.023,
-                                  color: myFocusNode.hasFocus
-                                      ? Color(0xFF5E8BE0)
-                                      : Color(0xffAEB0C3),
+                                  color: Color(0xff5e8be0),
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w500),
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                site = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Site"),
                         SizedBox(
                           height: height * 0.012,
                         ),
@@ -328,6 +331,8 @@ class _SupportDesktopState extends State<SupportDesktop> {
                         ),
                         InkWell(
                           onTap: () {
+                            print(sites);
+                            print(userRole);
                             addTicket(context);
                             fToast!.showToast(
                               child: ToastMessage()
