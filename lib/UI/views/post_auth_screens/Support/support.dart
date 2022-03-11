@@ -70,6 +70,7 @@ class _SupportScreenState extends State<SupportScreen> {
 
     Future<void> addTicket(context) {
       return tickets.add({
+        "beforelogin": false,
         "byid": user.uid,
         "employerCode": user.userRole,
         "email": user.email,

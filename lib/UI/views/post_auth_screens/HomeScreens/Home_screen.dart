@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     //   print(value);
     //   // tokens.doc(user.userRole).update(data);
     // });
+    addData();
   }
 
   addData() async {

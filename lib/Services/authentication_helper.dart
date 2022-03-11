@@ -250,6 +250,37 @@ class AuthFunctions {
     print(response.body);
   }
 
+  Future sendsuportemail(
+      {required String name,
+      required String message,
+      required String email,
+      required String title,
+      }) async {
+    final serviceId = "service_2ithqza";
+    final templateId = "template_70wfxrq";
+    final userId = "lBxWSwKqkpay5kZ7H";
+    final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
+    final response = await http.post(
+      url,
+      headers: {
+        'origin': 'http://localhost',
+        'Content-type': 'application/json',
+      },
+      body: json.encode({
+        'service_id': serviceId,
+        'template_id': templateId,
+        'user_id': userId,
+        'template_params': {
+          'to_name': name,
+          'message': message,
+          'to_email': email,
+          'title':title,
+        }
+      }),
+    );
+    print(response.body);
+  }
+
   //SIGN UP METHOD
   static Future signUp({String? email, String? password}) async {
     try {

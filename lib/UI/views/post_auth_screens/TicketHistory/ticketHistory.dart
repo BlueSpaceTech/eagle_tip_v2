@@ -132,7 +132,7 @@ class _OpenTicketsState extends State<OpenTickets> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("tickets")
-            .where("sites", arrayContains: user.sites)
+            .where("sites", arrayContainsAny: user.sites)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -252,7 +252,7 @@ class _ClosedTicketsState extends State<ClosedTickets> {
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("tickets")
-            .where("sites", arrayContains: user.sites)
+            .where("sites", arrayContainsAny: user.sites)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

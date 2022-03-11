@@ -71,6 +71,8 @@ class _SupportDesktopState extends State<SupportDesktop> {
 
   Future<void> addTicket(context) {
     return tickets.add({
+      "byid": "before",
+      "beforelogin": true,
       "employerCode": EmployerCode,
       "email": email.text,
       "isopen": true,
@@ -85,7 +87,16 @@ class _SupportDesktopState extends State<SupportDesktop> {
       "sites": sites,
       "timestamp": FieldValue.serverTimestamp(),
       // "visibleto": visible(user),
-    });
+    }).then((value) {
+      tickets.doc(value.id).update({
+        "docid": value.id,
+      });
+      tickets.doc(value.id).collection("messages").add({
+        "createdOn": FieldValue.serverTimestamp(),
+        "message": Message,
+        "by": "before",
+      });
+    }).catchError((error) => print("Failed to add ticket: $error"));
   }
 
   CollectionReference tickets =

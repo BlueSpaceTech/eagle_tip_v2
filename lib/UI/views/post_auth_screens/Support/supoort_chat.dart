@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_model.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,9 +13,17 @@ class SupportChatScreenn extends StatefulWidget {
   SupportChatScreenn({
     Key? key,
     required this.docid,
+    required this.title,
+    required this.username,
+    required this.email,
+    required this.isbefore,
   }) : super(key: key);
 
   final DocumentSnapshot docid;
+  final String title;
+  final String username;
+  final String email;
+  final bool isbefore;
 
   @override
   _SupportChatScreennState createState() => _SupportChatScreennState(docid);
@@ -41,6 +50,25 @@ class _SupportChatScreennState extends State<SupportChatScreenn> {
       }).then((value) {
         print("entered in send2");
         _sendcontroller.text = "";
+        widget.isbefore
+            ? AuthFunctions()
+                .sendsuportemail(
+                    name: widget.username,
+                    message: message,
+                    email: widget.email,
+                    title: widget.title)
+                .then((value) {
+                Navigator.pop(context);
+                FirebaseFirestore.instance
+                    .collection("tickets")
+                    .doc(widget.docid.id)
+                    .update({"isopen": false});
+              })
+            : Navigator.pop(context);
+        FirebaseFirestore.instance
+            .collection("tickets")
+            .doc(widget.docid.id)
+            .update({"isopen": false});
       });
     }
   }
@@ -118,7 +146,7 @@ class _SupportChatScreennState extends State<SupportChatScreenn> {
           controller: _sendcontroller,
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            suffixIcon: GestureDetector(
+            suffixIcon: InkWell(
                 onTap: () {
                   sendmessage(_sendcontroller.text);
                 },
