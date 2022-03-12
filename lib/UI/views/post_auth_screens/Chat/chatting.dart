@@ -134,9 +134,12 @@ class _ChatScreennState extends State<ChatScreenn> {
         ),
         child: TextField(
           controller: _sendcontroller,
+          onSubmitted: (value) {
+            sendmessage(_sendcontroller.text);
+          },
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
-            suffixIcon: GestureDetector(
+            suffixIcon: InkWell(
                 onTap: () {
                   sendmessage(_sendcontroller.text);
                 },

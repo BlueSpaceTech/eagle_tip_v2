@@ -15,6 +15,7 @@ import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/password_textfield.dart';
 import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -66,7 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 (_userProvider.getUser.userRole == "TerminalUser" ||
                         _userProvider.getUser.userRole == "TerminalManager")
                     ? TerminalHome()
-                    : WelcomeTour()));
+                    : Responsive.isDesktop(context)
+                        ? HomeScreen()
+                        : BottomNav()));
   }
 
   startTime() async {
@@ -147,11 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   children: [
-                    GestureDetector(
-                        onTap: () {
-                          selectImage();
-                        },
-                        child: Image.asset("assets/Logo 2 1.png")),
+                    Image.asset("assets/Logo 2 1.png"),
                     SizedBox(
                       height: height * 0.06,
                     ),

@@ -280,6 +280,7 @@ class _TicketMessagesState extends State<TicketMessages> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Container(
                 alignment: Alignment.topRight,
@@ -322,6 +323,7 @@ class _TicketMessagesState extends State<TicketMessages> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Container(
                 alignment: Alignment.topRight,

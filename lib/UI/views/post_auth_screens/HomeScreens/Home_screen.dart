@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
@@ -130,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: InkWell(
                                     onTap: () {
                                       Navigator.pushNamed(
-                                          context, AppRoutes.faqTerminal);
+                                          context, AppRoutes.siteScreen);
                                     },
                                     child: SiteContainer(
                                         width: width,

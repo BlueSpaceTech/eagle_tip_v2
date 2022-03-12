@@ -144,6 +144,9 @@ class _SupportChatScreennState extends State<SupportChatScreenn> {
         ),
         child: TextField(
           controller: _sendcontroller,
+          onSubmitted: (value) {
+            sendmessage(_sendcontroller.text);
+          },
           style: TextStyle(color: Colors.white),
           decoration: InputDecoration(
             suffixIcon: InkWell(

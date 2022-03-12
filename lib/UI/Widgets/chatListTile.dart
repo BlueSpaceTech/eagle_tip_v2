@@ -75,15 +75,13 @@ class ChatListTile extends StatelessWidget {
                 }
               });
               if (snapshot.hasData) {
-                return Container(
-                  alignment: Alignment.center,
-                  width: 20,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle, color: Color(0xff5081DB)),
-                  child: Text(
-                    doclist.isEmpty ? "" : doclist.length.toString(),
-                    style:
-                        TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                return Visibility(
+                  visible: doclist.isNotEmpty,
+                  child: Container(
+                    alignment: Alignment.center,
+                    width: 20,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Color(0xff5081DB)),
                   ),
                 );
               }
