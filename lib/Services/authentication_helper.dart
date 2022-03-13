@@ -9,7 +9,7 @@ import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Services/storagemethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testttttt/Models/user.dart' as Model;
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
