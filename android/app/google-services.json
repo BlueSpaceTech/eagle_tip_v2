@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "168073462322-5mv1ivttkfdatec2crbovjgh8d25ifip.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "eagletip.com",
+            "certificate_hash": "37086e4646cc1b9ebb3651675ed05ef60d486285"
+          }
+        },
+        {
           "client_id": "168073462322-ck49csc2qcmdfgl2ouivbk9220pkfrho.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
