@@ -130,6 +130,28 @@ class _UploadImageState extends State<UploadImage> {
     }
   }
 
+  void _subscribetotopic() async {
+    List sites = widget.doc.get("sites");
+    for (int i = 0; i < sites.length; i++) {
+      await _fcm
+          .subscribeToTopic(widget.doc.get("userRole") +
+              sites[i].toString().replaceAll(" ", ""))
+          .then((value) {
+        print("succesfully subscribed");
+      }).catchError((onError) {
+        print(onError);
+      });
+    }
+  }
+
+  void _subscribeAllUsers() async {
+    await _fcm.subscribeToTopic("AllUsers").then((value) {
+      print("succesfully subscribed");
+    }).catchError((onError) {
+      print(onError);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -274,18 +296,8 @@ class _UploadImageState extends State<UploadImage> {
                     GestureDetector(
                       onTap: () async {
                         signupUser(width);
-                        await _fcm
-                            .subscribeToTopic(widget.doc.get("userRole"))
-                            .then((value) {
-                          print("succesfully subscribed");
-                        }).catchError((onError) {
-                          print(onError);
-                        });
-                        await _fcm.subscribeToTopic("AllUsers").then((value) {
-                          print("succesfully subscribed");
-                        }).catchError((onError) {
-                          print(onError);
-                        });
+                        _subscribetotopic();
+                        _subscribeAllUsers();
                       },
                       child: CustomSubmitButton(
                         width: width,

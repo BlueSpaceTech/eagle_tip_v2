@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -12,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_model.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -31,6 +33,7 @@ class _CreateNotificationState extends State<CreateNotification> {
   CollectionReference notifys =
       FirebaseFirestore.instance.collection("notifications");
   List<String> _selectedItems = [];
+  List<String> _selectedItems2 = [];
 
   void _showMultiSelect() async {
     // a list of selectable items
@@ -58,21 +61,14 @@ class _CreateNotificationState extends State<CreateNotification> {
     }
   }
 
-  String dropdownvalue = 'All Users';
-  // Future<void> main() async {
-  //   final cron = Cron();
-  //   cron.schedule(
-  //       Schedule.parse("*/30 * * * * *"), () => {print("Hi every 30 seconds")});
-  // }
-
-  // List of items in our dropdown menu
-  var items = [
-    'All Users',
-    'Managers',
-    'Site Users',
-    'Site Owners',
-    'Item 5',
-  ];
+  FToast? fToast;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
 
   String? title;
   String? link;
@@ -80,6 +76,29 @@ class _CreateNotificationState extends State<CreateNotification> {
   TimeOfDay selectedTime = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
+
+    void _showSiteSelect() async {
+      final List _items = user.sites;
+      for (var element in _items) {
+        element = element.toString().replaceAll(" ", "");
+      }
+
+      final List<String>? results = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SiteSelect(items: _items);
+        },
+      );
+
+      // Update UI
+      if (results != null) {
+        setState(() {
+          _selectedItems2 = results;
+        });
+      }
+    }
+
     _selectTime(BuildContext context) async {
       final TimeOfDay? timeOfDay = await showTimePicker(
         context: context,
@@ -91,21 +110,6 @@ class _CreateNotificationState extends State<CreateNotification> {
           selectedTime = timeOfDay;
         });
       }
-    }
-
-    model.User user = Provider.of<UserProvider>(context).getUser;
-    Future<void> writeMessage(String message) async {
-      HttpsCallable callable =
-          FirebaseFunctions.instance.httpsCallable('setdocument');
-      final resp = await callable.call(<String, dynamic>{
-        'role': user.userRole,
-        "visibleto": _selectedItems,
-        "title": title,
-        "sites": user.sites,
-        "description": description,
-        "timenow": "DateTime.now()",
-      });
-      print("result: ${resp.data}");
     }
 
     double height = MediaQuery.of(context).size.height;
@@ -192,21 +196,91 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     fontWeight: FontWeight.w500),
                               ),
                               Expanded(
-                                child: TextButton(
-                                  child: Text(
-                                    'Select Your Audience',
-                                    style: TextStyle(
-                                      color: Color(0xFF6E7191),
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      child: Text(
+                                        'Select Your Audience',
+                                        style: TextStyle(
+                                          color: Color(0xFF6E7191),
+                                        ),
+                                      ),
+                                      onPressed: _showMultiSelect,
                                     ),
-                                  ),
-                                  onPressed: _showMultiSelect,
+                                    Row(
+                                      children: [
+                                        for (var name in _selectedItems)
+                                          Text(
+                                            name + " ",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: height * 0.03,
+                          height: height * 0.01,
+                        ),
+                        Container(
+                          width: width * 0.42,
+                          padding: EdgeInsets.only(
+                              top: 10.0,
+                              left: width * 0.01,
+                              right: width * 0.02),
+                          height: height * 0.09,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Sites",
+                                style: TextStyle(
+                                    color: Color(0xff6e7191),
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    TextButton(
+                                      child: Text(
+                                        'Select Sites',
+                                        style: TextStyle(
+                                          color: Color(0xFF6E7191),
+                                        ),
+                                      ),
+                                      onPressed: _showSiteSelect,
+                                    ),
+                                    Row(
+                                      children: [
+                                        for (var name in _selectedItems2)
+                                          Text(
+                                            name + " ",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w500),
+                                          )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: height * 0.01,
                         ),
                         Container(
                           width: width * 0.42,
@@ -268,6 +342,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                       setState(() {
                                         scheduledDate = date;
                                       });
+                                      // print();
                                       print(scheduledDate);
 
                                       print('confirm $date');
@@ -365,34 +440,31 @@ class _CreateNotificationState extends State<CreateNotification> {
                             ),
                             InkWell(
                               onTap: () async {
-                                print(scheduledDate);
-                                // if (description != null ||
-                                //     title != null ||
-                                //     link != null ||
-                                //     _selectedItems.isNotEmpty) {
-                                //   notifys.doc().set({
-                                //     "description": description,
-                                //     "title": title,
-                                //     "createdBy": user.employerCode,
-                                //     "hyperLink": link,
-                                //     "visibleto": _selectedItems,
-                                //     "scheduledDateTime": scheduledDate,
-                                //   }).catchError((onError) {
-                                //     print(onError);
-                                //   });
-                                // }
-                                writeMessage("message");
-                                // HttpsCallable callable = FirebaseFunctions
-                                //     .instance
-                                //     .httpsCallable('setdocument');
-                                // await callable.call(<String, dynamic>{
-                                //   'time': "15 1 6 3 *",
-                                //   'title': title,
-                                //   'description': description,
-                                //   'visibleto': _selectedItems,
-                                //   'role': user.userRole,
-                                //   'timenow': DateTime.now(),
-                                // });
+                                if (description != null ||
+                                    title != null ||
+                                    link != null ||
+                                    _selectedItems.isNotEmpty) {
+                                  notifys.doc().set({
+                                    "description": description,
+                                    "title": title,
+                                    "createdBy": user.employerCode,
+                                    "hyperLink": link,
+                                    "sites": _selectedItems2,
+                                    "visibleto": _selectedItems,
+                                    "scheduledTime": scheduledDate,
+                                    "sites": user.sites,
+                                    "isNew": true,
+                                  }).catchError((onError) {
+                                    print(onError);
+                                  });
+                                  fToast!.showToast(
+                                    child: ToastMessage().show(width, context,
+                                        "Notification Scheduled"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3),
+                                  );
+                                  Navigator.pop(context);
+                                }
                               },
                               child: Container(
                                 width: width * 0.08,
@@ -420,7 +492,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                   ),
                   width: width,
                   topPad: 10.0,
-                  height: height * 1.02,
+                  height: height * 1.1,
                 ),
               ],
             ),
@@ -474,7 +546,7 @@ class _MultiSelectState extends State<MultiSelect> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Select Topics'),
+      title: const Text('Select Audience'),
       content: SingleChildScrollView(
         child: ListBody(
           children: widget.items
@@ -493,7 +565,77 @@ class _MultiSelectState extends State<MultiSelect> {
           onPressed: _cancel,
         ),
         ElevatedButton(
-          child: const Text('Submit'),
+          child: const Text('Ok'),
+          style: ElevatedButton.styleFrom(
+            primary: Color(0Xff5081db),
+          ),
+          onPressed: _submit,
+        ),
+      ],
+    );
+  }
+}
+
+class SiteSelect extends StatefulWidget {
+  final List<dynamic> items;
+  const SiteSelect({Key? key, required this.items}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SiteSelectState();
+}
+
+class _SiteSelectState extends State<SiteSelect> {
+  // this variable holds the selected items
+  final List<String> _selectedItems = [];
+
+// This function is triggered when a checkbox is checked or unchecked
+
+  void _itemChange(String itemValue, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        _selectedItems.add(itemValue.toString().replaceAll(" ", ""));
+        print(itemValue);
+      } else {
+        _selectedItems.remove(itemValue.toString().replaceAll(" ", ""));
+      }
+    });
+  }
+
+  // this function is called when the Cancel button is pressed
+  void _cancel() {
+    Navigator.pop(context);
+  }
+
+// this function is called when the Submit button is tapped
+  void _submit() {
+    print(_selectedItems);
+    Navigator.pop(context, _selectedItems);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select Sites'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: widget.items
+              .map((item) => CheckboxListTile(
+                    value: _selectedItems
+                        .contains(item.toString().replaceAll(" ", "")),
+                    title: Text(item),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (isChecked) => _itemChange(item, isChecked!),
+                  ))
+              .toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: _cancel,
+        ),
+        ElevatedButton(
+          child: const Text('Ok'),
           style: ElevatedButton.styleFrom(
             primary: Color(0Xff5081db),
           ),

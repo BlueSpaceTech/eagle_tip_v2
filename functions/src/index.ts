@@ -8,7 +8,22 @@ const fcm =admin.messaging();
 
 
 
-export const sendToCondition =functions.firestore.document('/notifications/{notificaitonId}').onCreate(async snapshot=>{
+export const schedfunc=functions.pubsub.schedule("* * * * *").onRun(async (context)=>{
+    const query =await db.collection("notifications").where('scheduledTime','<=',admin.firestore.Timestamp.now()).get();
+    const documents=query.docs;
+    documents.forEach((element)=>{
+        db.collection("pushNotifications").doc().set(element.data());
+        db.collection("notifications").doc(element.id).delete();
+    })
+    console.log(admin.firestore.Timestamp.now());
+    console.log("document added");
+    
+}
+    
+);
+
+
+export const sendToCondition =functions.firestore.document('/pushNotifications/{notificaitonId}').onCreate(async snapshot=>{
         const notify=snapshot.data();
         const payload: admin.messaging.MessagingPayload={
             notification:{
@@ -21,10 +36,22 @@ export const sendToCondition =functions.firestore.document('/notifications/{noti
         function returnTopic(){
             let topicname:string="";
             for(let i=0;i<notify.visibleto.length;i++){
-                if(notify.visibleto[i]==notify.visibleto[notify.visibleto.length-1]){
-                    topicname+="'"+`${notify.visibleto[i]}`+"'"+" in topics";
+                if(notify.sites.length==0){
+                    if(notify.visibleto[i]==notify.visibleto[notify.visibleto.length-1]){
+                        topicname+="'"+`${notify.visibleto[i]}`+"'"+" in topics";
+                    }else{
+                        topicname+="'"+`${notify.visibleto[i]}`+"'"+" in topics || ";
+                    }
+    
+    
                 }else{
-                    topicname+="'"+`${notify.visibleto[i]}`+"'"+" in topics || ";
+                    for(let j=0;notify.sites.length;j++){
+                        if((i==notify.visibleto.length-1)&&(j==notify.sites.length-1)){
+                            topicname+="'"+`${notify.visibleto[i]}`+`${notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics";
+                        }else{
+                            topicname+="'"+`${notify.visibleto[i]}`+`${notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics || ";
+                        }
+                    }
                 }
             }
             return topicname;
@@ -37,20 +64,6 @@ export const sendToCondition =functions.firestore.document('/notifications/{noti
     });
 
 
-exports.setdocument=functions.region("us-central1").https.onCall(async (data,context)=>{
-        return functions.pubsub.schedule("every 2 minutes").onRun( async (context)=>
-        console.log("tesy")
-        // await db.doc("/notifications/{notificaitonId}").set({
-        //     "title":data.title,
-        //     "sites":data.sites,
-        //     "description":data.description,
-        //     "visibleto":data.visibleto,
-        //     "createdby":data.role,
-        //     "scheduledDateandTime":data.timenow,
-        // })
-        );
-                        
-                    
-            });
-exports.schedulefunc=functions.pubsub.schedule("every 1 minutes").onRun((context)=>
-console.log("Test"));
+
+
+

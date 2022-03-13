@@ -119,7 +119,7 @@ class _NavbarState extends State<Navbar> {
                                 },
                                 child: StreamBuilder(
                                     stream: FirebaseFirestore.instance
-                                        .collection("notifications")
+                                        .collection("pushNotifications")
                                         .where("isNew", isEqualTo: true)
                                         .snapshots(),
                                     builder: (context,

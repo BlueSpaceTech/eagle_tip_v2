@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:html';
+// import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -211,7 +211,7 @@ class _NotificationsState extends State<Notifications> {
                                     width: width * 0.5,
                                     child: StreamBuilder(
                                         stream: FirebaseFirestore.instance
-                                            .collection("notifications")
+                                            .collection("pushNotifications")
                                             .where("visibleto",
                                                 arrayContainsAny: [
                                               user.userRole
@@ -259,7 +259,7 @@ class _NotificationsState extends State<Notifications> {
                                                         FirebaseFirestore
                                                             .instance
                                                             .collection(
-                                                                "notifications")
+                                                                "pushNotifications")
                                                             .doc(document.id)
                                                             .update(
                                                                 {"isNew": val});
