@@ -60,7 +60,7 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
     } catch (err) {
       res = err.toString();
       fToast!.showToast(
-          child: ToastMessage().show(width, context, "error"),
+          child: ToastMessage().show(width, context, res),
           gravity: ToastGravity.BOTTOM,
           toastDuration: Duration(seconds: 3));
     }
@@ -75,11 +75,11 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
     registerUser(widget.phone, context);
   }
 
+  String? pinn;
+
   String? verificationId;
-
+  FirebaseAuth _auth = FirebaseAuth.instance;
   Future registerUser(String mobile, BuildContext context) async {
-    FirebaseAuth _auth = FirebaseAuth.instance;
-
     await _auth.verifyPhoneNumber(
         phoneNumber: "+1 ${mobile}",
         timeout: Duration(seconds: 120),
@@ -91,8 +91,9 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
               ));
         },
         verificationFailed: (authException) {
+          print(authException.toString());
           fToast!.showToast(
-              child: ToastMessage().show(200, context, "error"),
+              child: ToastMessage().show(200, context, "eroorrr"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
         },
@@ -210,29 +211,10 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
                               OtpFieldStyle(backgroundColor: Colors.white),
                           onCompleted: (pin) {
                             print("Completed: " + pin);
-                            FirebaseAuth auth = FirebaseAuth.instance;
-                            //OtpFucnctions().authenticateMe(confirmationResult, _otp)
-
-                            auth
-                                .signInWithCredential(
-                                    PhoneAuthProvider.credential(
-                                        verificationId: verificationId!,
-                                        smsCode: pin))
-                                .then((value) {
-                              value.user!.delete();
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        UploadImage(doc: widget.doc),
-                                  ));
-                            }).catchError((e) {
-                              fToast!.showToast(
-                                  child: ToastMessage().show(
-                                      width, context, "There's some error"),
-                                  gravity: ToastGravity.BOTTOM,
-                                  toastDuration: Duration(seconds: 3));
+                            setState(() {
+                              pinn = pin;
                             });
+                            //OtpFucnctions().authenticateMe(confirmationResult, _otp)
                           },
                         ),
                       ],
@@ -242,15 +224,33 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        // signIn(_otp.toString(), width);
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => UploadImage(
-                                doc: widget.doc,
-                              ),
-                            ));
+                        //    signIn(_otp.toString(), width);
+                        _auth
+                            .signInWithCredential(PhoneAuthProvider.credential(
+                                verificationId: verificationId!,
+                                smsCode: pinn!))
+                            .then((value) {
+                          value.user!.delete();
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    UploadImage(doc: widget.doc),
+                              ));
+                        }).catchError((e) {
+                          fToast!.showToast(
+                              child: ToastMessage()
+                                  .show(width, context, "There's some error"),
+                              gravity: ToastGravity.BOTTOM,
+                              toastDuration: Duration(seconds: 3));
+                        });
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => UploadImage(
+                        //         doc: widget.doc,
+                        //       ),
+                        //     ));
                       },
                       child: CustomSubmitButton(
                         width: width,
