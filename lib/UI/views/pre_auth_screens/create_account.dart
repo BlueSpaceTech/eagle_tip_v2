@@ -14,7 +14,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_sms/flutter_sms.dart';
+
 import 'package:flutter/foundation.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -36,13 +36,6 @@ class _CreateAccountState extends State<CreateAccount> {
   String? verifiyme;
   String? phoneNumber, verificationId;
   String? otp, authStatus = "";
-  void _sendSMS(String message, List<String> recipents) async {
-    String _result = await sendSMS(message: message, recipients: recipents)
-        .catchError((onError) {
-      print(onError);
-    });
-    print(_result);
-  }
 
   @override
   void initState() {
