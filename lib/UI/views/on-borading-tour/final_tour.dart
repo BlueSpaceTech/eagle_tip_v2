@@ -26,7 +26,7 @@ class FinalTour extends StatelessWidget {
           children: [
             Positioned(
               top: height * 0.12,
-              left: width * 0.05,
+              right: width * 0.02,
               child: TourUpContainer(
                 onnext: () {
                   Navigator.pushReplacement(context,

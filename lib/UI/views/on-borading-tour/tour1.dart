@@ -23,8 +23,8 @@ class Tour1 extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top: height * 0.58,
-              left: Responsive.isDesktop(context) ? width * 0.3 : width * 0.05,
+              top: height * 0.56,
+              left: Responsive.isDesktop(context) ? width * 0.35 : width * 0.14,
               child: TourUpContainer(
                 onnext: () {
                   Navigator.pushNamed(context, AppRoutes.tour2);
@@ -63,12 +63,21 @@ class TourUpContainer extends StatelessWidget {
   final double distance;
   final String containertype;
   final Function onnext;
+  getbottompadding(BuildContext context) {
+    if (containertype == "down" && Responsive.isDesktop(context)) {
+      return 40;
+    } else if (containertype == "down" && !Responsive.isDesktop(context)) {
+      return 20;
+    } else {
+      return 0;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: pageno == "5" ? height * 0.21 : height * 0.19,
-      width: Responsive.isDesktop(context) ? width * 0.4 : width * 0.9,
+      width: Responsive.isDesktop(context) ? 430 : 350,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(Responsive.isDesktop(context)
@@ -78,11 +87,16 @@ class TourUpContainer extends StatelessWidget {
       ),
       child: Container(
         alignment: Alignment.center,
-        padding: EdgeInsets.symmetric(
-            horizontal: containertype == "down" && Responsive.isDesktop(context)
-                ? width * 0.1
-                : width * 0.08),
+        padding: EdgeInsets.only(
+            left: containertype == "down" && Responsive.isDesktop(context)
+                ? 60
+                : 45,
+            right: containertype == "down" && Responsive.isDesktop(context)
+                ? 60
+                : 45,
+            bottom: getbottompadding(context)),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
                 height:

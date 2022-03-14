@@ -24,9 +24,8 @@ class Tour3 extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              top:
-                  Responsive.isDesktop(context) ? height * 0.55 : height * 0.48,
-              left: Responsive.isDesktop(context) ? width * 0.3 : width * 0.05,
+              top: Responsive.isDesktop(context) ? height * 0.58 : height * 0.5,
+              left: Responsive.isDesktop(context) ? width * 0.35 : width * 0.14,
               child: TourUpContainer(
                 onnext: () {
                   Navigator.pushNamed(context, AppRoutes.tour4);

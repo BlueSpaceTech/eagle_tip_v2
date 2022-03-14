@@ -138,95 +138,108 @@ class _OpenTicketsState extends State<OpenTickets> {
           if (snapshot.hasError) {
             return Text("Something Went wrong");
           }
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text(
+                "nO TICKET AVAIBLE ",
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Text("Loading");
           }
-          return ListView.builder(
-            itemCount: snapshot.data?.docs.length.toInt(),
-            itemBuilder: (BuildContext context, int index) {
-              final document = snapshot.data?.docs[index];
+          if (snapshot.hasData) {
+            return ListView.builder(
+              itemCount: snapshot.data?.docs.length.toInt(),
+              itemBuilder: (BuildContext context, int index) {
+                final document = snapshot.data?.docs[index];
 
-              List docSiteslen = document!["sites"];
+                List docSiteslen = document!["sites"];
 
-              if (document["isopen"]) {
-                if (document["employerCode"] == user.employerCode ||
-                    document["visibleto"] == user.userRole) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => TicketDetail(
-                                  doc: document,
-                                  ticketTitle: document["messages"][0]["title"],
-                                  status:
-                                      document["isopen"] ? "Open" : "Closed",
-                                  siteName: document["sites"][0],
-                                  ticketMessage: document["messages"][0]
-                                      ["description"],
-                                  userName: document["name"],
-                                  date: DateFormat('dd/MM/yyyy')
-                                      .format(DateTime.parse(
-                                          document["timestamp"]
-                                              .toDate()
-                                              .toString()))
-                                      .toString())));
-                    },
-                    child: Container(
-                      width: widget.width * 0.8,
-                      height: widget.height * 0.065,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: widget.width * 0.05,
-                            right: widget.width * 0.05,
-                            top: widget.height * 0.02),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              height: widget.height * 0.06,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    document["messages"][0]["title"].toString(),
-                                    style: TextStyle(
-                                        fontSize: 13.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                  Text(
-                                    DateFormat('dd/MM/yyyy')
+                if (document["isopen"]) {
+                  if (document["employerCode"] == user.employerCode ||
+                      document["visibleto"] == user.userRole) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TicketDetail(
+                                    doc: document,
+                                    ticketTitle: document["messages"][0]
+                                        ["title"],
+                                    status:
+                                        document["isopen"] ? "Open" : "Closed",
+                                    siteName: document["sites"][0],
+                                    ticketMessage: document["messages"][0]
+                                        ["description"],
+                                    userName: document["name"],
+                                    date: DateFormat('dd/MM/yyyy')
                                         .format(DateTime.parse(
                                             document["timestamp"]
                                                 .toDate()
                                                 .toString()))
-                                        .toString(),
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ],
+                                        .toString())));
+                      },
+                      child: Container(
+                        width: widget.width * 0.8,
+                        height: widget.height * 0.065,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: widget.width * 0.05,
+                              right: widget.width * 0.05,
+                              top: widget.height * 0.02),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                height: widget.height * 0.06,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      document["messages"][0]["title"]
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 13.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                    Text(
+                                      DateFormat('dd/MM/yyyy')
+                                          .format(DateTime.parse(
+                                              document["timestamp"]
+                                                  .toDate()
+                                                  .toString()))
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 17.0,
-                              color: Colors.white,
-                            ),
-                          ],
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 17.0,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 }
-              }
-              return SizedBox();
-            },
-          );
+                return SizedBox();
+              },
+            );
+          }
+          return Center(child: Text("Not avaible"));
         });
   }
 }

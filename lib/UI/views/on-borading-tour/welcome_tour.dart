@@ -10,123 +10,120 @@ class WelcomeTour extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
-        height: height * 1,
-        width: width * 1,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(Responsive.isDesktop(context)
-                  ? "assets/tour0web.png"
-                  : "assets/tour0.png"),
-              fit: BoxFit.fill),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  height: height * 0.3,
-                  width:
-                      Responsive.isDesktop(context) ? width * 0.4 : width * 0.8,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
+        body: Container(
+            height: height * 1,
+            width: width * 1,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(Responsive.isDesktop(context)
+                      ? "assets/tour0web.png"
+                      : "assets/tour0.png"),
+                  fit: BoxFit.fill),
+            ),
+            child: Stack(children: [
+              Positioned(
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage("assets/welcome1.png"),
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        "assets/containertop.png",
-                      ),
-                      SizedBox(
-                        height: height * 0.02,
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Welcome Ben!",
-                              style: TextStyle(
-                                fontSize: 19,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.01,
-                            ),
-                            Text(
-                              "We would like to give you tour of the Eagle Tip app.",
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.03,
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, AppRoutes.tour1);
-                              },
-                              child: Container(
-                                height: height * 0.06,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Color(0xff5081DB),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                child: Text(
-                                  "Start Tour",
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.isDesktop(context) ? 0 : 40),
+                      width: 400,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: height * 0.4,
+                          ),
+                          Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.05),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Welcome Ben!",
                                   style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
+                                    fontSize: 19,
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.015,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Text(
+                                  "We would like to give you tour of the Eagle Tip app.",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "Poppins",
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.03,
+                                ),
                                 GestureDetector(
                                   onTap: () {
-                                    Responsive.isDesktop(context)
-                                        ? Navigator.pushNamed(
-                                            context, AppRoutes.webfinaltour)
-                                        : Navigator.pushNamed(
-                                            context, AppRoutes.finaltour);
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.tour1);
                                   },
-                                  child: Text(
-                                    "I’ll explore on my own",
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
+                                  child: Container(
+                                    height: height * 0.06,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff5081DB),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    child: Text(
+                                      "Start Tour",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
                                         fontFamily: "Poppins",
-                                        color: Color(0xffED5C62)),
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
                                   ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.015,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Responsive.isDesktop(context)
+                                            ? Navigator.pushNamed(
+                                                context, AppRoutes.webfinaltour)
+                                            : Navigator.pushNamed(
+                                                context, AppRoutes.finaltour);
+                                      },
+                                      child: Text(
+                                        "I’ll explore on my own",
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            fontFamily: "Poppins",
+                                            color: Color(0xffED5C62)),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ])));
   }
 }
