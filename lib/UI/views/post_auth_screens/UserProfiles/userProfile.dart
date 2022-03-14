@@ -39,12 +39,14 @@ class UserProfile extends StatelessWidget {
             context,
             CupertinoPageRoute(
                 builder: (context) => MessageMain(
-                      photourlfriend: photoUrlfriend,
-                      photourluser: photourluser,
-                      index: 0,
-                      frienduid: uid,
-                      friendname: name,
-                      currentusername: currentusername,
+                      Chatscreen: ChatScreenn(
+                        photourlfriend: photoUrlfriend,
+                        photourluser: photourluser,
+                        index: 0,
+                        frienduid: uid,
+                        friendname: name,
+                        currentusername: currentusername,
+                      ),
                     )))
         : Navigator.push(
             context,

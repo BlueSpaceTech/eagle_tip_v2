@@ -8,43 +8,29 @@ import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
 
-class ChatScreenn extends StatefulWidget {
-  ChatScreenn({
+class WebChatScreenn extends StatefulWidget {
+  WebChatScreenn({
     Key? key,
-    required this.index,
-    required this.frienduid,
-    required this.friendname,
-    required this.currentusername,
-    required this.photourluser,
-    required this.photourlfriend,
-  
+   required this.chatId,
+   required this.photourlfriend,
+   required this.friendname,
+
   }) : super(key: key);
-  int index;
-  final frienduid;
-  final friendname;
-  final currentusername;
-  final photourluser;
-  final photourlfriend;
-  
+  String chatId;
+  String photourlfriend;
+  String friendname;
+
   @override
-  _ChatScreennState createState() => _ChatScreennState(
-      frienduid, friendname, currentusername, photourluser, photourlfriend);
+  _WebChatScreennState createState() => _WebChatScreennState(
+     );
 }
 
-class _ChatScreennState extends State<ChatScreenn> {
-  final frienduid;
-  final friendname;
-  final currentusername;
-  final photourluser;
-  final photourlfriend;
+class _WebChatScreennState extends State<WebChatScreenn> {
+ 
   final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _sendcontroller = new TextEditingController();
-  _ChatScreennState(
-    this.frienduid,
-    this.friendname,
-    this.currentusername,
-    this.photourluser,
-    this.photourlfriend,
+  _WebChatScreennState(
+   
   );
   CollectionReference chat = FirebaseFirestore.instance.collection("chats");
   void sendmessage(String message) {
@@ -53,7 +39,7 @@ class _ChatScreennState extends State<ChatScreenn> {
       return;
     } else {
       print("entered in send1");
-      chat.doc(chatDocId).collection("messages").add({
+      chat.doc(widget.chatId).collection("messages").add({
         "createdOn": FieldValue.serverTimestamp(),
         "uid": currentUserUID,
         "message": message,
@@ -123,7 +109,7 @@ class _ChatScreennState extends State<ChatScreenn> {
 
   _sendMessageArea(double height, double width) {
     return Visibility(
-      visible: friendname != "Start chat by clicking on user",
+      visible: true,
       child: Container(
         margin: EdgeInsets.only(bottom: 5, left: 5, right: 5),
         padding: EdgeInsets.only(left: 15, right: 10),
@@ -157,39 +143,8 @@ class _ChatScreennState extends State<ChatScreenn> {
   }
 
   Stream<QuerySnapshot>? _stream;
-  var chatDocId;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    print("initated");
-    
-    chat
-        .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
-        .limit(1)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-          if (querySnapshot.docs.isNotEmpty) {
-            setState(() {
-              chatDocId = querySnapshot.docs.single.id;
-            });
-          } else {
-            chat.add({
-              'users': {frienduid: null, currentUserUID: null},
-              "between": [frienduid, currentUserUID],
-              "user1": friendname,
-              "user2": currentusername,
-              "uid1": currentUserUID,
-              "uid2": frienduid,
-              "photo1": photourluser,
-              "photo2": photourlfriend,
-            }).then((value) => {chatDocId = value.id});
-          }
-        })
-        .catchError((err) {});
-    // _stream = getchats();
-    print("finish");
-  }
+  //var chatDocId;
+
 
 /*
   getchats() async {
@@ -205,29 +160,7 @@ class _ChatScreennState extends State<ChatScreenn> {
 
   @override
   Widget build(BuildContext context) {
-    chat
-        .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
-        .limit(1)
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-          if (querySnapshot.docs.isNotEmpty) {
-            setState(() {
-              chatDocId = querySnapshot.docs.single.id;
-            });
-          } else {
-            chat.add({
-              'users': {frienduid: null, currentUserUID: null},
-              "between": [frienduid, currentUserUID],
-              "user1": friendname,
-              "user2": currentusername,
-              "uid1": currentUserUID,
-              "uid2": frienduid,
-              "photo1": photourluser,
-              "photo2": photourlfriend,
-            }).then((value) => {chatDocId = value.id});
-          }
-        })
-        .catchError((err) {});
+   
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     int prevUserId;
@@ -270,7 +203,7 @@ class _ChatScreennState extends State<ChatScreenn> {
                       children: [
                         Visibility(
                           visible:
-                              friendname != "Start chat by clicking on user",
+                              true,
                           child: CircleAvatar(
                             radius: 20,
                             backgroundImage:
@@ -281,7 +214,7 @@ class _ChatScreennState extends State<ChatScreenn> {
                           width: 10,
                         ),
                         Text(
-                          friendname,
+                          widget.friendname,
                           style: TextStyle(
                               fontSize: 16,
                               color: Colors.white,
@@ -301,7 +234,7 @@ class _ChatScreennState extends State<ChatScreenn> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("chats")
-              .doc(chatDocId)
+              .doc(widget.chatId)
               .collection("messages")
               .orderBy("createdOn", descending: true)
               .snapshots(),

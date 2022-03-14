@@ -67,12 +67,20 @@ class _AllChatScreenState extends State<AllChatScreen> {
             context,
             CupertinoPageRoute(
                 builder: (context) => MessageMain(
-                      photourlfriend: photoUrlfriend,
-                      photourluser: photourluser,
-                      index: 0,
-                      frienduid: uid,
-                      friendname: name,
-                      currentusername: currentusername,
+                      // photourlfriend: photoUrlfriend,
+                      // photourluser: photourluser,
+                      // index: 0,
+                      // frienduid: uid,
+                      // friendname: name,
+                      // currentusername: currentusername,
+                      Chatscreen: ChatScreenn(
+                        photourlfriend: photoUrlfriend,
+                        photourluser: photourluser,
+                        index: 0,
+                        frienduid: uid,
+                        friendname: name,
+                        currentusername: currentusername,
+                      ),
                     )))
         : Navigator.push(
             context,

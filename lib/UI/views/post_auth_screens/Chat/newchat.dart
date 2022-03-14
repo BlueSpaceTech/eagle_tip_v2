@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:http/http.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/chatListTile.dart';
@@ -7,6 +8,7 @@ import 'package:testttttt/UI/Widgets/newchatListtile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/web_chatting.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,18 +25,25 @@ class NewChatScreen extends StatefulWidget {
 
 class _NewChatScreenState extends State<NewChatScreen> {
   void callChatScreen(String uid, String name, String currentusername,
-      String photoUrlfriend, String photourluser) {
+      String photoUrlfriend, String photourluser) async {
+    String chatId = await getChatId(
+        uid, name, currentusername, photoUrlfriend, photourluser);
     Responsive.isDesktop(context)
         ? Navigator.push(
             context,
             CupertinoPageRoute(
                 builder: (context) => MessageMain(
-                      photourlfriend: photoUrlfriend,
-                      photourluser: photourluser,
-                      index: 0,
-                      frienduid: uid,
-                      friendname: name,
-                      currentusername: currentusername,
+                      // photourlfriend: photoUrlfriend,
+                      // photourluser: photourluser,
+                      // index: 0,
+                      // frienduid: uid,
+                      // friendname: name,
+                      // currentusername: currentusername,
+                      Chatscreen: WebChatScreenn(
+                        photourlfriend: photoUrlfriend,
+                        friendname: name,
+                        chatId: chatId,
+                      ),
                     )))
         : Navigator.push(
             context,
@@ -46,6 +55,37 @@ class _NewChatScreenState extends State<NewChatScreen> {
                     frienduid: uid,
                     friendname: name,
                     currentusername: currentusername)));
+  }
+
+  CollectionReference chat = FirebaseFirestore.instance.collection("chats");
+  final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+  getChatId(String frienduid, String friendname, String currentusername,
+      String photourlfriend, String photourluser) async {
+    var chatDocId;
+    await chat
+        .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            setState(() {
+              chatDocId = querySnapshot.docs.single.id;
+            });
+          } else {
+            chat.add({
+              'users': {frienduid: null, currentUserUID: null},
+              "between": [frienduid, currentUserUID],
+              "user1": friendname,
+              "user2": currentusername,
+              "uid1": currentUserUID,
+              "uid2": frienduid,
+              "photo1": photourluser,
+              "photo2": photourlfriend,
+            }).then((value) => {chatDocId = value.id});
+          }
+        })
+        .catchError((err) {});
+    return chatDocId;
   }
 
   final TextEditingController _SEARCH = new TextEditingController();

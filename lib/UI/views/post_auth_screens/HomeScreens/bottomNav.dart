@@ -3,6 +3,7 @@
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/notifications.dart';
@@ -28,7 +29,14 @@ class _BottomNavState extends State<BottomNav> {
     MyProfile(),
     HomeScreen(),
     Notifications(),
-    MessageMain(
+    //  MessageMain(
+    // photourlfriend: "",
+    // photourluser: "",
+    // currentusername: "s",
+    // friendname: "noname",
+    // frienduid: "no uid",
+    // index: 0,
+    ChatScreenn(
       photourlfriend: "",
       photourluser: "",
       currentusername: "s",
@@ -36,6 +44,7 @@ class _BottomNavState extends State<BottomNav> {
       frienduid: "no uid",
       index: 0,
     ),
+    //  ),
   ];
 
   void _onItemTapped(int index) {
