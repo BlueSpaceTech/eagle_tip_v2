@@ -58,15 +58,6 @@ class Sites extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Image.asset(
-                                      Common.assetImages + "activeHome.png",
-                                      width: width * 0.01,
-                                    ),
-                                  ],
-                                ),
                                 SizedBox(
                                   height: height * 0.05,
                                 ),

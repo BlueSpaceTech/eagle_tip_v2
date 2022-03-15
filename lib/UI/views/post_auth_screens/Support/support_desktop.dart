@@ -342,16 +342,23 @@ class _SupportDesktopState extends State<SupportDesktop> {
                         ),
                         InkWell(
                           onTap: () {
-                            print(sites);
-                            print(userRole);
-                            addTicket(context);
-                            fToast!.showToast(
-                              child: ToastMessage()
-                                  .show(width, context, "Ticket Added"),
-                              gravity: ToastGravity.BOTTOM,
-                              toastDuration: Duration(seconds: 3),
-                            );
-                            Navigator.pop(context);
+                            if (Message != null || Subject != null) {
+                              addTicket(context);
+                              fToast!.showToast(
+                                child: ToastMessage()
+                                    .show(width, context, "Ticket Added"),
+                                gravity: ToastGravity.BOTTOM,
+                                toastDuration: Duration(seconds: 3),
+                              );
+                              Navigator.pop(context);
+                            } else {
+                              fToast!.showToast(
+                                child: ToastMessage().show(width, context,
+                                    "Please enter all detailss"),
+                                gravity: ToastGravity.BOTTOM,
+                                toastDuration: Duration(seconds: 3),
+                              );
+                            }
                           },
                           child: Container(
                             width: Responsive.isDesktop(context)

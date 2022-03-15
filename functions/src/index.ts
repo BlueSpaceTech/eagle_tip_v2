@@ -8,7 +8,7 @@ const fcm =admin.messaging();
 
 
 
-export const schedfunc=functions.pubsub.schedule("* * * * *").onRun(async (context)=>{
+export const schedfunc=functions.pubsub.schedule("every 5 minutes").onRun(async (context)=>{
     const query =await db.collection("notifications").where('scheduledTime','<=',admin.firestore.Timestamp.now()).get();
     const documents=query.docs;
     documents.forEach((element)=>{
@@ -45,11 +45,11 @@ export const sendToCondition =functions.firestore.document('/pushNotifications/{
     
     
                 }else{
-                    for(let j=0;notify.sites.length;j++){
+                    for(let j=0;j<notify.sites.length;j++){
                         if((i==notify.visibleto.length-1)&&(j==notify.sites.length-1)){
-                            topicname+="'"+`${notify.visibleto[i]}`+`${notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics";
+                            topicname+="'"+`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics";
                         }else{
-                            topicname+="'"+`${notify.visibleto[i]}`+`${notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics || ";
+                            topicname+="'"+`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics || ";
                         }
                     }
                 }

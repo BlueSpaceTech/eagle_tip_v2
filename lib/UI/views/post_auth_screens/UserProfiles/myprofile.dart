@@ -735,23 +735,24 @@ class DetailsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Responsive.isDesktop(context)
         ? Container(
-            width: width * 0.143,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Image.asset(
-                    Common.assetImages + "$imgpath.png",
-                    width: width * 0.013,
-                  ),
-                  Text(
-                    detail,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "Poppins"),
-                  ),
-                ]),
+            width: width * 0.15,
+            child: Row(children: [
+              Image.asset(
+                Common.assetImages + "$imgpath.png",
+                width: width * 0.013,
+              ),
+              SizedBox(
+                width: width * 0.01,
+              ),
+              Text(
+                detail,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "Poppins"),
+              ),
+            ]),
           )
         : Container(
             height: height * 0.07,

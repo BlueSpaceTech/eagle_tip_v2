@@ -3,6 +3,7 @@
 // import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -12,6 +13,7 @@ import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/particularNotification.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Support/support_desktop.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -174,31 +176,8 @@ class _NotificationsState extends State<Notifications> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Column(
-                                      children: [
-                                        Text(
-                                          "Acres Marathon",
-                                          style: TextStyle(
-                                            fontSize: width * 0.008,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Poppins",
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: height * 0.003,
-                                        ),
-                                        Text(
-                                          "Tampa,FL",
-                                          style: TextStyle(
-                                            fontSize: width * 0.007,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Poppins",
-                                            color: Color(0xFF6E7191),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                    SiteNameAndLocation(
+                                        fontSize: 17.0, fontSize2: 13.0),
                                   ],
                                 ),
                                 SizedBox(
@@ -220,7 +199,14 @@ class _NotificationsState extends State<Notifications> {
                                             AsyncSnapshot<QuerySnapshot>
                                                 snapshot) {
                                           if (!snapshot.hasData) {
-                                            return CircularProgressIndicator();
+                                            return Center(
+                                              child: Text(
+                                                "No tickets to display",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 13.0),
+                                              ),
+                                            );
                                           }
                                           return ListView.builder(
                                               physics:
@@ -255,17 +241,14 @@ class _NotificationsState extends State<Notifications> {
 
                                                 if (visibleTo()!) {
                                                   return Notify(
-                                                      valueChanged: (val) {
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                "pushNotifications")
-                                                            .doc(document.id)
-                                                            .update(
-                                                                {"isNew": val});
-                                                      },
+                                                      docid: document.id,
                                                       width: width,
-                                                      isnew: document["isNew"],
+                                                      newNotify:
+                                                          document["isNew"],
+                                                      userid: FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .uid,
                                                       notifyContent: document[
                                                           "description"],
                                                       // index: index,
@@ -365,15 +348,16 @@ class _NotificationsState extends State<Notifications> {
                                 itemCount: snapshot.data?.docs.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   final document = snapshot.data?.docs[index];
+                                  // List notifs = document!["isNew"];
+
                                   return Notify(
-                                      valueChanged: (val) {
-                                        FirebaseFirestore.instance
-                                            .collection("notifications")
-                                            .doc(document!.id)
-                                            .update({"isNew": val});
-                                      },
                                       width: width,
-                                      isnew: document!["isNew"],
+                                      // isnew: document!["isNew"],
+                                      newNotify: document!["isNew"],
+                                      docid: document.id,
+                                      userid: FirebaseAuth
+                                          .instance.currentUser!.uid
+                                          .toString(),
                                       notifyContent: document["description"],
                                       // index: index,
                                       height: height,
@@ -401,18 +385,23 @@ class Notify extends StatefulWidget {
     required this.notifyContent,
     required this.notifyName,
     // required this.index,
-    required this.isnew,
+    // required this.isnew,
     required this.notifyDate,
-    required this.valueChanged,
+    required this.newNotify,
+    required this.docid,
+    // required this.valueChanged,
+    required this.userid,
   }) : super(key: key);
 
   final double width;
-  final bool isnew;
   final double height;
+  final List newNotify;
+  final String userid;
+  final String docid;
   final String notifyName;
   // final int index;
-  final ValueChanged valueChanged;
   final String notifyDate;
+  // final ValueChanged valueChanged;
   final String notifyContent;
 
   @override
@@ -423,8 +412,17 @@ class _NotifyState extends State<Notify> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () async {
-        final newNotify = await Navigator.push(
+      onTap: () {
+        setState(() {
+          widget.newNotify.add(widget.userid);
+          FirebaseFirestore.instance
+              .collection("pushNotifications")
+              .doc(widget.docid)
+              .update({
+            "isNew": widget.newNotify,
+          });
+        });
+        Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => SpecificNotification(
@@ -432,27 +430,22 @@ class _NotifyState extends State<Notify> {
                 notifyContent: widget.notifyContent),
           ),
         );
-        setState(() {
-          if (newNotify != null) {
-            widget.valueChanged(newNotify);
-          }
-        });
       },
       child: Padding(
         padding: EdgeInsets.only(bottom: 10.0, right: widget.width * 0.06),
-        child: Container(
+        child: SizedBox(
           height: widget.height * 0.06,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
+              SizedBox(
                 width: Responsive.isDesktop(context)
                     ? widget.width * 0.3
                     : widget.width * 0.5,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    widget.isnew
+                    !widget.newNotify.contains(widget.userid)
                         ? Image.asset(
                             Common.assetImages + "Rectangle 522.png",
                             height: Responsive.isDesktop(context)

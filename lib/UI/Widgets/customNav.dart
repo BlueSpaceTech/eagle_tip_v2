@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, await_only_futures
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -120,17 +121,27 @@ class _NavbarState extends State<Navbar> {
                                 child: StreamBuilder(
                                     stream: FirebaseFirestore.instance
                                         .collection("pushNotifications")
-                                        .where("isNew", isEqualTo: true)
+                                        .where("visibleto",
+                                            arrayContainsAny: [user.userRole])
+                                        // .where("isNew", ar: true)
                                         .snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      final documentlen =
-                                          snapshot.data?.docs.length;
+                                      final documents = [];
+                                      final docs = snapshot.data!.docs;
+                                      for (var element in docs) {
+                                        List notify = element["isNew"];
+
+                                        if (!notify.contains(FirebaseAuth
+                                            .instance.currentUser!.uid)) {
+                                          documents.add(element);
+                                        }
+                                      }
                                       return Badge(
                                         showBadge:
-                                            documentlen == 0 ? false : true,
+                                            documents.isEmpty ? false : true,
                                         badgeContent: Text(
-                                          documentlen.toString(),
+                                          documents.length.toString(),
                                           style: TextStyle(color: Colors.white),
                                         ),
                                         child: Navtext(

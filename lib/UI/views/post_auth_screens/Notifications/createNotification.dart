@@ -74,6 +74,7 @@ class _CreateNotificationState extends State<CreateNotification> {
   String? link;
   String? description;
   TimeOfDay selectedTime = TimeOfDay.now();
+  List dates = [];
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -342,10 +343,6 @@ class _CreateNotificationState extends State<CreateNotification> {
                                       setState(() {
                                         scheduledDate = date;
                                       });
-                                      // print();
-                                      print(scheduledDate);
-
-                                      print('confirm $date');
                                     },
                                         currentTime: DateTime.now(),
                                         locale: LocaleType.en);
@@ -406,7 +403,14 @@ class _CreateNotificationState extends State<CreateNotification> {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                DaysRow(width: width),
+                                DaysRow(
+                                    valueChanged: (val) {
+                                      setState(() {
+                                        print(val);
+                                        dates = val;
+                                      });
+                                    },
+                                    width: width),
                               ],
                             ),
                           ],
@@ -452,11 +456,23 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     "sites": _selectedItems2,
                                     "visibleto": _selectedItems,
                                     "scheduledTime": scheduledDate,
-                                    "sites": user.sites,
-                                    "isNew": true,
-                                  }).catchError((onError) {
-                                    print(onError);
+                                    "isNew": [],
                                   });
+                                  print(dates);
+                                  if (dates.isNotEmpty) {
+                                    for (var date in dates) {
+                                      notifys.doc().set({
+                                        "description": description,
+                                        "title": title,
+                                        "createdBy": user.employerCode,
+                                        "hyperLink": link,
+                                        "sites": _selectedItems2,
+                                        "visibleto": _selectedItems,
+                                        "scheduledTime": date,
+                                        "isNew": [],
+                                      });
+                                    }
+                                  }
                                   fToast!.showToast(
                                     child: ToastMessage().show(width, context,
                                         "Notification Scheduled"),
@@ -464,6 +480,13 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     toastDuration: Duration(seconds: 3),
                                   );
                                   Navigator.pop(context);
+                                } else {
+                                  fToast!.showToast(
+                                    child: ToastMessage().show(
+                                        width, context, "There's some error"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3),
+                                  );
                                 }
                               },
                               child: Container(
@@ -526,7 +549,7 @@ class _MultiSelectState extends State<MultiSelect> {
     setState(() {
       if (isSelected) {
         _selectedItems.add(topicConnect[itemValue]!);
-        print(topicConnect[itemValue]);
+        // print(topicConnect[itemValue]);
       } else {
         _selectedItems.remove(topicConnect[itemValue]!);
       }
@@ -594,7 +617,7 @@ class _SiteSelectState extends State<SiteSelect> {
     setState(() {
       if (isSelected) {
         _selectedItems.add(itemValue.toString().replaceAll(" ", ""));
-        print(itemValue);
+        // print(itemValue);
       } else {
         _selectedItems.remove(itemValue.toString().replaceAll(" ", ""));
       }
@@ -608,7 +631,7 @@ class _SiteSelectState extends State<SiteSelect> {
 
 // this function is called when the Submit button is tapped
   void _submit() {
-    print(_selectedItems);
+    // print(_selectedItems);
     Navigator.pop(context, _selectedItems);
   }
 
@@ -646,64 +669,60 @@ class _SiteSelectState extends State<SiteSelect> {
   }
 }
 
-class DaysRow extends StatelessWidget {
-  const DaysRow({
+class DaysRow extends StatefulWidget {
+  DaysRow({
     Key? key,
+    required this.valueChanged,
     required this.width,
   }) : super(key: key);
 
   final double width;
+  final ValueChanged valueChanged;
+
+  @override
+  State<DaysRow> createState() => _DaysRowState();
+}
+
+class _DaysRowState extends State<DaysRow> {
+  List days = ["M", "T", "W", "TH", "F", "S", "SU"];
+
+  // List dates = [];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: width * 0.15,
+    return SizedBox(
+      width: widget.width * 0.15,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Day(
-            width: width,
-            dayname: "S",
-          ),
-          Day(
-            width: width,
-            dayname: "M",
-          ),
-          Day(
-            width: width,
-            dayname: "T",
-          ),
-          Day(
-            width: width,
-            dayname: "W",
-          ),
-          Day(
-            width: width,
-            dayname: "T",
-          ),
-          Day(
-            width: width,
-            dayname: "F",
-          ),
-          Day(
-            width: width,
-            dayname: "S",
-          ),
+          for (var day in days)
+            Day(
+                valueChanged: (val) {
+                  setState(() {
+                    widget.valueChanged(val);
+                  });
+                },
+                width: widget.width,
+                dayname: day)
         ],
       ),
     );
   }
 }
 
+List scheduledDates = [];
+
 class Day extends StatefulWidget {
   Day({
     Key? key,
     required this.width,
     required this.dayname,
+    required this.valueChanged,
   }) : super(key: key);
 
   final double width;
   final String dayname;
+  final ValueChanged valueChanged;
 
   @override
   State<Day> createState() => _DayState();
@@ -711,6 +730,32 @@ class Day extends StatefulWidget {
 
 class _DayState extends State<Day> {
   bool? val1 = false;
+  List days = ["M", "T", "W", "TH", "F", "S", "SU"];
+  Map nextTime = {};
+  DateTime currentTime = DateTime.now();
+  addnextTime() {
+    for (int i = 0; i < days.length; i++) {
+      nextTime[DateFormat('EEEE')
+          .format(currentTime.add(Duration(days: i + 1)))
+          .toString()] = currentTime.add(Duration(days: i + 1));
+    }
+  }
+
+  Map weekDay = {
+    "M": "Monday",
+    "T": "Tuesday",
+    "W": "Wednesday",
+    "TH": "Thursday",
+    "F": "Friday",
+    "S": "Saturday",
+    "SU": "Sunday"
+  };
+
+  @override
+  void initState() {
+    addnextTime();
+    print(nextTime);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -734,6 +779,16 @@ class _DayState extends State<Day> {
               onChanged: (val) {
                 setState(() {
                   val1 = val;
+
+                  if (val!) {
+                    scheduledDates.add(nextTime["${weekDay[widget.dayname]}"]);
+                    print(scheduledDates);
+                  } else {
+                    scheduledDates.remove(nextTime[widget.dayname]);
+                    print(scheduledDates);
+                  }
+                  // print(scheduledDates);
+                  widget.valueChanged(scheduledDates);
                 });
               }),
         )
