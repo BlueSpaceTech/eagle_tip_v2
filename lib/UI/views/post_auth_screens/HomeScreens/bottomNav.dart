@@ -36,14 +36,7 @@ class _BottomNavState extends State<BottomNav> {
     // friendname: "noname",
     // frienduid: "no uid",
     // index: 0,
-    ChatScreenn(
-      photourlfriend: "",
-      photourluser: "",
-      currentusername: "s",
-      friendname: "noname",
-      frienduid: "no uid",
-      index: 0,
-    ),
+    AllChatScreen(),
     //  ),
   ];
 

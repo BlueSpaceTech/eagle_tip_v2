@@ -208,7 +208,7 @@ class AuthFunctions {
     String code = genrateemployercode();
     String res = "Invite Sent Successfully";
     if (name.isNotEmpty || email.isNotEmpty || phonenumber.isNotEmpty) {
-      FirebaseFirestore.instance.collection("users").doc(code).set({
+      FirebaseFirestore.instance.collection("invitations").doc(code).set({
         "name": name,
         "email": email,
         "phonenumber": phonenumber,
@@ -216,8 +216,10 @@ class AuthFunctions {
         "isverified": phoneisverified,
         "sites": sites,
         "employercode": code,
+        "invitedby": FirebaseAuth.instance.currentUser!.uid,
       }).then((value) =>
-          sendemailinvite(name: name, employercode: code, email: email));
+          //sendemailinvite(name: name, employercode: code, email: email)
+          print("doe"));
     }
     return res;
   }
@@ -250,12 +252,12 @@ class AuthFunctions {
     print(response.body);
   }
 
-  Future sendsuportemail(
-      {required String name,
-      required String message,
-      required String email,
-      required String title,
-      }) async {
+  Future sendsuportemail({
+    required String name,
+    required String message,
+    required String email,
+    required String title,
+  }) async {
     final serviceId = "service_2ithqza";
     final templateId = "template_70wfxrq";
     final userId = "lBxWSwKqkpay5kZ7H";
@@ -274,7 +276,7 @@ class AuthFunctions {
           'to_name': name,
           'message': message,
           'to_email': email,
-          'title':title,
+          'title': title,
         }
       }),
     );

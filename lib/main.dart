@@ -111,7 +111,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xff2B343B),
         ),
         //initialRoute: WelcomeTour(),
-        home: WelcomeTour(),
+        home: UserNavigator(),
         routes: {
           AppRoutes.support: (context) => SupportScreen(),
           AppRoutes.addFAQ: (context) => AddFAQ(),

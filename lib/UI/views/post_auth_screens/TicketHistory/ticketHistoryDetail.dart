@@ -190,7 +190,8 @@ class _TicketDetailState extends State<TicketDetail> {
                                       : height * 0.03,
                                 ),
                                 Visibility(
-                                  visible: widget.doc["isopen"],
+                                  visible: widget.doc["isopen"] &&
+                                      widget.doc["visibleto"] == user.userRole,
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(

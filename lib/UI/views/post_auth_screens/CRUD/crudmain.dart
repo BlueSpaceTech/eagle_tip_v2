@@ -74,7 +74,7 @@ class _CrudScreenState extends State<CrudScreen> {
                 ),
               ),
               Text(
-                  "After deleting the user will no longer be able to use the app",
+                  "After deleting the user will no longer be able to login the app",
                   style: TextStyle(
                       fontSize: 14,
                       fontFamily: "Poppins",
@@ -114,6 +114,10 @@ class _CrudScreenState extends State<CrudScreen> {
                   InkWell(
                     onTap: () {
                       Navigator.pop(context);
+                      FirebaseFirestore.instance
+                          .collection("users")
+                          .doc(uid)
+                          .delete();
                     },
                     child: Container(
                       width: Responsive.isDesktop(context)
@@ -305,7 +309,7 @@ class _CrudScreenState extends State<CrudScreen> {
   List _resultList = [];
   TextEditingController _search = TextEditingController();
 
-  getUserdetails(List sites,String uid) async {
+  getUserdetails(List sites, String uid) async {
     var data = await FirebaseFirestore.instance
         .collection("users")
         .where(
@@ -313,7 +317,7 @@ class _CrudScreenState extends State<CrudScreen> {
           isEqualTo: true,
         )
         .where("sites", arrayContainsAny: sites)
-        .where("uid",isNotEqualTo: uid )
+        .where("uid", isNotEqualTo: uid)
         .get();
     setState(() {
       _allResults = data.docs;
@@ -327,7 +331,7 @@ class _CrudScreenState extends State<CrudScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites,user.uid);
+    resultsloaded = getUserdetails(user.sites, user.uid);
   }
 
   _onsearchange() {

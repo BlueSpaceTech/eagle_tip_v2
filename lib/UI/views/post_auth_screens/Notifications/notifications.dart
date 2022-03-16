@@ -229,7 +229,10 @@ class _NotificationsState extends State<Notifications> {
                                                         j++) {
                                                       if (document["sites"]
                                                               [i] ==
-                                                          user.sites[j]) {
+                                                          user.sites[j]
+                                                              .toString()
+                                                              .replaceAll(
+                                                                  " ", "")) {
                                                         return true;
                                                       } else {
                                                         continue;
@@ -334,7 +337,7 @@ class _NotificationsState extends State<Notifications> {
                           Responsive.isDesktop(context) ? width * 0.5 : width,
                       child: StreamBuilder(
                           stream: FirebaseFirestore.instance
-                              .collection("notifications")
+                              .collection("pushNotifications")
                               .where("visibleto", arrayContainsAny: [
                             user.userRole
                           ]).snapshots(),

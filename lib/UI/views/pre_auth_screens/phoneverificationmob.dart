@@ -93,21 +93,22 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
         verificationFailed: (authException) {
           print(authException.toString());
           fToast!.showToast(
-              child: ToastMessage().show(200, context, "eroorrr"),
+              child: ToastMessage().show(200, context, "Verification failed"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
         },
         codeSent: (verificationid, resendingtoken) {
           fToast!.showToast(
-              child: ToastMessage().show(200, context, "Code Sent"),
+              child: ToastMessage()
+                  .show(420, context, "Code Sent to +1 ${mobile}"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
           setState(() {
             verificationId = verificationid;
           });
         },
-        codeAutoRetrievalTimeout: (verificationId) {
-          verificationId = verificationId;
+        codeAutoRetrievalTimeout: (verificationid) {
+          verificationId = verificationid;
           print(verificationId);
           print("Timout");
           fToast!.showToast(

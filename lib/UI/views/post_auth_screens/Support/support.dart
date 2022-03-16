@@ -72,7 +72,6 @@ class _SupportScreenState extends State<SupportScreen> {
       return tickets.add({
         "beforelogin": false,
         "byid": user.uid,
-        "employerCode": user.userRole,
         "email": user.email,
         "isopen": true,
         "messages": [

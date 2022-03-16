@@ -156,7 +156,7 @@ class _OpenTicketsState extends State<OpenTickets> {
               final document = snapshot.data?.docs[index];
 
               if (document!["isopen"]) {
-                if (document["employerCode"] == user.employerCode ||
+                if (document["byid"] == user.uid ||
                     document["visibleto"] == user.userRole) {
                   return InkWell(
                     onTap: () {

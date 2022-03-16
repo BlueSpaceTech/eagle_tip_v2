@@ -129,7 +129,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                       onTap: () {
                         String res = "Data Fetched";
                         DocumentReference dbRef = FirebaseFirestore.instance
-                            .collection('users')
+                            .collection('invitations')
                             .doc(_emoloyercode.text);
 
                         dbRef.get().then((data) {
