@@ -137,6 +137,9 @@ class _NavbarState extends State<Navbar> {
                                           documents.add(element);
                                         }
                                       }
+                                      if (!snapshot.hasData) {
+                                        return SizedBox();
+                                      }
                                       return Badge(
                                         showBadge:
                                             documents.isEmpty ? false : true,

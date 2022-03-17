@@ -90,6 +90,7 @@ class AuthFunctions {
           email: email,
           Phonenumber: phoneno,
           uid: cred.user!.uid,
+          isSubscribed: false,
           sites: Sites,
           employerCode: employercode,
           phoneisverified: isverified,

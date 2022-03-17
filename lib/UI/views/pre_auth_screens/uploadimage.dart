@@ -141,6 +141,9 @@ class _UploadImageState extends State<UploadImage> {
       }).catchError((onError) {
         print(onError);
       });
+      FirebaseFirestore.instance.collection("users").doc(widget.doc.id).update({
+        "isSubscribed": true,
+      });
     }
   }
 

@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -95,6 +97,20 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       addData();
       startTime();
+      // ignore: unrelated_type_equality_checks
+      final doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((value) => value);
+      if (!doc["isSubscribed"]) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          "isSubscribed": true,
+        });
+      }
       /*
       Responsive.isDesktop(context)
           ? Navigator.pushNamed(context, AppRoutes.homeScreen)

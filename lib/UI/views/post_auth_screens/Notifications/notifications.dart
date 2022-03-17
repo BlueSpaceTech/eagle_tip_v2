@@ -201,69 +201,85 @@ class _NotificationsState extends State<Notifications> {
                                           if (!snapshot.hasData) {
                                             return Center(
                                               child: Text(
-                                                "No tickets to display",
+                                                "No Notifications to display",
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 13.0),
                                               ),
                                             );
                                           }
-                                          return ListView.builder(
-                                              physics:
-                                                  NeverScrollableScrollPhysics(),
-                                              itemCount:
-                                                  snapshot.data?.docs.length,
-                                              itemBuilder:
-                                                  (BuildContext context,
-                                                      int index) {
-                                                final document =
-                                                    snapshot.data?.docs[index];
-                                                List docSiteslen =
-                                                    document!["sites"];
-                                                bool? visibleTo() {
-                                                  for (int i = 0;
-                                                      i < docSiteslen.length;
-                                                      i++) {
-                                                    for (int j = 0;
-                                                        j < user.sites.length;
-                                                        j++) {
-                                                      if (document["sites"]
-                                                              [i] ==
-                                                          user.sites[j]
-                                                              .toString()
-                                                              .replaceAll(
-                                                                  " ", "")) {
-                                                        return true;
-                                                      } else {
-                                                        continue;
+                                          return snapshot.data?.docs.length
+                                                      .toInt() ==
+                                                  0
+                                              ? Center(
+                                                  child: Text(
+                                                  "No Notifications to display",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 13.0),
+                                                ))
+                                              : ListView.builder(
+                                                  physics:
+                                                      NeverScrollableScrollPhysics(),
+                                                  itemCount: snapshot
+                                                      .data?.docs.length,
+                                                  itemBuilder:
+                                                      (BuildContext context,
+                                                          int index) {
+                                                    final document = snapshot
+                                                        .data?.docs[index];
+                                                    List docSiteslen =
+                                                        document!["sites"];
+                                                    bool? visibleTo() {
+                                                      for (int i = 0;
+                                                          i <
+                                                              docSiteslen
+                                                                  .length;
+                                                          i++) {
+                                                        for (int j = 0;
+                                                            j <
+                                                                user.sites
+                                                                    .length;
+                                                            j++) {
+                                                          if (document["sites"]
+                                                                  [i] ==
+                                                              user.sites[j]
+                                                                  .toString()
+                                                                  .replaceAll(
+                                                                      " ",
+                                                                      "")) {
+                                                            return true;
+                                                          } else {
+                                                            continue;
+                                                          }
+                                                        }
                                                       }
+                                                      return false;
                                                     }
-                                                  }
-                                                  return false;
-                                                }
 
-                                                if (visibleTo()!) {
-                                                  return Notify(
-                                                      docid: document.id,
-                                                      width: width,
-                                                      newNotify:
-                                                          document["isNew"],
-                                                      userid: FirebaseAuth
-                                                          .instance
-                                                          .currentUser!
-                                                          .uid,
-                                                      notifyContent: document[
-                                                          "description"],
-                                                      // index: index,
-                                                      height: height,
-                                                      notifyName:
-                                                          document["title"],
-                                                      notifyDate: document[
-                                                          "description"]);
-                                                } else {
-                                                  return Text("");
-                                                }
-                                              });
+                                                    if (visibleTo()!) {
+                                                      return Notify(
+                                                          docid: document.id,
+                                                          width: width,
+                                                          newNotify:
+                                                              document["isNew"],
+                                                          userid: FirebaseAuth
+                                                              .instance
+                                                              .currentUser!
+                                                              .uid,
+                                                          notifyContent:
+                                                              document[
+                                                                  "description"],
+                                                          // index: index,
+                                                          height: height,
+                                                          notifyName:
+                                                              document["title"],
+                                                          notifyDate: document[
+                                                              "description"]);
+                                                    } else {
+                                                      return Text("");
+                                                    }
+                                                  });
                                         }),
                                   ),
                                 ),
@@ -353,19 +369,28 @@ class _NotificationsState extends State<Notifications> {
                                   final document = snapshot.data?.docs[index];
                                   // List notifs = document!["isNew"];
 
-                                  return Notify(
-                                      width: width,
-                                      // isnew: document!["isNew"],
-                                      newNotify: document!["isNew"],
-                                      docid: document.id,
-                                      userid: FirebaseAuth
-                                          .instance.currentUser!.uid
-                                          .toString(),
-                                      notifyContent: document["description"],
-                                      // index: index,
-                                      height: height,
-                                      notifyName: document["title"],
-                                      notifyDate: document["description"]);
+                                  return snapshot.data?.docs.length.toInt() == 0
+                                      ? Center(
+                                          child: Text(
+                                          "No Notifications to display",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 13.0),
+                                        ))
+                                      : Notify(
+                                          width: width,
+                                          // isnew: document!["isNew"],
+                                          newNotify: document!["isNew"],
+                                          docid: document.id,
+                                          userid: FirebaseAuth
+                                              .instance.currentUser!.uid
+                                              .toString(),
+                                          notifyContent:
+                                              document["description"],
+                                          // index: index,
+                                          height: height,
+                                          notifyName: document["title"],
+                                          notifyDate: document["description"]);
                                 });
                           }),
                     ),
@@ -417,7 +442,9 @@ class _NotifyState extends State<Notify> {
     return InkWell(
       onTap: () {
         setState(() {
-          widget.newNotify.add(widget.userid);
+          if (!widget.newNotify.contains(widget.userid)) {
+            widget.newNotify.add(widget.userid);
+          }
           FirebaseFirestore.instance
               .collection("pushNotifications")
               .doc(widget.docid)
