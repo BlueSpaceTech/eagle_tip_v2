@@ -7,6 +7,7 @@ import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -110,51 +111,85 @@ class _ProductRequestState extends State<ProductRequest> {
                                 fontFamily: "Poppins"),
                           ),
                           SizedBox(
-                            height: height * 0.04,
+                            height: height * 0.005,
                           ),
-                          SingleCircularSlider(
-                            20,
-                            1,
-                            showHandlerOutter: false,
-                            sliderStrokeWidth: 14.0,
-                            selectionColor: Color(0xFFA1FF75),
-                            onSelectionChange: (a, b, c) {
-                              setState(() {
-                                initialVal = b * (widget.divisionNum);
-                              });
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(top: height * 0.058),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "${((initialVal / widget.maxVal) * 100).toInt()}%",
-                                    style: TextStyle(
-                                        fontSize: 28.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontFamily: "Poppins"),
+                          SfRadialGauge(axes: <RadialAxis>[
+                            RadialAxis(
+                              minimum: 0,
+                              maximum: widget.maxVal.toDouble(),
+                              showLabels: false,
+                              radiusFactor: 0.7,
+                              annotations: [
+                                GaugeAnnotation(
+                                  angle: 90,
+                                  axisValue: 5,
+                                  positionFactor: 0.2,
+                                  widget: Center(
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "${((initialVal / widget.maxVal) * 100).toInt()}%",
+                                          style: TextStyle(
+                                              fontSize: 28.0,
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                        Text("${initialVal}/${widget.maxVal}",
+                                            style: TextStyle(
+                                                fontSize: 18.0,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFFA0A3BD),
+                                                fontFamily: "Poppins")),
+                                        Text(
+                                          "Gal",
+                                          style: TextStyle(
+                                              fontSize: 18.0,
+                                              color: Color(0xFFA0A3BD),
+                                              fontWeight: FontWeight.w600,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text("${initialVal}/${widget.maxVal}",
-                                      style: TextStyle(
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xFFA0A3BD),
-                                          fontFamily: "Poppins")),
-                                  Text(
-                                    "Gal",
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Color(0xFFA0A3BD),
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                                ),
+                              ],
+                              pointers: <GaugePointer>[
+                                RangePointer(
+                                  onValueChanged: (val) {
+                                    setState(() {
+                                      initialVal = val.toInt();
+                                      // print(val);
+                                    });
+                                  },
+                                  value: initialVal.toDouble(),
+                                  cornerStyle: CornerStyle.bothCurve,
+                                  width: 14,
+                                  sizeUnit: GaugeSizeUnit.logicalPixel,
+                                  color: Color(0xFFA1FF75),
+                                ),
+                                MarkerPointer(
+                                    value: initialVal.toDouble(),
+                                    enableDragging: true,
+                                    markerHeight: 24,
+                                    onValueChanged: (val) {
+                                      setState(() {
+                                        initialVal = val.toInt();
+                                        // print(val);
+                                      });
+                                    },
+                                    markerWidth: 24,
+                                    markerType: MarkerType.circle,
+                                    color: Colors.white,
+                                    borderWidth: 2,
+                                    borderColor: Colors.white54)
+                              ],
+                            )
+                          ]),
                           SizedBox(
-                            height: height * 0.05,
+                            height: height * 0.015,
                           ),
                           Container(
                             width: Responsive.isDesktop(context)
@@ -207,7 +242,7 @@ class _ProductRequestState extends State<ProductRequest> {
                             ),
                           ),
                           SizedBox(
-                            height: height * 0.07,
+                            height: height * 0.05,
                           ),
                           InkWell(
                             onTap: () {
