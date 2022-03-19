@@ -47,6 +47,18 @@ class _InvitationState extends State<Invitation> {
     _phone.dispose();
   }
 
+  sitesgenerator(List<dynamic> sites) {
+    String site = "";
+    for (int i = 0; i < sites.length; i++) {
+      if (i == sites.length - 1) {
+        site += sites[i];
+      } else {
+        site += " ${sites[i]} and ";
+      }
+    }
+    return site;
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -170,7 +182,7 @@ class _InvitationState extends State<Invitation> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: " Acres Marathon and Bridge Marathon",
+                                    text: sitesgenerator(widget.sites),
                                     style: TextStyle(
                                       fontSize: 13.0,
                                       fontWeight: FontWeight.w600,
@@ -188,7 +200,7 @@ class _InvitationState extends State<Invitation> {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: " Site Manger.",
+                                    text: " ${widget.role}.",
                                     style: TextStyle(
                                       fontSize: 13.0,
                                       fontWeight: FontWeight.w600,
@@ -317,14 +329,13 @@ class _InvitationState extends State<Invitation> {
                       InkWell(
                         onTap: () {
                           String res = AuthFunctions().addUserTodb(
-                              name: _name.text,
-                              email: _email.text,
-                              phonenumber: _phone.text,
-                              userRole: widget.role,
-                              phoneisverified: false,
-                              sites: widget.sites,
-                              
-                              );
+                            name: _name.text,
+                            email: _email.text,
+                            phonenumber: _phone.text,
+                            userRole: widget.role,
+                            phoneisverified: false,
+                            sites: widget.sites,
+                          );
                           if (res == "Invite Sent Successfully") {
                             fToast!.showToast(
                               child: ToastMessage().show(width, context, res),

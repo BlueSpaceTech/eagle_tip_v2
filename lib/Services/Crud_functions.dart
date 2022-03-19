@@ -8,7 +8,7 @@ class CrudFunction {
       case "SiteManager":
         return ["SiteUser"];
       case "SiteOwner":
-        return ["SiteManager, Site User"];
+        return ["SiteManager", "Site User"];
       case "TerminalUser":
         return ["SiteOwner, SiteManager", "SiteUser"];
       case "TerminalManager":
@@ -22,8 +22,8 @@ class CrudFunction {
           "SiteUser"
         ];
       case "SuperAdmin":
-      return [
-        "AppAdmin",
+        return [
+          "AppAdmin",
           "TerminalManager",
           "TerminalUser",
           "SiteOwner",
