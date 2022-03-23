@@ -45,4 +45,8 @@ class AppRoutes {
   static final String terminalhome = "/terminalhome";
   static final String faqTerminal = "/faqTerminal";
   static final String addFAQ = "/addFAQ";
+  static final String desktopSetting = "/desktopSetting";
+  static final String mobileSetting = "/mobileSetting";
+  static final String about = "/about";
+  static final String aboutCompany = "/aboutCompany";
 }

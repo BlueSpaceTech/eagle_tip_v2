@@ -67,7 +67,7 @@ class _SettingState extends State<Setting> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Settings",
+                      "Preferences",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: 18.0,
@@ -178,21 +178,6 @@ class _SettingState extends State<Setting> {
                 ),
                 SizedBox(
                   height: height * 0.05,
-                ),
-                InkWell(
-                  onTap: () {
-                    AuthFunctions.signOut();
-                    Navigator.pushNamed(context, AppRoutes.loginscreen);
-                  },
-                  child: Text(
-                    "Log out",
-                    style: TextStyle(
-                        fontSize: 20.0,
-                        color: Color(0xFF92b8ff),
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins"),
-                  ),
                 ),
               ],
             ),

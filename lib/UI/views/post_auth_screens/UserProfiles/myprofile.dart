@@ -437,7 +437,7 @@ class MiscContainer extends StatelessWidget {
           ),
           InkWell(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.settings);
+                Navigator.pushNamed(context, AppRoutes.mobileSetting);
               },
               child: MiscBox(width: width, MiscName: "Settings"))
         ],

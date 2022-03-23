@@ -41,7 +41,11 @@ import 'package:testttttt/UI/views/post_auth_screens/TicketHistory/ticketHistory
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/editUser.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
+import 'package:testttttt/UI/views/post_auth_screens/about.dart';
+import 'package:testttttt/UI/views/post_auth_screens/aboutCompany.dart';
+import 'package:testttttt/UI/views/post_auth_screens/desktopSetting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
+import 'package:testttttt/UI/views/post_auth_screens/mobilesettings.dart';
 import 'package:testttttt/UI/views/post_auth_screens/settings.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/create_account.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/emailsent.dart';
@@ -110,9 +114,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        //initialRoute: WelcomeTour(),
-        home: UserNavigator(),
+        initialRoute: AppRoutes.mobileSetting,
+        // home: UserNavigator(),
         routes: {
+          AppRoutes.about: (context) => AboutMobile(),
+          AppRoutes.aboutCompany: (context) => AboutCompany(),
           AppRoutes.support: (context) => SupportScreen(),
           AppRoutes.addFAQ: (context) => AddFAQ(),
           AppRoutes.faq: (context) => FAQScreen(),
@@ -136,7 +142,9 @@ class MyApp extends StatelessWidget {
           AppRoutes.myProfile: (context) => MyProfile(),
           AppRoutes.siteScreen: (context) => Sites(),
           AppRoutes.siteDetails: (context) => SiteDetails(),
+          AppRoutes.desktopSetting: (context) => DesktopSetting(),
           // AppRoutes.settings: (context) => Settings(),
+          AppRoutes.mobileSetting: (context) => MobileSetting(),
           AppRoutes.chattingscreen: (context) => ChatScreenn(
                 photourlfriend: "",
                 photourluser: "",

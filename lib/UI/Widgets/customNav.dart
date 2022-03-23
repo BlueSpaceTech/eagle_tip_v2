@@ -176,7 +176,7 @@ class _NavbarState extends State<Navbar> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.myProfile);
+                        Navigator.pushNamed(context, AppRoutes.desktopSetting);
                       },
                       child: CircleAvatar(
                         radius: 22,

@@ -70,6 +70,7 @@ dependencies:
   badges: ^2.0.2
   http: ^0.13.4
   syncfusion_flutter_gauges: ^19.4.56
+  easy_sidemenu: ^0.2.0
 
 
 dev_dependencies:
