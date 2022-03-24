@@ -144,21 +144,27 @@ class _DesktopSettingState extends State<DesktopSetting> {
                       icon: Icon(null),
                     ),
                   ],
-                  footer: Padding(
-                    padding: EdgeInsets.only(
-                      left: width * 0.025,
-                      // top: height * 0.02,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Logout",
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: width * 0.012,
-                            color: Color(0xFF92B8FF)),
+                  footer: InkWell(
+                    onTap: () {
+                      AuthFunctions.signOut();
+                      Navigator.pushNamed(context, AppRoutes.loginscreen);
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: width * 0.025,
+                        // top: height * 0.02,
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w500,
+                              fontSize: width * 0.012,
+                              color: Color(0xFF92B8FF)),
+                        ),
                       ),
                     ),
                   ),
@@ -424,7 +430,7 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                     ),
                                     Image.asset(
                                       Common.assetImages + "Group 2889.png",
-                                      width: width * 0.05,
+                                      width: width * 0.02,
                                     ),
                                   ],
                                 ),
@@ -471,7 +477,7 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                     ),
                                     Image.asset(
                                       Common.assetImages + "Group 2889.png",
-                                      width: width * 0.05,
+                                      width: width * 0.02,
                                     ),
                                   ],
                                 )
