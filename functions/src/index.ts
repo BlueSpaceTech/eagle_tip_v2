@@ -64,6 +64,12 @@ export const sendToCondition =functions.firestore.document('/pushNotifications/{
     });
 
 
-
+exports.emptyArr=
+    functions.firestore.document('/termconditions/{id}').onUpdate(async snapshot=>{
+        return snapshot.after.ref.collection("dialog").doc("yFXxdJGVDUkgU8o8hCUU").update({
+            "viewedby":[]
+        });
+        
+    })
 
 
