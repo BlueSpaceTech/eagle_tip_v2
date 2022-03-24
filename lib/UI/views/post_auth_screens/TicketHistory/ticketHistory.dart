@@ -173,7 +173,7 @@ class _OpenTicketsState extends State<OpenTickets> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => TicketDetail(
-                                    doc: document![index],
+                                    doc: document[index],
                                     ticketTitle: document[index]["messages"][0]
                                         ["title"],
                                     status: document[index]["isopen"]
@@ -207,7 +207,7 @@ class _OpenTicketsState extends State<OpenTickets> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      document![index]["messages"][0]["title"]
+                                      document[index]["messages"][0]["title"]
                                           .toString(),
                                       style: TextStyle(
                                           fontSize: 13.0,

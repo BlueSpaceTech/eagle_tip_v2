@@ -95,6 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
         },
         context: context,
       );
+
       addData();
       startTime();
       // ignore: unrelated_type_equality_checks
@@ -127,16 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
       gravity: ToastGravity.BOTTOM,
       toastDuration: Duration(seconds: 3),
     );
-  }
-
-  Uint8List? _image;
-  void selectImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = im;
-    });
-    print("image is added");
-    print(_image);
   }
 
   bool isvisible = false;

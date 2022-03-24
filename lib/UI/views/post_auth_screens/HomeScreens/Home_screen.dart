@@ -9,6 +9,7 @@ import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -48,12 +49,238 @@ class _HomeScreenState extends State<HomeScreen> {
     //   print(value);
     //   // tokens.doc(user.userRole).update(data);
     // });
+
     addData();
+    checkupdateTC();
+    print(showdilog);
+
+    //print(checkupdateTC());
+    //checkupdateTC();
+  }
+
+  TermConditions(double widht, double height, bool show) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        child: Visibility(
+          visible: show,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            width: widht * 0.7,
+            height: height * 0.9,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Column(
+              //crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(Icons.close)),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Terms and conditions Updated",
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins",
+                          fontSize: 24),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "use the link below to view updated Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300),
+                    ),
+                  ],
+                ),
+                Container(
+                  height: height * 0.5,
+                  child: SingleChildScrollView(
+                      child: Column(children: [
+                    Container(
+                      height: height * 0.8,
+                      color: Colors.red,
+                      child: Text(""),
+                    ),
+                  ])),
+                ),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    "https://link-of-terms&conditions",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff5081DB),
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ]),
+                SizedBox(
+                  height: 2,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                        onTap: () {},
+                        child:
+                            CustomSubmitButton(width: widht, title: "Agree")),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  List? check;
+  DocumentReference dialog = FirebaseFirestore.instance
+      .collection('termconditions')
+      .doc("k5c1eJ3DFh3P9IO7HEAA")
+      .collection("dialog")
+      .doc("yFXxdJGVDUkgU8o8hCUU");
+  bool showdilog = false;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  checkupdateTC() async {
+    bool showdilogg = false;
+    print("inside");
+    DocumentReference dbRef = await FirebaseFirestore.instance
+        .collection('termconditions')
+        .doc("k5c1eJ3DFh3P9IO7HEAA")
+        .collection("dialog")
+        .doc("yFXxdJGVDUkgU8o8hCUU");
+    print("inside2");
+
+    await dbRef.get().then((data) {
+      if (data.exists) {
+        setState(() {
+          check = data.get("viewedby");
+        });
+        print("dataexts");
+        print(check);
+        if (check!.contains(auth.currentUser!.uid)) {
+          print("already viewed");
+        } else {
+          WidgetsBinding.instance!.addPostFrameCallback((_) async {
+            if (true) {
+              await _showDialog();
+            }
+          });
+        }
+      }
+    });
+    // return showdilogg;
   }
 
   addData() async {
     UserProvider _userProvider = Provider.of(context, listen: false);
     await _userProvider.refreshUser();
+  }
+
+  _showDialog() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              width: 600,
+              height: 400,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.close)),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Terms and conditions Updated",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Poppins",
+                            fontSize: 24),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "use the link below to view updated Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 18,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 40,
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "https://link-of-terms&conditions",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xff5081DB),
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ]),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            check!.add(auth.currentUser!.uid);
+                            print(check);
+                            dialog.update({"viewedby": check}).then(
+                                (value) => Navigator.pop(context));
+                          },
+                          child:
+                              CustomSubmitButton(width: 1000, title: "Agree")),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
@@ -80,6 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
+                              // TermConditions(width, height, showdilog),
                               Navbar(
                                 width: width,
                                 height: height,

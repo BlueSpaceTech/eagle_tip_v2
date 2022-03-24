@@ -48,6 +48,7 @@ class _EmployerCodeState extends State<EmployerCode> {
   String? name;
   String? phone;
   String? email;
+
   final TextEditingController _emoloyercode = TextEditingController();
   @override
   void initState() {
@@ -127,6 +128,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                     ),
                     InkWell(
                       onTap: () {
+                        // TermConditions(width, height);
                         String res = "Data Fetched";
                         DocumentReference dbRef = FirebaseFirestore.instance
                             .collection('invitations')

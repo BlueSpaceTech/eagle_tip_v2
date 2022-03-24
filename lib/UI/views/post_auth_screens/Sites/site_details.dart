@@ -2,7 +2,7 @@
 
 import 'dart:async';
 
-import 'package:audioplayers/audioplayers.dart';
+// import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
@@ -380,10 +380,10 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   late final AnimationController _controller;
   bool? isTapped = false;
 
-  AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-  playLocal() async {
-    int result = await audioPlayer.play("assets/pop-sound.mp3", isLocal: true);
-  }
+  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  // playLocal() async {
+  //   int result = await audioPlayer.play("assets/pop-sound.mp3", isLocal: true);
+  // }
 
   bool? reqSent = false;
   void off() {
@@ -400,10 +400,10 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     });
   }
 
-  void playsound() {
-    final player = AudioCache();
-    player.play('pop-sound.mp3');
-  }
+  // void playsound() {
+  //   final player = AudioCache();
+  //   player.play('pop-sound.mp3');
+  // }
 
   @override
   void initState() {
@@ -761,8 +761,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                             ),
                             InkWell(
                               onTap: () {
-                                playsound();
-                                playLocal();
+                                // playsound();
+                                // playLocal();
                                 trigger();
                                 widget.valueChanged(reqSent);
                                 print(reqSent);
@@ -799,7 +799,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                             onLoaded: (composition) {
                                               _controller.duration =
                                                   Duration(seconds: 1);
-                                              playLocal();
+                                              // playLocal();
                                             },
                                             width: widget.width * 0.22,
                                           ),

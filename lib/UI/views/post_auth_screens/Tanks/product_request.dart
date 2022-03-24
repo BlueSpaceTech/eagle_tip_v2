@@ -12,7 +12,7 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_circular_slider/flutter_circular_slider.dart';
+//import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class ProductRequest extends StatefulWidget {

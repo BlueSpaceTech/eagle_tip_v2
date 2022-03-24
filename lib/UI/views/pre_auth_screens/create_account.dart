@@ -46,6 +46,115 @@ class _CreateAccountState extends State<CreateAccount> {
     super.initState();
   }
 
+  TermConditions(double widht, double height) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => Dialog(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          width: widht * 0.7,
+          height: height * 0.9,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: Column(
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(Icons.close)),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Terms and conditions",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Poppins",
+                        fontSize: 24),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Before we send you an OTP on your phone number, use the link below to view Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300),
+                  ),
+                ],
+              ),
+              Container(
+                height: height * 0.5,
+                child: SingleChildScrollView(
+                    child: Column(children: [
+                  Container(
+                    height: height * 0.8,
+                    color: Colors.red,
+                    child: Text(""),
+                  ),
+                ])),
+              ),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  "https://link-of-terms&conditions",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Color(0xff5081DB),
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
+              ]),
+              SizedBox(
+                height: 2,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                      onTap: () async {
+                        if (PlatformInfo().isWeb()) {
+                          ConfirmationResult res = await OtpFucnctions()
+                              .sendOTP(
+                                  "+1 ${phoneno.text}", context, widget.doc);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerificationScreen(
+                                  doc: widget.doc,
+                                  confirmationResult: res,
+                                ),
+                              ));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VerificationMobScreen(
+                                    doc: widget.doc, phone: phoneno.text),
+                              ));
+                        }
+                      },
+                      child: CustomSubmitButton(width: widht, title: "Agree")),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -125,26 +234,27 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     InkWell(
                       onTap: () async {
-                        if (PlatformInfo().isWeb()) {
-                          ConfirmationResult res = await OtpFucnctions()
-                              .sendOTP(
-                                  "+1 ${phoneno.text}", context, widget.doc);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerificationScreen(
-                                  doc: widget.doc,
-                                  confirmationResult: res,
-                                ),
-                              ));
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerificationMobScreen(
-                                    doc: widget.doc, phone: phoneno.text),
-                              ));
-                        }
+                        TermConditions(width, height);
+                        // if (PlatformInfo().isWeb()) {
+                        //   ConfirmationResult res = await OtpFucnctions()
+                        //       .sendOTP(
+                        //           "+1 ${phoneno.text}", context, widget.doc);
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => VerificationScreen(
+                        //           doc: widget.doc,
+                        //           confirmationResult: res,
+                        //         ),
+                        //       ));
+                        // } else {
+                        //   Navigator.push(
+                        //       context,
+                        //       MaterialPageRoute(
+                        //         builder: (context) => VerificationMobScreen(
+                        //             doc: widget.doc, phone: phoneno.text),
+                        //       ));
+                        // }
                       },
                       /*
                         await FirebaseAuth.instance.verifyPhoneNumber(
