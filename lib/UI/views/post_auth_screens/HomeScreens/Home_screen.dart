@@ -196,6 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _showDialog() {
     return showDialog(
+        barrierDismissible: false,
         context: context,
         builder: (BuildContext context) {
           return Dialog(
@@ -215,7 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       InkWell(
                           onTap: () {
-                            Navigator.pop(context);
+                            AuthFunctions.signOut();
+                            Navigator.pushNamed(context, AppRoutes.loginscreen);
                           },
                           child: Icon(Icons.close)),
                     ],
