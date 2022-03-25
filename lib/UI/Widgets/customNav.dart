@@ -72,9 +72,9 @@ class _NavbarState extends State<Navbar> {
                               onTap: () {
                                 (user.userRole == "TerminalManager" ||
                                         user.userRole == "TerminalUser")
-                                    ? Navigator.pushNamed(
+                                    ? Navigator.pushReplacementNamed(
                                         context, AppRoutes.terminalhome)
-                                    : Navigator.pushNamed(
+                                    : Navigator.pushReplacementNamed(
                                         context, AppRoutes.homeScreen);
                                 setState(() {
                                   index = 0;
@@ -93,7 +93,7 @@ class _NavbarState extends State<Navbar> {
                             cursor: SystemMouseCursors.click,
                             child: InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
+                                Navigator.pushReplacementNamed(
                                     context, AppRoutes.messagemain);
                                 setState(() {
                                   index = 1;
@@ -112,7 +112,7 @@ class _NavbarState extends State<Navbar> {
                             cursor: SystemMouseCursors.click,
                             child: InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(
+                                  Navigator.pushReplacementNamed(
                                       context, AppRoutes.notifications);
                                   setState(() {
                                     index = 2;
@@ -176,7 +176,7 @@ class _NavbarState extends State<Navbar> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.desktopSetting);
+                        Navigator.pushNamed(context, AppRoutes.myProfile);
                       },
                       child: CircleAvatar(
                         radius: 22,

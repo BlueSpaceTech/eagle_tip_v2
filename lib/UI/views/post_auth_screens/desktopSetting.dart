@@ -154,7 +154,8 @@ class _DesktopSettingState extends State<DesktopSetting> {
                       child: InkWell(
                         onTap: () {
                           AuthFunctions.signOut();
-                          Navigator.pushNamed(context, AppRoutes.loginscreen);
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, AppRoutes.loginscreen, (route) => false);
                         },
                         child: Text(
                           "Logout",

@@ -118,8 +118,8 @@ class _MyProfileState extends State<MyProfile> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.editUser);
+                                          Navigator.pushNamed(context,
+                                              AppRoutes.desktopSetting);
                                         },
                                         child: Container(
                                           width: width * 0.06,
@@ -131,7 +131,7 @@ class _MyProfileState extends State<MyProfile> {
                                           ),
                                           child: Center(
                                               child: Text(
-                                            "Edit Profile",
+                                            "Settings",
                                             style: TextStyle(
                                               fontSize: width * 0.008,
                                               fontFamily: "Poppins",

@@ -310,6 +310,7 @@ class _CrudScreenState extends State<CrudScreen> {
   TextEditingController _search = TextEditingController();
 
   getUserdetails(List sites, String uid) async {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     var data = await FirebaseFirestore.instance
         .collection("users")
         .where(
@@ -318,6 +319,7 @@ class _CrudScreenState extends State<CrudScreen> {
         )
         .where("sites", arrayContainsAny: sites)
         .where("uid", isNotEqualTo: uid)
+        .where("userRole", whereIn: CrudFunction().visibleRole(user))
         .get();
     setState(() {
       _allResults = data.docs;

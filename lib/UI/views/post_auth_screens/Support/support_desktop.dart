@@ -210,7 +210,7 @@ class _SupportDesktopState extends State<SupportDesktop> {
                               InkWell(
                                   onTap: () async {
                                     final doc = await FirebaseFirestore.instance
-                                        .collection("users")
+                                        .collection("invitations")
                                         .doc(EmployerCode)
                                         .get()
                                         .then((value) => value);

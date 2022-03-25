@@ -38,8 +38,48 @@ class _CreateNotificationState extends State<CreateNotification> {
   void _showMultiSelect() async {
     // a list of selectable items
     // these items can be hard-coded or dynamically fetched from a database/API
+    List<String> visibleRole(model.User user) {
+      switch (user.userRole) {
+        case "SiteUser":
+          return [];
+        case "SiteManager":
+          return ['All Users', "SiteUser"];
+        case "SiteOwner":
+          return ['All Users', "SiteManager", "SiteUser"];
+        case "TerminalUser":
+          return ['All Users', "SiteOwner, SiteManager", "SiteUser"];
+        case "TerminalManager":
+          return [
+            'All Users',
+            "TerminalUser",
+            "SiteOwner",
+            "SiteManager",
+            "SiteUser"
+          ];
+        case "AppAdmin":
+          return [
+            'All Users',
+            "TerminalManager",
+            "TerminalUser",
+            "SiteOwner",
+            "SiteManager",
+            "SiteUser"
+          ];
+        case "SuperAdmin":
+          return [
+            'All Users',
+            "AppAdmin",
+            "TerminalManager",
+            "TerminalUser",
+            "SiteOwner",
+            "SiteManager",
+            "SiteUser"
+          ];
+      }
+      return [];
+    }
+
     final List<String> _items = [
-      'All Users',
       'Managers',
       'Site Users',
       'Site Owners',
@@ -49,7 +89,8 @@ class _CreateNotificationState extends State<CreateNotification> {
     final List<String>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        return MultiSelect(items: _items);
+        model.User user = Provider.of<UserProvider>(context).getUser;
+        return MultiSelect(items: visibleRole(user));
       },
     );
 
@@ -421,21 +462,26 @@ class _CreateNotificationState extends State<CreateNotification> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              width: width * 0.08,
-                              height: height * 0.058,
-                              decoration: BoxDecoration(
-                                color: Color(0XffED5C62),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Cancel",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: width * 0.008,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: "Poppins"),
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: width * 0.08,
+                                height: height * 0.058,
+                                decoration: BoxDecoration(
+                                  color: Color(0XffED5C62),
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: width * 0.008,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Poppins"),
+                                  ),
                                 ),
                               ),
                             ),
@@ -541,9 +587,9 @@ class _MultiSelectState extends State<MultiSelect> {
 // This function is triggered when a checkbox is checked or unchecked
   var topicConnect = {
     'All Users': 'AllUsers',
-    'Managers': 'SiteManager',
-    'Site Users': 'SiteUser',
-    'Site Owners': 'SiteOwner',
+    'SiteManager': 'SiteManager',
+    'SiteUser': 'SiteUser',
+    'SiteOwner': 'SiteOwner',
   };
   void _itemChange(String itemValue, bool isSelected) {
     setState(() {
@@ -784,7 +830,8 @@ class _DayState extends State<Day> {
                     scheduledDates.add(nextTime["${weekDay[widget.dayname]}"]);
                     print(scheduledDates);
                   } else {
-                    scheduledDates.remove(nextTime[widget.dayname]);
+                    scheduledDates
+                        .remove(nextTime["${weekDay[widget.dayname]}"]);
                     print(scheduledDates);
                   }
                   // print(scheduledDates);
