@@ -144,18 +144,18 @@ class _DesktopSettingState extends State<DesktopSetting> {
                       icon: Icon(null),
                     ),
                   ],
-                  footer: InkWell(
-                    onTap: () {
-                      AuthFunctions.signOut();
-                      Navigator.pushNamed(context, AppRoutes.loginscreen);
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        left: width * 0.025,
-                        // top: height * 0.02,
-                      ),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
+                  footer: Padding(
+                    padding: EdgeInsets.only(
+                      left: width * 0.025,
+                      // top: height * 0.02,
+                    ),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: InkWell(
+                        onTap: () {
+                          AuthFunctions.signOut();
+                          Navigator.pushNamed(context, AppRoutes.loginscreen);
+                        },
                         child: Text(
                           "Logout",
                           style: TextStyle(
