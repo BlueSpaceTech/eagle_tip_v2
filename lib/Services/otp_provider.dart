@@ -28,11 +28,38 @@ class OtpFucnctions {
     return confirmationResult;
   }
 
+  sendOTPLogin(String phonenumber, BuildContext context) async {
+    this.phononumber = phonenumber;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    ConfirmationResult confirmationResult = await auth.signInWithPhoneNumber(
+      phonenumber,
+    );
+    return confirmationResult;
+  }
+
   Future<String> authenticateMe(
     ConfirmationResult confirmationResult,
     String otp,
     BuildContext context,
     DocumentSnapshot doc,
+  ) async {
+    String res = "success";
+    if (phononumber.isNotEmpty) {
+      UserCredential userCredential =
+          await confirmationResult.confirm(otp).catchError((error, stackTrace) {
+        res = "Some Error Occurred";
+        return res;
+      });
+      userCredential.user!.delete();
+    }
+
+    return res;
+  }
+
+  Future<String> authenticateMeLogin(
+    ConfirmationResult confirmationResult,
+    String otp,
+    BuildContext context,
   ) async {
     String res = "success";
     if (phononumber.isNotEmpty) {
