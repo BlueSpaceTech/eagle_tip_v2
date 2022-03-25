@@ -158,25 +158,19 @@ class AuthFunctions {
   }
 //login in user
 
-  Future<String> loginuser(
-      {required String email,
-      required String password,
-      required String EmployerCode}) async {
+  Future<String> loginuser({
+    required String email,
+    required String password,
+  }) async {
     String res = "Some error occurred";
     try {
-      if (email.isNotEmpty || password.isNotEmpty || EmployerCode.isNotEmpty) {
-        print(EmployerCode);
+      if (email.isNotEmpty || password.isNotEmpty) {
         await _auth
             .signInWithEmailAndPassword(email: email, password: password)
             .then((value) async {
-          bool check = await checkECafterlogin(value.user!.uid, EmployerCode);
-          if (check) {
-            res = "success";
-          } else {
-            res = "Wrong Employer code";
-            _auth.signOut();
-          }
+          res = "success";
         });
+
 /*
         if (checkECafterlogin(_auth.currentUser!.uid, EmployerCode)) {
           res = "success";

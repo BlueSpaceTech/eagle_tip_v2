@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
+import 'package:testttttt/Services/otp_provider.dart';
 import 'package:testttttt/Services/storagemethods.dart';
 import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
@@ -20,7 +21,9 @@ import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/phone_verification.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -36,7 +39,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   FToast? fToast;
   final TextEditingController _password = TextEditingController();
-  final TextEditingController _employercode = TextEditingController();
+  final TextEditingController _otpcode = TextEditingController();
   final TextEditingController _email = TextEditingController();
   @override
   void initState() {
@@ -55,51 +58,134 @@ class _LoginScreenState extends State<LoginScreen> {
     await _userProvider.refreshUser();
   }
 
-  route() {
-    Responsive.isDesktop(context)
-        ? Navigator.pushNamed(context, AppRoutes.homeScreen)
-        : Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNav()));
-  }
+  // route() {
+  //   Responsive.isDesktop(context)
+  //       ? Navigator.pushNamed(context, AppRoutes.homeScreen)
+  //       : Navigator.pushReplacement(
+  //           context, MaterialPageRoute(builder: (context) => BottomNav()));
+  // }
 
-  route2() {
+  // route2() {
+  //   UserProvider _userProvider = Provider.of(context, listen: false);
+  //   Navigator.pushReplacement(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) =>
+  //               (_userProvider.getUser.userRole == "TerminalUser" ||
+  //                       _userProvider.getUser.userRole == "TerminalManager")
+  //                   ? TerminalHome()
+  //                   : Responsive.isDesktop(context)
+  //                       ? HomeScreen()
+  //                       : BottomNav()));
+  // }
+
+  // startTime() async {
+  //   var duration = new Duration(seconds: 4);
+  //   return new Timer(duration, route2);
+  // }
+  String? pinn;
+
+  String? verificationId;
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  Future registerUser(String mobile, BuildContext context) async {
     UserProvider _userProvider = Provider.of(context, listen: false);
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                (_userProvider.getUser.userRole == "TerminalUser" ||
-                        _userProvider.getUser.userRole == "TerminalManager")
-                    ? TerminalHome()
-                    : Responsive.isDesktop(context)
-                        ? HomeScreen()
-                        : BottomNav()));
-  }
-
-  startTime() async {
-    var duration = new Duration(seconds: 4);
-    return new Timer(duration, route2);
-  }
-
-  void loginuser(double width) async {
-    String res = await AuthFunctions().loginuser(
-        email: _email.text,
-        password: _password.text,
-        EmployerCode: _employercode.text);
-    if (res == "success") {
-      showDialog(
-        builder: (ctx) {
-          return Center(
-            child: CircularProgressIndicator(
-              strokeWidth: 2,
-            ),
-          );
+    await _auth.verifyPhoneNumber(
+        phoneNumber: "+1 ${mobile}",
+        timeout: Duration(seconds: 120),
+        verificationCompleted: (uthCredential) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (_userProvider.getUser.userRole ==
+                              "TerminalUser" ||
+                          _userProvider.getUser.userRole == "TerminalManager")
+                      ? TerminalHome()
+                      : Responsive.isDesktop(context)
+                          ? HomeScreen()
+                          : BottomNav()));
         },
-        context: context,
-      );
+        verificationFailed: (authException) {
+          print(authException.toString());
+          fToast!.showToast(
+              child: ToastMessage().show(200, context, "Verification failed"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
+        },
+        codeSent: (verificationid, resendingtoken) {
+          fToast!.showToast(
+              child: ToastMessage()
+                  .show(420, context, "Code Sent to +1 ${mobile}"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
+          setState(() {
+            verificationId = verificationid;
+          });
+        },
+        codeAutoRetrievalTimeout: (verificationid) {
+          verificationId = verificationid;
+          print(verificationId);
+          print("Timout");
+          fToast!.showToast(
+              child: ToastMessage().show(300, context, "Time Out"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
+        });
+  }
 
-      addData();
-      startTime();
+  ConfirmationResult? ress;
+  Future<void> signIn(String otp, double width) async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    String res = "success";
+    try {
+      await FirebaseAuth.instance
+          .signInWithCredential(PhoneAuthProvider.credential(
+        verificationId: "",
+        smsCode: otp,
+      ));
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  (_userProvider.getUser.userRole == "TerminalUser" ||
+                          _userProvider.getUser.userRole == "TerminalManager")
+                      ? TerminalHome()
+                      : Responsive.isDesktop(context)
+                          ? HomeScreen()
+                          : BottomNav()));
+      fToast!.showToast(
+          child: ToastMessage().show(width, context, "success"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3));
+    } catch (err) {
+      res = err.toString();
+      fToast!.showToast(
+          child: ToastMessage().show(width, context, res),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3));
+    }
+  }
+
+  void loginuser(double width, BuildContext context, String phone) async {
+    String res = await AuthFunctions().loginuser(
+      email: _email.text,
+      password: _password.text,
+    );
+    print(res);
+
+    if (res == "success") {
+      await addData();
+      print({"here "});
+      // UserProvider _userProvider = await Provider.of(context, listen: false);
+      if (PlatformInfo().isWeb()) {
+        print(phone);
+        //  print(_userProvider.getUser.Phonenumber);
+        setState(() async {
+          ress = await OtpFucnctions().sendOTPLogin("+1 ${phone}", context);
+        });
+      } else {
+        registerUser(phone, context);
+      }
+
       // ignore: unrelated_type_equality_checks
       final doc = await FirebaseFirestore.instance
           .collection("users")
@@ -132,15 +218,37 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  confirmotp(String role) async {
+    String result = await OtpFucnctions().authenticateMeLogin(
+      ress!,
+      _otpcode.text,
+      context,
+    );
+    result == "success"
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    (role == "TerminalUser" || role == "TerminalManager")
+                        ? TerminalHome()
+                        : Responsive.isDesktop(context)
+                            ? HomeScreen()
+                            : BottomNav()))
+        : fToast!.showToast(
+            child: ToastMessage().show(200, context, "Wrong otp"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
+  }
+
   Color? getotp;
   getColor() {
     if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
       setState(() {
-        getotp = Colors.black;
+        getotp = Colors.blue;
       });
     } else {
       setState(() {
-        getotp = Colors.blue;
+        getotp = Colors.grey;
       });
     }
   }
@@ -149,6 +257,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    UserProvider _userProvider = Provider.of(context, listen: false);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -223,7 +332,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             child: TextField(
                               keyboardType: TextInputType.number,
                               enabled: true,
-                              controller: _employercode,
+                              controller: _otpcode,
                               style: TextStyle(fontFamily: "Poppins"),
                               cursorColor: Colors.black12,
                               decoration: InputDecoration(
@@ -236,13 +345,19 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                          Text(
-                            "Get OTP",
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: getotp,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w600),
+                          InkWell(
+                            onTap: () {
+                              loginuser(width, context,
+                                  _userProvider.getUser.Phonenumber);
+                            },
+                            child: Text(
+                              "Get OTP",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: getotp,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                         ],
                       ),
@@ -254,7 +369,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.06,
                     ),
                     InkWell(
-                      onTap: () => loginuser(width),
+                      onTap: () {
+                        if (PlatformInfo().isWeb()) {
+                          confirmotp(_userProvider.getUser.userRole);
+                          print("web");
+                        } else {
+                          signIn(_otpcode.text, width);
+                        }
+                      },
                       //   onTap: () async {
                       //   String url = await StorageMethods()
                       //     .uploadImageToStorage(
