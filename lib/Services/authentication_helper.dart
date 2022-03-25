@@ -219,8 +219,7 @@ class AuthFunctions {
         "employercode": code,
         "invitedby": FirebaseAuth.instance.currentUser!.uid,
       }).then((value) =>
-          //sendemailinvite(name: name, employercode: code, email: email)
-          print("doe"));
+          sendemailinvite(name: name, employercode: code, email: email));
     }
     return res;
   }
@@ -229,9 +228,11 @@ class AuthFunctions {
       {required String name,
       required String employercode,
       required String email}) async {
-    final serviceId = "service_2ithqza";
+    final serviceID1 = "service_nb5rno2";
+    final serviceId = "service_nb5rno2";
     final templateId = "template_2i1vt1n";
-    final userId = "lBxWSwKqkpay5kZ7H";
+    final templateIdd = "template_5kt7vq4";
+    final userId = "tCaS_EzJDWdXZtGBZ";
     final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
     final response = await http.post(
       url,
@@ -241,10 +242,9 @@ class AuthFunctions {
       },
       body: json.encode({
         'service_id': serviceId,
-        'template_id': templateId,
+        'template_id': templateIdd,
         'user_id': userId,
         'template_params': {
-          'to_name': name,
           'employer_code': employercode,
           'to_email': email,
         }
@@ -259,9 +259,9 @@ class AuthFunctions {
     required String email,
     required String title,
   }) async {
-    final serviceId = "service_2ithqza";
-    final templateId = "template_70wfxrq";
-    final userId = "lBxWSwKqkpay5kZ7H";
+    final serviceId = "service_nb5rno2";
+    final templateId = "template_h8izwqh";
+    final userId = "tCaS_EzJDWdXZtGBZ";
     final url = Uri.parse("https://api.emailjs.com/api/v1.0/email/send");
     final response = await http.post(
       url,

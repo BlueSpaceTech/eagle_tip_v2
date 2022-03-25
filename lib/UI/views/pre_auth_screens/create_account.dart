@@ -94,7 +94,8 @@ class _CreateAccountState extends State<CreateAccount> {
                 ],
               ),
               Container(
-                height: height * 0.5,
+                height:
+                    Responsive.isDesktop(context) ? height * 0.5 : height * 0.4,
                 child: SingleChildScrollView(
                     child: Column(children: [
                   Container(

@@ -202,8 +202,8 @@ class _HomeScreenState extends State<HomeScreen> {
           return Dialog(
             child: Container(
               padding: EdgeInsets.all(20),
-              width: 600,
-              height: 400,
+              width: Responsive.isDesktop(context) ? 600 : 400,
+              height: Responsive.isDesktop(context) ? 300 : 300,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -44,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
+    _email.addListener(getColor);
+    _password.addListener(getColor);
   }
 
   bool isactive = false;
@@ -130,6 +132,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Color? getotp;
+  getColor() {
+    if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
+      setState(() {
+        getotp = Colors.black;
+      });
+    } else {
+      setState(() {
+        getotp = Colors.blue;
+      });
+    }
+  }
+
   bool isvisible = false;
 
   @override
@@ -191,12 +206,46 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    CustomTextField(
-                      isactive: true,
-                      controller: _employercode,
-                      width: width,
-                      height: height,
-                      labelText: "Employer Code",
+                    Container(
+                      width: Responsive.isDesktop(context) ? 600 : width * 0.8,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.isDesktop(context)
+                              ? width * 0.02
+                              : width * 0.06),
+                      height: height * 0.08,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              keyboardType: TextInputType.number,
+                              enabled: true,
+                              controller: _employercode,
+                              style: TextStyle(fontFamily: "Poppins"),
+                              cursorColor: Colors.black12,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: "Enter 6 Digits otp",
+                                labelStyle: TextStyle(
+                                    color: Color(0xff5e8be0),
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                          Text(
+                            "Get OTP",
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: getotp,
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: height * 0.015,
