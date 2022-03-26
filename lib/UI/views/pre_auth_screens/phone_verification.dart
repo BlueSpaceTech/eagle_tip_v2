@@ -215,10 +215,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         // signIn(_otp.toString(), width);
                         print(pinn);
                         String res = await OtpFucnctions().authenticateMe(
-                            widget.confirmationResult,
-                            pinn!,
-                            context,
-                            widget.doc);
+                          widget.confirmationResult,
+                          pinn!,
+                        );
                         res == "success"
                             ? Navigator.push(
                                 context,

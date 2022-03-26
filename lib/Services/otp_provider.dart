@@ -28,7 +28,7 @@ class OtpFucnctions {
     return confirmationResult;
   }
 
-  sendOTPLogin(String phonenumber, BuildContext context) async {
+  sendOTPLogin(String phonenumber) async {
     this.phononumber = phonenumber;
     FirebaseAuth auth = FirebaseAuth.instance;
     ConfirmationResult confirmationResult = await auth.signInWithPhoneNumber(
@@ -40,33 +40,29 @@ class OtpFucnctions {
   Future<String> authenticateMe(
     ConfirmationResult confirmationResult,
     String otp,
-    BuildContext context,
-    DocumentSnapshot doc,
   ) async {
-    String res = "success";
-    if (phononumber.isNotEmpty) {
+    String res = "empty field";
+    if (otp.isNotEmpty) {
+      res = "success";
       UserCredential userCredential =
           await confirmationResult.confirm(otp).catchError((error, stackTrace) {
-        res = "Some Error Occurred";
-        return res;
+        res = error.toString();
       });
       userCredential.user!.delete();
+      return res;
     }
-
     return res;
   }
 
   Future<String> authenticateMeLogin(
     ConfirmationResult confirmationResult,
     String otp,
-    BuildContext context,
   ) async {
     String res = "success";
     if (phononumber.isNotEmpty) {
       UserCredential userCredential =
           await confirmationResult.confirm(otp).catchError((error, stackTrace) {
         res = "Some Error Occurred";
-        return res;
       });
       userCredential.user!.delete();
     }

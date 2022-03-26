@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,11 +53,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   bool isactive = false;
-  addData() async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
+  // addData() async {
+  //   UserProvider _userProvider = Provider.of(context, listen: false);
 
-    await _userProvider.refreshUser();
-  }
+  //   await _userProvider.refreshUser();
+  // }
 
   // route() {
   //   Responsive.isDesktop(context)
@@ -88,7 +89,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String? verificationId;
   FirebaseAuth _auth = FirebaseAuth.instance;
   Future registerUser(String mobile, BuildContext context) async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
     await _auth.verifyPhoneNumber(
         phoneNumber: "+1 ${mobile}",
         timeout: Duration(seconds: 120),
@@ -96,9 +96,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => (_userProvider.getUser.userRole ==
-                              "TerminalUser" ||
-                          _userProvider.getUser.userRole == "TerminalManager")
+                  builder: (context) => (userRole == "TerminalUser" ||
+                          userRole == "TerminalManager")
                       ? TerminalHome()
                       : Responsive.isDesktop(context)
                           ? HomeScreen()
@@ -134,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   ConfirmationResult? ress;
   Future<void> signIn(String otp, double width) async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
+    // UserProvider _userProvider = Provider.of(context, listen: false);
     String res = "success";
     try {
       await FirebaseAuth.instance
@@ -146,8 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  (_userProvider.getUser.userRole == "TerminalUser" ||
-                          _userProvider.getUser.userRole == "TerminalManager")
+                  (userRole == "TerminalUser" || userRole == "TerminalManager")
                       ? TerminalHome()
                       : Responsive.isDesktop(context)
                           ? HomeScreen()
@@ -165,77 +163,114 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void loginuser(double width, BuildContext context, String phone) async {
+  String phone = "";
+  String userRole = "";
+  void loginuser(double width) async {
     String res = await AuthFunctions().loginuser(
       email: _email.text,
       password: _password.text,
     );
-    print(res);
+    // 1. Create a reference to the collection
+    //  String res = "";
+//     CollectionReference s = FirebaseFirestore.instance.collection("sers");
+
+// // 2. Create a query for the user with the given email address
+//     Query query = s.where("email", isEqualTo: _email.text);
+
+// // 3. Execute the query to get the documents
+//     QuerySnapshot querySnapshot = await query.get();
+
+// // 4. Loop over the resulting document(s), since there may be multiple
+//     querySnapshot.docs.forEach((doc) {
+//       // 5. Update the 'Full Name' field in this document
+//       setState(() {
+//         phone = doc.get("phonenumber");
+//         userRole = doc.get("userRole");
+//         res = "success";
+//       });
+//     });
+    addData() async {
+      UserProvider _userProvider = Provider.of(context, listen: false);
+      await _userProvider.refreshUser();
+    }
 
     if (res == "success") {
-      await addData();
+      addData();
       print({"here "});
-      // UserProvider _userProvider = await Provider.of(context, listen: false);
+      print("phonenumber");
+
       if (PlatformInfo().isWeb()) {
-        print(phone);
-        //  print(_userProvider.getUser.Phonenumber);
-        setState(() async {
-          ress = await OtpFucnctions().sendOTPLogin("+1 ${phone}", context);
+        print("isweb");
+
+        DocumentReference dbRef = FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid);
+        await dbRef.get().then((data) {
+          if (data.exists) {
+            if (mounted) {
+              setState(() {
+                print("fetching");
+                phone = data.get("phonenumber");
+                userRole = data.get("userRole");
+                // email = data.get("email");
+                // phone = data.get("phonenumber");
+              });
+            }
+          }
         });
+        print(phone);
+        print(userRole);
+        ConfirmationResult result =
+            await OtpFucnctions().sendOTPLogin("+91 ${phone}");
+        setState(() {
+          ress = result;
+        });
+
+        print(ress);
       } else {
         registerUser(phone, context);
       }
 
       // ignore: unrelated_type_equality_checks
-      final doc = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then((value) => value);
-      if (!doc["isSubscribed"]) {
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({
-          "isSubscribed": true,
-        });
-      }
-      /*
-      Responsive.isDesktop(context)
-          ? Navigator.pushNamed(context, AppRoutes.homeScreen)
-          : Navigator.pushNamed(context, AppRoutes.bottomNav);
-*/
-      fToast!.showToast(
-        child: ToastMessage().show(width, context, res),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 3),
-      );
+      // final doc = await FirebaseFirestore.instance
+      //     .collection("users")
+      //     .doc(FirebaseAuth.instance.currentUser!.uid)
+      //     .get()
+      //     .then((value) => value);
+      // if (!doc["isSubscribed"]) {
+      //   FirebaseFirestore.instance
+      //       .collection("users")
+      //       .doc(FirebaseAuth.instance.currentUser!.uid)
+      //       .update({
+      //     "isSubscribed": true,
+      //   });
+      // }
+
     }
-    fToast!.showToast(
-      child: ToastMessage().show(width, context, res),
-      gravity: ToastGravity.BOTTOM,
-      toastDuration: Duration(seconds: 3),
-    );
   }
 
-  confirmotp(String role) async {
-    String result = await OtpFucnctions().authenticateMeLogin(
+  confirmotp() async {
+    //  String role = "";
+    print("confirming");
+    print(ress);
+
+    String res = await OtpFucnctions().authenticateMe(
       ress!,
       _otpcode.text,
-      context,
     );
-    result == "success"
+    print(res + "ffff");
+    res == "success"
         ? Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    (role == "TerminalUser" || role == "TerminalManager")
-                        ? TerminalHome()
-                        : Responsive.isDesktop(context)
-                            ? HomeScreen()
-                            : BottomNav()))
+                builder: (context) => (userRole == "TerminalUser" ||
+                        userRole == "TerminalManager")
+                    ? TerminalHome()
+                    : Responsive.isDesktop(context)
+                        ? HomeScreen()
+                        : BottomNav()))
         : fToast!.showToast(
-            child: ToastMessage().show(200, context, "Wrong otp"),
+            child: ToastMessage().show(200, context, res),
             gravity: ToastGravity.BOTTOM,
             toastDuration: Duration(seconds: 3));
   }
@@ -254,10 +289,18 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   bool isvisible = false;
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _email.dispose();
+    _password.dispose();
+    _otpcode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    UserProvider _userProvider = Provider.of(context, listen: false);
+    //UserProvider _userProvider = Provider.of(context, listen: false);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -347,8 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              loginuser(width, context,
-                                  _userProvider.getUser.Phonenumber);
+                              loginuser(width);
                             },
                             child: Text(
                               "Get OTP",
@@ -370,12 +412,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        if (PlatformInfo().isWeb()) {
-                          confirmotp(_userProvider.getUser.userRole);
+                        try {
+                          if (Platform.isAndroid || Platform.isIOS) {
+                            signIn(_otpcode.text, width);
+                          } else {
+                            confirmotp();
+                            print("webbb");
+                          }
+                        } catch (e) {
+                          confirmotp();
                           print("web");
-                        } else {
-                          signIn(_otpcode.text, width);
                         }
+                        // if (PlatformInfo().isWeb()) {
+
+                        //   print("web");
+                        // } else {
+
+                        // }
                       },
                       //   onTap: () async {
                       //   String url = await StorageMethods()

@@ -1,8 +1,11 @@
 //import 'dart:ffi';
+import 'dart:js';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:testttttt/Models/TokenModel.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 
@@ -156,7 +159,6 @@ class AuthFunctions {
     print("${returnn} is is ");
     return returnn;
   }
-//login in user
 
   Future<String> loginuser({
     required String email,
@@ -167,7 +169,7 @@ class AuthFunctions {
       if (email.isNotEmpty || password.isNotEmpty) {
         await _auth
             .signInWithEmailAndPassword(email: email, password: password)
-            .then((value) async {
+            .then((value) {
           res = "success";
         });
 
