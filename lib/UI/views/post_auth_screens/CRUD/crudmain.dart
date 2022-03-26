@@ -309,8 +309,7 @@ class _CrudScreenState extends State<CrudScreen> {
   List _resultList = [];
   TextEditingController _search = TextEditingController();
 
-  getUserdetails(List sites, String uid) async {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+  getUserdetails(List sites, String uid, model.User user) async {
     var data = await FirebaseFirestore.instance
         .collection("users")
         .where(
@@ -319,11 +318,35 @@ class _CrudScreenState extends State<CrudScreen> {
         )
         .where("sites", arrayContainsAny: sites)
         .where("uid", isNotEqualTo: uid)
-        .where("userRole", whereIn: CrudFunction().visibleRole(user))
+        // .where("userRole", whereIn: CrudFunction().visibleRole(user))
         .get();
+
     setState(() {
       _allResults = data.docs;
     });
+    print(CrudFunction().visibleRole(user));
+    print(_allResults.length);
+    // _allResults.removeWhere(
+    //     (element) => element["userRole"] != CrudFunction().visibleRole(user));
+    for (var element = 0; element < _allResults.length; element++) {
+      print(element);
+      if (CrudFunction()
+          .visibleRole(user)
+          .contains(_allResults[element]["userRole"])) {
+        print(_allResults[element]["name"] +
+            "contains" +
+            _allResults[element]["userRole"]);
+      } else {
+        _allResults.removeAt(element);
+        print(_allResults[element]["name"] +
+            "removed" +
+            _allResults[element]["userRole"]);
+      }
+    }
+    print(_allResults.length);
+    for (var ele in _allResults) {
+      print(ele["name"]);
+    }
     searchresult();
     return "done";
   }
@@ -333,7 +356,7 @@ class _CrudScreenState extends State<CrudScreen> {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites, user.uid);
+    resultsloaded = getUserdetails(user.sites, user.uid, user);
   }
 
   _onsearchange() {
@@ -396,8 +419,6 @@ class _CrudScreenState extends State<CrudScreen> {
       "Clarks Marathon",
       "Huntington Marathon"
     ];
-    List Roles = ["Site Manager", "Site User"];
-    List namee = ["rAKSHTI", "FF", "ABHISEKHUI", "rAKSHTI", "FF", "ABHISEKHUI"];
 
     return Scaffold(
         floatingActionButton: Visibility(

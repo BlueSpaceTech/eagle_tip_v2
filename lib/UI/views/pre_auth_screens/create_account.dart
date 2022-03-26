@@ -99,9 +99,36 @@ class _CreateAccountState extends State<CreateAccount> {
                 child: SingleChildScrollView(
                     child: Column(children: [
                   Container(
-                    height: height * 0.8,
-                    color: Colors.red,
-                    child: Text(""),
+                    height: height * 0.7,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 12,
+                        ),
+                        Text(
+                            "This agreement, effective from _____________ is between the service providing company Eagle Transport that works through the app Eagle Transport Inventory Program that works its for smooth distribution of gas to various gas stations associated with it inside the USA"),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                            "1. Whereas it is an important responsibility of the Eagle Transport Inventory app launching this app to protect data of its customers, nevertheless, for its smooth functioning, this provision will not preclude it from obtaining the email addresses, phone numbers, tracking cookies data, locations, and other important details of the gas stations it is working with"),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                            "2. Whereas the customer’s privacy and data protection will be protected under the relevant federal and state laws, yet the online access of this service by any gas station will allow the owners of this app to collect their information for advertising purposes"),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                            "3. Whereas the consumer data present on this app, including the chat and messaging service on it, will be protected, however, it can be disclosed for law enforcement purposes, business transactions, or any other such reason in the due course of time"),
+                        SizedBox(
+                          height: 8,
+                        ),
+                        Text(
+                            "4. Whereas the Eagle Transport Inventory Program app will ascertain data security for its clients, nevertheless, the service providers are not responsible for any breach of privacy or misuse of private data if it is unintentionally misused"),
+                      ],
+                    ),
                   ),
                 ])),
               ),
@@ -117,7 +144,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
               ]),
               SizedBox(
-                height: 2,
+                height: 5,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
