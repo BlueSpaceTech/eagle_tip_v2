@@ -5,6 +5,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatListTile extends StatefulWidget {
   const ChatListTile({
@@ -27,7 +28,33 @@ class _ChatListTileState extends State<ChatListTile> {
     // TODO: implement initState
     super.initState();
     // fetchrecenttime(widget.doc);
+    // gettimeago(widget.doc);
   }
+
+  // gettimeago(DocumentSnapshot doc) async {
+  //   Timestamp timestamp = Timestamp(20, 20);
+  //   DocumentReference dbRef = FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(FirebaseAuth.instance.currentUser!.uid);
+  //   await dbRef.get().then((data) {
+  //     if (data.exists) {
+  //       if (mounted) {
+  //         setState(() {
+  //           print("fetching");
+  //           timestamp = data.get("recentTime");
+
+  //           // email = data.get("email");
+  //           // phone = data.get("phonenumber");
+  //         });
+  //       }
+  //     }
+  //   });
+
+  //   final datetime = DateTime.now().difference(timestamp.toDate());
+  //  if((datetime.inDays/7).floor()>=1){
+  //    return ';'
+  //  }
+  // }
 
   List timestamps = [];
   fetchrecenttime(DocumentSnapshot doc) async {

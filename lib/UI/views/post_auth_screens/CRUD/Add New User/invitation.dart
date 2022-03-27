@@ -328,29 +328,40 @@ class _InvitationState extends State<Invitation> {
                       ),
                       InkWell(
                         onTap: () {
-                          String res = AuthFunctions().addUserTodb(
-                            name: _name.text,
-                            email: _email.text,
-                            phonenumber: _phone.text,
-                            userRole: widget.role,
-                            phoneisverified: false,
-                            sites: widget.sites,
-                          );
-                          if (res == "Invite Sent Successfully") {
-                            fToast!.showToast(
-                              child: ToastMessage().show(width, context, res),
-                              gravity: ToastGravity.BOTTOM,
-                              toastDuration: Duration(seconds: 3),
+                          if (_phone.text.length == 10 &&
+                              _email.text.isNotEmpty &&
+                              _name.text.isNotEmpty) {
+                            String res = AuthFunctions().addUserTodb(
+                              name: _name.text,
+                              email: _email.text,
+                              phonenumber: _phone.text,
+                              userRole: widget.role,
+                              phoneisverified: false,
+                              sites: widget.sites,
                             );
-                            Responsive.isDesktop(context)
-                                ? Navigator.pushNamed(
-                                    context, AppRoutes.homeScreen)
-                                : Navigator.pushNamed(
-                                    context, AppRoutes.bottomNav);
+                            if (res == "Invite Sent Successfully") {
+                              fToast!.showToast(
+                                child: ToastMessage().show(width, context, res),
+                                gravity: ToastGravity.BOTTOM,
+                                toastDuration: Duration(seconds: 3),
+                              );
+                              Responsive.isDesktop(context)
+                                  ? Navigator.pushNamed(
+                                      context, AppRoutes.homeScreen)
+                                  : Navigator.pushNamed(
+                                      context, AppRoutes.bottomNav);
+                            } else {
+                              fToast!.showToast(
+                                child: ToastMessage()
+                                    .show(width, context, "There's some error"),
+                                gravity: ToastGravity.BOTTOM,
+                                toastDuration: Duration(seconds: 3),
+                              );
+                            }
                           } else {
                             fToast!.showToast(
-                              child: ToastMessage()
-                                  .show(width, context, "There's some error"),
+                              child: ToastMessage().show(width, context,
+                                  "Please input all field correctly"),
                               gravity: ToastGravity.BOTTOM,
                               toastDuration: Duration(seconds: 3),
                             );

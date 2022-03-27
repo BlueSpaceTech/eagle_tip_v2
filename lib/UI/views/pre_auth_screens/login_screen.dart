@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(phone);
         print(userRole);
         ConfirmationResult result =
-            await OtpFucnctions().sendOTPLogin("+91 8295314462");
+            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
         setState(() {
           ress = result;
         });
@@ -240,19 +240,19 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       //ignore: unrelated_type_equality_checks
-      final doc = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .get()
-          .then((value) => value);
-      if (!doc["isSubscribed"]) {
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({
-          "isSubscribed": true,
-        });
-      }
+      // final doc = await FirebaseFirestore.instance
+      //     .collection("users")
+      //     .doc(FirebaseAuth.instance.currentUser!.uid)
+      //     .get()
+      //     .then((value) => value);
+      // if (!doc["isSubscribed"]) {
+      //   FirebaseFirestore.instance
+      //       .collection("users")
+      //       .doc(FirebaseAuth.instance.currentUser!.uid)
+      //       .update({
+      //     "isSubscribed": true,
+      //   });
+      // }
     } else {
       fToast!.showToast(
         child: ToastMessage().show(width, context, "There's some error"),

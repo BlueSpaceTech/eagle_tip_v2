@@ -52,11 +52,8 @@ class _ChatScreennState extends State<ChatScreenn> {
       return;
     } else {
       print("entered in send1");
-      chat.doc("AXRiIrN0bmO6RwceO7jz").update({
-        "recentTime": FieldValue.serverTimestamp(),
-      }).then((value) {
-        print("entered in senddd");
-      });
+
+      print(chatDocId + "ffjjff");
       chat.doc(chatDocId).collection("messages").add({
         "createdOn": FieldValue.serverTimestamp(),
         "uid": currentUserUID,
@@ -65,6 +62,11 @@ class _ChatScreennState extends State<ChatScreenn> {
       }).then((value) {
         print("entered in send2");
         _sendcontroller.text = "";
+        chat.doc(chatDocId).update({
+          "recentTime": FieldValue.serverTimestamp(),
+        }).then((value) {
+          print("updated recent time");
+        });
       });
     }
   }

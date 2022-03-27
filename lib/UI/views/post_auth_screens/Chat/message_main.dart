@@ -113,6 +113,7 @@ class _MessageMainState extends State<MessageMain> {
               "uid2": frienduid,
               "photo1": photourluser,
               "photo2": photourlfriend,
+              "recentTime": FieldValue.serverTimestamp()
             }).then((value) => {chatDocId = value.id});
           }
         })

@@ -71,6 +71,7 @@ dependencies:
   http: ^0.13.4
   syncfusion_flutter_gauges: ^19.4.56
   easy_sidemenu: ^0.2.0
+  timeago: ^3.2.2
 
 
 dev_dependencies:

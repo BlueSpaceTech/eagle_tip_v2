@@ -11,27 +11,22 @@ import 'package:provider/provider.dart';
 class WebChatScreenn extends StatefulWidget {
   WebChatScreenn({
     Key? key,
-   required this.chatId,
-   required this.photourlfriend,
-   required this.friendname,
-
+    required this.chatId,
+    required this.photourlfriend,
+    required this.friendname,
   }) : super(key: key);
   String chatId;
   String photourlfriend;
   String friendname;
 
   @override
-  _WebChatScreennState createState() => _WebChatScreennState(
-     );
+  _WebChatScreennState createState() => _WebChatScreennState();
 }
 
 class _WebChatScreennState extends State<WebChatScreenn> {
- 
   final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _sendcontroller = new TextEditingController();
-  _WebChatScreennState(
-   
-  );
+  _WebChatScreennState();
   CollectionReference chat = FirebaseFirestore.instance.collection("chats");
   void sendmessage(String message) {
     print("entered in send");
@@ -39,6 +34,8 @@ class _WebChatScreennState extends State<WebChatScreenn> {
       return;
     } else {
       print("entered in send1");
+
+      //  print(chatDocId + "ffjjff");
       chat.doc(widget.chatId).collection("messages").add({
         "createdOn": FieldValue.serverTimestamp(),
         "uid": currentUserUID,
@@ -47,6 +44,11 @@ class _WebChatScreennState extends State<WebChatScreenn> {
       }).then((value) {
         print("entered in send2");
         _sendcontroller.text = "";
+        chat.doc(widget.chatId).update({
+          "recentTime": FieldValue.serverTimestamp(),
+        }).then((value) {
+          print("updated recent time");
+        });
       });
     }
   }
@@ -145,7 +147,6 @@ class _WebChatScreennState extends State<WebChatScreenn> {
   Stream<QuerySnapshot>? _stream;
   //var chatDocId;
 
-
 /*
   getchats() async {
     Stream<QuerySnapshot> doc = await FirebaseFirestore.instance
@@ -160,7 +161,6 @@ class _WebChatScreennState extends State<WebChatScreenn> {
 
   @override
   Widget build(BuildContext context) {
-   
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     int prevUserId;
@@ -202,8 +202,7 @@ class _WebChatScreennState extends State<WebChatScreenn> {
                     child: Row(
                       children: [
                         Visibility(
-                          visible:
-                              true,
+                          visible: true,
                           child: CircleAvatar(
                             radius: 20,
                             backgroundImage:

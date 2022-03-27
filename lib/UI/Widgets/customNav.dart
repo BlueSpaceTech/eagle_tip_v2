@@ -122,7 +122,7 @@ class _NavbarState extends State<Navbar> {
                                     stream: FirebaseFirestore.instance
                                         .collection("pushNotifications")
                                         .where("visibleto",
-                                            arrayContainsAny: ["SiteManager"])
+                                            arrayContainsAny: [user.userRole])
                                         // .where("isNew", ar: true)
                                         .snapshots(),
                                     builder: (context,
@@ -146,9 +146,7 @@ class _NavbarState extends State<Navbar> {
                                         showBadge:
                                             documents.isEmpty ? false : true,
                                         badgeContent: Text(
-                                          documents.isEmpty
-                                              ? "0"
-                                              : documents.length.toString(),
+                                          documents.length.toString(),
                                           style: TextStyle(color: Colors.white),
                                         ),
                                         child: Navtext(
