@@ -71,6 +71,8 @@ class _DesktopSettingState extends State<DesktopSetting> {
     fToast!.init(context);
   }
 
+  String dropdownValue = "Acers Marathon";
+
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -499,35 +501,41 @@ class _DesktopSettingState extends State<DesktopSetting> {
                           SizedBox(
                             height: height * 0.02,
                           ),
-                          Container(
-                            height: height * 0.072,
-                            width: width * 0.3,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18.0),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: width * 0.02, right: width * 0.02),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "Acres Marathon",
-                                    style: TextStyle(
-                                        fontSize: 15.0,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                  Image.asset(
-                                    Common.assetImages + "down_black.png",
-                                    width: width * 0.02,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                          DropdownButton<String>(
+                            value: dropdownValue,
+                            icon:
+                                const Icon(Icons.keyboard_arrow_down_outlined),
+                            iconEnabledColor: Colors.white,
+
+                            iconSize: 24,
+                            dropdownColor: Colors.black,
+                            elevation: 16,
+                            style: const TextStyle(color: Colors.white),
+                            // underline: Container(
+                            //   height: 2,
+                            //   color: Colors.deepPurpleAccent,
+                            // ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                dropdownValue = newValue!;
+                              });
+                            },
+                            items: <String>[
+                              'Acers Marathon',
+                              'Bridge Marathon',
+                              'Free',
+                              'Four'
+                            ].map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value +
+                                      "                                                                           ",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              );
+                            }).toList(),
+                          )
                         ],
                       ),
                     ),
@@ -612,12 +620,49 @@ class _DesktopSettingState extends State<DesktopSetting> {
                           SizedBox(
                             height: height * 0.04,
                           ),
-                          CustomColumn(
-                              color1: Color(0xFF5081DB),
-                              text3: "Terms and Conditions",
-                              text1: "Read Eagle Tip's Terms and conditions",
-                              text2: " here .",
-                              height: height),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Terms and Conditions",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Poppins"),
+                              ),
+                              SizedBox(
+                                height: height * 0.04,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.popAndPushNamed(
+                                      context, AppRoutes.displayTerms);
+                                },
+                                child: RichText(
+                                  text: TextSpan(
+                                    text:
+                                        "Read Eagle Tip's Terms and conditions",
+                                    style: TextStyle(
+                                        color: Color(0xFFD4D6D9),
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                    children: [
+                                      TextSpan(
+                                        text: " here .",
+                                        style: TextStyle(
+                                            color: Color(0xFF5081DB),
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                           SizedBox(
                             height: height * 0.02,
                           ),

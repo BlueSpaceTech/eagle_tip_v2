@@ -250,13 +250,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "https://link-of-terms&conditions",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xff5081DB),
-                            decoration: TextDecoration.underline,
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.displayTerms);
+                          },
+                          child: Text(
+                            "https://link-of-terms&conditions",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff5081DB),
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                         ),
                       ]),

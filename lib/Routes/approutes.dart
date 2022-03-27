@@ -49,4 +49,5 @@ class AppRoutes {
   static final String mobileSetting = "/mobileSetting";
   static final String about = "/about";
   static final String aboutCompany = "/aboutCompany";
+  static final String displayTerms = "/displayTerms";
 }

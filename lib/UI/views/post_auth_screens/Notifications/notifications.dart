@@ -259,14 +259,16 @@ class _NotificationsState extends State<Notifications> {
 
                                                     if (visibleTo()!) {
                                                       return Notify(
-                                                          docid: document.id,
                                                           width: width,
+                                                          // isnew: document!["isNew"],
                                                           newNotify:
                                                               document["isNew"],
+                                                          docid: document.id,
                                                           userid: FirebaseAuth
                                                               .instance
                                                               .currentUser!
-                                                              .uid,
+                                                              .uid
+                                                              .toString(),
                                                           notifyContent:
                                                               document[
                                                                   "description"],

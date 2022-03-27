@@ -36,6 +36,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Tanks/tanks_request.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/faqTerminal.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
+import 'package:testttttt/UI/views/post_auth_screens/TermsConditions/displayTerms.dart';
 import 'package:testttttt/UI/views/post_auth_screens/TicketHistory/ticketHistory.dart';
 import 'package:testttttt/UI/views/post_auth_screens/TicketHistory/ticketHistoryDetail.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/editUser.dart';
@@ -114,8 +115,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        // initialRoute: AppRoutes.mobileSetting,
-        home: UserNavigator(),
+        initialRoute: AppRoutes.loginscreen,
+        // home: UserNavigator(),
         routes: {
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
@@ -143,6 +144,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.siteScreen: (context) => Sites(),
           AppRoutes.siteDetails: (context) => SiteDetails(),
           AppRoutes.desktopSetting: (context) => DesktopSetting(),
+          AppRoutes.displayTerms: (context) => DisplayTerms(),
           // AppRoutes.settings: (context) => Settings(),
           AppRoutes.mobileSetting: (context) => MobileSetting(),
           AppRoutes.chattingscreen: (context) => ChatScreenn(

@@ -129,12 +129,14 @@ class _NavbarState extends State<Navbar> {
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
                                       final documents = [];
                                       final docs = snapshot.data!.docs;
-                                      for (var element in docs) {
-                                        List notify = element["isNew"];
+                                      if (docs.isNotEmpty) {
+                                        for (var element in docs) {
+                                          List notify = element["isNew"];
 
-                                        if (!notify.contains(FirebaseAuth
-                                            .instance.currentUser!.uid)) {
-                                          documents.add(element);
+                                          if (!notify.contains(FirebaseAuth
+                                              .instance.currentUser!.uid)) {
+                                            documents.add(element);
+                                          }
                                         }
                                       }
                                       if (!snapshot.hasData) {
