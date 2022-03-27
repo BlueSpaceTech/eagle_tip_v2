@@ -75,12 +75,18 @@ class _MessageMainState extends State<MessageMain> {
   Widget? ChatSCREEN;
   @override
   void initState() {
+    addData();
     // TODO: implement initState
     setState(() {
       ChatSCREEN = widget.Chatscreen;
     });
 
     super.initState();
+  }
+
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
   }
 
   CollectionReference chat = FirebaseFirestore.instance.collection("chats");
@@ -157,9 +163,8 @@ class _MessageMainState extends State<MessageMain> {
                       child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection("chats")
-                              .where("between", arrayContainsAny: [
-                            currentUserUID
-                          ]).snapshots(),
+                              .where("between",
+                                  arrayContainsAny: [user.uid]).snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return Center(

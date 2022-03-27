@@ -15,6 +15,7 @@ class UserNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
+      //  stream: FirebaseAuth.instance.idTokenChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           if (snapshot.hasData) {

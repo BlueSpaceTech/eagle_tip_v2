@@ -48,6 +48,7 @@ class OtpFucnctions {
           await confirmationResult.confirm(otp).catchError((error, stackTrace) {
         res = error.toString();
       });
+
       userCredential.user!.delete();
       return res;
     }

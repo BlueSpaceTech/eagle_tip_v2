@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -150,8 +151,26 @@ class _CrudScreenState extends State<CrudScreen> {
   }
 
   String selectedrOLE = "";
-
+  String userRole = "";
   List<dynamic> selectedsites = [];
+  getCurrentUserRole() async {
+    DocumentReference dbRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    await dbRef.get().then((data) {
+      if (data.exists) {
+        if (mounted) {
+          setState(() {
+            print("fetching");
+
+            userRole = data.get("userRole");
+            // email = data.get("email");
+            // phone = data.get("phonenumber");
+          });
+        }
+      }
+    });
+  }
 
   _buildsiteschip(List site) {
     bool issel = false;
@@ -272,6 +291,7 @@ class _CrudScreenState extends State<CrudScreen> {
   @override
   void initState() {
     super.initState();
+    getCurrentUserRole();
     _controllers = LinkedScrollControllerGroup();
     _letters = _controllers!.addAndGet();
     _numbers = _controllers!.addAndGet();
@@ -328,25 +348,26 @@ class _CrudScreenState extends State<CrudScreen> {
     print(_allResults.length);
     // _allResults.removeWhere(
     //     (element) => element["userRole"] != CrudFunction().visibleRole(user));
-    for (var element = 0; element < _allResults.length; element++) {
-      print(element);
-      if (CrudFunction()
-          .visibleRole(user)
-          .contains(_allResults[element]["userRole"])) {
-        print(_allResults[element]["name"] +
-            "contains" +
-            _allResults[element]["userRole"]);
-      } else {
-        _allResults.removeAt(element);
-        print(_allResults[element]["name"] +
-            "removed" +
-            _allResults[element]["userRole"]);
-      }
-    }
-    print(_allResults.length);
-    for (var ele in _allResults) {
-      print(ele["name"]);
-    }
+    // for (var element = 0; element < _allResults.length; element++) {
+    //   print(element);
+    //   if (CrudFunction()
+    //       .visibleRole(user)
+    //       .contains(_allResults[element]["userRole"])) {
+    //     print(_allResults[element]["name"] +
+    //         "contains" +
+    //         _allResults[element]["userRole"]);
+    //   } else {
+    //     _allResults.removeAt(element);
+    //     print(_allResults[element]["name"] +
+    //         "removed" +
+    //         _allResults[element]["userRole"]);
+    //   }
+    // }
+    // print(_allResults.length);
+    // for (var ele in _allResults) {
+    //   print(ele["name"]);
+    // }
+
     searchresult();
     return "done";
   }
@@ -363,11 +384,8 @@ class _CrudScreenState extends State<CrudScreen> {
     searchresult();
   }
 
-  serchrole() {
-    searchresult();
-  }
-
   searchresult() {
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     var showResults = [];
     if (_search.text != "") {
       //we have a search parameter
@@ -399,7 +417,21 @@ class _CrudScreenState extends State<CrudScreen> {
         }
       }
     } else {
-      showResults = List.from(_allResults);
+      for (var usersnap in _allResults) {
+        var role = model.User.fromSnap(usersnap).userRole;
+        var user = model.User.fromSnap(usersnap);
+        List visiblefor = CrudFunction().visibleRole2(userRole);
+        // List visiblefor = ["SiteManager", "SiteUser"];
+        if (visiblefor.contains(usersnap["userRole"])) {
+          print("contains");
+          showResults.add(usersnap);
+        } else {
+          // _allResults.remove(user);
+          print("removed");
+        }
+      }
+
+      // showResults = List.from(_allResults);
     }
     setState(() {
       _resultList = showResults;

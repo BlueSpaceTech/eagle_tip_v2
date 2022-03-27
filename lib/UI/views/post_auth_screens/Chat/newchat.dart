@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/Crud_functions.dart';
 import 'package:testttttt/UI/Widgets/chatListTile.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/Widgets/newchatListtile.dart';
@@ -24,10 +25,13 @@ class NewChatScreen extends StatefulWidget {
 }
 
 class _NewChatScreenState extends State<NewChatScreen> {
+  var chatId;
   void callChatScreen(String uid, String name, String currentusername,
       String photoUrlfriend, String photourluser) async {
-    String chatId = await getChatId(
-        uid, name, currentusername, photoUrlfriend, photourluser);
+    await getChatId(uid, name, currentusername, photoUrlfriend, photourluser);
+
+    await Future.delayed(const Duration(seconds: 3));
+    print(chatId + "gggggR");
     Responsive.isDesktop(context)
         ? Navigator.push(
             context,
@@ -59,6 +63,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
 
   CollectionReference chat = FirebaseFirestore.instance.collection("chats");
   final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+
   getChatId(String frienduid, String friendname, String currentusername,
       String photourlfriend, String photourluser) async {
     var chatDocId;
@@ -81,15 +86,37 @@ class _NewChatScreenState extends State<NewChatScreen> {
               "uid2": frienduid,
               "photo1": photourluser,
               "photo2": photourlfriend,
-            }).then((value) => {chatDocId = value.id});
+            }).then((value) => {
+                  setState(() {
+                    chatId = value.id;
+                  })
+                });
           }
         })
         .catchError((err) {});
-    return chatDocId;
   }
 
   final TextEditingController _SEARCH = new TextEditingController();
   Future? resultsloaded;
+  String userRole = "";
+  getCurrentUserRole() async {
+    DocumentReference dbRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    await dbRef.get().then((data) {
+      if (data.exists) {
+        if (mounted) {
+          setState(() {
+            print("fetching");
+
+            userRole = data.get("userRole");
+            // email = data.get("email");
+            // phone = data.get("phonenumber");
+          });
+        }
+      }
+    });
+  }
 
   List _allResults = [];
   List _resultList = [];
@@ -145,7 +172,21 @@ class _NewChatScreenState extends State<NewChatScreen> {
         */
       }
     } else {
-      showResults = List.from(_allResults);
+      for (var usersnap in _allResults) {
+        var role = model.User.fromSnap(usersnap).userRole;
+        var user = model.User.fromSnap(usersnap);
+        List visiblefor = CrudFunction().allChatVisibility(userRole);
+        // List visiblefor = ["SiteManager", "SiteUser"];
+        if (visiblefor.contains(usersnap["userRole"])) {
+          print("contains");
+          showResults.add(usersnap);
+        } else {
+          // _allResults.remove(user);
+          print("removed");
+        }
+      }
+
+      // showResults = List.from(_allResults);
     }
     setState(() {
       _resultList = showResults;
@@ -156,6 +197,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getCurrentUserRole();
     _SEARCH.addListener(_onsearchange);
   }
 

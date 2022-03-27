@@ -144,7 +144,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("chats")
-              .where("between", arrayContainsAny: [currentUserUID]).snapshots(),
+              .where("between", arrayContainsAny: [user.uid]).snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(

@@ -163,6 +163,11 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
   String phone = "";
   String userRole = "";
   void loginuser(double width) async {
@@ -189,65 +194,69 @@ class _LoginScreenState extends State<LoginScreen> {
 //         res = "success";
 //       });
 //     });
-    addData() async {
-      UserProvider _userProvider = Provider.of(context, listen: false);
-      await _userProvider.refreshUser();
-    }
 
     if (res == "success") {
-      addData();
+      print(_auth.currentUser!.uid);
+      // addData();
       print({"here "});
       print("phonenumber");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      // if (PlatformInfo().isWeb()) {
-      //   print("isweb");
+      if (PlatformInfo().isWeb()) {
+        print("isweb");
 
-      //   DocumentReference dbRef = FirebaseFirestore.instance
-      //       .collection('users')
-      //       .doc(FirebaseAuth.instance.currentUser!.uid);
-      //   await dbRef.get().then((data) {
-      //     if (data.exists) {
-      //       if (mounted) {
-      //         setState(() {
-      //           print("fetching");
-      //           phone = data.get("phonenumber");
-      //           userRole = data.get("userRole");
-      //           // email = data.get("email");
-      //           // phone = data.get("phonenumber");
-      //         });
-      //       }
-      //     }
-      //   });
-      //   print(phone);
-      //   print(userRole);
-      //   ConfirmationResult result =
-      //       await OtpFucnctions().sendOTPLogin("+91 ${phone}");
-      //   setState(() {
-      //     ress = result;
-      //   });
+        DocumentReference dbRef = FirebaseFirestore.instance
+            .collection('users')
+            .doc(FirebaseAuth.instance.currentUser!.uid);
+        await dbRef.get().then((data) {
+          if (data.exists) {
+            if (mounted) {
+              setState(() {
+                print("fetching");
+                phone = data.get("phonenumber");
+                userRole = data.get("userRole");
+                // email = data.get("email");
+                // phone = data.get("phonenumber");
+              });
+            }
+          }
+        });
+        AuthFunctions.signOut;
+        print(phone);
+        print(userRole);
+        ConfirmationResult result =
+            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+        setState(() {
+          ress = result;
+        });
+        addData();
 
-      //   print(ress);
-      // } else {
-      //   registerUser(phone, context);
-      // }
+        print(ress);
+      } else {
+        registerUser(phone, context);
+      }
 
-      // ignore: unrelated_type_equality_checks
-      // final doc = await FirebaseFirestore.instance
-      //     .collection("users")
-      //     .doc(FirebaseAuth.instance.currentUser!.uid)
-      //     .get()
-      //     .then((value) => value);
-      // if (!doc["isSubscribed"]) {
-      //   FirebaseFirestore.instance
-      //       .collection("users")
-      //       .doc(FirebaseAuth.instance.currentUser!.uid)
-      //       .update({
-      //     "isSubscribed": true,
-      //   });
-      // }
-
+      //ignore: unrelated_type_equality_checks
+      final doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((value) => value);
+      if (!doc["isSubscribed"]) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          "isSubscribed": true,
+        });
+      }
+    } else {
+      fToast!.showToast(
+        child: ToastMessage().show(width, context, "There's some error"),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 3),
+      );
     }
   }
 
@@ -255,14 +264,24 @@ class _LoginScreenState extends State<LoginScreen> {
     //  String role = "";
     print("confirming");
     print(ress);
+    addData();
 
     String res = await OtpFucnctions().authenticateMe(
       ress!,
       _otpcode.text,
     );
+    await Future.delayed(const Duration(seconds: 3));
     print(res + "ffff");
-    res == "success"
-        ? Navigator.pushReplacement(
+    if (res == "success") {
+      await AuthFunctions.signOut;
+      String resss = await AuthFunctions().loginuser(
+        email: _email.text,
+        password: _password.text,
+      );
+      if (resss == "success") {
+        addData();
+
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
                 builder: (context) => (userRole == "TerminalUser" ||
@@ -270,11 +289,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ? TerminalHome()
                     : Responsive.isDesktop(context)
                         ? HomeScreen()
-                        : BottomNav()))
-        : fToast!.showToast(
-            child: ToastMessage().show(200, context, res),
+                        : BottomNav()));
+      } else {
+        fToast!.showToast(
+            child: ToastMessage().show(200, context, "Success"),
             gravity: ToastGravity.BOTTOM,
             toastDuration: Duration(seconds: 3));
+      }
+    } else {
+      fToast!.showToast(
+          child: ToastMessage().show(200, context, "Error in OTP"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3));
+    }
   }
 
   Color? getotp;
