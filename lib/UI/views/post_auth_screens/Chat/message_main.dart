@@ -365,17 +365,17 @@ class _MessageMainState extends State<MessageMain> {
 
                                           return InkWell(
                                             onTap: () {
-                                              document![index]
-                                                  .reference
-                                                  .collection("messages")
-                                                  .doc(document[index].id +
-                                                      "sent")
-                                                  .update({
-                                                "isNew": false,
-                                              });
+                                              // document![index]
+                                              //     .reference
+                                              //     .collection("messages")
+                                              //     .doc(document[index].id +
+                                              //         "sent")
+                                              //     .update({
+                                              //   "isNew": false,
+                                              // });
 
                                               callChatScreenn(
-                                                  document[index]['uid1'] ==
+                                                  document![index]['uid1'] ==
                                                           user.uid
                                                       ? document[index]["uid2"]
                                                       : document[index]["uid1"],

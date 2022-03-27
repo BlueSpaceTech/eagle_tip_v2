@@ -280,16 +280,16 @@ class _AllChatScreenState extends State<AllChatScreen> {
 
                           return InkWell(
                             onTap: () {
-                              document![index]
-                                  .reference
-                                  .collection("messages")
-                                  .doc(document[index].id + "sent")
-                                  .update({
-                                "isNew": false,
-                              });
+                              // document![index]
+                              //     .reference
+                              //     .collection("messages")
+                              //     .doc(document[index].id + "sent")
+                              //     .update({
+                              //   "isNew": false,
+                              // });
 
                               callChatScreen(
-                                  document[index]['uid1'] == user.uid
+                                  document![index]['uid1'] == user.uid
                                       ? document[index]["uid2"]
                                       : document[index]["uid1"],
                                   document[index]['user1'] == user.name

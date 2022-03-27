@@ -228,7 +228,7 @@ class _LoginScreenState extends State<LoginScreen> {
         print(phone);
         print(userRole);
         ConfirmationResult result =
-            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+            await OtpFucnctions().sendOTPLogin("+91 8295314462");
         setState(() {
           ress = result;
         });

@@ -17,7 +17,6 @@ class ChatScreenn extends StatefulWidget {
     required this.currentusername,
     required this.photourluser,
     required this.photourlfriend,
-  
   }) : super(key: key);
   int index;
   final frienduid;
@@ -25,7 +24,7 @@ class ChatScreenn extends StatefulWidget {
   final currentusername;
   final photourluser;
   final photourlfriend;
-  
+
   @override
   _ChatScreennState createState() => _ChatScreennState(
       frienduid, friendname, currentusername, photourluser, photourlfriend);
@@ -53,6 +52,11 @@ class _ChatScreennState extends State<ChatScreenn> {
       return;
     } else {
       print("entered in send1");
+      chat.doc("AXRiIrN0bmO6RwceO7jz").update({
+        "recentTime": FieldValue.serverTimestamp(),
+      }).then((value) {
+        print("entered in senddd");
+      });
       chat.doc(chatDocId).collection("messages").add({
         "createdOn": FieldValue.serverTimestamp(),
         "uid": currentUserUID,
@@ -163,7 +167,7 @@ class _ChatScreennState extends State<ChatScreenn> {
     // TODO: implement initState
     super.initState();
     print("initated");
-    
+
     chat
         .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
         .limit(1)
