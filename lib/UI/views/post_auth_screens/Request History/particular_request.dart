@@ -70,7 +70,7 @@ class ParticularRequest extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Order ID: $orderid",
+                                  "Inventory Resquest: $orderid",
                                   style: TextStyle(
                                     fontSize: width * 0.013,
                                     color: Colors.white,

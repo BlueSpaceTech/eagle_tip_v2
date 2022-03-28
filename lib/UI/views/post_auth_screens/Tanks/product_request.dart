@@ -204,6 +204,9 @@ class _ProductRequestState extends State<ProductRequest> {
                                       if (initialVal > 0) {
                                         initialVal =
                                             initialVal - widget.divisionNum;
+                                        if (initialVal < 0) {
+                                          initialVal = 0;
+                                        }
                                       }
                                     });
                                   },
@@ -228,6 +231,9 @@ class _ProductRequestState extends State<ProductRequest> {
                                       if (initialVal < widget.maxVal) {
                                         initialVal =
                                             initialVal + widget.divisionNum;
+                                        if (initialVal > widget.maxVal) {
+                                          initialVal = widget.maxVal;
+                                        }
                                       }
                                     });
                                   },
