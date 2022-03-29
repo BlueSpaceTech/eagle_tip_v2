@@ -86,7 +86,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
               "uid2": frienduid,
               "photo1": photourluser,
               "photo2": photourlfriend,
-              "recentTime": FieldValue.serverTimestamp()
+              "recentTime": FieldValue.serverTimestamp(),
+              "isNew": currentUserUID,
             }).then((value) => {
                   setState(() {
                     chatId = value.id;
