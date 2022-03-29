@@ -16,7 +16,7 @@ class ChatListTile extends StatefulWidget {
     required this.newChat,
   }) : super(key: key);
   final double height;
-  final bool newChat;
+  final String newChat;
   final double width;
   final DocumentSnapshot doc;
 
