@@ -268,7 +268,10 @@ class UserProfile extends StatelessWidget {
                                       ? 0.0
                                       : width * 0.04),
                               child: SitesData(
-                                  height: height * 1.08, width: width),
+                                height: height * 1.08,
+                                width: width,
+                                Sites: user.sites,
+                              ),
                             ),
                             Visibility(
                               visible: Responsive.isDesktop(context),

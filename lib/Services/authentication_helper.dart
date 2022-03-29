@@ -116,7 +116,7 @@ class AuthFunctions {
 
         res = "success";
 
-        _firestore.collection("users").doc(employercode).delete();
+        _firestore.collection("invitations").doc(employercode).delete();
       }
     } on FirebaseAuthException catch (err) {
       if (err.code == "invalid-email") {

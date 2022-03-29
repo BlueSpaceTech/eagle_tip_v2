@@ -247,7 +247,9 @@ class _MyProfileState extends State<MyProfile> {
                                       ? 0.0
                                       : width * 0.04),
                               child: SitesData(
-                                  height: height * 1.08, width: width),
+                                  height: height * 1.08,
+                                  width: width,
+                                  Sites: user.sites),
                             ),
                             Visibility(
                               visible: !Responsive.isDesktop(context),
@@ -487,10 +489,13 @@ class SitesData extends StatelessWidget {
     Key? key,
     required this.height,
     required this.width,
+    required this.Sites,
   }) : super(key: key);
 
   final double height;
   final double width;
+  final List Sites;
+  genratesiteROW(List Site) {}
 
   @override
   Widget build(BuildContext context) {

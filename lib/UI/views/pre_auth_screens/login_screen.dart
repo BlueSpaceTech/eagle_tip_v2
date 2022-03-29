@@ -202,42 +202,42 @@ class _LoginScreenState extends State<LoginScreen> {
       // addData();
       print({"here "});
       print("phonenumber");
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      if (PlatformInfo().isWeb()) {
-        print("isweb");
+      // if (PlatformInfo().isWeb()) {
+      //   print("isweb");
 
-        DocumentReference dbRef = FirebaseFirestore.instance
-            .collection('users')
-            .doc(FirebaseAuth.instance.currentUser!.uid);
-        await dbRef.get().then((data) {
-          if (data.exists) {
-            if (mounted) {
-              setState(() {
-                print("fetching");
-                phone = data.get("phonenumber");
-                userRole = data.get("userRole");
-                // email = data.get("email");
-                // phone = data.get("phonenumber");
-              });
-            }
-          }
-        });
-        AuthFunctions.signOut;
-        print(phone);
-        print(userRole);
-        ConfirmationResult result =
-            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-        setState(() {
-          ress = result;
-        });
-        addData();
+      //   DocumentReference dbRef = FirebaseFirestore.instance
+      //       .collection('users')
+      //       .doc(FirebaseAuth.instance.currentUser!.uid);
+      //   await dbRef.get().then((data) {
+      //     if (data.exists) {
+      //       if (mounted) {
+      //         setState(() {
+      //           print("fetching");
+      //           phone = data.get("phonenumber");
+      //           userRole = data.get("userRole");
+      //           // email = data.get("email");
+      //           // phone = data.get("phonenumber");
+      //         });
+      //       }
+      //     }
+      //   });
+      //   AuthFunctions.signOut;
+      //   print(phone);
+      //   print(userRole);
+      //   ConfirmationResult result =
+      //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+      //   setState(() {
+      //     ress = result;
+      //   });
+      //   addData();
 
-        print(ress);
-      } else {
-        registerUser(phone, context);
-      }
+      //   print(ress);
+      // } else {
+      //   registerUser(phone, context);
+      // }
 
       //ignore: unrelated_type_equality_checks
       // final doc = await FirebaseFirestore.instance

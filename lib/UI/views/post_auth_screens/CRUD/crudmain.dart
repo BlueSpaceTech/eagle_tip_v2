@@ -332,10 +332,7 @@ class _CrudScreenState extends State<CrudScreen> {
   getUserdetails(List sites, String uid, model.User user) async {
     var data = await FirebaseFirestore.instance
         .collection("users")
-        .where(
-          "isverified",
-          isEqualTo: true,
-        )
+        .where("isverified", isEqualTo: true)
         .where("sites", arrayContainsAny: sites)
         .where("uid", isNotEqualTo: uid)
         // .where("userRole", whereIn: CrudFunction().visibleRole(user))
@@ -344,8 +341,8 @@ class _CrudScreenState extends State<CrudScreen> {
     setState(() {
       _allResults = data.docs;
     });
-    print(CrudFunction().visibleRole(user));
-    print(_allResults.length);
+    // print(CrudFunction().visibleRole(user));
+    // print(_allResults.length);
     // _allResults.removeWhere(
     //     (element) => element["userRole"] != CrudFunction().visibleRole(user));
     // for (var element = 0; element < _allResults.length; element++) {
@@ -389,7 +386,7 @@ class _CrudScreenState extends State<CrudScreen> {
     var showResults = [];
     if (_search.text != "") {
       //we have a search parameter
-      for (var usersnap in _allResults) {
+      for (var usersnap in _resultList) {
         var name = model.User.fromSnap(usersnap).name.toLowerCase();
 
         if (name.contains(_search.text.toLowerCase())) {
@@ -401,16 +398,17 @@ class _CrudScreenState extends State<CrudScreen> {
           showResults.add(usersnap);
         }
         */
+
       }
     } else if (selectedrOLE != "") {
-      for (var usersnap in _allResults) {
+      for (var usersnap in _resultList) {
         var userRole = model.User.fromSnap(usersnap).userRole;
         if (userRole.contains(selectedrOLE)) {
           showResults.add(usersnap);
         }
       }
     } else if (selectedsites.isNotEmpty) {
-      for (var usersnap in _allResults) {
+      for (var usersnap in _resultList) {
         var sites = model.User.fromSnap(usersnap).sites;
         if (selectedsites.every((item) => sites.contains(item))) {
           showResults.add(usersnap);

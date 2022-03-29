@@ -38,9 +38,13 @@ class _UploadImageState extends State<UploadImage> {
   FToast? fToast;
   final TextEditingController _password = TextEditingController();
   Uint8List? _image;
+  String? name;
   @override
   void initState() {
     // TODO: implement initState
+    setState(() {
+      name = widget.doc.get("name");
+    });
 
     super.initState();
     super.initState();
@@ -80,53 +84,68 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   void signupUser(double width) async {
-    showDialog(
-      builder: (ctx) {
-        return Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-          ),
-        );
-      },
-      context: context,
-    );
-
-    String res = await AuthFunctions().signupuser(
-      // token: widget.doc.get("token"),
-      email: widget.doc.get("email"),
-      password: _password.text,
-      username: widget.doc.get("name"),
-      phoneno: widget.doc.get("phonenumber"),
-      role: widget.doc.get("userRole"),
-      Sites: widget.doc.get("sites"),
-      employercode: widget.doc.get("employercode"),
-      isverified: true,
-
-      file: _image!,
-    );
-    startTime() async {
-      var duration = new Duration(seconds: 3);
-      return Timer(duration, route2);
-    }
-
-    //  StorageMethods().uploadStorageImage(_image!, "filePath");
-    print(res);
-    if (res == "success") {
-      addData();
-      startTime();
-
+    if (_image!.isEmpty) {
       fToast!.showToast(
-        child: ToastMessage().show(width, context, "Your Account is Created"),
+        child:
+            ToastMessage().show(width, context, "Please select a image first"),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 3),
+      );
+    } else if (_password.text == "") {
+      fToast!.showToast(
+        child:
+            ToastMessage().show(width, context, "Please set a password first"),
         gravity: ToastGravity.BOTTOM,
         toastDuration: Duration(seconds: 3),
       );
     } else {
-      //Uri url = await StorageMethods().uploadImageFile(_image!);
-      fToast!.showToast(
-        child: ToastMessage().show(width, context, res),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 3),
+      showDialog(
+        builder: (ctx) {
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          );
+        },
+        context: context,
       );
+      String res = await AuthFunctions().signupuser(
+        // token: widget.doc.get("token"),
+        email: widget.doc.get("email"),
+        password: _password.text,
+        username: widget.doc.get("name"),
+        phoneno: widget.doc.get("phonenumber"),
+        role: widget.doc.get("userRole"),
+        Sites: widget.doc.get("sites"),
+        employercode: widget.doc.get("employercode"),
+        isverified: true,
+
+        file: _image!,
+      );
+      startTime() async {
+        var duration = new Duration(seconds: 3);
+        return Timer(duration, route2);
+      }
+
+      //  StorageMethods().uploadStorageImage(_image!, "filePath");
+      print(res);
+      if (res == "success") {
+        addData();
+        startTime();
+
+        fToast!.showToast(
+          child: ToastMessage().show(width, context, "Your Account is Created"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3),
+        );
+      } else {
+        //Uri url = await StorageMethods().uploadImageFile(_image!);
+        fToast!.showToast(
+          child: ToastMessage().show(width, context, res),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3),
+        );
+      }
     }
   }
 
@@ -209,7 +228,7 @@ class _UploadImageState extends State<UploadImage> {
                       height: height * 0.1,
                     ),
                     Text(
-                      "Hey Ben,",
+                      "Hey ${name},",
                       style: TextStyle(
                           fontSize: 24,
                           color: Color(0xff92B8FF),
@@ -296,7 +315,7 @@ class _UploadImageState extends State<UploadImage> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () async {
                         signupUser(width);
                         _subscribetotopic();
