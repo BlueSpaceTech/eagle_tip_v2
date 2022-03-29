@@ -290,7 +290,7 @@ class _MyProfileState extends State<MyProfile> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Tickets",
+                                    "Support Tickets",
                                     style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.w600,

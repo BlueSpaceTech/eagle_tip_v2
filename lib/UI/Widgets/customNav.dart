@@ -99,6 +99,18 @@ class _NavbarState extends State<Navbar> {
                                   index = 1;
                                 });
                               },
+                              // child: StreamBuilder(
+                              //   stream: FirebaseFirestore.instance
+                              //       .collection("chats")
+                              //       .where("between", arrayContainsAny: [
+                              //     user.uid
+                              //   ]).snapshots(),
+                              //   builder: (context,
+                              //       AsyncSnapshot<QuerySnapshot> snapshot) {
+                              //         List docsss=snapshot.data!.docs;
+
+                              //     return Badge(
+                              //       showBadge: ,
                               child: Navtext(
                                 color: index == 1
                                     ? Colors.white
@@ -106,8 +118,11 @@ class _NavbarState extends State<Navbar> {
                                 text: "Chat",
                                 width: widget.width,
                               ),
+                              // );
+                              // },
                             ),
                           ),
+                          // ),
                           MouseRegion(
                             cursor: SystemMouseCursors.click,
                             child: InkWell(

@@ -13,8 +13,10 @@ class ChatListTile extends StatefulWidget {
     required this.height,
     required this.width,
     required this.doc,
+    required this.newChat,
   }) : super(key: key);
   final double height;
+  final bool newChat;
   final double width;
   final DocumentSnapshot doc;
 
@@ -131,37 +133,15 @@ class _ChatListTileState extends State<ChatListTile> {
               ],
             ),
           ),
-          StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection("chats")
-                .doc(widget.doc.id)
-                .collection("messages")
-                .where("isNew", isEqualTo: true)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              final documentlen = snapshot.data?.docs.length;
-              final doclist = [];
-              final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
-              final docs = snapshot.data!.docs;
-              docs.forEach((element) {
-                if (element["uid"] != currentUserUID) {
-                  doclist.add(element);
-                }
-              });
-              if (snapshot.hasData) {
-                return Visibility(
-                  visible: doclist.isNotEmpty,
-                  child: Container(
-                    alignment: Alignment.center,
-                    width: 20,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Color(0xff5081DB)),
-                  ),
-                );
-              }
-              return Text("");
-            },
-          ),
+          Visibility(
+            visible: widget.newChat != user.uid,
+            child: Container(
+              alignment: Alignment.center,
+              width: 20,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle, color: Color(0xff5081DB)),
+            ),
+          )
         ],
       ),
     );

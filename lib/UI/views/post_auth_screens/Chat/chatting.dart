@@ -64,6 +64,7 @@ class _ChatScreennState extends State<ChatScreenn> {
         _sendcontroller.text = "";
         chat.doc(chatDocId).update({
           "recentTime": FieldValue.serverTimestamp(),
+          "isNew": currentUserUID,
         }).then((value) {
           print("updated recent time");
         });

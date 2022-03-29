@@ -303,6 +303,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                             },
                             child: ChatListTile(
                               doc: document![index],
+                              newChat: document[index]["isNew"],
                               height: height,
                               width: width,
                             ),

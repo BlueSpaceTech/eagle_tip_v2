@@ -763,7 +763,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                               onTap: () {
                                 // playsound();
                                 // playLocal();
-                                trigger();
+                                // trigger();
                                 widget.valueChanged(reqSent);
                                 print(reqSent);
                                 Navigator.pop(context);

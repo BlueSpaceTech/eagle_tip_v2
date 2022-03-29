@@ -577,7 +577,7 @@ class _TankState extends State<Tank> {
                               child: TextField(
                                 style: TextStyle(
                                   fontSize: Responsive.isDesktop(context)
-                                      ? widget.width * 0.034
+                                      ? widget.width * 0.04
                                       : 12.0,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: "Poppins",

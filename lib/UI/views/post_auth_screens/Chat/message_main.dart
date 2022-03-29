@@ -374,9 +374,14 @@ class _MessageMainState extends State<MessageMain> {
                                               //     .update({
                                               //   "isNew": false,
                                               // });
-
+                                              FirebaseFirestore.instance
+                                                  .collection("chats")
+                                                  .doc(document![index].id)
+                                                  .update({
+                                                "isNew": false,
+                                              });
                                               callChatScreenn(
-                                                  document![index]['uid1'] ==
+                                                  document[index]['uid1'] ==
                                                           user.uid
                                                       ? document[index]["uid2"]
                                                       : document[index]["uid1"],
@@ -396,6 +401,7 @@ class _MessageMainState extends State<MessageMain> {
                                             },
                                             child: ChatListTile(
                                               doc: document![index],
+                                              newChat: document[index]["isNew"],
                                               height: height,
                                               width: width,
                                             ),

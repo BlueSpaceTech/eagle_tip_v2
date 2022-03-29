@@ -46,6 +46,7 @@ class _WebChatScreennState extends State<WebChatScreenn> {
         _sendcontroller.text = "";
         chat.doc(widget.chatId).update({
           "recentTime": FieldValue.serverTimestamp(),
+          "isNew": currentUserUID,
         }).then((value) {
           print("updated recent time");
         });
