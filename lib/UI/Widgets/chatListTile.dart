@@ -134,9 +134,10 @@ class _ChatListTileState extends State<ChatListTile> {
             ),
           ),
           Visibility(
-            visible: widget.doc.get("isNew") != user.uid,
+            visible: !(widget.doc.get("isNew") == "constant" ||
+                widget.doc.get("isNew") == user.uid),
             child: Container(
-              alignment: Alignment.center,
+              height: 20,
               width: 20,
               decoration: BoxDecoration(
                   shape: BoxShape.circle, color: Color(0xff5081DB)),

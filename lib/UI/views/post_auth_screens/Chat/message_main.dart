@@ -378,7 +378,7 @@ class _MessageMainState extends State<MessageMain> {
                                                   .collection("chats")
                                                   .doc(document![index].id)
                                                   .update({
-                                                "isNew": user.uid,
+                                                "isNew": "constant",
                                               });
                                               callChatScreenn(
                                                   document[index]['uid1'] ==
