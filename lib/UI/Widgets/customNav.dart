@@ -115,7 +115,7 @@ class _NavbarState extends State<Navbar> {
                                     }
                                   }
                                   return Badge(
-                                    showBadge: docs2.isEmpty,
+                                    showBadge: docs2.isNotEmpty,
                                     badgeContent: Text(
                                       docs2.length.toString(),
                                       style: TextStyle(color: Colors.white),
