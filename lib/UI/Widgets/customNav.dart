@@ -110,7 +110,8 @@ class _NavbarState extends State<Navbar> {
                                   List docsss = snapshot.data!.docs;
                                   List docs2 = [];
                                   for (var ele in docsss) {
-                                    if (ele["isNew"] != user.uid) {
+                                    if (ele["isNew"] != user.uid &&
+                                        ele["isNew"] != "constant") {
                                       docs2.add(ele);
                                     }
                                   }
