@@ -102,18 +102,22 @@ class _NavbarState extends State<Navbar> {
                               child: StreamBuilder(
                                 stream: FirebaseFirestore.instance
                                     .collection("chats")
-                                    .where("between",
-                                        arrayContainsAny: [user.uid])
-                                    .where("isNew", isNotEqualTo: user.uid)
-                                    .snapshots(),
+                                    .where("between", arrayContainsAny: [
+                                  user.uid
+                                ]).snapshots(),
                                 builder: (context,
                                     AsyncSnapshot<QuerySnapshot> snapshot) {
                                   List docsss = snapshot.data!.docs;
-
+                                  List docs2 = [];
+                                  for (var ele in docsss) {
+                                    if (ele["isNew"] != user.uid) {
+                                      docs2.add(ele);
+                                    }
+                                  }
                                   return Badge(
-                                    showBadge: docsss.isEmpty,
+                                    showBadge: docs2.isEmpty,
                                     badgeContent: Text(
-                                      docsss.length.toString(),
+                                      docs2.length.toString(),
                                       style: TextStyle(color: Colors.white),
                                     ),
                                     child: Navtext(
