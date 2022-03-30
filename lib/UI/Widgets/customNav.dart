@@ -99,27 +99,35 @@ class _NavbarState extends State<Navbar> {
                                   index = 1;
                                 });
                               },
-                              // child: StreamBuilder(
-                              //   stream: FirebaseFirestore.instance
-                              //       .collection("chats")
-                              //       .where("between", arrayContainsAny: [
-                              //     user.uid
-                              //   ]).snapshots(),
-                              //   builder: (context,
-                              //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                              //         List docsss=snapshot.data!.docs;
+                              child: StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection("chats")
+                                    .where("between",
+                                        arrayContainsAny: [user.uid])
+                                    .where("isNew", isNotEqualTo: user.uid)
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                                  List docsss = snapshot.data!.docs;
 
-                              //     return Badge(
-                              //       showBadge: ,
-                              child: Navtext(
-                                color: index == 1
-                                    ? Colors.white
-                                    : Color(0xFFA0A3BD),
-                                text: "Chat",
-                                width: widget.width,
+                                  return Badge(
+                                    showBadge: docsss.isEmpty,
+                                    badgeContent: Text(
+                                      docsss.length.toString(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    child: Navtext(
+                                      color: index == 1
+                                          ? Colors.white
+                                          : Color(0xFFA0A3BD),
+                                      text: "Chat",
+                                      width: widget.width,
+                                    ),
+                                    // );
+                                    // },
+                                  );
+                                },
                               ),
-                              // );
-                              // },
                             ),
                           ),
                           // ),
