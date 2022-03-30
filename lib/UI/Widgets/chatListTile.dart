@@ -134,8 +134,7 @@ class _ChatListTileState extends State<ChatListTile> {
             ),
           ),
           Visibility(
-            visible: (widget.doc.get("isNew").toString().isEmpty ||
-                widget.doc.get("isNew") != user.uid),
+            visible: widget.doc.get("isNew") != user.uid,
             child: Container(
               alignment: Alignment.center,
               width: 20,
