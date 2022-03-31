@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,6 +8,7 @@ import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/chatListTile.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
+import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/newchat.dart';
@@ -142,6 +145,10 @@ class _MessageMainState extends State<MessageMain> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Responsive.isDesktop(context)
+          ? MenuButton(isTapped: false, width: width)
+          : SizedBox(),
       backgroundColor: Color(0xff2B343B),
       body: Responsive(
         mobile: AllChatScreen(),

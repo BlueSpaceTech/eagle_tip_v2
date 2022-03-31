@@ -7,6 +7,7 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:testttttt/Utils/responsive.dart';
 
 import '../../../Services/authentication_helper.dart';
 
@@ -21,12 +22,16 @@ class _SettingState extends State<Setting> {
   bool? switchVal1 = false;
 
   bool? switchVal2 = false;
-
+  String dropdownValue = "Acers Marathon";
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Responsive.isDesktop(context)
+          ? MenuButton(isTapped: false, width: width)
+          : SizedBox(),
       body: SingleChildScrollView(
         child: Container(
           height: height,
@@ -148,33 +153,37 @@ class _SettingState extends State<Setting> {
                 SizedBox(
                   height: height * 0.02,
                 ),
-                Container(
-                  height: height * 0.072,
-                  width: width * 0.89,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        left: width * 0.04, right: width * 0.04),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Acres Marathon",
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Poppins"),
-                        ),
-                        Image.asset(
-                          Common.assetImages + "down_black.png",
-                          width: width * 0.07,
-                        ),
-                      ],
-                    ),
-                  ),
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(Icons.keyboard_arrow_down_outlined),
+                  iconEnabledColor: Colors.white,
+
+                  iconSize: 24,
+                  dropdownColor: Colors.black,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.white),
+                  // underline: Container(
+                  //   height: 2,
+                  //   color: Colors.deepPurpleAccent,
+                  // ),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      dropdownValue = newValue!;
+                    });
+                  },
+                  items: <String>[
+                    'Acers Marathon',
+                    'Bridge Marathon',
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value +
+                            "                                                                           ",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+                  }).toList(),
                 ),
                 SizedBox(
                   height: height * 0.05,

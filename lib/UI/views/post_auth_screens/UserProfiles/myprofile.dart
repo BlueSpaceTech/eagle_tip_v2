@@ -54,6 +54,7 @@ class _MyProfileState extends State<MyProfile> {
     double height = MediaQuery.of(context).size.height;
     print(user.sites);
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
@@ -290,13 +291,58 @@ class _MyProfileState extends State<MyProfile> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Tickets",
-                                    style: TextStyle(
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontFamily: 'Poppins'),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Support Tickets",
+                                        style: TextStyle(
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                            fontFamily: 'Poppins'),
+                                      ),
+                                      SizedBox(
+                                        width: width * 0.04,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.support);
+                                        },
+                                        child: Container(
+                                          alignment: Alignment.center,
+                                          width: width * 0.09,
+                                          height: 35,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff5081DB),
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(8)),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Create Ticket",
+                                                style: TextStyle(
+                                                    fontSize: width * 0.008,
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins",
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              SizedBox(
+                                                width: width * 0.005,
+                                              ),
+                                              Icon(
+                                                Icons.add,
+                                                color: Colors.white,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   SizedBox(
                                     height: height * 0.01,
@@ -470,7 +516,7 @@ class MiscBox extends StatelessWidget {
             MiscName,
             style: TextStyle(
                 color: Colors.white,
-                fontSize: 14.0,
+                fontSize: 17.0,
                 fontWeight: FontWeight.w400,
                 fontFamily: "Poppins"),
           ),

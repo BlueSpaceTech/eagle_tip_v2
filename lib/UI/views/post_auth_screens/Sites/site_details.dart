@@ -69,6 +69,8 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
     double height = MediaQuery.of(context).size.height;
     return Responsive.isDesktop(context)
         ? Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.startFloat,
             floatingActionButton: Responsive.isDesktop(context)
                 ? MenuButton(isTapped: false, width: width)
                 : SizedBox(),

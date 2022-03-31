@@ -210,9 +210,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (res == "success") {
       print(_auth.currentUser!.uid);
-      // addData();
+      addData();
       print({"here "});
       print("phonenumber");
+<<<<<<< Updated upstream
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => BottomNav()));
       DocumentReference dbRef = FirebaseFirestore.instance
@@ -233,6 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       if (PlatformInfo().isWeb()) {
         print("isweb");
+=======
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => BottomNav()));
+>>>>>>> Stashed changes
 
         AuthFunctions.signOut;
         print(phone);

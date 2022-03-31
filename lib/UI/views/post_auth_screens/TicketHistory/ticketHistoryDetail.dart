@@ -52,6 +52,7 @@ class _TicketDetailState extends State<TicketDetail> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
@@ -392,7 +393,9 @@ class _TicketMessagesState extends State<TicketMessages> {
             }
             */
           return Container(
-            width: widget.width * 0.4,
+            width: Responsive.isDesktop(context)
+                ? widget.width * 0.4
+                : widget.width * 0.9,
             child: ListView.builder(
               shrinkWrap: true,
               reverse: true,

@@ -523,8 +523,6 @@ class _DesktopSettingState extends State<DesktopSetting> {
                             items: <String>[
                               'Acers Marathon',
                               'Bridge Marathon',
-                              'Free',
-                              'Four'
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

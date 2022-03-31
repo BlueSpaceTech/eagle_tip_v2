@@ -55,6 +55,7 @@ class _NotificationsState extends State<Notifications> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),

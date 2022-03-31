@@ -351,9 +351,8 @@ class _SupportTextFieldState extends State<SupportTextField> {
           border: InputBorder.none,
           labelText: widget.labelText,
           labelStyle: TextStyle(
-              fontSize: Responsive.isDesktop(context)
-                  ? widget.width * 0.009
-                  : widget.width * 0.023,
+              fontSize:
+                  Responsive.isDesktop(context) ? widget.width * 0.009 : 17.0,
               color:
                   myFocusNode.hasFocus ? Color(0xFF5E8BE0) : Color(0xffAEB0C3),
               fontFamily: "Poppins",
@@ -436,9 +435,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
           border: InputBorder.none,
           labelText: widget.labelText,
           labelStyle: TextStyle(
-              fontSize: Responsive.isDesktop(context)
-                  ? widget.width * 0.009
-                  : widget.width * 0.03,
+              fontSize:
+                  Responsive.isDesktop(context) ? widget.width * 0.009 : 17.0,
               color:
                   myFocusNode.hasFocus ? Color(0xFF5E8BE0) : Color(0xffAEB0C3),
               fontFamily: "Poppins",

@@ -24,6 +24,12 @@ class TicketHistory extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, AppRoutes.support);
+          },
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(

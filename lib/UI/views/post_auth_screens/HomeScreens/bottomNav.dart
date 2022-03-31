@@ -2,6 +2,9 @@
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
@@ -12,6 +15,7 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class BottomNav extends StatefulWidget {
   @override
@@ -49,6 +53,7 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Center(
@@ -85,15 +90,30 @@ class _BottomNavState extends State<BottomNav> {
           BottomNavigationBarItem(
             activeIcon: StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection("notifications")
-                    .where("isNew", isEqualTo: true)
+                    .collection("pushNotifications")
+                    .where("visibleto", arrayContainsAny: [user.userRole])
+                    // .where("isNew", ar: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  final documentlen = snapshot.data?.docs.length;
+                  final documents = [];
+                  final docs = snapshot.data!.docs;
+                  if (docs.isNotEmpty) {
+                    for (var element in docs) {
+                      List notify = element["isNew"];
+
+                      if (!notify
+                          .contains(FirebaseAuth.instance.currentUser!.uid)) {
+                        documents.add(element);
+                      }
+                    }
+                  }
+                  if (!snapshot.hasData) {
+                    return SizedBox();
+                  }
                   return Badge(
-                    showBadge: documentlen == 0 ? false : true,
+                    showBadge: documents.isEmpty ? false : true,
                     badgeContent: Text(
-                      documentlen.toString(),
+                      documents.length.toString(),
                       style: TextStyle(color: Colors.white),
                     ),
                     child: Image.asset(
@@ -104,15 +124,30 @@ class _BottomNavState extends State<BottomNav> {
                 }),
             icon: StreamBuilder(
                 stream: FirebaseFirestore.instance
-                    .collection("notifications")
-                    .where("isNew", isEqualTo: true)
+                    .collection("pushNotifications")
+                    .where("visibleto", arrayContainsAny: [user.userRole])
+                    // .where("isNew", ar: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  final documentlen = snapshot.data?.docs.length;
+                  final documents = [];
+                  final docs = snapshot.data!.docs;
+                  if (docs.isNotEmpty) {
+                    for (var element in docs) {
+                      List notify = element["isNew"];
+
+                      if (!notify
+                          .contains(FirebaseAuth.instance.currentUser!.uid)) {
+                        documents.add(element);
+                      }
+                    }
+                  }
+                  if (!snapshot.hasData) {
+                    return SizedBox();
+                  }
                   return Badge(
-                    showBadge: documentlen == 0 ? false : true,
+                    showBadge: documents.isEmpty ? false : true,
                     badgeContent: Text(
-                      documentlen.toString(),
+                      documents.length.toString(),
                       style: TextStyle(color: Colors.white),
                     ),
                     child: Image.asset(
@@ -124,16 +159,63 @@ class _BottomNavState extends State<BottomNav> {
             label: 'Notifications',
           ),
           BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              Common.assetImages + "activeChat.png",
-              width: width * 0.05,
-            ),
-            icon: Image.asset(
-              Common.assetImages + "message.png",
-              width: width * 0.05,
-            ),
-            label: 'Chat',
-          ),
+              activeIcon: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("chats")
+                    .where("between", arrayContainsAny: [user.uid]).snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  List docsss = snapshot.data!.docs;
+                  List docs2 = [];
+                  for (var ele in docsss) {
+                    if (ele["isNew"] != user.uid &&
+                        ele["isNew"] != "constant") {
+                      docs2.add(ele);
+                    }
+                  }
+                  return Badge(
+                      showBadge: docs2.isNotEmpty,
+                      badgeContent: Text(
+                        docs2.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: Image.asset(
+                        Common.assetImages + "activeChat.png",
+                        width: width * 0.05,
+                      )
+                      // );
+                      // },
+                      );
+                },
+              ),
+              icon: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("chats")
+                    .where("between", arrayContainsAny: [user.uid]).snapshots(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  List docsss = snapshot.data!.docs;
+                  List docs2 = [];
+                  for (var ele in docsss) {
+                    if (ele["isNew"] != user.uid &&
+                        ele["isNew"] != "constant") {
+                      docs2.add(ele);
+                    }
+                  }
+                  return Badge(
+                      showBadge: docs2.isNotEmpty,
+                      badgeContent: Text(
+                        docs2.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: Image.asset(
+                        Common.assetImages + "message.png",
+                        width: width * 0.05,
+                      )
+                      // );
+                      // },
+                      );
+                },
+              ),
+              label: "chat")
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
