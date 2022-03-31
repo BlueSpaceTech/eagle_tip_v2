@@ -203,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               padding: EdgeInsets.all(20),
               width: Responsive.isDesktop(context) ? 600 : 400,
-              height: Responsive.isDesktop(context) ? 300 : 300,
+              height: Responsive.isDesktop(context) ? 350 : 350,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontFamily: "Poppins",
-                            fontSize: 24),
+                            fontSize: Responsive.isDesktop(context) ? 24 : 20),
                       ),
                       SizedBox(
                         height: 20,
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         "use the link below to view updated Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
                         style: TextStyle(
                             fontFamily: "Poppins",
-                            fontSize: 18,
+                            fontSize: Responsive.isDesktop(context) ? 18 : 13,
                             fontWeight: FontWeight.w300),
                       ),
                     ],

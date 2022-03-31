@@ -296,9 +296,9 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                       ? document[index]["user2"]
                                       : document[index]["user1"],
                                   user.name,
-                                  document[index]['photo1'] == user.name
+                                  document[index]['photo1'] == user.dpurl
                                       ? document[index]["photo2"]
-                                      : document[index]["photo2"],
+                                      : document[index]["photo1"],
                                   user.dpurl);
                             },
                             child: ChatListTile(

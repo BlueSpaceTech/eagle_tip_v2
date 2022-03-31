@@ -1,13 +1,152 @@
+import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/UI/Widgets/customTextField.dart';
+import 'package:testttttt/UI/Widgets/custom_webbg.dart';
+import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
+import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/create_account.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/employer_code.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/login_screen.dart';
+import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class DecidingSScreen extends StatelessWidget {
-  const DecidingSScreen({Key? key}) : super(key: key);
+class DecidingScreen extends StatefulWidget {
+  const DecidingScreen({Key? key}) : super(key: key);
+
+  @override
+  State<DecidingScreen> createState() => _DecidingScreenState();
+}
+
+class _DecidingScreenState extends State<DecidingScreen> {
+  FToast? fToast;
+  String? name;
+  String? phone;
+  String? email;
+
+  final TextEditingController _email = TextEditingController();
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Column(
-        children: [],
+      backgroundColor: Color(0xff2B343B),
+      bottomNavigationBar: CustomFAQbottom(),
+      body: SingleChildScrollView(
+        child: Stack(children: [
+          WebBg(),
+          Padding(
+            padding: EdgeInsets.only(
+                left: width * 0.1, right: width * 0.1, top: height * 0.08),
+            child: Align(
+              alignment: Alignment.center,
+              child: Container(
+                padding: EdgeInsets.only(top: 20),
+                width: Responsive.isDesktop(context) ? width * 0.6 : width * 1,
+                height: height * 0.8,
+                decoration: BoxDecoration(
+                    color: Colors.black
+                        .withOpacity(Responsive.isDesktop(context) ? 0.6 : 0),
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Visibility(
+                          visible: Responsive.isDesktop(context) ? false : true,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: height * 0.06,
+                    ),
+                    Image.asset("assets/Logo 2 1.png"),
+                    SizedBox(
+                      height: height * 0.15,
+                    ),
+                    Text(
+                      "Enter Your Email",
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    CustomTextField(
+                        isactive: true,
+                        controller: _email,
+                        width: width,
+                        height: height,
+                        labelText: "Code"),
+                    SizedBox(
+                      height: height * 0.015,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        // TermConditions(width, height);
+                        String res = "Data Fetched";
+                        Future<QuerySnapshot<Map<String, dynamic>>> dbRef =
+                            FirebaseFirestore.instance
+                                .collection('invitations')
+                                .where("email", isEqualTo: _email.text)
+                                .get();
+
+                        dbRef.then((value) {
+                          if (value.docs.isEmpty) {
+                               Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EmployerCode(
+                               
+                                  ),
+                                ));
+                          }else{
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(
+                               
+                                  ),
+                                ));
+                          }
+                        });
+
+                      
+                      },
+                      child: CustomSubmitButton(
+                        width: width,
+                        title: "Next",
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ]),
       ),
     );
   }

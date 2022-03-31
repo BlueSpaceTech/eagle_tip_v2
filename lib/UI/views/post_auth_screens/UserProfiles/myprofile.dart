@@ -52,6 +52,7 @@ class _MyProfileState extends State<MyProfile> {
     model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    print(user.sites);
     return Scaffold(
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
@@ -290,7 +291,7 @@ class _MyProfileState extends State<MyProfile> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Support Tickets",
+                                    "Tickets",
                                     style: TextStyle(
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.w600,
@@ -495,7 +496,19 @@ class SitesData extends StatelessWidget {
   final double height;
   final double width;
   final List Sites;
-  genratesiteROW(List Site) {}
+  genratesiteROW() {
+    print(Sites);
+    for (var i = 0; i < Sites.length; i++) {
+      //  print(i + "gggggtttttt");
+      print(Sites[i]);
+      return SiteRow(
+        width: width,
+        sitename: Sites[i],
+        siteloc: " Tampa.",
+        imgpath: "site11",
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -524,43 +537,31 @@ class SitesData extends StatelessWidget {
           ),
           Responsive.isDesktop(context)
               ? Row(
-                  children: [
-                    SiteRow(
-                      width: width,
-                      sitename: "Acres Marathon",
-                      siteloc: " Tampa,Fl.",
-                      imgpath: "site11",
-                    ),
-                    SizedBox(
-                      width: width * 0.036,
-                    ),
-                    SiteRow(
-                      width: width,
-                      sitename: "Bridge Marathon",
-                      siteloc: " NP Richey,Fl",
-                      imgpath: "site21",
-                    ),
-                  ],
+                  children: List.generate(Sites.length, (index) {
+                    return Padding(
+                      padding: EdgeInsets.only(right: 20),
+                      child: SiteRow(
+                        width: width,
+                        sitename: Sites[index].toString(),
+                        siteloc: " Tampa,Fl.",
+                        imgpath: "Group 268",
+                      ),
+                    );
+                  }),
                 )
               : Column(
-                  children: [
-                    SiteRow(
-                      width: width,
-                      sitename: "Acres Marathon. Tampa,Fl.",
-                      siteloc: " Tampa,Fl.",
-                      imgpath: "Group 268",
-                    ),
-                    SizedBox(
-                      height: height * 0.01,
-                    ),
-                    SiteRow(
-                      width: width,
-                      sitename: "Bridge Marathon. NP Richey,Fl",
-                      siteloc: " NP Richey,Fl",
-                      imgpath: "Group 68",
-                    ),
-                  ],
-                ),
+                  children: List.generate(Sites.length, (index) {
+                    return Padding(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: SiteRow(
+                        width: width,
+                        sitename: Sites[index].toString(),
+                        siteloc: " Tampa,Fl.",
+                        imgpath: "Group 268",
+                      ),
+                    );
+                  }),
+                )
         ],
       ),
     );

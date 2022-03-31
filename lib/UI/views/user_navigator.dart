@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/deciding_screen.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/login_screen.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/splashscreen.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -33,7 +34,7 @@ class UserNavigator extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SplashScreen();
         }
-
+        print("loginnnnnn");
         return LoginScreen();
       },
     );

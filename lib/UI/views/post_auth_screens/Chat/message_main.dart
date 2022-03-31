@@ -392,11 +392,11 @@ class _MessageMainState extends State<MessageMain> {
                                                           ["user1"],
                                                   user.name,
                                                   document[index]['photo1'] ==
-                                                          user.name
+                                                          user.dpurl
                                                       ? document[index]
                                                           ["photo2"]
                                                       : document[index]
-                                                          ["photo2"],
+                                                          ["photo1"],
                                                   user.dpurl);
                                             },
                                             child: ChatListTile(

@@ -115,8 +115,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        initialRoute: AppRoutes.loginscreen,
-        // home: UserNavigator(),
+        // initialRoute: UserNavigator(),
+        home: UserNavigator(),
         routes: {
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),

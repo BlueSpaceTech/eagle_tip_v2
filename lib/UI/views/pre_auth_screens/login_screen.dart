@@ -111,6 +111,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: ToastMessage().show(200, context, "Verification failed"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
+          setState(() {
+            _loading = false;
+          });
         },
         codeSent: (verificationid, resendingtoken) {
           fToast!.showToast(
@@ -120,6 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
               toastDuration: Duration(seconds: 3));
           setState(() {
             verificationId = verificationid;
+            setState(() {
+              _loading = false;
+            });
           });
         },
         codeAutoRetrievalTimeout: (verificationid) {
@@ -133,6 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
+  bool _loading = false;
+
   ConfirmationResult? ress;
   Future<void> signIn(String otp, double width) async {
     // UserProvider _userProvider = Provider.of(context, listen: false);
@@ -140,7 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
-        verificationId: "",
+        verificationId: verificationId!,
         smsCode: otp,
       ));
       Navigator.pushReplacement(
@@ -173,6 +181,9 @@ class _LoginScreenState extends State<LoginScreen> {
   String phone = "";
   String userRole = "";
   void loginuser(double width) async {
+    setState(() {
+      _loading = true;
+    });
     String res = await AuthFunctions().loginuser(
       email: _email.text,
       password: _password.text,
@@ -202,58 +213,65 @@ class _LoginScreenState extends State<LoginScreen> {
       // addData();
       print({"here "});
       print("phonenumber");
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => BottomNav()));
+      DocumentReference dbRef = FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      await dbRef.get().then((data) {
+        if (data.exists) {
+          if (mounted) {
+            setState(() {
+              print("fetching");
+              phone = data.get("phonenumber");
+              userRole = data.get("userRole");
+              // email = data.get("email");
+              // phone = data.get("phonenumber");
+            });
+          }
+        }
+      });
+      if (PlatformInfo().isWeb()) {
+        print("isweb");
 
-      // if (PlatformInfo().isWeb()) {
-      //   print("isweb");
+        AuthFunctions.signOut;
+        print(phone);
+        print(userRole);
+        ConfirmationResult result =
+            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
 
-      //   DocumentReference dbRef = FirebaseFirestore.instance
-      //       .collection('users')
-      //       .doc(FirebaseAuth.instance.currentUser!.uid);
-      //   await dbRef.get().then((data) {
-      //     if (data.exists) {
-      //       if (mounted) {
-      //         setState(() {
-      //           print("fetching");
-      //           phone = data.get("phonenumber");
-      //           userRole = data.get("userRole");
-      //           // email = data.get("email");
-      //           // phone = data.get("phonenumber");
-      //         });
-      //       }
-      //     }
-      //   });
-      //   AuthFunctions.signOut;
-      //   print(phone);
-      //   print(userRole);
-      //   ConfirmationResult result =
-      //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-      //   setState(() {
-      //     ress = result;
-      //   });
-      //   addData();
+        setState(() {
+          ress = result;
+        });
+        setState(() {
+          _loading = false;
+        });
+        addData();
 
-      //   print(ress);
-      // } else {
-      //   registerUser(phone, context);
-      // }
+        print(ress);
+      } else {
+        registerUser(phone, context);
+        addData();
+      }
 
-      //ignore: unrelated_type_equality_checks
-      // final doc = await FirebaseFirestore.instance
-      //     .collection("users")
-      //     .doc(FirebaseAuth.instance.currentUser!.uid)
-      //     .get()
-      //     .then((value) => value);
-      // if (!doc["isSubscribed"]) {
-      //   FirebaseFirestore.instance
-      //       .collection("users")
-      //       .doc(FirebaseAuth.instance.currentUser!.uid)
-      //       .update({
-      //     "isSubscribed": true,
-      //   });
-      // }
+      // ignore: unrelated_type_equality_checks
+      final doc = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get()
+          .then((value) => value);
+      if (!doc["isSubscribed"]) {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .update({
+          "isSubscribed": true,
+        });
+      }
     } else {
+      setState(() {
+        _loading = false;
+      });
       fToast!.showToast(
         child: ToastMessage().show(width, context, "There's some error"),
         gravity: ToastGravity.BOTTOM,
@@ -339,7 +357,6 @@ class _LoginScreenState extends State<LoginScreen> {
       bottomNavigationBar: CustomFAQbottom(),
       body: SingleChildScrollView(
         child: Stack(children: [
-          WebBg(),
           Padding(
             padding: EdgeInsets.only(
                 left: width * 0.1, right: width * 0.1, top: height * 0.15),
@@ -534,6 +551,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
               ),
+            ),
+          ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.center,
+              child: Visibility(
+                  visible: _loading,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Colors.grey.shade300,
+                    color: Colors.blue,
+                  )),
             ),
           ),
         ]),
