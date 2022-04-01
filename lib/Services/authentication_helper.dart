@@ -1,9 +1,5 @@
 //import 'dart:ffi';
-<<<<<<< Updated upstream
-
-=======
 // import 'dart:js';
->>>>>>> Stashed changes
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
