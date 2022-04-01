@@ -169,11 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  // (userRole == "TerminalUser" || userRole == "TerminalManager")
-                  //     ? TerminalHome()
-                  //     :
-
-                  Responsive.isDesktop(context) ? HomeScreen() : BottomNav()));
+                  (userRole == "TerminalUser" || userRole == "TerminalManager")
+                      ? TerminalHome()
+                      : Responsive.isDesktop(context)
+                          ? HomeScreen()
+                          : BottomNav()));
       fToast!.showToast(
           child: ToastMessage().show(width, context, "success"),
           gravity: ToastGravity.BOTTOM,
@@ -262,52 +262,60 @@ class _LoginScreenState extends State<LoginScreen> {
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      print(phone);
-      if (!isverified) {
-        if (PlatformInfo().isWeb()) {
-          print("isweb");
+      if (PlatformInfo().isWeb()) {
+        print("isweb");
 
-          AuthFunctions.signOut;
-          print(phone);
-          print(userRole);
-          ConfirmationResult result =
-              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          fToast!.showToast(
-              child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-              gravity: ToastGravity.BOTTOM,
-              toastDuration: Duration(seconds: 3));
+        AuthFunctions.signOut;
+        print(phone);
+        print(userRole);
+        ConfirmationResult result =
+            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+        fToast!.showToast(
+            child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
 
-          setState(() {
-            ress = result;
-          });
-          setState(() {
-            _loading = false;
-          });
-          addData();
-
-          print(ress);
-        } else {
-          registerUser(phone, context);
-          addData();
-        }
-      }
-
-      //  ignore: unrelated_type_equality_checks
-      final doc = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(uid)
-          .get()
-          .then((value) => value);
-      if (!doc["isSubscribed"]) {
-        _subscribeAllUsers();
-        _subscribetotopic();
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(FirebaseAuth.instance.currentUser!.uid)
-            .update({
-          "isSubscribed": true,
+        setState(() {
+          ress = result;
         });
+        setState(() {
+          _loading = false;
+        });
+        addData();
+
+        print(ress);
+      } else {
+        registerUser(phone, context);
+        addData();
       }
+
+      try {
+        if (Platform.isAndroid || Platform.isIOS) {
+          final doc = await FirebaseFirestore.instance
+              .collection("users")
+              .doc(uid)
+              .get()
+              .then((value) => value);
+          if (!doc["isSubscribed"]) {
+            _subscribeAllUsers();
+            _subscribetotopic();
+            FirebaseFirestore.instance
+                .collection("users")
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .update({
+              "isSubscribed": true,
+            });
+          }
+        } else {
+          // confirmotp();
+          print("webbb");
+        }
+      } catch (e) {
+        //  confirmotp();
+        print("web");
+      }
+      //  ignore: unrelated_type_equality_checks
+
     } else {
       setState(() {
         _loading = false;
@@ -379,12 +387,10 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    // (userRole == "TerminalUser" ||
-                    //         userRole == "TerminalManager")
-                    //     ? TerminalHome()
-                    //     :
-                    Responsive.isDesktop(context)
+                builder: (context) => (userRole == "TerminalUser" ||
+                        userRole == "TerminalManager")
+                    ? TerminalHome()
+                    : Responsive.isDesktop(context)
                         ? HomeScreen()
                         : BottomNav()));
         fToast!.showToast(

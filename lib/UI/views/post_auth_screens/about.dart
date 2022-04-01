@@ -126,8 +126,8 @@ class _AboutMobileState extends State<AboutMobile> {
                           ),
                         ),
                         AboutColumn(
-                          heading: "Email",
-                          detail: "eagleTip@company.com",
+                          heading: "Phone number",
+                          detail: "(252) 937-2464",
                           width: width,
                           height: height,
                         ),

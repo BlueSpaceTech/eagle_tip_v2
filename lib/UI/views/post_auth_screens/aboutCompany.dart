@@ -78,7 +78,7 @@ class _AboutCompanyState extends State<AboutCompany> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Eagle Tip",
+                        "Eagle Transport Corporation",
                         style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Poppins",

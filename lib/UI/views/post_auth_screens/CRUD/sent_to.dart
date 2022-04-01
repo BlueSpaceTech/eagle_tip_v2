@@ -20,20 +20,20 @@ import 'package:provider/provider.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:firestore_search/firestore_search.dart';
 
-class CrudScreen extends StatefulWidget {
-  const CrudScreen({Key? key}) : super(key: key);
+class SentTo extends StatefulWidget {
+  const SentTo({Key? key}) : super(key: key);
 
   @override
-  _CrudScreenState createState() => _CrudScreenState();
+  _SentToState createState() => _SentToState();
 }
 
-class _CrudScreenState extends State<CrudScreen> {
+class _SentToState extends State<SentTo> {
   LinkedScrollControllerGroup? _controllers;
   ScrollController? _letters;
   ScrollController? _numbers;
   late ScrollController SCROL;
 
-  deletUserDialog(double height, double width, String name, String uid) {
+  deletUserDialog(double height, double width, String name, String employer) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -116,8 +116,8 @@ class _CrudScreenState extends State<CrudScreen> {
                     onTap: () {
                       Navigator.pop(context);
                       FirebaseFirestore.instance
-                          .collection("users")
-                          .doc(uid)
+                          .collection("invitations")
+                          .doc(employer)
                           .delete();
                     },
                     child: Container(
@@ -172,122 +172,6 @@ class _CrudScreenState extends State<CrudScreen> {
     });
   }
 
-  _buildsiteschip(List site) {
-    bool issel = false;
-
-    List<Widget> choices = [];
-    site.forEach((item) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(3),
-        child: ChoiceChip(
-          label: Text(
-            item,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Poppins"),
-          ),
-          selectedColor: Color(0xFF5081db),
-          disabledColor: Color(0xFF535c65),
-          backgroundColor: Color(0xFF535c65),
-          selected: selectedsites.contains(item),
-          onSelected: (selected) {
-            setState(() {
-              issel = selected;
-
-              print("else");
-              selectedsites.contains(item)
-                  ? selectedsites.remove(item)
-                  : selectedsites.add(item);
-              print(selectedsites);
-              _onsearchange();
-              // +added
-            });
-          },
-        ),
-      ));
-    });
-    return choices;
-  }
-
-  _buildall(List site) {
-    bool issel = false;
-    List items = ["All"];
-
-    List<Widget> choices = [];
-    items.forEach((item) {
-      choices.add(Container(
-        padding: const EdgeInsets.all(3.0),
-        child: ChoiceChip(
-          label: Text(
-            item,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Poppins"),
-          ),
-          selectedColor: Color(0xFF5081db),
-          disabledColor: Color(0xFF535c65),
-          backgroundColor: Color(0xFF535c65),
-          selected: issel,
-          onSelected: (selected) {
-            setState(() {
-              issel != selected;
-              if (selectedsites.length == site.length) {
-                selectedsites.clear();
-                print(selectedsites.length);
-                print(site.length);
-              } else {
-                selectedsites = List.from(site);
-              }
-
-              print(selectedsites);
-              // +added
-            });
-            _onsearchange();
-          },
-        ),
-      ));
-    });
-    return choices;
-  }
-
-  _buildRolechip(List role) {
-    bool isroleselected = false;
-    List<Widget> choicess = [];
-    role.forEach((item) {
-      choicess.add(Container(
-        padding: const EdgeInsets.all(3.0),
-        child: ChoiceChip(
-          label: Text(
-            item,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Poppins"),
-          ),
-          selectedColor: Color(0xFF5081db),
-          disabledColor: Color(0xFF535c65),
-          backgroundColor: Color(0xFF535c65),
-          selected: selectedrOLE == item,
-          onSelected: (selected) {
-            setState(() {
-              isroleselected = selected;
-              selectedrOLE = item;
-              print(selectedrOLE);
-              _onsearchange();
-              // +added
-            });
-          },
-        ),
-      ));
-    });
-    return choicess;
-  }
-
   @override
   void initState() {
     super.initState();
@@ -307,22 +191,6 @@ class _CrudScreenState extends State<CrudScreen> {
     super.dispose();
   }
 
-  callUserInfoScreen(String name, String email, String userRole, String dpUrl,
-      List sites, String phonenumber, String uid) {
-    Navigator.push(
-        context,
-        CupertinoPageRoute(
-            builder: (context) => UserProfile(
-                  name: name,
-                  email: email,
-                  userRole: userRole,
-                  dpUrl: dpUrl,
-                  sites: sites,
-                  phonenumber: phonenumber,
-                  uid: uid,
-                )));
-  }
-
   Future? resultsloaded;
 
   List _allResults = [];
@@ -331,10 +199,9 @@ class _CrudScreenState extends State<CrudScreen> {
 
   getUserdetails(List sites, String uid, model.User user) async {
     var data = await FirebaseFirestore.instance
-        .collection("users")
-        .where("isverified", isEqualTo: true)
-        .where("sites", arrayContainsAny: sites)
-        .where("uid", isNotEqualTo: uid)
+        .collection("invitations")
+        .where("isverified", isEqualTo: false)
+        .where("invitedby", isEqualTo: uid)
         // .where("userRole", whereIn: CrudFunction().visibleRole(user))
         .get();
 
@@ -442,13 +309,6 @@ class _CrudScreenState extends State<CrudScreen> {
     model.User user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    List Site = [
-      "All",
-      "Acers Marathon",
-      "Bridge Marathon",
-      "Clarks Marathon",
-      "Huntington Marathon"
-    ];
 
     return Scaffold(
         floatingActionButton: Visibility(
@@ -550,7 +410,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                       ],
                                     ),
                                     Text(
-                                      "Edit Employers",
+                                      "Invitations",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           color: Colors.white,
@@ -597,92 +457,59 @@ class _CrudScreenState extends State<CrudScreen> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Visibility(
-                                    visible: Responsive.isDesktop(context),
-                                    child: InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.addUserOwner);
-                                        },
-                                        child: customfab(
-                                          height: height,
-                                          width: width,
-                                          text: "Add new user",
-                                        )),
-                                  ),
+                                  // Visibility(
+                                  //   visible: Responsive.isDesktop(context),
+                                  //   child: InkWell(
+                                  //       onTap: () {
+                                  //         Navigator.pushNamed(
+                                  //             context, AppRoutes.addUserOwner);
+                                  //       },
+                                  //       child: customfab(
+                                  //         height: height,
+                                  //         width: width,
+                                  //         text: "Add new user",
+                                  //       )),
+                                  // ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                        left: width * 0.06,
-                                        right: width * 0.06),
-                                    height: height * 0.064,
-                                    width: Responsive.isDesktop(context)
-                                        ? width * 0.6
-                                        : width * 0.9,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Visibility(
-                                    visible: Responsive.isDesktop(context),
-                                    child: InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.sentto);
-                                        },
-                                        child: customfab(
-                                          height: height,
-                                          width: width,
-                                          text: "Invitations",
-                                        )),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: height * 0.02),
-                              Text(
-                                "Site",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Poppins",
-                                    fontSize: 15),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Row(
-                                children: [
-                                  Wrap(
-                                    children: _buildall(user.sites),
-                                  ),
-                                  Wrap(
-                                    children: _buildsiteschip(user.sites),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Text(
-                                "Role",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Poppins",
-                                    fontSize: 15),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Wrap(
-                                children: _buildRolechip(
-                                    CrudFunction().visibleRole(user)),
-                              ),
+                              // SizedBox(height: height * 0.02),
+                              // Text(
+                              //   "Site",
+                              //   style: TextStyle(
+                              //       color: Colors.white,
+                              //       fontFamily: "Poppins",
+                              //       fontSize: 15),
+                              // ),
+                              // SizedBox(
+                              //   height: height * 0.02,
+                              // ),
+                              // Row(
+                              //   children: [
+                              //     Wrap(
+                              //       children: _buildall(user.sites),
+                              //     ),
+                              //     Wrap(
+                              //       children: _buildsiteschip(user.sites),
+                              //     ),
+                              //   ],
+                              // ),
+                              // SizedBox(
+                              //   height: height * 0.02,
+                              // ),
+                              // Text(
+                              //   "Role",
+                              //   style: TextStyle(
+                              //       color: Colors.white,
+                              //       fontFamily: "Poppins",
+                              //       fontSize: 15),
+                              // ),
+                              // SizedBox(
+                              //   height: height * 0.02,
+                              // ),
+                              // Wrap(
+                              //   children: _buildRolechip(
+                              //       CrudFunction().visibleRole(user)),
+                              // ),
                             ],
                           ),
                         ),
@@ -865,7 +692,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                               height,
                                               width,
                                               document["name"],
-                                              document["uid"]);
+                                              document["employercode"]);
                                         },
                                         child: Container(
                                             width: Responsive.isDesktop(context)
@@ -909,19 +736,6 @@ class _CrudScreenState extends State<CrudScreen> {
                                                 color: Colors.white,
                                                 fontFamily: "Poppins")),
                                       ),
-                                      InkWell(
-                                          onTap: () {
-                                            callUserInfoScreen(
-                                                document["name"],
-                                                document["email"],
-                                                document["userRole"],
-                                                document["dpUrl"],
-                                                document["sites"],
-                                                document["phonenumber"],
-                                                document["uid"]);
-                                          },
-                                          child:
-                                              Image.asset("assets/info.png")),
                                       SizedBox(
                                         width: width * 0.04,
                                       ),
