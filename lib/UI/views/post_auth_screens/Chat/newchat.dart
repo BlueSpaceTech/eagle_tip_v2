@@ -384,6 +384,9 @@ class _NewChatScreenState extends State<NewChatScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: 5,
+                      ),
                       Container(
                         alignment: Alignment.center,
                         padding: EdgeInsets.only(

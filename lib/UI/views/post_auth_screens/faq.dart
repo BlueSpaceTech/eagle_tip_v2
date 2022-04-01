@@ -148,14 +148,31 @@ class DesktopFAQ extends StatelessWidget {
             padding: EdgeInsets.only(left: width * 0.04, top: height * 0.01),
             child: Column(
               children: [
-                Responsive.isDesktop(context)
-                    ? Navbar(
-                        text2: "Site",
-                        text1: "Home",
-                        width: width,
-                        height: height,
-                      )
-                    : SizedBox(),
+                // Responsive.isDesktop(context)
+                //     ? Navbar(
+                //         text2: "Site",
+                //         text1: "Home",
+                //         width: width,
+                //         height: height,
+                //       )
+                //     : SizedBox(),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
                 SizedBox(
                   height: height * 0.06,
                 ),

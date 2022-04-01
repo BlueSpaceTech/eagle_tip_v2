@@ -14,16 +14,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:testttttt/Models/user.dart' as Model;
 
 import 'package:http/http.dart' as http;
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'dart:convert';
 
-class AuthFunctions {
+import 'package:testttttt/UI/views/pre_auth_screens/login_screen.dart';
+import 'package:testttttt/Utils/responsive.dart';
+
+class AuthFunctions with ChangeNotifier {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   //fetch user
   Future<Model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
+    User currentUser = await _auth.currentUser!;
     DocumentSnapshot? snapp;
     try {
       snapp = await _firestore.collection("users").doc(currentUser.uid).get();
@@ -32,6 +37,43 @@ class AuthFunctions {
     }
     return Model.User.fromSnap(snapp!);
   }
+
+  addData(BuildContext context) async {
+    UserProvider _userProvider = await Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
+  static Widget handleEntryPoint(BuildContext context) {
+    if (_auth.currentUser == null) {
+      return LoginScreen();
+    } else {
+      if (Responsive.isDesktop(context)) {
+        return HomeScreen();
+      } else {
+        return BottomNav();
+      }
+    }
+  }
+
+  // getuserauthinfo(BuildContext context) async {
+  //   User currentUser = await _auth.currentUser!;
+
+  //   DocumentSnapshot? userSnap;
+  //   try {
+  //     userSnap = await FirebaseFirestore.instance
+  //         .collection("users")
+  //         .doc(currentUser.uid)
+  //         .get();
+  //   } catch (e) {
+  //     print("Error while fetching data: ${e.toString()}");
+  //   }
+  //   if (!userSnap!.exists) {
+  //     return false;
+  //   } else {
+  //     await addData(context);
+  //     return true;
+  //   }
+  // }
 
   static genrateemployercode() {
     final _random = Random();
@@ -67,6 +109,7 @@ class AuthFunctions {
     required String employercode,
     required bool isverified,
     required Uint8List file,
+    required bool issubscribed,
   }) async {
     /*
     var status = await OneSignal.shared.getDeviceState();
@@ -88,12 +131,13 @@ class AuthFunctions {
             .uploadImageToStorage("profilePics", file, false);
 
         //add user to database
+
         Model.User user = Model.User(
           name: username,
           email: email,
           Phonenumber: phoneno,
           uid: cred.user!.uid,
-          isSubscribed: false,
+          isSubscribed: issubscribed,
           sites: Sites,
           employerCode: employercode,
           phoneisverified: isverified,
@@ -296,7 +340,6 @@ class AuthFunctions {
   //SIGN OUT METHOD
   static Future signOut() async {
     await _auth.signOut();
-
     print('signout');
   }
 

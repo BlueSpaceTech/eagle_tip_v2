@@ -292,6 +292,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    addData();
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
 

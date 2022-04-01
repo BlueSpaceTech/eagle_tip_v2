@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -109,6 +110,22 @@ class _UploadImageState extends State<UploadImage> {
         },
         context: context,
       );
+      bool issubscribed = false;
+      try {
+        if (Platform.isAndroid || Platform.isIOS) {
+          setState(() {
+            issubscribed = true;
+          });
+        } else {
+          setState(() {
+            issubscribed = false;
+          });
+        }
+      } catch (e) {
+        setState(() {
+          issubscribed = false;
+        });
+      }
       String res = await AuthFunctions().signupuser(
         // token: widget.doc.get("token"),
         email: widget.doc.get("email"),
@@ -119,6 +136,7 @@ class _UploadImageState extends State<UploadImage> {
         Sites: widget.doc.get("sites"),
         employercode: widget.doc.get("employercode"),
         isverified: true,
+        issubscribed: issubscribed,
 
         file: _image!,
       );

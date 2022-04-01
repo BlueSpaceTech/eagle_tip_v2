@@ -4,8 +4,10 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -98,12 +100,18 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => (userRole == "TerminalUser" ||
-                          userRole == "TerminalManager")
-                      ? TerminalHome()
-                      : Responsive.isDesktop(context)
+                  builder: (context) =>
+                      //  (userRole == "TerminalUser" ||
+                      //         userRole == "TerminalManager")
+                      //     ? TerminalHome()
+                      //     :
+                      Responsive.isDesktop(context)
                           ? HomeScreen()
                           : BottomNav()));
+          // FirebaseFirestore.instance
+          //     .collection("users")
+          //     .doc(uid)
+          //     .update({"isverified": true});
         },
         verificationFailed: (authException) {
           print(authException.toString());
@@ -139,7 +147,13 @@ class _LoginScreenState extends State<LoginScreen> {
         });
   }
 
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
   bool _loading = false;
+  bool isverified = false;
 
   ConfirmationResult? ress;
   Future<void> signIn(String otp, double width) async {
@@ -155,11 +169,11 @@ class _LoginScreenState extends State<LoginScreen> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  (userRole == "TerminalUser" || userRole == "TerminalManager")
-                      ? TerminalHome()
-                      : Responsive.isDesktop(context)
-                          ? HomeScreen()
-                          : BottomNav()));
+                  // (userRole == "TerminalUser" || userRole == "TerminalManager")
+                  //     ? TerminalHome()
+                  //     :
+
+                  Responsive.isDesktop(context) ? HomeScreen() : BottomNav()));
       fToast!.showToast(
           child: ToastMessage().show(width, context, "success"),
           gravity: ToastGravity.BOTTOM,
@@ -173,13 +187,15 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  addData() async {
-    UserProvider _userProvider = Provider.of(context, listen: false);
-    await _userProvider.refreshUser();
-  }
+  // addData() async {
+  //   UserProvider _userProvider = await Provider.of(context, listen: false);
+  //   await _userProvider.refreshUser();
+  // }
 
+  String uid = "";
   String phone = "";
   String userRole = "";
+  List sites = [];
   void loginuser(double width) async {
     setState(() {
       _loading = true;
@@ -188,6 +204,10 @@ class _LoginScreenState extends State<LoginScreen> {
       email: _email.text,
       password: _password.text,
     );
+    print("1");
+
+    print("2");
+
     // 1. Create a reference to the collection
     //  String res = "";
 //     CollectionReference s = FirebaseFirestore.instance.collection("sers");
@@ -209,6 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
 //     });
 
     if (res == "success") {
+<<<<<<< Updated upstream
       print(_auth.currentUser!.uid);
       addData();
       print({"here "});
@@ -216,6 +237,10 @@ class _LoginScreenState extends State<LoginScreen> {
 <<<<<<< Updated upstream
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => BottomNav()));
+=======
+      // await addData();
+
+>>>>>>> Stashed changes
       DocumentReference dbRef = FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -226,46 +251,75 @@ class _LoginScreenState extends State<LoginScreen> {
               print("fetching");
               phone = data.get("phonenumber");
               userRole = data.get("userRole");
-              // email = data.get("email");
+              isverified = data.get("isverified");
+              uid = data.get("uid");
+              sites = data.get("sites");
               // phone = data.get("phonenumber");
             });
           }
         }
       });
+<<<<<<< Updated upstream
       if (PlatformInfo().isWeb()) {
         print("isweb");
 =======
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => BottomNav()));
 >>>>>>> Stashed changes
+=======
+      print(phone);
+      print(userRole);
+      addData();
+>>>>>>> Stashed changes
 
-        AuthFunctions.signOut;
-        print(phone);
-        print(userRole);
-        ConfirmationResult result =
-            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => LoginScreen()));
+      print(_auth.currentUser!.uid);
+      // addData();
+      print({"here "});
+      print("phonenumber");
+      // Navigator.pushReplacement(
+      //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-        setState(() {
-          ress = result;
-        });
-        setState(() {
-          _loading = false;
-        });
-        addData();
+      print(phone);
+      if (!isverified) {
+        if (PlatformInfo().isWeb()) {
+          print("isweb");
 
-        print(ress);
-      } else {
-        registerUser(phone, context);
-        addData();
+          AuthFunctions.signOut;
+          print(phone);
+          print(userRole);
+          ConfirmationResult result =
+              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          fToast!.showToast(
+              child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
+
+          setState(() {
+            ress = result;
+          });
+          setState(() {
+            _loading = false;
+          });
+          addData();
+
+          print(ress);
+        } else {
+          registerUser(phone, context);
+          addData();
+        }
       }
 
-      // ignore: unrelated_type_equality_checks
+      //  ignore: unrelated_type_equality_checks
       final doc = await FirebaseFirestore.instance
           .collection("users")
-          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .doc(uid)
           .get()
           .then((value) => value);
       if (!doc["isSubscribed"]) {
+        _subscribeAllUsers();
+        _subscribetotopic();
         FirebaseFirestore.instance
             .collection("users")
             .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -285,11 +339,39 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+  void _subscribetotopic() async {
+    // List sites = widget.doc.get("sites");
+    for (int i = 0; i < sites.length; i++) {
+      await _fcm
+          .subscribeToTopic(userRole + sites[i].toString().replaceAll(" ", ""))
+          .then((value) {
+        print("succesfully subscribed");
+      }).catchError((onError) {
+        print(onError);
+      });
+      FirebaseFirestore.instance.collection("users").doc(uid).update({
+        "isSubscribed": true,
+      });
+    }
+  }
+
+  void _subscribeAllUsers() async {
+    await _fcm.subscribeToTopic("AllUsers").then((value) {
+      print("succesfully subscribed");
+    }).catchError((onError) {
+      print(onError);
+    });
+  }
+
   confirmotp() async {
     //  String role = "";
     print("confirming");
     print(ress);
-    addData();
+    // addData();
+    setState(() {
+      _loading = true;
+    });
 
     String res = await OtpFucnctions().authenticateMe(
       ress!,
@@ -298,30 +380,49 @@ class _LoginScreenState extends State<LoginScreen> {
     await Future.delayed(const Duration(seconds: 3));
     print(res + "ffff");
     if (res == "success") {
+      setState(() {
+        _loading = false;
+      });
+      // FirebaseFirestore.instance
+      //     .collection("users")
+      //     .doc(uid)
+      //     .update({"isverified": true});
       await AuthFunctions.signOut;
       String resss = await AuthFunctions().loginuser(
         email: _email.text,
         password: _password.text,
       );
       if (resss == "success") {
-        addData();
+        // addData();
 
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => (userRole == "TerminalUser" ||
-                        userRole == "TerminalManager")
-                    ? TerminalHome()
-                    : Responsive.isDesktop(context)
+                builder: (context) =>
+                    // (userRole == "TerminalUser" ||
+                    //         userRole == "TerminalManager")
+                    //     ? TerminalHome()
+                    //     :
+                    Responsive.isDesktop(context)
                         ? HomeScreen()
                         : BottomNav()));
-      } else {
         fToast!.showToast(
-            child: ToastMessage().show(200, context, "Success"),
+            child: ToastMessage().show(200, context, "Login Successful"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
+      } else {
+        setState(() {
+          _loading = false;
+        });
+        fToast!.showToast(
+            child: ToastMessage().show(200, context, "Error"),
             gravity: ToastGravity.BOTTOM,
             toastDuration: Duration(seconds: 3));
       }
     } else {
+      setState(() {
+        _loading = false;
+      });
       fToast!.showToast(
           child: ToastMessage().show(200, context, "Error in OTP"),
           gravity: ToastGravity.BOTTOM,
@@ -355,6 +456,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     //UserProvider _userProvider = Provider.of(context, listen: false);
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(

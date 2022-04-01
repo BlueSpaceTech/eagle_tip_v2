@@ -19,4 +19,14 @@ class UserProvider extends ChangeNotifier {
       print(err.toString());
     }
   }
+
+  // Future<bool> fetchUserDetailsFromDatabase(context) async {
+  //   // code to fetch from Firestore Collection `users`
+  //   bool isUserExists = await AuthFunctions().getuserauthinfo(context);
+  //   if (!isUserExists) {
+  //     print("user details not present in firestore");
+  //   }
+  //   notifyListeners();
+  //   return isUserExists;
+  // }
 }

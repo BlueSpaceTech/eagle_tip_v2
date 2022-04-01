@@ -4,6 +4,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/create_account.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/employer_code.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/login_screen.dart';
@@ -41,113 +42,130 @@ class _DecidingScreenState extends State<DecidingScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      backgroundColor: Color(0xff2B343B),
-      bottomNavigationBar: CustomFAQbottom(),
-      body: SingleChildScrollView(
-        child: Stack(children: [
-          WebBg(),
-          Padding(
-            padding: EdgeInsets.only(
-                left: width * 0.1, right: width * 0.1, top: height * 0.08),
-            child: Align(
-              alignment: Alignment.center,
+        //backgroundColor: Color(0xff2B343B),
+        //  bottomNavigationBar: CustomFAQbottom(),
+        body: Responsive(
+      desktop: DestopDeciding(),
+      mobile: MobileDeciding(),
+      tablet: MobileDeciding(),
+    ));
+  }
+}
+
+class DestopDeciding extends StatelessWidget {
+  const DestopDeciding({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+    return Stack(children: [
+      Expanded(
+        child: Row(children: [
+          Expanded(
+              flex: 1,
               child: Container(
-                padding: EdgeInsets.only(top: 20),
-                width: Responsive.isDesktop(context) ? width * 0.6 : width * 1,
-                height: height * 0.8,
-                decoration: BoxDecoration(
-                    color: Colors.black
-                        .withOpacity(Responsive.isDesktop(context) ? 0.6 : 0),
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Visibility(
-                          visible: Responsive.isDesktop(context) ? false : true,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: height * 0.06,
-                    ),
-                    Image.asset("assets/Logo 2 1.png"),
-                    SizedBox(
-                      height: height * 0.15,
-                    ),
-                    Text(
-                      "Enter Your Email",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500),
-                    ),
-                    SizedBox(
-                      height: height * 0.02,
-                    ),
-                    CustomTextField(
-                        isactive: true,
-                        controller: _email,
-                        width: width,
-                        height: height,
-                        labelText: "Code"),
-                    SizedBox(
-                      height: height * 0.015,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        // TermConditions(width, height);
-                        String res = "Data Fetched";
-                        Future<QuerySnapshot<Map<String, dynamic>>> dbRef =
-                            FirebaseFirestore.instance
-                                .collection('invitations')
-                                .where("email", isEqualTo: _email.text)
-                                .get();
-
-                        dbRef.then((value) {
-                          if (value.docs.isEmpty) {
-                               Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => EmployerCode(
-                               
-                                  ),
-                                ));
-                          }else{
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => LoginScreen(
-                               
-                                  ),
-                                ));
-                          }
-                        });
-
-                      
-                      },
-                      child: CustomSubmitButton(
-                        width: width,
-                        title: "Next",
+                decoration: BoxDecoration(color: Color(0xff2B343B)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 100),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Login',
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 31,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
                       ),
-                    ),
-                  ],
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "Welcome back! Click on this login button to take you to your login page.",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.loginscreen);
+                        },
+                        child: CustomSubmitButton(
+                            width: width, title: "Take me to login page"),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ),
-          ),
+              )),
+          Expanded(
+              flex: 1,
+              child: Container(
+                decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 100),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Sign Up',
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 31,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        "Are you new here? Click on the Sign up button to create your account.",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.employercode);
+                        },
+                        child: CustomSubmitButton(
+                            width: width, title: "Create new account"),
+                      )
+                    ],
+                  ),
+                ),
+              ))
         ]),
       ),
-    );
+      Positioned.fill(
+          child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(top: 40),
+                child: Logo(width: width),
+              ))),
+    ]);
+  }
+}
+
+class MobileDeciding extends StatelessWidget {
+  const MobileDeciding({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
