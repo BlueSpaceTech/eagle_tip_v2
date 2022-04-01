@@ -229,18 +229,8 @@ class _LoginScreenState extends State<LoginScreen> {
 //     });
 
     if (res == "success") {
-<<<<<<< Updated upstream
-      print(_auth.currentUser!.uid);
-      addData();
-      print({"here "});
-      print("phonenumber");
-<<<<<<< Updated upstream
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (context) => BottomNav()));
-=======
       // await addData();
 
->>>>>>> Stashed changes
       DocumentReference dbRef = FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid);
@@ -259,18 +249,9 @@ class _LoginScreenState extends State<LoginScreen> {
           }
         }
       });
-<<<<<<< Updated upstream
-      if (PlatformInfo().isWeb()) {
-        print("isweb");
-=======
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => BottomNav()));
->>>>>>> Stashed changes
-=======
       print(phone);
       print(userRole);
       addData();
->>>>>>> Stashed changes
 
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => LoginScreen()));
