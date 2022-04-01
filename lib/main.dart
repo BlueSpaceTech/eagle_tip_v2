@@ -112,80 +112,6 @@ class MyApp extends StatelessWidget {
           create: (_) => UserProvider(),
         ),
       ],
-<<<<<<< Updated upstream
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          backgroundColor: Color(0xff2B343B),
-        ),
-        // initialRoute: AppRoutes.loginscreen,
-        home: UserNavigator(),
-        routes: {
-          AppRoutes.about: (context) => AboutMobile(),
-          AppRoutes.aboutCompany: (context) => AboutCompany(),
-          AppRoutes.support: (context) => SupportScreen(),
-          AppRoutes.addFAQ: (context) => AddFAQ(),
-          AppRoutes.faq: (context) => FAQScreen(),
-          AppRoutes.loginscreen: (context) => LoginScreen(),
-          AppRoutes.employercode: (context) => EmployerCode(),
-          AppRoutes.bottomNav: (context) => BottomNav(),
-          AppRoutes.homeScreen: (context) => HomeScreen(),
-          AppRoutes.forgetpass: (context) => ForgetPassword(),
-          AppRoutes.mailsent: (context) => EmailSent(),
-          AppRoutes.faqTerminal: (context) => TerminalFAQ(),
-          AppRoutes.tanksRequest: (context) => TanksRequest(),
-          AppRoutes.welcometour: (context) => WelcomeTour(),
-          AppRoutes.tour1: (context) => Tour1(),
-          AppRoutes.tour2: (context) => Tour2(),
-          AppRoutes.tour3: (context) => Tour3(),
-          AppRoutes.tour4: (context) => Tour4(),
-          AppRoutes.notifications: (context) => Notifications(),
-          AppRoutes.tour5: (context) => Tour5(),
-          AppRoutes.finaltour: (context) => FinalTour(),
-          AppRoutes.ticketHistory: (context) => TicketHistory(),
-          AppRoutes.myProfile: (context) => MyProfile(),
-          AppRoutes.siteScreen: (context) => Sites(),
-          AppRoutes.siteDetails: (context) => SiteDetails(),
-          AppRoutes.desktopSetting: (context) => DesktopSetting(),
-          AppRoutes.displayTerms: (context) => DisplayTerms(),
-          // AppRoutes.settings: (context) => Settings(),
-          AppRoutes.mobileSetting: (context) => MobileSetting(),
-          AppRoutes.chattingscreen: (context) => ChatScreenn(
-                photourlfriend: "",
-                photourluser: "",
-                currentusername: "",
-                friendname: "",
-                frienduid: "",
-                index: 0,
-              ),
-          AppRoutes.addUserOwner: (context) => AddNewUserByOwner(),
-          AppRoutes.addUserManager: (context) => AddUserByManager(),
-
-          AppRoutes.newchat: (context) => NewChatScreen(),
-          // AppRoutes.chattingscreen: (context) => ChatScreenn(),
-          AppRoutes.crudscreen: (context) => CrudScreen(),
-          AppRoutes.editUser: (context) => EditUser(),
-          AppRoutes.useprofile: (context) => UserProfile(
-                name: "eerr",
-                email: "err",
-                dpUrl: "ff",
-                phonenumber: "f",
-                sites: [],
-                userRole: "",
-                uid: "",
-              ),
-          AppRoutes.splashscreen: (context) => SplashScreen(),
-          AppRoutes.createNotification: (context) => CreateNotification(),
-          AppRoutes.specificNotification: (context) => SpecificNotification(
-              notifyName: "Hurricane Coming!",
-              notifyContent:
-                  "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. "),
-          AppRoutes.webfinaltour: (context) => FinalTourWeb(),
-          AppRoutes.messagemain: (context) => MessageMain(
-                Chatscreen: ChatScreenn(
-=======
       child: MediaQuery(
         data: MediaQueryData(),
         child: MaterialApp(
@@ -228,7 +154,6 @@ class MyApp extends StatelessWidget {
             // AppRoutes.settings: (context) => Settings(),
             AppRoutes.mobileSetting: (context) => MobileSetting(),
             AppRoutes.chattingscreen: (context) => ChatScreenn(
->>>>>>> Stashed changes
                   photourlfriend: "",
                   photourluser: "",
                   currentusername: "",
