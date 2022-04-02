@@ -245,6 +245,18 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                         height: height * 0.04,
                       ),
                       Text(
+                        "Select the Site and Role for your new user",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+                      SizedBox(
+                        height: height * 0.04,
+                      ),
+                      Text(
                         "Site",
                         style: TextStyle(
                           fontSize: 15.0,
@@ -357,7 +369,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                               if (selectedrOLE == "" || selectedsites.isEmpty) {
                                 fToast!.showToast(
                                     child: ToastMessage().show(width, context,
-                                        "Please input all fields"),
+                                        "Please select the site and Role for your new user"),
                                     gravity: ToastGravity.BOTTOM,
                                     toastDuration: Duration(seconds: 3));
                               } else if (selectedrOLE == "SiteUser" &&

@@ -307,13 +307,25 @@ class _InvitationState extends State<Invitation> {
                               : Color(0xffEFF0F6).withOpacity(0.7),
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        child: TextField(
+                        child: TextFormField(
                           keyboardType: TextInputType.phone,
                           enabled: true,
                           controller: _phone,
                           style: TextStyle(fontFamily: "Poppins"),
                           cursorColor: Colors.black12,
+                          validator: (text) {
+                            if (text!.length > 10) {
+                              return "Phone number exceeding number of digits";
+                            } else if (text.isEmpty || text.length < 10) {
+                              return "Enter a valid phone number";
+                            }
+                          },
                           decoration: InputDecoration(
+                            errorStyle: TextStyle(
+                              color: Colors.red[400],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
                             border: InputBorder.none,
                             labelText: "Phone number",
                             labelStyle: TextStyle(

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -643,15 +645,40 @@ class _CrudScreenState extends State<CrudScreen> {
                                   Visibility(
                                     visible: Responsive.isDesktop(context),
                                     child: InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.sentto);
-                                        },
-                                        child: customfab(
-                                          height: height,
-                                          width: width,
-                                          text: "Invitations",
-                                        )),
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.sentto);
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: Responsive.isDesktop(context)
+                                            ? width * 0.13
+                                            : width * 0.42,
+                                        height: height * 0.064,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff5081DB),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Invitations",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.white,
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.012,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),

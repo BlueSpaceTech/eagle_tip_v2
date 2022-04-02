@@ -336,8 +336,10 @@ class _UploadImageState extends State<UploadImage> {
                     InkWell(
                       onTap: () async {
                         signupUser(width);
-                        _subscribetotopic();
-                        _subscribeAllUsers();
+                        if (Platform.isAndroid || Platform.isIOS) {
+                          _subscribetotopic();
+                          _subscribeAllUsers();
+                        }
                       },
                       child: CustomSubmitButton(
                         width: width,

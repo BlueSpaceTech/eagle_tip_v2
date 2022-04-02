@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -670,7 +672,18 @@ class _SentToState extends State<SentTo> {
                             itemBuilder: (BuildContext context, int index) {
                               final document = _resultList[index];
                               List site = document!["sites"];
-
+                              if (_resultList.isEmpty) {
+                                return Center(
+                                  child: Text(
+                                    "No Invitations to display",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                );
+                              }
                               return SingleChildScrollView(
                                 physics: Responsive.isDesktop(context)
                                     ? NeverScrollableScrollPhysics()

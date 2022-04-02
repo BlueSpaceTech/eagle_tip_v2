@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 /*
 DocumentReference dbRef = FirebaseFirestore.instance
                         .collection('users')
@@ -104,7 +106,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                     ),
                     Image.asset("assets/Logo 2 1.png"),
                     SizedBox(
-                      height: height * 0.15,
+                      height: height * 0.1,
                     ),
                     Text(
                       "Enter Employer Code",
@@ -168,6 +170,54 @@ class _EmployerCodeState extends State<EmployerCode> {
                         width: width,
                         title: "Next",
                       ),
+                    ),
+                    SizedBox(
+                      height: height * 0.04,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          " Input here the code in your invitation email.",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        Text(
+                          " If you can't find your invitation email, please look into your spam folder.",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        Text(
+                          " If you can't find your invitation email, contact your supervisor.",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                        Text(
+                          " For more information visit our FAQ section below.",
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "Poppins",
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

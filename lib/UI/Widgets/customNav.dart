@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -33,6 +34,12 @@ class Navbar extends StatefulWidget {
   State<Navbar> createState() => _NavbarState();
 }
 
+Map ScreeRoutes = {
+  1: AppRoutes.myProfile,
+  2: AppRoutes.desktopSetting,
+  3: AuthFunctions.signOut(),
+};
+
 class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
@@ -56,7 +63,12 @@ class _NavbarState extends State<Navbar> {
                   SizedBox(
                     width: widget.width * 0.03,
                   ),
-                  Logo(width: widget.width * 0.6),
+                  InkWell(
+                      onTap: () {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, AppRoutes.homeScreen, (route) => false);
+                      },
+                      child: Logo(width: widget.width * 0.6)),
                   Padding(
                     padding: EdgeInsets.only(top: widget.height * 0.024),
                     child: Container(
@@ -204,16 +216,62 @@ class _NavbarState extends State<Navbar> {
                     SizedBox(
                       width: widget.width * 0.02,
                     ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.myProfile);
+                    PopupMenuButton(
+                      padding: EdgeInsets.only(bottom: 500.0),
+                      onSelected: (value) {
+                        Navigator.pushNamed(context, ScreeRoutes[value]);
                       },
+                      color: Color(0xFF3f4850),
                       child: CircleAvatar(
                         radius: 22,
                         backgroundColor: backGround_color,
                         backgroundImage: NetworkImage(user.dpurl),
                       ),
-                    ),
+                      itemBuilder: (context) => [
+                        PopupMenuItem(
+                          child: Text(
+                            "My Profile",
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontFamily: "Poppins"),
+                          ),
+                          value: 1,
+                        ),
+                        PopupMenuItem(
+                          child: Text(
+                            "Settings",
+                            style: TextStyle(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.white,
+                                fontFamily: "Poppins"),
+                          ),
+                          value: 2,
+                        ),
+                        PopupMenuItem(
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.pushNamedAndRemoveUntil(context,
+                                  AppRoutes.loginscreen, (route) => false);
+                            },
+                            child: SizedBox(
+                              width: 300,
+                              child: Text(
+                                "Logout",
+                                style: TextStyle(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                    fontFamily: "Poppins"),
+                              ),
+                            ),
+                          ),
+                          value: 3,
+                        )
+                      ],
+                    )
                   ],
                 ),
               ),
