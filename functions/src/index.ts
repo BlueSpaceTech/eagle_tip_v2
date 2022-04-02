@@ -22,6 +22,9 @@ export const schedfunc=functions.pubsub.schedule("every 5 minutes").onRun(async 
     
 );
 
+exports.deleteUser=functions.firestore.document("users/{userID}").onDelete(async(snap,context)=>{
+    return admin.auth().deleteUser(snap.id).then(()=>console.log('Deleted User with ID:'+snap.id)).catch((err)=>console.error('There was an error while deleting the user:',err));
+})
 
 export const sendToCondition =functions.firestore.document('/pushNotifications/{notificaitonId}').onCreate(async snapshot=>{
         const notify=snapshot.data();

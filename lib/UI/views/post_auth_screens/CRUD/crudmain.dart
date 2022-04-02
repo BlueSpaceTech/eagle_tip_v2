@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -34,6 +35,14 @@ class _CrudScreenState extends State<CrudScreen> {
   late ScrollController SCROL;
 
   deletUserDialog(double height, double width, String name, String uid) {
+    // Future<void> del(String message) async {
+    //   HttpsCallable callable =
+    //       FirebaseFunctions.instance.httpsCallable('deleteUser');
+    //   await callable.call(<String, dynamic>{
+    //     'uid': uid,
+    //   });
+    // }
+
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -119,6 +128,7 @@ class _CrudScreenState extends State<CrudScreen> {
                           .collection("users")
                           .doc(uid)
                           .delete();
+                      // del("message");
                     },
                     child: Container(
                       width: Responsive.isDesktop(context)
