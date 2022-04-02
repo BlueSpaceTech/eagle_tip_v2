@@ -61,6 +61,13 @@ class _EmployerCodeState extends State<EmployerCode> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _emoloyercode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

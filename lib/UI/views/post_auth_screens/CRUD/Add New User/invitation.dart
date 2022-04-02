@@ -340,9 +340,28 @@ class _InvitationState extends State<Invitation> {
                       ),
                       InkWell(
                         onTap: () {
-                          if (_phone.text.length == 10 &&
-                              _email.text.isNotEmpty &&
-                              _name.text.isNotEmpty) {
+                          if (_phone.text.length != 10) {
+                            fToast!.showToast(
+                              child: ToastMessage().show(width, context,
+                                  "Phone number must be of 10 digits only"),
+                              gravity: ToastGravity.BOTTOM,
+                              toastDuration: Duration(seconds: 3),
+                            );
+                          } else if (_email.text.isEmpty) {
+                            fToast!.showToast(
+                              child: ToastMessage()
+                                  .show(width, context, "Please input email"),
+                              gravity: ToastGravity.BOTTOM,
+                              toastDuration: Duration(seconds: 3),
+                            );
+                          } else if (_name.text.isEmpty) {
+                            fToast!.showToast(
+                              child: ToastMessage()
+                                  .show(width, context, "Please input name"),
+                              gravity: ToastGravity.BOTTOM,
+                              toastDuration: Duration(seconds: 3),
+                            );
+                          } else {
                             String res = AuthFunctions().addUserTodb(
                               name: _name.text,
                               email: _email.text,
@@ -370,13 +389,6 @@ class _InvitationState extends State<Invitation> {
                                 toastDuration: Duration(seconds: 3),
                               );
                             }
-                          } else {
-                            fToast!.showToast(
-                              child: ToastMessage().show(width, context,
-                                  "Please input all field correctly"),
-                              gravity: ToastGravity.BOTTOM,
-                              toastDuration: Duration(seconds: 3),
-                            );
                           }
                         },
                         child: CustomSubmitButton(

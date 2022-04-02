@@ -284,21 +284,22 @@ class _SentToState extends State<SentTo> {
         }
       }
     } else {
-      for (var usersnap in _allResults) {
-        var role = model.User.fromSnap(usersnap).userRole;
-        var user = model.User.fromSnap(usersnap);
-        List visiblefor = CrudFunction().visibleRole2(userRole);
-        // List visiblefor = ["SiteManager", "SiteUser"];
-        if (visiblefor.contains(usersnap["userRole"])) {
-          print("contains");
-          showResults.add(usersnap);
-        } else {
-          // _allResults.remove(user);
-          print("removed");
-        }
-      }
+      // for (var usersnap in _allResults) {
+      //   //   var role = model.User.fromSnap(usersnap).userRole;
+      //   //   var user = model.User.fromSnap(usersnap);
+      //   //   List visiblefor = CrudFunction().visibleRole2(userRole);
+      //   //   // List visiblefor = ["SiteManager", "SiteUser"];
+      //   //   if (visiblefor.contains(usersnap["userRole"])) {
+      //   //     print("contains");
+      //   //     showResults.add(usersnap);
+      //   //   } else {
+      //   //     // _allResults.remove(user);
+      //   //     print("removed");
+      //   //   }
+      //   // }
+      // }
 
-      // showResults = List.from(_allResults);
+      showResults = List.from(_allResults);
     }
     setState(() {
       _resultList = showResults;
@@ -664,99 +665,101 @@ class _SentToState extends State<SentTo> {
                         //     );
                         //   },
                         // ),
-                        ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(top: 0),
-                            shrinkWrap: true,
-                            itemCount: _resultList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final document = _resultList[index];
-                              List site = document!["sites"];
-                              if (_resultList.isEmpty) {
-                                return Center(
-                                  child: Text(
-                                    "No Invitations to display",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.white,
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                );
-                              }
-                              return SingleChildScrollView(
-                                physics: Responsive.isDesktop(context)
-                                    ? NeverScrollableScrollPhysics()
-                                    : BouncingScrollPhysics(),
-                                controller: _numbers,
-                                scrollDirection: Axis.horizontal,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: index % 2 == 0
-                                        ? Color(0xff2B343B)
-                                        : Color(0xff24292E),
-                                  ),
-                                  height: 60,
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          deletUserDialog(
-                                              height,
-                                              width,
-                                              document["name"],
-                                              document["employercode"]);
-                                        },
-                                        child: Container(
-                                            width: Responsive.isDesktop(context)
-                                                ? width * 0.08
-                                                : width * 0.16,
-                                            child: Image.asset(
-                                                "assets/delete.png")),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.useprofile);
-                                        },
-                                        child: Container(
-                                          width: Responsive.isDesktop(context)
-                                              ? width * 0.22
-                                              : width * 0.4,
-                                          child: Text(
-                                            '${index + 1}. ${document["name"]}',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: Responsive.isDesktop(context)
-                                            ? width * 0.12
-                                            : width * 0.24,
-                                        child: Text(document["userRole"],
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins")),
-                                      ),
-                                      Container(
-                                        width: Responsive.isDesktop(context)
-                                            ? width * 0.32
-                                            : width * 0.52,
-                                        child: Text(site.join(", "),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins")),
-                                      ),
-                                      SizedBox(
-                                        width: width * 0.04,
-                                      ),
-                                    ],
-                                  ),
+                        _resultList.isEmpty
+                            ? Center(
+                                child: Text(
+                                  "No Invitations to display",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w600),
                                 ),
-                              );
-                            }),
+                              )
+                            : ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.only(top: 0),
+                                shrinkWrap: true,
+                                itemCount: _resultList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final document = _resultList[index];
+                                  List site = document!["sites"];
+
+                                  return SingleChildScrollView(
+                                    physics: Responsive.isDesktop(context)
+                                        ? NeverScrollableScrollPhysics()
+                                        : BouncingScrollPhysics(),
+                                    controller: _numbers,
+                                    scrollDirection: Axis.horizontal,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: index % 2 == 0
+                                            ? Color(0xff2B343B)
+                                            : Color(0xff24292E),
+                                      ),
+                                      height: 60,
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              deletUserDialog(
+                                                  height,
+                                                  width,
+                                                  document["name"],
+                                                  document["employercode"]);
+                                            },
+                                            child: Container(
+                                                width: Responsive.isDesktop(
+                                                        context)
+                                                    ? width * 0.08
+                                                    : width * 0.16,
+                                                child: Image.asset(
+                                                    "assets/delete.png")),
+                                          ),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  AppRoutes.useprofile);
+                                            },
+                                            child: Container(
+                                              width:
+                                                  Responsive.isDesktop(context)
+                                                      ? width * 0.22
+                                                      : width * 0.4,
+                                              child: Text(
+                                                '${index + 1}. ${document["name"]}',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins"),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.12
+                                                : width * 0.24,
+                                            child: Text(document["userRole"],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins")),
+                                          ),
+                                          Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.32
+                                                : width * 0.52,
+                                            child: Text(site.join(", "),
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins")),
+                                          ),
+                                          SizedBox(
+                                            width: width * 0.04,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
                         SizedBox(
                           height: height * 0.1,
                         ),

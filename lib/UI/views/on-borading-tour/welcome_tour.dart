@@ -70,7 +70,7 @@ class WelcomeTour extends StatelessWidget {
                                 SizedBox(
                                   height: height * 0.03,
                                 ),
-                                GestureDetector(
+                                InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
                                         context, AppRoutes.tour1);
@@ -100,7 +100,7 @@ class WelcomeTour extends StatelessWidget {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    GestureDetector(
+                                    InkWell(
                                       onTap: () {
                                         Responsive.isDesktop(context)
                                             ? Navigator.pushNamed(

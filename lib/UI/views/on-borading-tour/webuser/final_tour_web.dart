@@ -29,8 +29,8 @@ class FinalTourWeb extends StatelessWidget {
               right: -100,
               child: TourUpContainer1(
                 onnext: () {
-                  Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()));
                 },
                 containertype: "right",
                 distance: height * 0.028,
@@ -117,7 +117,7 @@ class TourUpContainer1 extends StatelessWidget {
                         "   ",
                       ),
                     ] else ...[
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.finaltour);
                         },
@@ -130,7 +130,7 @@ class TourUpContainer1 extends StatelessWidget {
                     SizedBox(
                       width: width * 0.04,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         onnext();
                       },

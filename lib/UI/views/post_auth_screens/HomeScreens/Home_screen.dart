@@ -52,103 +52,102 @@ class _HomeScreenState extends State<HomeScreen> {
 
     addData();
     checkupdateTC();
-    print(showdilog);
 
     //print(checkupdateTC());
     //checkupdateTC();
   }
 
-  TermConditions(double widht, double height, bool show) {
-    return showDialog(
-      context: context,
-      builder: (ctx) => Dialog(
-        child: Visibility(
-          visible: show,
-          child: Container(
-            padding: EdgeInsets.all(20),
-            width: widht * 0.7,
-            height: height * 0.9,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Column(
-              //crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(Icons.close)),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Terms and conditions Updated",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontFamily: "Poppins",
-                          fontSize: 24),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "use the link below to view updated Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 18,
-                          fontWeight: FontWeight.w300),
-                    ),
-                  ],
-                ),
-                Container(
-                  height: height * 0.5,
-                  child: SingleChildScrollView(
-                      child: Column(children: [
-                    Container(
-                      height: height * 0.8,
-                      color: Colors.red,
-                      child: Text(""),
-                    ),
-                  ])),
-                ),
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(
-                    "https://link-of-terms&conditions",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff5081DB),
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                ]),
-                SizedBox(
-                  height: 2,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                        onTap: () {},
-                        child:
-                            CustomSubmitButton(width: widht, title: "Agree")),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  // TermConditions(double widht, double height, bool show) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (ctx) => Dialog(
+  //       child: Visibility(
+  //         visible: show,
+  //         child: Container(
+  //           padding: EdgeInsets.all(20),
+  //           width: widht * 0.7,
+  //           height: height * 0.9,
+  //           decoration: BoxDecoration(
+  //             color: Colors.white,
+  //             borderRadius: BorderRadius.all(Radius.circular(20)),
+  //           ),
+  //           child: Column(
+  //             //crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.end,
+  //                 children: [
+  //                   InkWell(
+  //                       onTap: () {
+  //                         Navigator.pop(context);
+  //                       },
+  //                       child: Icon(Icons.close)),
+  //                 ],
+  //               ),
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 children: [
+  //                   Text(
+  //                     "Terms and conditions Updated",
+  //                     style: TextStyle(
+  //                         fontWeight: FontWeight.w600,
+  //                         fontFamily: "Poppins",
+  //                         fontSize: 24),
+  //                   ),
+  //                   SizedBox(
+  //                     height: 20,
+  //                   ),
+  //                   Text(
+  //                     "use the link below to view updated Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
+  //                     style: TextStyle(
+  //                         fontFamily: "Poppins",
+  //                         fontSize: 18,
+  //                         fontWeight: FontWeight.w300),
+  //                   ),
+  //                 ],
+  //               ),
+  //               Container(
+  //                 height: height * 0.5,
+  //                 child: SingleChildScrollView(
+  //                     child: Column(children: [
+  //                   Container(
+  //                     height: height * 0.8,
+  //                     color: Colors.red,
+  //                     child: Text(""),
+  //                   ),
+  //                 ])),
+  //               ),
+  //               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+  //                 Text(
+  //                   "https://link-of-terms&conditions",
+  //                   style: TextStyle(
+  //                     fontSize: 18,
+  //                     fontWeight: FontWeight.w500,
+  //                     color: Color(0xff5081DB),
+  //                     decoration: TextDecoration.underline,
+  //                   ),
+  //                 ),
+  //               ]),
+  //               SizedBox(
+  //                 height: 2,
+  //               ),
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.center,
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   InkWell(
+  //                       onTap: () {},
+  //                       child:
+  //                           CustomSubmitButton(width: widht, title: "Agree")),
+  //                 ],
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   List? check;
   DocumentReference dialog = FirebaseFirestore.instance
@@ -156,17 +155,17 @@ class _HomeScreenState extends State<HomeScreen> {
       .doc("k5c1eJ3DFh3P9IO7HEAA")
       .collection("dialog")
       .doc("yFXxdJGVDUkgU8o8hCUU");
-  bool showdilog = false;
+  // bool showdilog = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   checkupdateTC() async {
     bool showdilogg = false;
-    print("inside");
+    // print("inside");
     DocumentReference dbRef = await FirebaseFirestore.instance
         .collection('termconditions')
         .doc("k5c1eJ3DFh3P9IO7HEAA")
         .collection("dialog")
         .doc("yFXxdJGVDUkgU8o8hCUU");
-    print("inside2");
+    // print("inside2");
 
     await dbRef.get().then((data) {
       if (data.exists) {
@@ -176,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
         print("dataexts");
         print(check);
         if (check!.contains(auth.currentUser!.uid)) {
-          print("already viewed");
+          // print("already viewed");
         } else {
           WidgetsBinding.instance!.addPostFrameCallback((_) async {
             if (true) {

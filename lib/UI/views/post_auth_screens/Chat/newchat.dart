@@ -187,11 +187,11 @@ class _NewChatScreenState extends State<NewChatScreen> {
         List visiblefor = CrudFunction().allChatVisibility(userRole);
         // List visiblefor = ["SiteManager", "SiteUser"];
         if (visiblefor.contains(usersnap["userRole"])) {
-          print("contains");
+          // print("contains");
           showResults.add(usersnap);
         } else {
           // _allResults.remove(user);
-          print("removed");
+          // print("removed");
         }
       }
 

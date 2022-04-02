@@ -106,6 +106,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _otp.clear();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

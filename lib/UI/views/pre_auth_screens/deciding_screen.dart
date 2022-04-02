@@ -72,49 +72,6 @@ class DestopDeciding extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Login',
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 31,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      "Welcome back! Click on this login button to take you to your login page.",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.loginscreen);
-                      },
-                      child: CustomSubmitButton(
-                          width: width, title: "Take me to login page"),
-                    )
-                  ],
-                ),
-              ),
-            )),
-        Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 100),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
                       'Sign Up',
                       style: TextStyle(
                           fontFamily: "Poppins",
@@ -142,6 +99,49 @@ class DestopDeciding extends StatelessWidget {
                       },
                       child: CustomSubmitButton(
                           width: width, title: "Create new account"),
+                    )
+                  ],
+                ),
+              ),
+            )),
+        Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.9)),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 100),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Login',
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 31,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Welcome back! Click on this login button to take you to your login page.",
+                      style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.loginscreen);
+                      },
+                      child: CustomSubmitButton(
+                          width: width, title: "Take me to login page"),
                     )
                   ],
                 ),

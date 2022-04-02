@@ -149,7 +149,7 @@ class TourUpContainer extends StatelessWidget {
                     SizedBox(
                       width: width * 0.04,
                     ),
-                    GestureDetector(
+                    InkWell(
                       onTap: () {
                         onnext();
                       },

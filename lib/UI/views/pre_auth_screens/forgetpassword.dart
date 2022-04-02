@@ -20,6 +20,7 @@ class ForgetPassword extends StatefulWidget {
 
 class _ForgetPasswordState extends State<ForgetPassword> {
   FToast? fToast;
+  final TextEditingController _email = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -29,8 +30,14 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    _email.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final TextEditingController _email = TextEditingController();
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(

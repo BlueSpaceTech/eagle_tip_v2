@@ -50,6 +50,12 @@ class _AllChatScreenState extends State<AllChatScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   final TextEditingController _search = new TextEditingController();
 
 /*
@@ -153,6 +159,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                 ),
               );
             }
+
             var document = snapshot.data?.docs;
             // var docid = document!.single.id;
 
@@ -271,44 +278,55 @@ class _AllChatScreenState extends State<AllChatScreen> {
                         ),
                       ),
                     ),
-                    ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data?.docs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          // var document = _allChats[index];
-
-                          return InkWell(
-                            onTap: () {
-                              // document![index]
-                              //     .reference
-                              //     .collection("messages")
-                              //     .doc(document[index].id + "sent")
-                              //     .update({
-                              //   "isNew": false,
-                              // });
-
-                              callChatScreen(
-                                  document![index]['uid1'] == user.uid
-                                      ? document[index]["uid2"]
-                                      : document[index]["uid1"],
-                                  document[index]['user1'] == user.name
-                                      ? document[index]["user2"]
-                                      : document[index]["user1"],
-                                  user.name,
-                                  document[index]['photo1'] == user.dpurl
-                                      ? document[index]["photo2"]
-                                      : document[index]["photo1"],
-                                  user.dpurl);
-                            },
-                            child: ChatListTile(
-                              doc: document![index],
-                              newChat: document[index]["isNew"],
-                              height: height,
-                              width: width,
+                    document!.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No Chats to display",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600),
                             ),
-                          );
-                        }),
+                          )
+                        : ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data?.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              // var document = _allChats[index];
+
+                              return InkWell(
+                                onTap: () {
+                                  // document![index]
+                                  //     .reference
+                                  //     .collection("messages")
+                                  //     .doc(document[index].id + "sent")
+                                  //     .update({
+                                  //   "isNew": false,
+                                  // });
+
+                                  callChatScreen(
+                                      document[index]['uid1'] == user.uid
+                                          ? document[index]["uid2"]
+                                          : document[index]["uid1"],
+                                      document[index]['user1'] == user.name
+                                          ? document[index]["user2"]
+                                          : document[index]["user1"],
+                                      user.name,
+                                      document[index]['photo1'] == user.dpurl
+                                          ? document[index]["photo2"]
+                                          : document[index]["photo1"],
+                                      user.dpurl);
+                                },
+                                child: ChatListTile(
+                                  doc: document[index],
+                                  newChat: document[index]["isNew"],
+                                  height: height,
+                                  width: width,
+                                ),
+                              );
+                            }),
                   ],
                 ),
               ),

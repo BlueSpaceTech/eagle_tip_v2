@@ -122,7 +122,7 @@ class TourUpContainer1 extends StatelessWidget {
                         "   ",
                       ),
                     ] else ...[
-                      GestureDetector(
+                      InkWell(
                         onTap: () {
                           Navigator.pushNamed(context, AppRoutes.finaltour);
                         },

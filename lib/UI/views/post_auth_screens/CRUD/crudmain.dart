@@ -433,11 +433,10 @@ class _CrudScreenState extends State<CrudScreen> {
         List visiblefor = CrudFunction().visibleRole2(userRole);
         // List visiblefor = ["SiteManager", "SiteUser"];
         if (visiblefor.contains(usersnap["userRole"])) {
-          print("contains");
           showResults.add(usersnap);
         } else {
           // _allResults.remove(user);
-          print("removed");
+
         }
       }
 

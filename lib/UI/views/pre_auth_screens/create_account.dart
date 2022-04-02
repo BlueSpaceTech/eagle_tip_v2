@@ -189,6 +189,15 @@ class _CreateAccountState extends State<CreateAccount> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    name.dispose();
+    email.dispose();
+    phoneno.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
