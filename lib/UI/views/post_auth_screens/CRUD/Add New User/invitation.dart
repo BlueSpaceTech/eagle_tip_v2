@@ -173,7 +173,7 @@ class _InvitationState extends State<Invitation> {
                                 : width * 0.8,
                             child: RichText(
                               text: TextSpan(
-                                text: "New user will join",
+                                text: "New user will join ",
                                 style: TextStyle(
                                   fontSize: 13.0,
                                   fontWeight: FontWeight.w400,

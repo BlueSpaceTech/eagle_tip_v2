@@ -185,8 +185,28 @@ class _NavbarState extends State<Navbar> {
                                       if (docs.isNotEmpty) {
                                         for (var element in docs) {
                                           List notify = element["isNew"];
+                                          List siites = element["sites"];
+                                          istrue() {
+                                            for (int i = 0;
+                                                i < user.sites.length;
+                                                i++) {
+                                              for (int j = 0;
+                                                  j < siites.length;
+                                                  j++) {
+                                                if (user.sites[i] ==
+                                                    siites[j]) {
+                                                  return true;
+                                                }
+                                              }
+                                            }
+                                            return false;
+                                          }
 
-                                          if (!notify.contains(user.uid)) {
+                                          // print(siites);
+                                          // if(){}
+                                          if (!notify.contains(FirebaseAuth
+                                                  .instance.currentUser!.uid) &&
+                                              istrue()) {
                                             documents.add(element);
                                           }
                                         }
