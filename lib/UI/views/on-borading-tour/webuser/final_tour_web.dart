@@ -30,7 +30,7 @@ class FinalTourWeb extends StatelessWidget {
               child: TourUpContainer1(
                 onnext: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                      MaterialPageRoute(builder: (context) => HomeScreen(showdialog: false,)));
                 },
                 containertype: "right",
                 distance: height * 0.028,

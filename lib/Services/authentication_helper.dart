@@ -48,7 +48,9 @@ class AuthFunctions with ChangeNotifier {
       return LoginScreen();
     } else {
       if (Responsive.isDesktop(context)) {
-        return HomeScreen();
+        return HomeScreen(
+          showdialog: true,
+        );
       } else {
         return BottomNav();
       }

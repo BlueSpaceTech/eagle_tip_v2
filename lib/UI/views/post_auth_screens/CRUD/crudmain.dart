@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
@@ -173,7 +174,7 @@ class _CrudScreenState extends State<CrudScreen> {
       if (data.exists) {
         if (mounted) {
           setState(() {
-            print("fetching");
+            //  print("fetching");
 
             userRole = data.get("userRole");
             // email = data.get("email");
@@ -303,7 +304,10 @@ class _CrudScreenState extends State<CrudScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentUserRole();
+    if (mounted) {
+      getCurrentUserRole();
+    }
+
     _controllers = LinkedScrollControllerGroup();
     _letters = _controllers!.addAndGet();
     _numbers = _controllers!.addAndGet();
@@ -341,7 +345,7 @@ class _CrudScreenState extends State<CrudScreen> {
   List _resultList = [];
   TextEditingController _search = TextEditingController();
 
-  getUserdetails(List sites, String uid, model.User user) async {
+  getUserdetails(List sites, String uid) async {
     var data = await FirebaseFirestore.instance
         .collection("users")
         .where("isverified", isEqualTo: true)
@@ -349,10 +353,12 @@ class _CrudScreenState extends State<CrudScreen> {
         .where("uid", isNotEqualTo: uid)
         // .where("userRole", whereIn: CrudFunction().visibleRole(user))
         .get();
+    if (mounted) {
+      setState(() {
+        _allResults = data.docs;
+      });
+    }
 
-    setState(() {
-      _allResults = data.docs;
-    });
     // print(CrudFunction().visibleRole(user));
     // print(_allResults.length);
     // _allResults.removeWhere(
@@ -384,9 +390,9 @@ class _CrudScreenState extends State<CrudScreen> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
     model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites, user.uid, user);
+    resultsloaded = getUserdetails(user.sites, user.uid);
+    super.didChangeDependencies();
   }
 
   _onsearchange() {
@@ -442,9 +448,11 @@ class _CrudScreenState extends State<CrudScreen> {
 
       // showResults = List.from(_allResults);
     }
-    setState(() {
-      _resultList = showResults;
-    });
+    if (mounted) {
+      setState(() {
+        _resultList = showResults;
+      });
+    }
   }
 
   @override

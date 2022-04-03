@@ -411,6 +411,7 @@ class _TicketMessagesState extends State<TicketMessages> {
                 prevUserId = message.sender.id;
                 f
       */
+
                 final bool isMe = document!["by"] == currentUserUID;
                 final String name = document["by"] == widget.docid["byid"]
                     ? widget.byname

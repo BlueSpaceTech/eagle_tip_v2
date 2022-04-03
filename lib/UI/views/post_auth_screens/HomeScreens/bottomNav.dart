@@ -31,7 +31,9 @@ class _BottomNavState extends State<BottomNav> {
   );
   List<Widget> _widgetOptions = <Widget>[
     MyProfile(),
-    HomeScreen(),
+    HomeScreen(
+      showdialog: false,
+    ),
     Notifications(),
     //  MessageMain(
     // photourlfriend: "",

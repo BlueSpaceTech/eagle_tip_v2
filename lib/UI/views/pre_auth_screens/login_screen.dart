@@ -106,7 +106,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       //     ? TerminalHome()
                       //     :
                       Responsive.isDesktop(context)
-                          ? HomeScreen()
+                          ? HomeScreen(
+                              showdialog: true,
+                            )
                           : BottomNav()));
           // FirebaseFirestore.instance
           //     .collection("users")
@@ -172,7 +174,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   (userRole == "TerminalUser" || userRole == "TerminalManager")
                       ? TerminalHome()
                       : Responsive.isDesktop(context)
-                          ? HomeScreen()
+                          ? HomeScreen(
+                              showdialog: true,
+                            )
                           : BottomNav()));
       fToast!.showToast(
           child: ToastMessage().show(width, context, "success"),
@@ -255,40 +259,40 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => LoginScreen()));
-      print(_auth.currentUser!.uid);
+      // print(_auth.currentUser!.uid);
       // addData();
-      print({"here "});
-      print("phonenumber");
-      Navigator.pushNamed(context, AppRoutes.homeScreen);
+      // print({"here "});
+      // print("phonenumber");
+      // Navigator.pushNamed(context, AppRoutes.homeScreen);
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      // if (PlatformInfo().isWeb()) {
-      //   print("isweb");
+      if (PlatformInfo().isWeb()) {
+        print("isweb");
 
-      //   AuthFunctions.signOut;
-      //   print(phone);
-      //   print(userRole);
-      //   ConfirmationResult result =
-      //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-      //   fToast!.showToast(
-      //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-      //       gravity: ToastGravity.BOTTOM,
-      //       toastDuration: Duration(seconds: 3));
+        AuthFunctions.signOut;
+        // print(phone);
+        // print(userRole);
+        ConfirmationResult result =
+            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+        fToast!.showToast(
+            child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
 
-      //   setState(() {
-      //     ress = result;
-      //   });
-      //   setState(() {
-      //     _loading = false;
-      //   });
-      //   addData();
+        setState(() {
+          ress = result;
+        });
+        setState(() {
+          _loading = false;
+        });
+        addData();
 
-      //   print(ress);
-      // } else {
-      //   registerUser(phone, context);
-      //   addData();
-      // }
+        print(ress);
+      } else {
+        registerUser(phone, context);
+        addData();
+      }
 
       try {
         if (Platform.isAndroid || Platform.isIOS) {
@@ -392,7 +396,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         userRole == "TerminalManager")
                     ? TerminalHome()
                     : Responsive.isDesktop(context)
-                        ? HomeScreen()
+                        ? HomeScreen(
+                            showdialog: true,
+                          )
                         : BottomNav()));
         fToast!.showToast(
             child: ToastMessage().show(200, context, "Login Successful"),

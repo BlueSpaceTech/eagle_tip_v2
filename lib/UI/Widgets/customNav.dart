@@ -127,6 +127,25 @@ class _NavbarState extends State<Navbar> {
                                       docs2.add(ele);
                                     }
                                   }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.none) {
+                                    return Navtext(
+                                      color: index == 1
+                                          ? Colors.white
+                                          : Color(0xFFA0A3BD),
+                                      text: "Chat",
+                                      width: widget.width,
+                                    );
+                                  }
+                                  if (docs2.isEmpty) {
+                                    return Navtext(
+                                      color: index == 1
+                                          ? Colors.white
+                                          : Color(0xFFA0A3BD),
+                                      text: "Chat",
+                                      width: widget.width,
+                                    );
+                                  }
 
                                   if (snapshot.hasData) {
                                     return Badge(
@@ -146,7 +165,7 @@ class _NavbarState extends State<Navbar> {
                                       // },
                                     );
                                   } else {
-                                    return Text("Chats",
+                                    return Text("Chat",
                                         style: TextStyle(
                                             color: index == 2
                                                 ? Colors.white
@@ -180,6 +199,16 @@ class _NavbarState extends State<Navbar> {
                                         .snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.none) {
+                                        return Navtext(
+                                          color: index == 2
+                                              ? Colors.white
+                                              : Color(0xFFA0A3BD),
+                                          text: "Notifications",
+                                          width: widget.width,
+                                        );
+                                      }
                                       final documents = [];
                                       final docs = snapshot.data!.docs;
                                       if (docs.isNotEmpty) {
@@ -210,6 +239,15 @@ class _NavbarState extends State<Navbar> {
                                             documents.add(element);
                                           }
                                         }
+                                      }
+                                      if (documents.isEmpty) {
+                                        return Navtext(
+                                          color: index == 2
+                                              ? Colors.white
+                                              : Color(0xFFA0A3BD),
+                                          text: "Notifications",
+                                          width: widget.width,
+                                        );
                                       }
                                       return Badge(
                                         showBadge:

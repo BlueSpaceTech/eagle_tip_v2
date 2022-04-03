@@ -148,18 +148,25 @@ class _OpenTicketsState extends State<OpenTickets> {
             return Text("Something Went wrong");
           }
 
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return Text("Loading");
+          // }
+          if (!snapshot.hasData) {
+            return Center(
+                child: Text(
+              "No ticket to display",
+              style: TextStyle(color: Colors.white, fontSize: 13.0),
+            ));
           }
 
           var doc = snapshot.data?.docs;
-          print(doc?.toList());
+          // print(doc?.toList());
           var document = doc
               ?.where((element) =>
                   element["byid"] == user.uid ||
                   element["visibleto"] == user.userRole)
               .toList();
-          print(document);
+          // print(document);
           // var document = doc1?.toList();
           return document!.isEmpty
               ? Center(
@@ -288,18 +295,22 @@ class _ClosedTicketsState extends State<ClosedTickets> {
           if (snapshot.hasError) {
             return Text("Something Went wrong");
           }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+          if (!snapshot.hasData) {
+            return Center(
+                child: Text(
+              "No ticket to display",
+              style: TextStyle(color: Colors.white, fontSize: 13.0),
+            ));
           }
 
           var doc = snapshot.data?.docs;
-          print(doc?.toList());
+          //  print(doc?.toList());
           var document = doc
               ?.where((element) =>
                   element["byid"] == user.uid ||
                   element["visibleto"] == user.userRole)
               .toList();
-          print(document);
+          //  print(document);
           // var document = doc1?.toList();
           return document!.isEmpty
               ? Center(

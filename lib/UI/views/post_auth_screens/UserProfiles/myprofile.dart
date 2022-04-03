@@ -52,7 +52,7 @@ class _MyProfileState extends State<MyProfile> {
     model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    print(user.sites);
+    // print(user.sites);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)

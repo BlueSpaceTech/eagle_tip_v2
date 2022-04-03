@@ -128,7 +128,9 @@ class MyApp extends StatelessWidget {
           AppRoutes.loginscreen: (context) => LoginScreen(),
           AppRoutes.employercode: (context) => EmployerCode(),
           AppRoutes.bottomNav: (context) => BottomNav(),
-          AppRoutes.homeScreen: (context) => HomeScreen(),
+          AppRoutes.homeScreen: (context) => HomeScreen(
+                showdialog: false,
+              ),
           AppRoutes.forgetpass: (context) => ForgetPassword(),
           AppRoutes.mailsent: (context) => EmailSent(),
           AppRoutes.faqTerminal: (context) => TerminalFAQ(),

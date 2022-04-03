@@ -25,7 +25,8 @@ import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  HomeScreen({Key? key, required this.showdialog}) : super(key: key);
+  bool showdialog;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -160,31 +161,34 @@ class _HomeScreenState extends State<HomeScreen> {
   checkupdateTC() async {
     bool showdilogg = false;
     // print("inside");
-    DocumentReference dbRef = await FirebaseFirestore.instance
-        .collection('termconditions')
-        .doc("k5c1eJ3DFh3P9IO7HEAA")
-        .collection("dialog")
-        .doc("yFXxdJGVDUkgU8o8hCUU");
-    // print("inside2");
+    if (widget.showdialog) {
+      DocumentReference dbRef = await FirebaseFirestore.instance
+          .collection('termconditions')
+          .doc("k5c1eJ3DFh3P9IO7HEAA")
+          .collection("dialog")
+          .doc("yFXxdJGVDUkgU8o8hCUU");
+      // print("inside2");
 
-    await dbRef.get().then((data) {
-      if (data.exists) {
-        setState(() {
-          check = data.get("viewedby");
-        });
-        print("dataexts");
-        print(check);
-        if (check!.contains(auth.currentUser!.uid)) {
-          // print("already viewed");
-        } else {
-          WidgetsBinding.instance!.addPostFrameCallback((_) async {
-            if (true) {
-              await _showDialog();
-            }
+      await dbRef.get().then((data) {
+        if (data.exists) {
+          setState(() {
+            check = data.get("viewedby");
           });
+          print("dataexts");
+          print(check);
+          if (check!.contains(auth.currentUser!.uid)) {
+            // print("already viewed");
+          } else {
+            WidgetsBinding.instance!.addPostFrameCallback((_) async {
+              if (true) {
+                await _showDialog();
+              }
+            });
+          }
         }
-      }
-    });
+      });
+    }
+
     // return showdilogg;
   }
 

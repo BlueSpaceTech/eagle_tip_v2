@@ -259,6 +259,15 @@ class DesktopFAQ extends StatelessWidget {
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
                               return ListView.builder(
                                   itemCount: snapshot.data?.docs.length,
                                   itemBuilder:
