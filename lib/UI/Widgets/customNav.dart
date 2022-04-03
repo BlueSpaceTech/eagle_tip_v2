@@ -37,7 +37,7 @@ class Navbar extends StatefulWidget {
 Map ScreeRoutes = {
   1: AppRoutes.myProfile,
   2: AppRoutes.desktopSetting,
-  3: AuthFunctions.signOut(),
+  // 3: FirebaseAuth.instance.signOut()
 };
 
 class _NavbarState extends State<Navbar> {
@@ -127,22 +127,35 @@ class _NavbarState extends State<Navbar> {
                                       docs2.add(ele);
                                     }
                                   }
-                                  return Badge(
-                                    showBadge: docs2.isNotEmpty,
-                                    badgeContent: Text(
-                                      docs2.length.toString(),
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    child: Navtext(
-                                      color: index == 1
-                                          ? Colors.white
-                                          : Color(0xFFA0A3BD),
-                                      text: "Chat",
-                                      width: widget.width,
-                                    ),
-                                    // );
-                                    // },
-                                  );
+
+                                  if (snapshot.hasData) {
+                                    return Badge(
+                                      showBadge: docs2.isNotEmpty,
+                                      badgeContent: Text(
+                                        docs2.length.toString(),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      child: Navtext(
+                                        color: index == 1
+                                            ? Colors.white
+                                            : Color(0xFFA0A3BD),
+                                        text: "Chat",
+                                        width: widget.width,
+                                      ),
+                                      // );
+                                      // },
+                                    );
+                                  } else {
+                                    return Text("Chats",
+                                        style: TextStyle(
+                                            color: index == 2
+                                                ? Colors.white
+                                                : Color(0xFFA0A3BD),
+                                            // fontSize: Responsive.isDesktop(context) ? width * 0.01 : width * 0.02,
+                                            fontSize: widget.width * 0.01,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Poppins"));
+                                  }
                                 },
                               ),
                             ),
@@ -173,14 +186,10 @@ class _NavbarState extends State<Navbar> {
                                         for (var element in docs) {
                                           List notify = element["isNew"];
 
-                                          if (!notify.contains(FirebaseAuth
-                                              .instance.currentUser!.uid)) {
+                                          if (!notify.contains(user.uid)) {
                                             documents.add(element);
                                           }
                                         }
-                                      }
-                                      if (!snapshot.hasData) {
-                                        return SizedBox();
                                       }
                                       return Badge(
                                         showBadge:
@@ -219,7 +228,11 @@ class _NavbarState extends State<Navbar> {
                     PopupMenuButton(
                       padding: EdgeInsets.only(bottom: 500.0),
                       onSelected: (value) {
+                        print(value);
                         Navigator.pushNamed(context, ScreeRoutes[value]);
+                        // print("hi");
+                        // print(user.uid);
+                        // print("hello");
                       },
                       color: Color(0xFF3f4850),
                       child: CircleAvatar(
@@ -251,13 +264,14 @@ class _NavbarState extends State<Navbar> {
                           value: 2,
                         ),
                         PopupMenuItem(
-                          child: InkWell(
-                            onTap: () {
+                          child: TextButton(
+                            onPressed: () {
+                              AuthFunctions.signOut();
                               Navigator.pushNamedAndRemoveUntil(context,
                                   AppRoutes.loginscreen, (route) => false);
                             },
-                            child: SizedBox(
-                              width: 300,
+                            child: Container(
+                              width: 100,
                               child: Text(
                                 "Logout",
                                 style: TextStyle(
@@ -268,7 +282,7 @@ class _NavbarState extends State<Navbar> {
                               ),
                             ),
                           ),
-                          value: 3,
+                          // value: 3,
                         )
                       ],
                     )

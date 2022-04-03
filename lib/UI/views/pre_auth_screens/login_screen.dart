@@ -259,35 +259,36 @@ class _LoginScreenState extends State<LoginScreen> {
       // addData();
       print({"here "});
       print("phonenumber");
+      Navigator.pushNamed(context, AppRoutes.homeScreen);
       // Navigator.pushReplacement(
       //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-      if (PlatformInfo().isWeb()) {
-        print("isweb");
+      // if (PlatformInfo().isWeb()) {
+      //   print("isweb");
 
-        AuthFunctions.signOut;
-        print(phone);
-        print(userRole);
-        ConfirmationResult result =
-            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-        fToast!.showToast(
-            child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-            gravity: ToastGravity.BOTTOM,
-            toastDuration: Duration(seconds: 3));
+      //   AuthFunctions.signOut;
+      //   print(phone);
+      //   print(userRole);
+      //   ConfirmationResult result =
+      //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+      //   fToast!.showToast(
+      //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+      //       gravity: ToastGravity.BOTTOM,
+      //       toastDuration: Duration(seconds: 3));
 
-        setState(() {
-          ress = result;
-        });
-        setState(() {
-          _loading = false;
-        });
-        addData();
+      //   setState(() {
+      //     ress = result;
+      //   });
+      //   setState(() {
+      //     _loading = false;
+      //   });
+      //   addData();
 
-        print(ress);
-      } else {
-        registerUser(phone, context);
-        addData();
-      }
+      //   print(ress);
+      // } else {
+      //   registerUser(phone, context);
+      //   addData();
+      // }
 
       try {
         if (Platform.isAndroid || Platform.isIOS) {
