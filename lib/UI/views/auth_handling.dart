@@ -27,7 +27,9 @@ class _AuthHandlingState extends State<AuthHandling> {
       return DecidingScreen();
     } else {
       if (Responsive.isDesktop(context)) {
-        return HomeScreen(showdialog: true,);
+        return HomeScreen(
+          showdialog: true,
+        );
       } else {
         return BottomNav();
       }

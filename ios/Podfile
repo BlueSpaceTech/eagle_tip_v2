@@ -40,3 +40,4 @@ ENV['COCOAPODS_DISABLE_STATS'] = 'true'
      flutter_additional_ios_build_settings(target)
    end
  end
+ 

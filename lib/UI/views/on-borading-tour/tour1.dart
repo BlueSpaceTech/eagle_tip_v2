@@ -80,18 +80,21 @@ class TourUpContainer extends StatelessWidget {
       width: Responsive.isDesktop(context) ? 430 : 350,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage(Responsive.isDesktop(context)
-              ? "assets/${containertype}1.png"
-              : "assets/${containertype}container.png"),
+          image: AssetImage(
+              Responsive.isDesktop(context) || Responsive.isTablet(context)
+                  ? "assets/${containertype}1.png"
+                  : "assets/${containertype}container.png"),
         ),
       ),
       child: Container(
         alignment: Alignment.center,
         padding: EdgeInsets.only(
-            left: containertype == "down" && Responsive.isDesktop(context)
+            left: containertype == "down" && Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context)
                 ? 60
                 : 45,
-            right: containertype == "down" && Responsive.isDesktop(context)
+            right: containertype == "down" && Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context)
                 ? 60
                 : 45,
             bottom: getbottompadding(context)),
@@ -101,84 +104,94 @@ class TourUpContainer extends StatelessWidget {
             SizedBox(
                 height:
                     containertype == "down" ? height * 0.014 : height * 0.05),
-            Text(
-              head,
-              style: TextStyle(
-                fontSize: 14,
-                fontFamily: "Poppins",
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? 18
+                      : 0),
+              child: Text(
+                head,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: "Poppins",
+                ),
               ),
             ),
             SizedBox(
               height: distance,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  pageno == "6" ? "" : '${pageno}/5',
-                  style: TextStyle(
-                    color: Color(0xffB8B8B8),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (pageno == "6") ...[
-                      Text(
-                        "   ",
-                      ),
-                    ] else if (pageno == "5") ...[
-                      Text(
-                        "   ",
-                      ),
-                    ] else ...[
-                      GestureDetector(
-                        onTap: () {
-                          Responsive.isDesktop(context)
-                              ? Navigator.pushNamed(
-                                  context, AppRoutes.webfinaltour)
-                              : Navigator.pushNamed(
-                                  context, AppRoutes.finaltour);
-                        },
-                        child: Text(
-                          "skip",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ],
-                    SizedBox(
-                      width: width * 0.04,
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? 18
+                      : 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    pageno == "6" ? "" : '${pageno}/5',
+                    style: TextStyle(
+                      color: Color(0xffB8B8B8),
                     ),
-                    InkWell(
-                      onTap: () {
-                        onnext();
-                      },
-                      child: Container(
-                        height: 30,
-                        width: 60,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Color(0xff5081DB),
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  Row(
+                    children: [
+                      if (pageno == "6") ...[
+                        Text(
+                          "   ",
                         ),
-                        child: Text(
-                          pageno == "6"
-                              ? "Ok"
-                              : pageno == "5"
-                                  ? "Done"
-                                  : "Next",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w600,
+                      ] else if (pageno == "5") ...[
+                        Text(
+                          "   ",
+                        ),
+                      ] else ...[
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.finaltourmain);
+                          },
+                          child: Text(
+                            "skip",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ],
+                      SizedBox(
+                        width: 20,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          onnext();
+                        },
+                        child: Container(
+                          height: 30,
+                          width: 60,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Color(0xff5081DB),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          child: Text(
+                            pageno == "6"
+                                ? "Ok"
+                                : pageno == "5"
+                                    ? "Done"
+                                    : "Next",
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

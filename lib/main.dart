@@ -7,6 +7,7 @@ import 'package:testttttt/Services/pushNotificationService.dart';
 import 'package:testttttt/UI/views/auth_handling.dart';
 
 import 'package:testttttt/UI/views/on-borading-tour/final_tour.dart';
+import 'package:testttttt/UI/views/on-borading-tour/final_tour_main.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour1.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour2.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour3.dart';
@@ -51,6 +52,7 @@ import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/UI/views/post_auth_screens/mobilesettings.dart';
 import 'package:testttttt/UI/views/post_auth_screens/settings.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/create_account.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/deciding_screen.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/emailsent.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/employer_code.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/forgetpassword.dart';
@@ -201,6 +203,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.terminalhome: (context) => TerminalHome(),
           AppRoutes.settings: (context) => Setting(),
           AppRoutes.sentto: (context) => SentTo(),
+          AppRoutes.finaltourmain: (context) => FinalTourMain(),
         },
       ),
     );

@@ -88,7 +88,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     "Before we send you an OTP on your phone number, use the link below to view Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
                     style: TextStyle(
                         fontFamily: "Poppins",
-                        fontSize: 18,
+                        fontSize: Responsive.isDesktop(context) ? 18 : 15,
                         fontWeight: FontWeight.w300),
                   ),
                 ],

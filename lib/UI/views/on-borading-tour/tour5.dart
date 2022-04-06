@@ -28,9 +28,7 @@ class Tour5 extends StatelessWidget {
               left: width * 0.0501,
               child: TourUpContainer(
                 onnext: () {
-                  Responsive.isDesktop(context)
-                      ? Navigator.pushNamed(context, AppRoutes.webfinaltour)
-                      : Navigator.pushNamed(context, AppRoutes.finaltour);
+                  Navigator.pushNamed(context, AppRoutes.finaltourmain);
                 },
                 containertype: "arrowup",
                 distance: height * 0.028,

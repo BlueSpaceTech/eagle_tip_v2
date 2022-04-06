@@ -197,7 +197,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           length: 6,
                           width: Responsive.isDesktop(context)
                               ? width * 0.3
-                              : width * 0.6,
+                              : width * 0.8,
                           fieldWidth: 50,
                           style: TextStyle(fontSize: 17),
                           textFieldAlignment: MainAxisAlignment.spaceAround,

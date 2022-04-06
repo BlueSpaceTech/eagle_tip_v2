@@ -40,6 +40,7 @@ class _UploadImageState extends State<UploadImage> {
   final TextEditingController _password = TextEditingController();
   Uint8List? _image;
   String? name;
+  bool _selected = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -57,6 +58,7 @@ class _UploadImageState extends State<UploadImage> {
     Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
+      _selected = true;
     });
   }
 
@@ -85,7 +87,7 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   void signupUser(double width) async {
-    if (_image!.isEmpty) {
+    if (!_selected) {
       fToast!.showToast(
         child:
             ToastMessage().show(width, context, "Please select a image first"),
@@ -283,39 +285,45 @@ class _UploadImageState extends State<UploadImage> {
                     ),
                     */
                     _image != null
-                        ? Container(
-                            alignment: Alignment.bottomRight,
-                            width: Responsive.isDesktop(context)
-                                ? width * 0.12
-                                : width * 0.4,
-                            height: height * 0.24,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: MemoryImage(_image!),
+                        ? InkWell(
+                            onTap: selectImage,
+                            child: Container(
+                              alignment: Alignment.bottomRight,
+                              width: Responsive.isDesktop(context)
+                                  ? width * 0.12
+                                  : width * 0.4,
+                              height: height * 0.24,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: MemoryImage(_image!),
+                                ),
+                                color: Colors.white,
+                                shape: BoxShape.circle,
                               ),
-                              color: Colors.white,
-                              shape: BoxShape.circle,
+                              child: InkWell(
+                                  onTap: selectImage,
+                                  child: Image.asset("assets/addblue.png")),
                             ),
-                            child: InkWell(
-                                onTap: selectImage,
-                                child: Image.asset("assets/addblue.png")),
                           )
-                        : Container(
-                            alignment: Alignment.bottomRight,
-                            width: Responsive.isDesktop(context)
-                                ? width * 0.12
-                                : width * 0.4,
-                            height: height * 0.24,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage("assets/Camera.png"),
+                        : InkWell(
+                            onTap: selectImage,
+                            child: Container(
+                              alignment: Alignment.bottomRight,
+                              width: Responsive.isDesktop(context)
+                                  ? width * 0.12
+                                  : width * 0.4,
+                              height: height * 0.24,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: AssetImage("assets/Camera.png"),
+                                ),
+                                color: Colors.white,
+                                shape: BoxShape.circle,
                               ),
-                              color: Colors.white,
-                              shape: BoxShape.circle,
+                              child: InkWell(
+                                  onTap: selectImage,
+                                  child: Image.asset("assets/addblue.png")),
                             ),
-                            child: InkWell(
-                                onTap: selectImage,
-                                child: Image.asset("assets/addblue.png")),
                           ),
                     SizedBox(
                       height: height * 0.04,

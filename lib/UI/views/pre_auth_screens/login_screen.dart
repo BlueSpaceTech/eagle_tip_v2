@@ -118,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
         verificationFailed: (authException) {
           print(authException.toString());
           fToast!.showToast(
-              child: ToastMessage().show(200, context, "Verification failed"),
+              child: ToastMessage().show(200, context, "There's some eroror"),
               gravity: ToastGravity.BOTTOM,
               toastDuration: Duration(seconds: 3));
           setState(() {
@@ -204,16 +204,33 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _loading = true;
     });
-    String res = await AuthFunctions().loginuser(
-      email: _email.text,
-      password: _password.text,
-    );
-    print("1");
+    if (_email.text.isEmpty) {
+      fToast!.showToast(
+          child: ToastMessage().show(width, context, "Enter Your Email First"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3));
+      setState(() {
+        _loading = false;
+      });
+    } else if (_password.text.isEmpty) {
+      fToast!.showToast(
+          child: ToastMessage().show(width, context, "Enter Your Password"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3));
+      setState(() {
+        _loading = false;
+      });
+    } else {
+      String res = await AuthFunctions().loginuser(
+        email: _email.text,
+        password: _password.text,
+      );
+      print("1");
 
-    print("2");
+      print("2");
 
-    // 1. Create a reference to the collection
-    //  String res = "";
+      // 1. Create a reference to the collection
+      //  String res = "";
 //     CollectionReference s = FirebaseFirestore.instance.collection("sers");
 
 // // 2. Create a query for the user with the given email address
@@ -232,104 +249,109 @@ class _LoginScreenState extends State<LoginScreen> {
 //       });
 //     });
 
-    if (res == "success") {
-      // await addData();
+      if (res == "success") {
+        // await addData();
 
-      DocumentReference dbRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser!.uid);
-      await dbRef.get().then((data) {
-        if (data.exists) {
-          if (mounted) {
-            setState(() {
-              print("fetching");
-              phone = data.get("phonenumber");
-              userRole = data.get("userRole");
-              isverified = data.get("isverified");
-              uid = data.get("uid");
-              sites = data.get("sites");
-              // phone = data.get("phonenumber");
-            });
-          }
-        }
-      });
-      print(phone);
-      print(userRole);
-      addData();
-
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (context) => LoginScreen()));
-      // print(_auth.currentUser!.uid);
-      // addData();
-      // print({"here "});
-      // print("phonenumber");
-      // Navigator.pushNamed(context, AppRoutes.homeScreen);
-      // Navigator.pushReplacement(
-      //     context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
-      if (PlatformInfo().isWeb()) {
-        print("isweb");
-
-        AuthFunctions.signOut;
+        // DocumentReference dbRef = FirebaseFirestore.instance
+        //     .collection('users')
+        //     .doc(FirebaseAuth.instance.currentUser!.uid);
+        // await dbRef.get().then((data) {
+        //   if (data.exists) {
+        //     if (mounted) {
+        //       setState(() {
+        //         print("fetching");
+        //         phone = data.get("phonenumber");
+        //         userRole = data.get("userRole");
+        //         isverified = data.get("isverified");
+        //         uid = data.get("uid");
+        //         sites = data.get("sites");
+        //         // phone = data.get("phonenumber");
+        //       });
+        //     }
+        //   }
+        // });
         // print(phone);
         // print(userRole);
-        ConfirmationResult result =
-            await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-        fToast!.showToast(
-            child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-            gravity: ToastGravity.BOTTOM,
-            toastDuration: Duration(seconds: 3));
+        // addData();
 
-        setState(() {
-          ress = result;
-        });
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        // print(_auth.currentUser!.uid);
+        // addData();
+        // print({"here "});
+        // print("phonenumber");
+        // Navigator.pushNamed(context, AppRoutes.homeScreen);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                      showdialog: false,
+                    )));
+
+        // if (PlatformInfo().isWeb()) {
+        //   print("isweb");
+
+        //   AuthFunctions.signOut;
+        //   // print(phone);
+        //   // print(userRole);
+        //   ConfirmationResult result =
+        //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+        //   fToast!.showToast(
+        //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+        //       gravity: ToastGravity.BOTTOM,
+        //       toastDuration: Duration(seconds: 3));
+
+        //   setState(() {
+        //     ress = result;
+        //   });
+        //   setState(() {
+        //     _loading = false;
+        //   });
+        //   addData();
+
+        //   print(ress);
+        // } else {
+        //   registerUser(phone, context);
+        //   addData();
+        // }
+
+        try {
+          if (Platform.isAndroid || Platform.isIOS) {
+            final doc = await FirebaseFirestore.instance
+                .collection("users")
+                .doc(uid)
+                .get()
+                .then((value) => value);
+            if (!doc["isSubscribed"]) {
+              _subscribeAllUsers();
+              _subscribetotopic();
+              FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .update({
+                "isSubscribed": true,
+              });
+            }
+          } else {
+            // confirmotp();
+            print("webbb");
+          }
+        } catch (e) {
+          //  confirmotp();
+          print("web");
+        }
+        //  ignore: unrelated_type_equality_checks
+
+      } else {
         setState(() {
           _loading = false;
         });
-        addData();
-
-        print(ress);
-      } else {
-        registerUser(phone, context);
-        addData();
+        fToast!.showToast(
+          child: ToastMessage().show(width, context, "There's some error"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3),
+        );
       }
-
-      try {
-        if (Platform.isAndroid || Platform.isIOS) {
-          final doc = await FirebaseFirestore.instance
-              .collection("users")
-              .doc(uid)
-              .get()
-              .then((value) => value);
-          if (!doc["isSubscribed"]) {
-            _subscribeAllUsers();
-            _subscribetotopic();
-            FirebaseFirestore.instance
-                .collection("users")
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .update({
-              "isSubscribed": true,
-            });
-          }
-        } else {
-          // confirmotp();
-          print("webbb");
-        }
-      } catch (e) {
-        //  confirmotp();
-        print("web");
-      }
-      //  ignore: unrelated_type_equality_checks
-
-    } else {
-      setState(() {
-        _loading = false;
-      });
-      fToast!.showToast(
-        child: ToastMessage().show(width, context, "There's some error"),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 3),
-      );
     }
   }
 

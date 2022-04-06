@@ -137,7 +137,7 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
           WebBg(),
           Padding(
             padding: EdgeInsets.only(
-                left: width * 0.1, right: width * 0.1, top: height * 0.08),
+                left: width * 0.1, right: width * 0.05, top: height * 0.08),
             child: Align(
               alignment: Alignment.center,
               child: Container(
@@ -210,7 +210,7 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
                           length: 6,
                           width: Responsive.isDesktop(context)
                               ? width * 0.3
-                              : width * 0.6,
+                              : width * 0.8,
                           fieldWidth: 50,
                           style: TextStyle(fontSize: 17),
                           textFieldAlignment: MainAxisAlignment.spaceAround,
