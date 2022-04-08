@@ -39,7 +39,7 @@ class Requests extends StatelessWidget {
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           }
           return ListView.builder(
             physics: NeverScrollableScrollPhysics(),

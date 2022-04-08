@@ -336,6 +336,7 @@ class _CrudScreenState extends State<CrudScreen> {
                   sites: sites,
                   phonenumber: phonenumber,
                   uid: uid,
+                  fromsentto: false,
                 )));
   }
 
@@ -905,10 +906,13 @@ class _CrudScreenState extends State<CrudScreen> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          deletUserDialog(
-                                              height,
-                                              width,
+                                          callUserInfoScreen(
                                               document["name"],
+                                              document["email"],
+                                              document["userRole"],
+                                              document["dpUrl"],
+                                              document["sites"],
+                                              document["phonenumber"],
                                               document["uid"]);
                                         },
                                         child: Container(

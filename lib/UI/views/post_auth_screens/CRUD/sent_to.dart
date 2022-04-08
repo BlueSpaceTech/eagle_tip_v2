@@ -174,6 +174,23 @@ class _SentToState extends State<SentTo> {
     });
   }
 
+  callUserInfoScreen(String name, String email, String userRole, List sites,
+      String phonenumber) {
+    Navigator.push(
+        context,
+        CupertinoPageRoute(
+            builder: (context) => UserProfile(
+                  name: name,
+                  email: email,
+                  userRole: userRole,
+                  dpUrl: "sentto",
+                  sites: sites,
+                  phonenumber: phonenumber,
+                  uid: "ff",
+                  fromsentto: true,
+                )));
+  }
+
   @override
   void initState() {
     super.initState();
@@ -718,8 +735,12 @@ class _SentToState extends State<SentTo> {
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.pushNamed(context,
-                                                  AppRoutes.useprofile);
+                                              callUserInfoScreen(
+                                                  document["name"],
+                                                  document["email"],
+                                                  userRole,
+                                                  document["sites"],
+                                                  document["phonenumber"]);
                                             },
                                             child: Container(
                                               width:

@@ -29,9 +29,11 @@ class UserProfile extends StatelessWidget {
     required this.sites,
     required this.phonenumber,
     required this.uid,
+    required this.fromsentto,
   }) : super(key: key);
   final String name, email, phonenumber, dpUrl, userRole, uid;
   final List sites;
+  final bool fromsentto;
   void callChatScreen(String uid, String name, String currentusername,
       String photoUrlfriend, String photourluser, BuildContext context) {
     Responsive.isDesktop(context)
@@ -141,29 +143,32 @@ class UserProfile extends StatelessWidget {
                                       SizedBox(
                                         width: width * 0.1,
                                       ),
-                                      InkWell(
-                                        onTap: () {
-                                          callChatScreen(uid, name, user.name,
-                                              dpUrl, user.dpurl, context);
-                                        },
-                                        child: Container(
-                                          width: width * 0.06,
-                                          height: height * 0.05,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            color: Color(0xFF5081DB),
-                                          ),
-                                          child: Center(
-                                              child: Text(
-                                            "Chat",
-                                            style: TextStyle(
-                                              fontSize: width * 0.008,
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
+                                      Visibility(
+                                        visible: !fromsentto,
+                                        child: InkWell(
+                                          onTap: () {
+                                            callChatScreen(uid, name, user.name,
+                                                dpUrl, user.dpurl, context);
+                                          },
+                                          child: Container(
+                                            width: width * 0.06,
+                                            height: height * 0.05,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              color: Color(0xFF5081DB),
                                             ),
-                                          )),
+                                            child: Center(
+                                                child: Text(
+                                              "Chat",
+                                              style: TextStyle(
+                                                fontSize: width * 0.008,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                              ),
+                                            )),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -173,11 +178,14 @@ class UserProfile extends StatelessWidget {
                                     width: width,
                                     child: Column(
                                       children: [
+dpUrl=="sentto"?
+                                       Icon(Icons.person,size: 50,):
+                                      
                                         CircleAvatar(
                                           radius: 22,
                                           backgroundColor: backGround_color,
                                           backgroundImage: NetworkImage(dpUrl),
-                                        ),
+                                        ), 
                                         SizedBox(
                                           height: height * 0.005,
                                         ),

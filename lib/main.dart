@@ -176,6 +176,7 @@ class MyApp extends StatelessWidget {
                 sites: [],
                 userRole: "",
                 uid: "",
+                fromsentto: true,
               ),
           AppRoutes.splashscreen: (context) => SplashScreen(),
           AppRoutes.createNotification: (context) => CreateNotification(),
