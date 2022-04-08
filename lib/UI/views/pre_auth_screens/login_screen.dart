@@ -380,7 +380,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  confirmotp() async {
+  confirmotp(double width) async {
     //  String role = "";
     print("confirming");
     print(ress);
@@ -388,61 +388,81 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _loading = true;
     });
-
-    String res = await OtpFucnctions().authenticateMe(
-      ress!,
-      _otpcode.text,
-    );
-    await Future.delayed(const Duration(seconds: 3));
-    print(res + "ffff");
-    if (res == "success") {
+    if (_email.text.isEmpty || _password.text.isEmpty) {
+      fToast!.showToast(
+        child: ToastMessage().show(width, context,
+            "Enter email and password then click 'getotp' first"),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 3),
+      );
       setState(() {
         _loading = false;
       });
-      // FirebaseFirestore.instance
-      //     .collection("users")
-      //     .doc(uid)
-      //     .update({"isverified": true});
-      await AuthFunctions.signOut;
-      String resss = await AuthFunctions().loginuser(
-        email: _email.text,
-        password: _password.text,
+    } else if (_otpcode.text.isEmpty) {
+      fToast!.showToast(
+        child: ToastMessage().show(width, context, "Enter the otp code"),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 3),
       );
-      if (resss == "success") {
-        // addData();
+      setState(() {
+        _loading = false;
+      });
+    } else {
+      String res = await OtpFucnctions().authenticateMe(
+        ress!,
+        _otpcode.text,
+      );
+      await Future.delayed(const Duration(seconds: 3));
+      print(res + "ffff");
+      if (res == "success") {
+        setState(() {
+          _loading = false;
+        });
+        // FirebaseFirestore.instance
+        //     .collection("users")
+        //     .doc(uid)
+        //     .update({"isverified": true});
+        await AuthFunctions.signOut;
+        String resss = await AuthFunctions().loginuser(
+          email: _email.text,
+          password: _password.text,
+        );
+        if (resss == "success") {
+          // addData();
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => (userRole == "TerminalUser" ||
-                        userRole == "TerminalManager")
-                    ? TerminalHome()
-                    : Responsive.isDesktop(context)
-                        ? HomeScreen(
-                            showdialog: true,
-                          )
-                        : BottomNav()));
-        fToast!.showToast(
-            child: ToastMessage().show(200, context, "Login Successful"),
-            gravity: ToastGravity.BOTTOM,
-            toastDuration: Duration(seconds: 3));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (userRole == "TerminalUser" ||
+                          userRole == "TerminalManager")
+                      ? TerminalHome()
+                      : Responsive.isDesktop(context)
+                          ? HomeScreen(
+                              showdialog: true,
+                            )
+                          : BottomNav()));
+          fToast!.showToast(
+              child: ToastMessage().show(200, context, "Login Successful"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
+        } else {
+          setState(() {
+            _loading = false;
+          });
+          fToast!.showToast(
+              child: ToastMessage().show(200, context, "Error"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
+        }
       } else {
         setState(() {
           _loading = false;
         });
         fToast!.showToast(
-            child: ToastMessage().show(200, context, "Error"),
+            child: ToastMessage().show(200, context, "Error in OTP"),
             gravity: ToastGravity.BOTTOM,
             toastDuration: Duration(seconds: 3));
       }
-    } else {
-      setState(() {
-        _loading = false;
-      });
-      fToast!.showToast(
-          child: ToastMessage().show(200, context, "Error in OTP"),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: Duration(seconds: 3));
     }
   }
 
@@ -587,11 +607,11 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (Platform.isAndroid || Platform.isIOS) {
                             signIn(_otpcode.text, width);
                           } else {
-                            confirmotp();
+                            confirmotp(width);
                             print("webbb");
                           }
                         } catch (e) {
-                          confirmotp();
+                          confirmotp(width);
                           print("web");
                         }
                         // if (PlatformInfo().isWeb()) {
