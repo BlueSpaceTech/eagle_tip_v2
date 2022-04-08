@@ -7,6 +7,7 @@ import 'dart:typed_data';
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -251,6 +252,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (res == "success") {
         // await addData();
+        FirebaseAuth.instance.setPersistence(
+            ischecked ? Persistence.LOCAL : Persistence.SESSION);
 
         DocumentReference dbRef = FirebaseFirestore.instance
             .collection('users')
@@ -429,7 +432,8 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         if (resss == "success") {
           // addData();
-
+          FirebaseAuth.instance.setPersistence(
+              ischecked ? Persistence.LOCAL : Persistence.SESSION);
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -478,6 +482,8 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+
+  bool ischecked = false;
 
   bool isvisible = false;
   @override
@@ -546,6 +552,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: "Password",
                         controller: _password,
                         isactive: true),
+                    Checkbox(
+                        value: ischecked,
+                        onChanged: (value) {
+                          setState(() {
+                            ischecked = value!;
+                          });
+                          print(ischecked);
+                        }),
                     SizedBox(
                       height: height * 0.01,
                     ),
@@ -608,7 +622,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             signIn(_otpcode.text, width);
                           } else {
                             confirmotp(width);
-                            print("webbb");
+                            // print("webbb");
                           }
                         } catch (e) {
                           confirmotp(width);
