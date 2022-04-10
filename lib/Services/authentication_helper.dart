@@ -28,10 +28,13 @@ class AuthFunctions with ChangeNotifier {
 
   //fetch user
   Future<Model.User> getUserDetails() async {
-    User currentUser = await _auth.currentUser!;
+    User currentUser = _auth.currentUser!;
     DocumentSnapshot? snapp;
     try {
-      snapp = await _firestore.collection("users").doc(currentUser.uid).get();
+      snapp = await _firestore
+          .collection("users")
+          .doc(_auth.currentUser!.uid)
+          .get();
     } catch (e) {
       print("error in provider");
     }

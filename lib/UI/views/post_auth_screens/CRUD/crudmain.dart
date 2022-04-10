@@ -924,8 +924,14 @@ class _CrudScreenState extends State<CrudScreen> {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.useprofile);
+                                          callUserInfoScreen(
+                                              document["name"],
+                                              document["email"],
+                                              document["userRole"],
+                                              document["dpUrl"],
+                                              document["sites"],
+                                              document["phonenumber"],
+                                              document["uid"]);
                                         },
                                         child: Container(
                                           width: Responsive.isDesktop(context)

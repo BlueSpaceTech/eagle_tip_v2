@@ -51,11 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
     //   // tokens.doc(user.userRole).update(data);
     // });
 
-    addData();
+    add();
     checkupdateTC();
+    print(FirebaseAuth.instance.currentUser!.displayName);
 
     //print(checkupdateTC());
     //checkupdateTC();
+  }
+
+  add() async {
+    await addData();
   }
 
   // TermConditions(double widht, double height, bool show) {

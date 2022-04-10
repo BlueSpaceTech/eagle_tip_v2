@@ -32,7 +32,7 @@ class _BottomNavState extends State<BottomNav> {
   List<Widget> _widgetOptions = <Widget>[
     MyProfile(),
     HomeScreen(
-      showdialog: false,
+      showdialog: true,
     ),
     Notifications(),
     //  MessageMain(
@@ -50,6 +50,18 @@ class _BottomNavState extends State<BottomNav> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    addData();
+  }
+
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
   }
 
   @override

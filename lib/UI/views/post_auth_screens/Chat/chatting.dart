@@ -179,6 +179,7 @@ class _ChatScreennState extends State<ChatScreenn> {
           if (querySnapshot.docs.isNotEmpty) {
             setState(() {
               chatDocId = querySnapshot.docs.single.id;
+              print(chatDocId);
             });
           } else {
             chat.add({

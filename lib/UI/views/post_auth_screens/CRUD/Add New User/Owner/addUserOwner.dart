@@ -10,6 +10,7 @@ import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/invitation.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -220,7 +221,22 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       ),
                       Visibility(
                           visible: !Responsive.isDesktop(context),
-                          child: CustomAppheader(width: width)),
+                          child: Padding(
+                            padding:
+                                EdgeInsets.symmetric(horizontal: width * 0.08),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(Icons.arrow_back)),
+                                Logo(width: width),
+                                MenuButton(isTapped: isTapped, width: width),
+                              ],
+                            ),
+                          )),
                       SizedBox(
                         height: height * 0.06,
                       ),

@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_new
 
 import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:dcache/dcache.dart';
 import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,6 +27,7 @@ import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/employer_code.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/phone_verification.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
@@ -34,6 +35,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -44,6 +46,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   FToast? fToast;
+  var password = "";
   final TextEditingController _password = TextEditingController();
   final TextEditingController _otpcode = TextEditingController();
   final TextEditingController _email = TextEditingController();
@@ -52,7 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
     // TODO: implement initState
     super.initState();
     fToast = FToast();
+    // WidgetsBinding.instance!.addPostFrameCallback((_) =>
+    //     _password.text = c.get("password") == null ? "" : c.get("password"));
+    // WidgetsBinding.instance!.addPostFrameCallback(
+    //     (_) => _email.text = c.get("email") == null ? "" : c.get("email"));
+    // print(c.get("email"));
     fToast!.init(context);
+    // _loadUserEmailPassword();
     _email.addListener(getColor);
     _password.addListener(getColor);
   }
@@ -90,6 +99,17 @@ class _LoginScreenState extends State<LoginScreen> {
   //   return new Timer(duration, route2);
   // }
   String? pinn;
+  Cache c =
+      SimpleCache<String, String>(storage: InMemoryStorage<String, String>(40));
+  setemailpass(bool ischecked) {
+    print(ischecked);
+    print("setted");
+    if (ischecked) {
+      c.set("email", _email.text);
+      c.set("password", _password.text);
+    }
+    print(c.get("email"));
+  }
 
   String? verificationId;
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -163,26 +183,39 @@ class _LoginScreenState extends State<LoginScreen> {
     // UserProvider _userProvider = Provider.of(context, listen: false);
     String res = "success";
     try {
+      // AuthFunctions.signOut();
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
-        verificationId: verificationId!,
-        smsCode: otp,
-      ));
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  (userRole == "TerminalUser" || userRole == "TerminalManager")
-                      ? TerminalHome()
-                      : Responsive.isDesktop(context)
-                          ? HomeScreen(
-                              showdialog: true,
-                            )
-                          : BottomNav()));
-      fToast!.showToast(
-          child: ToastMessage().show(width, context, "success"),
-          gravity: ToastGravity.BOTTOM,
-          toastDuration: Duration(seconds: 3));
+            verificationId: verificationId!,
+            smsCode: otp,
+          ))
+          .then((value) => value.user!.delete());
+      String res = await AuthFunctions().loginuser(
+        email: _email.text,
+        password: _password.text,
+      );
+      if (res == "success") {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => (userRole == "TerminalUser" ||
+                        userRole == "TerminalManager")
+                    ? TerminalHome()
+                    : Responsive.isDesktop(context)
+                        ? HomeScreen(
+                            showdialog: true,
+                          )
+                        : BottomNav()));
+        fToast!.showToast(
+            child: ToastMessage().show(width, context, "Login Successfull"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
+      } else {
+        fToast!.showToast(
+            child: ToastMessage().show(width, context, res),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
+      }
     } catch (err) {
       res = err.toString();
       fToast!.showToast(
@@ -196,6 +229,57 @@ class _LoginScreenState extends State<LoginScreen> {
   //   UserProvider _userProvider = await Provider.of(context, listen: false);
   //   await _userProvider.refreshUser();
   // }
+  void _handleRemeberme(bool value) {
+    // ischecked = value;
+    if (ischecked) {
+      SharedPreferences.getInstance().then(
+        (prefs) {
+          prefs.setBool("remember_me", value);
+          prefs.setString('email', _email.text);
+          prefs.setString('password', _password.text);
+        },
+      );
+    } else {
+      SharedPreferences.getInstance().then(
+        (prefs) {
+          prefs.setBool("remember_me", false);
+          prefs.setString('email', "");
+          prefs.setString('password', "");
+        },
+      );
+    }
+
+    // setState(() {
+    //   ischecked = value;
+    // });
+  }
+
+  var email;
+
+  var remeberMe;
+  void _loadUserEmailPassword() async {
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      setState(() {
+        email = _prefs.getString("email") ?? "";
+        password = _prefs.getString("password") ?? "";
+        remeberMe = _prefs.getBool("remember_me") ?? false;
+      });
+
+      print(remeberMe);
+      print(email);
+      print(password);
+      // if (remeberMe) {
+      //   setState(() {
+      //     ischecked = true;
+      //     _email.text = email;
+      //     _password.text = password;
+      //   });
+      // }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   String uid = "";
   String phone = "";
@@ -252,8 +336,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (res == "success") {
         // await addData();
-        FirebaseAuth.instance.setPersistence(
-            ischecked ? Persistence.LOCAL : Persistence.SESSION);
+        // FirebaseAuth.instance.setPersistence(
+        //     ischecked ? Persistence.LOCAL : Persistence.SESSION);
+        // _handleRemeberme(ischecked);
+        //setemailpass(ischecked);
 
         DocumentReference dbRef = FirebaseFirestore.instance
             .collection('users')
@@ -552,14 +638,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: "Password",
                         controller: _password,
                         isactive: true),
-                    Checkbox(
-                        value: ischecked,
-                        onChanged: (value) {
-                          setState(() {
-                            ischecked = value!;
-                          });
-                          print(ischecked);
-                        }),
+                    // Checkbox(
+                    //     hoverColor: Colors.blue,
+                    //     value: ischecked,
+                    //     onChanged: (value) {
+                    //       setState(() {
+                    //         ischecked = value!;
+                    //       });
+                    //       print(ischecked);
+                    //     }),
                     SizedBox(
                       height: height * 0.01,
                     ),

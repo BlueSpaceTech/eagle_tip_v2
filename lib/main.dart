@@ -76,14 +76,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-    options: FirebaseOptions(
-      storageBucket: "eagle-tip.appspot.com",
-      apiKey: "AIzaSyDIaG56XX_XS3SGy06SXmTG8jDFhs1M2O8",
-      appId: "1:168073462322:android:364f09407678105ceeb22b",
-      messagingSenderId: "168073462322",
-      projectId: "eagle-tip",
-    ),
-  );
+      // options: FirebaseOptions(
+      //   storageBucket: "eagle-tip.appspot.com",
+      //   apiKey: "AIzaSyDIaG56XX_XS3SGy06SXmTG8jDFhs1M2O8",
+      //   appId: "1:168073462322:android:364f09407678105ceeb22b",
+      //   messagingSenderId: "168073462322",
+      //   projectId: "eagle-tip",
+      // ),
+      );
 
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
@@ -114,7 +114,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Eagle Tip',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
