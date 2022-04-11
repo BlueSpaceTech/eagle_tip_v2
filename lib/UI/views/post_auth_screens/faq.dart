@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -10,7 +12,7 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
-
+import 'package:testttttt/Models/user.dart' as model;
 class FAQScreen extends StatefulWidget {
   FAQScreen({Key? key}) : super(key: key);
 
@@ -358,6 +360,7 @@ class _FAQState extends State<FAQ> {
   bool? isExpanded = false;
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(border: Border.all(color: Colors.white)),
@@ -387,19 +390,65 @@ class _FAQState extends State<FAQ> {
                         fontFamily: "Poppins"),
                   ),
                   isExpanded!
-                      ? Image.asset(
+                      ? Row(
+                        children: [
+                          Visibility(
+                            visible: user.userRole=="AppAdmin",
+                            child: Image.asset(
+                            Common.assetImages + "trash.png",
+                            width: Responsive.isDesktop(context)
+                                ? widget.widht * 0.01
+                                : 15.0,
+                                                  ),
+                          ),
+                          Visibility(
+                            visible: user.userRole=="AppAdmin",
+                            child: Image.asset(
+                            Common.assetImages + "edit_pen.png",
+                            width: Responsive.isDesktop(context)
+                                ? widget.widht * 0.01
+                                : 15.0,
+                                                  ),
+                          ),
+                          
+                        Image.asset(
                           Common.assetImages + "Forward.png",
                           width: Responsive.isDesktop(context)
                               ? widget.widht * 0.01
                               : 15.0,
-                        )
-                      : Icon(
+                        ),
+                        ],
+                      )
+                      : Row(
+                        children: [
+                          Visibility(
+                            visible: user.userRole=="AppAdmin",
+                            child: Image.asset(
+                            Common.assetImages + "trash.png",
+                            width: Responsive.isDesktop(context)
+                                ? widget.widht * 0.01
+                                : 15.0,
+                                                  ),
+                          ),
+                          Visibility(
+                            visible: user.userRole=="AppAdmin",
+                            child: Image.asset(
+                            Common.assetImages + "edit_pen.png",
+                            width: Responsive.isDesktop(context)
+                                ? widget.widht * 0.01
+                                : 15.0,
+                                                  ),
+                          ),
+                          
+                        Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.white,
                           size: Responsive.isDesktop(context)
                               ? widget.widht * 0.01
                               : 15.0,
                         ),
+                        ],
+                      )
                 ],
               ),
             ),

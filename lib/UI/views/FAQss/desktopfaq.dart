@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
-
+import 'package:testttttt/Models/user.dart' as model;
 class DesktopFAQs extends StatefulWidget {
   const DesktopFAQs({Key? key}) : super(key: key);
 
@@ -16,7 +18,7 @@ class DesktopFAQs extends StatefulWidget {
 class _DesktopFAQsState extends State<DesktopFAQs> {
   PageController page = PageController();
   String userrOLE = "AppAdmin";
-
+  CollectionReference faqs=FirebaseFirestore.instance.collection("faq");
   getItems(List list) {
     List<SideMenuItem> item = [];
     for (int i = 0; i < list.length; i++) {
@@ -33,6 +35,7 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     List foradmin = [
       "General",
       "Terminal Manager",
@@ -43,10 +46,11 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
     ];
     List foruser = [
       "General",
-      userrOLE,
+      user.userRole,
     ];
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
@@ -107,12 +111,12 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                 //   ),
                 // ],
                 items: getItems(
-                    userrOLE == "AppAdmin" || userrOLE == "SuperAdmin"
+                    user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
                         ? foradmin
                         : foruser),
               ),
             ),
-            userrOLE == "AppAdmin" || userrOLE == "SuperAdmin"
+            user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
                 ? Expanded(
                     child: PageView(
                     controller: page,
@@ -142,7 +146,7 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                     children: [
                       GeneralfAQ(width: width, height: height),
                       UserRolefAQ(
-                          width: width, height: height, userRole: userrOLE),
+                          width: width, height: height, userRole: user.userRole),
                     ],
                   ))
           ],
@@ -316,7 +320,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("faq")
+                                .collection("faq").where("userRole",isEqualTo: "general")
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -526,7 +530,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("faq")
+                                .collection("faq").where("userRole",isEqualTo: widget.userRole)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {

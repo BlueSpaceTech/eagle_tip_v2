@@ -52,4 +52,5 @@ class AppRoutes {
   static final String displayTerms = "/displayTerms";
   static final String sentto = "/sentto";
   static final String finaltourmain = "/finaltourmain";
+  static final String mainFaq="/mainfaq";
 }

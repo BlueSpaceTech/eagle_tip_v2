@@ -40,7 +40,7 @@ class MenuButton extends StatelessWidget {
   final double width;
 
   Map ScreeRoutes = {
-    1: AppRoutes.faq,
+    1: AppRoutes.mainFaq,
     2: AppRoutes.support,
     3: AppRoutes.welcometour,
   };
