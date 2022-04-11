@@ -183,6 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
     // UserProvider _userProvider = Provider.of(context, listen: false);
     String res = "success";
     try {
+      setState(() {
+        _loading = true;
+      });
       // AuthFunctions.signOut();
       await FirebaseAuth.instance
           .signInWithCredential(PhoneAuthProvider.credential(
@@ -195,6 +198,9 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _password.text,
       );
       if (res == "success") {
+        setState(() {
+          _loading = false;
+        });
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
@@ -211,12 +217,18 @@ class _LoginScreenState extends State<LoginScreen> {
             gravity: ToastGravity.BOTTOM,
             toastDuration: Duration(seconds: 3));
       } else {
+        setState(() {
+          _loading = false;
+        });
         fToast!.showToast(
             child: ToastMessage().show(width, context, res),
             gravity: ToastGravity.BOTTOM,
             toastDuration: Duration(seconds: 3));
       }
     } catch (err) {
+      setState(() {
+        _loading = false;
+      });
       res = err.toString();
       fToast!.showToast(
           child: ToastMessage().show(width, context, res),
@@ -370,39 +382,39 @@ class _LoginScreenState extends State<LoginScreen> {
         // print({"here "});
         // print("phonenumber");
         // Navigator.pushNamed(context, AppRoutes.homeScreen);
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => HomeScreen(
-        //               showdialog: false,
-        //             )));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                      showdialog: false,
+                    )));
 
-        if (PlatformInfo().isWeb()) {
-          print("isweb");
+        // if (PlatformInfo().isWeb()) {
+        //   print("isweb");
 
-          AuthFunctions.signOut;
-          // print(phone);
-          // print(userRole);
-          ConfirmationResult result =
-              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          fToast!.showToast(
-              child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-              gravity: ToastGravity.BOTTOM,
-              toastDuration: Duration(seconds: 3));
+        //   AuthFunctions.signOut;
+        //   // print(phone);
+        //   // print(userRole);
+        //   ConfirmationResult result =
+        //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+        //   fToast!.showToast(
+        //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+        //       gravity: ToastGravity.BOTTOM,
+        //       toastDuration: Duration(seconds: 3));
 
-          setState(() {
-            ress = result;
-          });
-          setState(() {
-            _loading = false;
-          });
-          addData();
+        //   setState(() {
+        //     ress = result;
+        //   });
+        //   setState(() {
+        //     _loading = false;
+        //   });
+        //   addData();
 
-          print(ress);
-        } else {
-          registerUser(phone, context);
-          addData();
-        }
+        //   print(ress);
+        // } else {
+        //   registerUser(phone, context);
+        //   addData();
+        // }
 
         try {
           if (Platform.isAndroid || Platform.isIOS) {

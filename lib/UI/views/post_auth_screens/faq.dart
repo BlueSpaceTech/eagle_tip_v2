@@ -30,11 +30,48 @@ class _FAQScreenState extends State<FAQScreen> {
           height: height,
         ),
         tablet: Container(),
-        desktop: DesktopFAQ(
-          width: width,
-          height: height,
-        ),
+        desktop: Container(),
+        // desktop: RolefAQDesktop(
+        //   width: width,
+        //   height: height,
+        // ),
       ),
+    );
+  }
+}
+
+class VideoContainer extends StatefulWidget {
+  const VideoContainer({Key? key, required this.width}) : super(key: key);
+  final double width;
+  @override
+  _VideoContainerState createState() => _VideoContainerState();
+}
+
+class _VideoContainerState extends State<VideoContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: Responsive.isDesktop(context)
+          ? widget.width * 0.8
+          : widget.width * 0.9,
+      height: 140,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: false, // new line
+          // physics: NeverScrollableScrollPhysics(),
+          itemCount: 2,
+          itemBuilder: (BuildContext context, int index) {
+            // final document = snapshot.data?.docs[index];
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+              margin: EdgeInsets.only(right: 20),
+              height: 170,
+              width: 220,
+            );
+          }),
     );
   }
 }
@@ -322,11 +359,14 @@ class _FAQState extends State<FAQ> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: isExpanded! ? widget.height * 0.26 : widget.height * 0.05,
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(border: Border.all(color: Colors.white)),
+      // height: isExpanded! ? widget.height * 0.26 : widget.height * 0.08,
       child: Column(
         children: [
           Container(
-            width: widget.widht * 0.85,
+            // width: widget.widht * 0.85,
+
             child: InkWell(
               onTap: () {
                 setState(() {
@@ -364,13 +404,13 @@ class _FAQState extends State<FAQ> {
               ),
             ),
           ),
-          SizedBox(
-            height: 10.0,
-          ),
+          // SizedBox(
+          //   height: 10.0,
+          // ),
           Visibility(
             visible: isExpanded!,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 8.0),
+              padding: EdgeInsets.only(top: 10.0),
               child: Container(
                   width: widget.widht * 0.85,
                   child: Text(

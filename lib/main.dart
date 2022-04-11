@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/pushNotificationService.dart';
+import 'package:testttttt/UI/views/FAQss/desktopfaq.dart';
+import 'package:testttttt/UI/views/FAQss/mainfaq.dart';
 import 'package:testttttt/UI/views/auth_handling.dart';
 
 import 'package:testttttt/UI/views/on-borading-tour/final_tour.dart';
@@ -76,14 +78,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
-      // options: FirebaseOptions(
-      //   storageBucket: "eagle-tip.appspot.com",
-      //   apiKey: "AIzaSyDIaG56XX_XS3SGy06SXmTG8jDFhs1M2O8",
-      //   appId: "1:168073462322:android:364f09407678105ceeb22b",
-      //   messagingSenderId: "168073462322",
-      //   projectId: "eagle-tip",
-      // ),
-      );
+    options: FirebaseOptions(
+      storageBucket: "eagle-tip.appspot.com",
+      apiKey: "AIzaSyDIaG56XX_XS3SGy06SXmTG8jDFhs1M2O8",
+      appId: "1:168073462322:android:364f09407678105ceeb22b",
+      messagingSenderId: "168073462322",
+      projectId: "eagle-tip",
+    ),
+  );
 
   PushNotificationService _pushNotificationService = PushNotificationService();
   _pushNotificationService.initialize();
@@ -120,7 +122,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xff2B343B),
         ),
         // initialRoute: AppRoutes.loginscreen,
-        home: AuthHandling(),
+        home: MainFaq(),
         routes: {
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
