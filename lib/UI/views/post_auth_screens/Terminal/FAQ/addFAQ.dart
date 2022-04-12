@@ -167,22 +167,27 @@ class _AddFAQState extends State<AddFAQ> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: width * 0.08,
-                                        height: height * 0.058,
-                                        decoration: BoxDecoration(
-                                          color: Color(0XffED5C62),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "Cancel",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width * 0.008,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: "Poppins"),
+                                      InkWell(
+                                        onTap: (){
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          width: width * 0.08,
+                                          height: height * 0.058,
+                                          decoration: BoxDecoration(
+                                            color: Color(0XffED5C62),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width * 0.008,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: "Poppins"),
+                                            ),
                                           ),
                                         ),
                                       ),
