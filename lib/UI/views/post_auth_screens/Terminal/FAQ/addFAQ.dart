@@ -17,6 +17,9 @@ import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
 class AddFAQ extends StatefulWidget {
+  AddFAQ({required this.userRole});
+  final String userRole;
+
   @override
   State<AddFAQ> createState() => _AddFAQState();
 }
@@ -36,7 +39,7 @@ class _AddFAQState extends State<AddFAQ> {
 
   String? question = "";
   String? answer = "";
-  String? role="";
+
   CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
 
   @override
@@ -118,15 +121,15 @@ class _AddFAQState extends State<AddFAQ> {
                                   SizedBox(
                                     height: height * 0.018,
                                   ),
-                                  AddFAQTextField(
-                                    labelText: "Role",
-                                    valueChanged: (val) {
-                                      setState(() {
-                                        role = val;
-                                      });
-                                    },
-                                    isactive: true,
-                                  ),
+                                  // AddFAQTextField(
+                                  //   labelText: "Role",
+                                  //   valueChanged: (val) {
+                                  //     setState(() {
+                                  //       role = val;
+                                  //     });
+                                  //   },
+                                  //   isactive: true,
+                                  // ),
                                   SizedBox(
                                     height: height * 0.024,
                                   ),
@@ -168,7 +171,7 @@ class _AddFAQState extends State<AddFAQ> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
-                                        onTap: (){
+                                        onTap: () {
                                           Navigator.pop(context);
                                         },
                                         child: Container(
@@ -202,7 +205,7 @@ class _AddFAQState extends State<AddFAQ> {
                                               "id": user.uid,
                                               "title": question,
                                               "description": answer,
-                                              "userRole":role,
+                                              "userRole": widget.userRole,
                                             });
                                             fToast!.showToast(
                                               child: ToastMessage().show(

@@ -15,7 +15,8 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
-CollectionReference faqs=FirebaseFirestore.instance.collection("faq");
+CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
+
 class FAQScreen extends StatefulWidget {
   FAQScreen({Key? key}) : super(key: key);
 
@@ -322,7 +323,7 @@ class DesktopFAQ extends StatelessWidget {
                                       height: height,
                                       FAQName: document["title"],
                                       index: index,
-                                      id:document.id,
+                                      id: document.id,
                                     );
                                   });
                             },
@@ -392,107 +393,116 @@ class _FAQState extends State<FAQ> {
                 ),
                 isExpanded!
                     ? Row(
-                      children: [
-                        InkWell(
-                          onTap: (){
+                        children: [
+                          InkWell(
+                            onTap: () {
                               faqs.doc(widget.id).delete();
                             },
-                          child: Visibility(
-                            visible: user.userRole=="AppAdmin",
-                            child: Image.asset(
-                            Common.assetImages + "trash.png",
-                            width: Responsive.isDesktop(context)
-                                ? widget.widht * 0.012
-                                : 15.0,
-                                                  ),
+                            child: Visibility(
+                              visible: user.userRole == "AppAdmin",
+                              child: Image.asset(
+                                Common.assetImages + "trash.png",
+                                width: Responsive.isDesktop(context)
+                                    ? widget.widht * 0.012
+                                    : 15.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: widget.widht*0.01,
-                        ),
-                        InkWell(
-                          onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                return EditFAQ(answertext: widget.FAQdesc, docid: widget. id, questiontext: widget.FAQName);
+                          SizedBox(
+                            width: widget.widht * 0.01,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return EditFAQ(
+                                    answertext: widget.FAQdesc,
+                                    docid: widget.id,
+                                    questiontext: widget.FAQName);
                               }));
                             },
-                          child: Visibility(
-                            visible: user.userRole=="AppAdmin",
-                            child: Image.asset(
-                            Common.assetImages + "edit_pen.png",
-                            width: Responsive.isDesktop(context)
-                                ? widget.widht * 0.012
-                                : 15.0,
-                                                  ),
+                            child: Visibility(
+                              visible: user.userRole == "AppAdmin",
+                              child: Image.asset(
+                                Common.assetImages + "edit_pen.png",
+                                width: Responsive.isDesktop(context)
+                                    ? widget.widht * 0.012
+                                    : 15.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: widget.widht*0.01,
-                        ),
-                      InkWell(
-                        onTap: (){
-                          isExpanded=!isExpanded!;
-                        },
-                        child: Image.asset(
-                          Common.assetImages + "Forward.png",
-                          width: Responsive.isDesktop(context)
-                              ? widget.widht * 0.01
-                              : 15.0,
-                        ),
-                      ),
-                      ],
-                    )
+                          SizedBox(
+                            width: widget.widht * 0.01,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              isExpanded = !isExpanded!;
+                            },
+                            child: Image.asset(
+                              Common.assetImages + "Forward.png",
+                              width: Responsive.isDesktop(context)
+                                  ? widget.widht * 0.01
+                                  : 15.0,
+                            ),
+                          ),
+                        ],
+                      )
                     : Row(
-                      children: [
-                        InkWell(
-                          onTap: (){
+                        children: [
+                          InkWell(
+                            onTap: () {
                               faqs.doc(widget.id).delete();
                             },
-                          child: Visibility(
-                            visible: user.userRole=="AppAdmin",
-                            child: Image.asset(
-                            Common.assetImages + "trash.png",
-                            width: Responsive.isDesktop(context)
-                                ? widget.widht * 0.012
-                                : 15.0,
-                                                  ),
+                            child: Visibility(
+                              visible: user.userRole == "AppAdmin",
+                              child: Image.asset(
+                                Common.assetImages + "trash.png",
+                                width: Responsive.isDesktop(context)
+                                    ? widget.widht * 0.012
+                                    : 15.0,
+                              ),
+                            ),
                           ),
-                        ),SizedBox(
-                          width: widget.widht*0.01,
-                        ),
-                        InkWell(
-                          onTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
-                                return EditFAQ(answertext: widget.FAQdesc, docid: widget. id, questiontext: widget.FAQName);
+                          SizedBox(
+                            width: widget.widht * 0.01,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                return EditFAQ(
+                                    answertext: widget.FAQdesc,
+                                    docid: widget.id,
+                                    questiontext: widget.FAQName);
                               }));
                             },
-                          child: Visibility(
-                            visible: user.userRole=="AppAdmin",
-                            child: Image.asset(
-                            Common.assetImages + "edit_pen.png",
-                            width: Responsive.isDesktop(context)
-                                ? widget.widht * 0.012
-                                : 15.0,
-                                                  ),
+                            child: Visibility(
+                              visible: user.userRole == "AppAdmin",
+                              child: Image.asset(
+                                Common.assetImages + "edit_pen.png",
+                                width: Responsive.isDesktop(context)
+                                    ? widget.widht * 0.012
+                                    : 15.0,
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: widget.widht*0.01,
-                        ),
-                      InkWell(
-                        onTap: (){
-                          isExpanded=!isExpanded!;
-                        },
-                        child: Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                          size: Responsive.isDesktop(context)
-                              ? widget.widht * 0.01
-                              : 15.0,
-                        ),
-                      ),
-                      ],
-                    )
+                          SizedBox(
+                            width: widget.widht * 0.01,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              isExpanded = !isExpanded!;
+                            },
+                            child: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white,
+                              size: Responsive.isDesktop(context)
+                                  ? widget.widht * 0.01
+                                  : 15.0,
+                            ),
+                          ),
+                        ],
+                      )
               ],
             ),
           ),
@@ -509,7 +519,7 @@ class _FAQState extends State<FAQ> {
                     widget.FAQdesc,
                     style: TextStyle(
                         fontSize: Responsive.isDesktop(context)
-                            ? widget.widht * 0.008
+                            ? widget.widht * 0.01
                             : widget.widht * 0.03,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,

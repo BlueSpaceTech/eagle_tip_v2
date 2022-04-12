@@ -124,11 +124,11 @@ class MyApp extends StatelessWidget {
         initialRoute: AppRoutes.loginscreen,
         // home: MainFaq(),
         routes: {
-          AppRoutes.mainFaq:(context)=>MainFaq(),
+          AppRoutes.mainFaq: (context) => MainFaq(),
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
           AppRoutes.support: (context) => SupportScreen(),
-          AppRoutes.addFAQ: (context) => AddFAQ(),
+
           AppRoutes.faq: (context) => FAQScreen(),
           AppRoutes.loginscreen: (context) => LoginScreen(),
           AppRoutes.employercode: (context) => EmployerCode(),

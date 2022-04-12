@@ -1,10 +1,20 @@
+import 'dart:html';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -171,6 +181,100 @@ class GeneralfAQ extends StatefulWidget {
 }
 
 class _GeneralfAQState extends State<GeneralfAQ> {
+  PlatformFile? pickedfile;
+  UploadTask? task;
+
+  File? file;
+  FToast? fToast;
+  FilePickerResult? result;
+  bool isuploading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
+
+  void uploadfileee() async {
+    try {
+      result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ["mp4"],
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    if (result != null) {
+      try {
+        setState(() {
+          isuploading = true;
+        });
+        Uint8List? uploadfile = result!.files.single.bytes;
+
+        String filename = result!.files.single.name;
+        // final ref = FirebaseStorage.instance
+        //   .ref()
+        //   .child("video")
+        //   .child(today)
+        //   .child(storageId);
+
+        final storageRef =
+            FirebaseStorage.instance.ref().child('faqvideos/$filename');
+
+        final UploadTask uploadTask = storageRef.putData(uploadfile!);
+        setState(() {
+          task = uploadTask;
+        });
+
+        final snapshot = await uploadTask.whenComplete(() {
+          fToast!.showToast(
+            child: ToastMessage().show(300, context, "Video Uploaded"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3),
+          );
+          setState(() {
+            isuploading = false;
+          });
+        });
+
+        final TaskSnapshot downloadUrl = await uploadTask;
+
+        final String attchurl = (await downloadUrl.ref.getDownloadURL());
+        // print(downloadUrl);
+        print(attchurl);
+
+        // await AttachmentService(orgid: orgID, orgname: orgName, projid: projID)
+        //     .addattachmentobjs(objType, objID, attchdate, filename, attchurl);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+        stream: task.snapshotEvents,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final snap = snapshot.data!;
+            final progress = snap.bytesTransferred / snap.totalBytes;
+            final percentage = (progress * 100).toStringAsFixed(2);
+
+            return Text(
+              '$percentage %',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            );
+          } else {
+            return Container();
+          }
+        },
+      );
+
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -279,7 +383,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                       Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
@@ -290,16 +394,30 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: 23),
                             ),
-                            Visibility(
-                              visible: user.userRole=="AppAdmin" && Responsive.isDesktop(context),
-                              child: InkWell(
-                                onTap: (){
-                                  Navigator.pushNamed(context, AppRoutes.addFAQ);
-                                },
-                                child: customfab(width: widget.width, text: "Add FAQ", height: widget.height)),
-                            )
+                            Row(
+                              children: [
+                                Visibility(
+                                  visible: user.userRole == "AppAdmin",
+                                  child: InkWell(
+                                      onTap: () {
+                                        uploadfileee();
+                                      },
+                                      child: customfab(
+                                          width: widget.width,
+                                          text: "Add Video",
+                                          height: widget.height)),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                task != null && isuploading
+                                    ? buildUploadStatus(task!)
+                                    : Container()
+                              ],
+                            ),
                           ],
                         ),
+
                         Text(
                             "We have created a video guide to help you understand application better.",
                             style: TextStyle(
@@ -333,6 +451,28 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                         SizedBox(
                           height: 20,
                         ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                              visible: user.userRole == "AppAdmin",
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AddFAQ(
+                                            userRole: "General",
+                                          ),
+                                        ));
+                                  },
+                                  child: customfab(
+                                      width: widget.width,
+                                      text: "Add FAQ",
+                                      height: widget.height)),
+                            ),
+                          ],
+                        ),
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
@@ -341,26 +481,32 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data?.docs.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final document =
+                                          snapshot.data?.docs[index];
+                                      return FAQ(
+                                        widht: widget.width,
+                                        FAQdesc: document!["description"],
+                                        id: document.id,
+                                        height: widget.height,
+                                        FAQName: document["title"],
+                                        index: index,
+                                      );
+                                    });
                               }
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data?.docs.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final document = snapshot.data?.docs[index];
-                                    return FAQ(
-
-                                      widht: widget.width,
-                                      FAQdesc: document!["description"],
-                                      id: document.id,
-                                      height: widget.height,
-                                      FAQName: document["title"],
-                                      index: index,
-                                    );
-                                  });
+                              if (snapshot.hasData) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return Center(
+                                child: Text(""),
+                              );
                             },
                           ),
                         ),
@@ -392,8 +538,103 @@ class UserRolefAQ extends StatefulWidget {
 }
 
 class _UserRolefAQState extends State<UserRolefAQ> {
+  PlatformFile? pickedfile;
+  UploadTask? task;
+
+  File? file;
+  FToast? fToast;
+  FilePickerResult? result;
+  bool isuploading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
+
+  void uploadfileee() async {
+    try {
+      result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ["mp4"],
+      );
+    } catch (e) {
+      print(e);
+    }
+
+    if (result != null) {
+      try {
+        setState(() {
+          isuploading = true;
+        });
+        Uint8List? uploadfile = result!.files.single.bytes;
+
+        String filename = result!.files.single.name;
+        // final ref = FirebaseStorage.instance
+        //   .ref()
+        //   .child("video")
+        //   .child(today)
+        //   .child(storageId);
+
+        final storageRef =
+            FirebaseStorage.instance.ref().child('faqvideos/$filename');
+
+        final UploadTask uploadTask = storageRef.putData(uploadfile!);
+        setState(() {
+          task = uploadTask;
+        });
+
+        final snapshot = await uploadTask.whenComplete(() {
+          fToast!.showToast(
+            child: ToastMessage().show(300, context, "Video Uploaded"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3),
+          );
+          setState(() {
+            isuploading = false;
+          });
+        });
+
+        final TaskSnapshot downloadUrl = await uploadTask;
+
+        final String attchurl = (await downloadUrl.ref.getDownloadURL());
+        // print(downloadUrl);
+        print(attchurl);
+
+        // await AttachmentService(orgid: orgID, orgname: orgName, projid: projID)
+        //     .addattachmentobjs(objType, objID, attchdate, filename, attchurl);
+      } catch (e) {
+        print(e);
+      }
+    }
+  }
+
+  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
+        stream: task.snapshotEvents,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final snap = snapshot.data!;
+            final progress = snap.bytesTransferred / snap.totalBytes;
+            final percentage = (progress * 100).toStringAsFixed(2);
+
+            return Text(
+              '$percentage %',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            );
+          } else {
+            return Container();
+          }
+        },
+      );
+
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -497,13 +738,39 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "${widget.userRole}",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              widget.userRole,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 23),
+                            ),
+                            Row(
+                              children: [
+                                Visibility(
+                                  visible: user.userRole == "AppAdmin",
+                                  child: InkWell(
+                                      onTap: () {
+                                        uploadfileee();
+                                      },
+                                      child: customfab(
+                                          width: widget.width,
+                                          text: "Add Video",
+                                          height: widget.height)),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                task != null && isuploading
+                                    ? buildUploadStatus(task!)
+                                    : Container()
+                              ],
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 20,
@@ -537,6 +804,31 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                         ),
                         VideoContainer(
                           width: widget.width,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Visibility(
+                              visible: user.userRole == "AppAdmin",
+                              child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => AddFAQ(
+                                            userRole: widget.userRole,
+                                          ),
+                                        ));
+                                  },
+                                  child: customfab(
+                                      width: widget.width,
+                                      text: "Add FAQ",
+                                      height: widget.height)),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 20,
