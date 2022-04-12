@@ -619,7 +619,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   children: [
-                    Image.asset("assets/Logo 2 1.png"),
+                    // Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset("/newLogo.svg",width: width*0.22,),
                     SizedBox(
                       height: height * 0.06,
                     ),

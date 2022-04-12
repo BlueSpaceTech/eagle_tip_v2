@@ -70,7 +70,7 @@ class MenuButton extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.faq);
             },
             child: Text(
-              "faq",
+              "FAQ",
               style: TextStyle(
                   fontSize: 13.0,
                   fontWeight: FontWeight.w500,
@@ -86,7 +86,7 @@ class MenuButton extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.support);
             },
             child: Text(
-              "support",
+              "Support Ticket",
               style: TextStyle(
                   fontSize: 13.0,
                   fontWeight: FontWeight.w500,
@@ -102,7 +102,7 @@ class MenuButton extends StatelessWidget {
               Navigator.pushNamed(context, AppRoutes.welcometour);
             },
             child: Text(
-              "take tour again",
+              "Take Tour Again",
               style: TextStyle(
                   fontSize: 13.0,
                   fontWeight: FontWeight.w500,

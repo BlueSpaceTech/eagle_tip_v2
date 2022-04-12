@@ -566,6 +566,12 @@ class _TankState extends State<Tank> {
                             fontFamily: "Poppins",
                           ),
                         ),
+                        Visibility(
+                          visible: Responsive.isDesktop(context),
+                          child: SizedBox(
+                            height: 50.0,
+                          ),
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -575,10 +581,11 @@ class _TankState extends State<Tank> {
                                   : widget.height * 0.03,
                               width: widget.width * 0.52,
                               child: TextField(
+                                autofocus: true,
                                 style: TextStyle(
                                   fontSize: Responsive.isDesktop(context)
-                                      ? widget.width * 0.04
-                                      : 12.0,
+                                      ? widget.width * 0.044
+                                      : 15.0,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: "Poppins",
                                 ),

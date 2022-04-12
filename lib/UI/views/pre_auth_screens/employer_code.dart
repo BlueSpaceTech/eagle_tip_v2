@@ -116,7 +116,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                       height: height * 0.1,
                     ),
                     Text(
-                      "Enter Employer Code",
+                      "Enter New User Code",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,

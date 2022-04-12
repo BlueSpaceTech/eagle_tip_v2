@@ -340,8 +340,24 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: height * 0.05,
                               ),
-                              SiteNameAndLocation(
-                                  fontSize: 17.0, fontSize2: 13.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SiteNameAndLocation(
+                                      fontSize: 17.0, fontSize2: 13.0),
+                                      SizedBox(
+                                        width: 30.0,
+                                      ),
+                                      Text(
+            "AUT-001",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 17.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+                                ],
+                              ),
                               SizedBox(
                                 height: height * 0.05,
                               ),
@@ -360,12 +376,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: width * 0.15,
                                     ),
                                     SizedBox(
-                                      width: width * 0.068,
+                                      width: width * 0.069,
                                       child: Text(
-                                        "Request fuel",
+                                        "Submit Inventories",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            fontSize: width * 0.016,
+                                            fontSize: width * 0.0135,
                                             fontWeight: FontWeight.w500,
                                             color: Colors.white,
                                             fontFamily: "Poppins"),
@@ -401,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                   child: SiteContainer(
                                       width: width,
-                                      text: "Edit Employees",
+                                      text: "Edit Users",
                                       height: height),
                                 ),
                               )
@@ -426,10 +442,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: height * 0.05,
                             ),
-                            SiteNameAndLocation(
-                              fontSize2: 13.0,
-                              fontSize: 17.0,
-                            ),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SiteNameAndLocation(
+                                      fontSize: 17.0, fontSize2: 13.0),
+                                      Text(
+            "AUT-001",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 17.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+                                ],
+                              ),
                             SizedBox(
                               height: height * 0.05,
                             ),
@@ -450,7 +477,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   SizedBox(
                                     width: width * 0.4,
                                     child: Text(
-                                      "Request fuel",
+                                      "Submit   Inventories",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 34.0,

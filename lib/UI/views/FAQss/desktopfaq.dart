@@ -291,7 +291,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                   fontSize: 23),
                             ),
                             Visibility(
-                              visible: user.userRole=="AppAdmin",
+                              visible: user.userRole=="AppAdmin" && Responsive.isDesktop(context),
                               child: InkWell(
                                 onTap: (){
                                   Navigator.pushNamed(context, AppRoutes.addFAQ);

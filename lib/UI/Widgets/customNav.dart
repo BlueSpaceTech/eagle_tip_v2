@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -68,7 +69,7 @@ class _NavbarState extends State<Navbar> {
                         Navigator.pushNamedAndRemoveUntil(
                             context, AppRoutes.homeScreen, (route) => false);
                       },
-                      child: Logo(width: widget.width * 0.6)),
+                      child: SvgPicture.asset("/newLogo.svg",width:widget. width*0.15,),),
                   Padding(
                     padding: EdgeInsets.only(top: widget.height * 0.024),
                     child: Container(

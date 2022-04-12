@@ -570,7 +570,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                       ],
                                     ),
                                     Text(
-                                      "Edit Employers",
+                                      "Edit Users",
                                       style: TextStyle(
                                           fontFamily: "Poppins",
                                           color: Colors.white,
@@ -673,7 +673,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "Invitations",
+                                              "Sent Invitations",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.white,
