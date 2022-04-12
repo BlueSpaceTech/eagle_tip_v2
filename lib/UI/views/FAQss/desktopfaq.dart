@@ -8,6 +8,7 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
+
 class DesktopFAQs extends StatefulWidget {
   const DesktopFAQs({Key? key}) : super(key: key);
 
@@ -18,7 +19,7 @@ class DesktopFAQs extends StatefulWidget {
 class _DesktopFAQsState extends State<DesktopFAQs> {
   PageController page = PageController();
   String userrOLE = "AppAdmin";
-  CollectionReference faqs=FirebaseFirestore.instance.collection("faq");
+  CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
   getItems(List list) {
     List<SideMenuItem> item = [];
     for (int i = 0; i < list.length; i++) {
@@ -125,19 +126,19 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                       UserRolefAQ(
                           width: width,
                           height: height,
-                          userRole: "Terminal Manager"),
+                          userRole: "TerminalManager"),
                       UserRolefAQ(
                           width: width,
                           height: height,
-                          userRole: "Terminal User"),
+                          userRole: "TerminalUser"),
                       UserRolefAQ(
-                          width: width, height: height, userRole: "Site Owner"),
+                          width: width, height: height, userRole: "SiteOwner"),
                       UserRolefAQ(
                           width: width,
                           height: height,
-                          userRole: "Site Manager"),
+                          userRole: "SiteManager"),
                       UserRolefAQ(
-                          width: width, height: height, userRole: "Site User"),
+                          width: width, height: height, userRole: "SiteUser"),
                     ],
                   ))
                 : Expanded(
@@ -146,7 +147,9 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                     children: [
                       GeneralfAQ(width: width, height: height),
                       UserRolefAQ(
-                          width: width, height: height, userRole: user.userRole),
+                          width: width,
+                          height: height,
+                          userRole: user.userRole),
                     ],
                   ))
           ],
@@ -320,7 +323,8 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("faq").where("userRole",isEqualTo: "general")
+                                .collection("faq")
+                                .where("userRole", isEqualTo: "general")
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -530,7 +534,8 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("faq").where("userRole",isEqualTo: widget.userRole)
+                                .collection("faq")
+                                .where("userRole", isEqualTo: widget.userRole)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -538,11 +543,11 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                 return Center(
                                     child: CircularProgressIndicator());
                               }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
+                              // if (snapshot.connectionState ==
+                              //     ConnectionState.waiting) {
+                              //   return Center(
+                              //       child: CircularProgressIndicator());
+                              // }
                               return ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: snapshot.data?.docs.length,
