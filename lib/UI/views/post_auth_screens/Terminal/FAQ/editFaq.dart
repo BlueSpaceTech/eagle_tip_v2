@@ -36,10 +36,11 @@ class _EditFAQState extends State<EditFAQ> {
 
   FToast? fToast;
 
-  String? question = "";
-  String? answer = "";
+  
   CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
 
+  TextEditingController _questionController = TextEditingController();
+  TextEditingController _answerController = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -50,8 +51,6 @@ class _EditFAQState extends State<EditFAQ> {
     fToast!.init(context);
   }
 
-  TextEditingController _questionController = TextEditingController();
-  TextEditingController _answerController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -117,7 +116,7 @@ class _EditFAQState extends State<EditFAQ> {
                                     labelText: "Question",
                                     valueChanged: (val) {
                                       setState(() {
-                                        question = val;
+                                        // question = val;
                                       });
                                     },
                                     isactive: true,
@@ -142,7 +141,7 @@ class _EditFAQState extends State<EditFAQ> {
                                       textAlign: TextAlign.left,
                                       onChanged: (value) {
                                         setState(() {
-                                          answer = value;
+                                          // answer = value;
                                         });
                                       },
                                       style: TextStyle(fontFamily: "Poppins"),
@@ -163,22 +162,27 @@ class _EditFAQState extends State<EditFAQ> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Container(
-                                        width: width * 0.08,
-                                        height: height * 0.058,
-                                        decoration: BoxDecoration(
-                                          color: Color(0XffED5C62),
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            "Cancel",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: width * 0.008,
-                                                fontWeight: FontWeight.w600,
-                                                fontFamily: "Poppins"),
+                                      InkWell(
+                                        onTap: (){
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          width: width * 0.08,
+                                          height: height * 0.058,
+                                          decoration: BoxDecoration(
+                                            color: Color(0XffED5C62),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: width * 0.008,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: "Poppins"),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -189,8 +193,8 @@ class _EditFAQState extends State<EditFAQ> {
                                         onTap: () {
                                           faqs.doc(widget.docid).update({
                                             "id": user.uid,
-                                            "title": question,
-                                            "description": answer,
+                                            "title": _questionController.text,
+                                            "description": _answerController.text,
                                           });
                                           fToast!.showToast(
                                             child: ToastMessage().show(

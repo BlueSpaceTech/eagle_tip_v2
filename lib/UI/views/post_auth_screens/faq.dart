@@ -8,11 +8,14 @@ import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Support/support_desktop.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/editFaq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
+
+CollectionReference faqs=FirebaseFirestore.instance.collection("faq");
 class FAQScreen extends StatefulWidget {
   FAQScreen({Key? key}) : super(key: key);
 
@@ -150,7 +153,8 @@ class _MobileFAQState extends State<MobileFAQ> {
                           final document = snapshot.data?.docs[index];
                           return FAQ(
                             widht: width,
-                            FAQdesc: document!["description"],
+                            id: document!.id,
+                            FAQdesc: document["description"],
                             height: height,
                             FAQName: document["title"],
                             index: index,
@@ -318,6 +322,7 @@ class DesktopFAQ extends StatelessWidget {
                                       height: height,
                                       FAQName: document["title"],
                                       index: index,
+                                      id:document.id,
                                     );
                                   });
                             },
@@ -344,10 +349,12 @@ class FAQ extends StatefulWidget {
     required this.widht,
     required this.FAQdesc,
     required this.height,
+    required this.id,
   }) : super(key: key);
 
   final String FAQName;
   final int index;
+  final String id;
   final String FAQdesc;
   final double widht;
   final double height;
@@ -394,23 +401,40 @@ class _FAQState extends State<FAQ> {
                         children: [
                           Visibility(
                             visible: user.userRole=="AppAdmin",
-                            child: Image.asset(
-                            Common.assetImages + "trash.png",
-                            width: Responsive.isDesktop(context)
-                                ? widget.widht * 0.01
-                                : 15.0,
-                                                  ),
+                            child: InkWell(
+                              onTap: (){
+                                faqs.doc(widget.id).delete();
+                              },
+                              child: Image.asset(
+                              Common.assetImages + "trash.png",
+                              width: Responsive.isDesktop(context)
+                                  ? widget.widht * 0.01
+                                  : 15.0,
+                                                    ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: widget.widht*0.01,
                           ),
                           Visibility(
                             visible: user.userRole=="AppAdmin",
-                            child: Image.asset(
-                            Common.assetImages + "edit_pen.png",
-                            width: Responsive.isDesktop(context)
-                                ? widget.widht * 0.01
-                                : 15.0,
-                                                  ),
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) {
+                                  return EditFAQ(answertext: widget.FAQdesc, docid: widget. id, questiontext: widget.FAQName);
+                                }));
+                              },
+                              child: Image.asset(
+                              Common.assetImages + "edit_pen.png",
+                              width: Responsive.isDesktop(context)
+                                  ? widget.widht * 0.01
+                                  : 15.0,
+                                                    ),
+                            ),
                           ),
-                          
+                          SizedBox(
+                            width: widget.widht*0.01,
+                          ),
                         Image.asset(
                           Common.assetImages + "Forward.png",
                           width: Responsive.isDesktop(context)
@@ -429,6 +453,8 @@ class _FAQState extends State<FAQ> {
                                 ? widget.widht * 0.01
                                 : 15.0,
                                                   ),
+                          ),SizedBox(
+                            width: widget.widht*0.01,
                           ),
                           Visibility(
                             visible: user.userRole=="AppAdmin",
@@ -439,7 +465,9 @@ class _FAQState extends State<FAQ> {
                                 : 15.0,
                                                   ),
                           ),
-                          
+                          SizedBox(
+                            width: widget.widht*0.01,
+                          ),
                         Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.white,

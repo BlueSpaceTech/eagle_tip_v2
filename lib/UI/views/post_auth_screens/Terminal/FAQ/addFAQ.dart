@@ -36,6 +36,7 @@ class _AddFAQState extends State<AddFAQ> {
 
   String? question = "";
   String? answer = "";
+  String? role="";
   CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
 
   @override
@@ -115,7 +116,19 @@ class _AddFAQState extends State<AddFAQ> {
                                     isactive: true,
                                   ),
                                   SizedBox(
-                                    height: height * 0.03,
+                                    height: height * 0.018,
+                                  ),
+                                  AddFAQTextField(
+                                    labelText: "Role",
+                                    valueChanged: (val) {
+                                      setState(() {
+                                        role = val;
+                                      });
+                                    },
+                                    isactive: true,
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.024,
                                   ),
                                   Container(
                                     width: width * 0.42,
@@ -149,7 +162,7 @@ class _AddFAQState extends State<AddFAQ> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: height * 0.08,
+                                    height: height * 0.06,
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -184,6 +197,7 @@ class _AddFAQState extends State<AddFAQ> {
                                               "id": user.uid,
                                               "title": question,
                                               "description": answer,
+                                              "userRole":role,
                                             });
                                             fToast!.showToast(
                                               child: ToastMessage().show(

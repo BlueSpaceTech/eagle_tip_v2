@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/FAQss/desktopfaq.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
-
+import 'package:testttttt/Models/user.dart' as model;
 class MobileFaqs extends StatefulWidget {
   const MobileFaqs({Key? key}) : super(key: key);
 
@@ -32,6 +34,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     List foradmin = [
       "General",
       "Terminal Manager",
@@ -159,23 +162,23 @@ class _MobileFaqsState extends State<MobileFaqs> {
                           UserRolefAQ(
                               width: width,
                               height: height,
-                              userRole: "Terminal Manager"),
+                              userRole: "TerminalManager"),
                           UserRolefAQ(
                               width: width,
                               height: height,
-                              userRole: "Terminal User"),
+                              userRole: "TerminalUser"),
                           UserRolefAQ(
                               width: width,
                               height: height,
-                              userRole: "Site Owner"),
+                              userRole: "SiteOwner"),
                           UserRolefAQ(
                               width: width,
                               height: height,
-                              userRole: "Site Manager"),
+                              userRole: "SiteManager"),
                           UserRolefAQ(
                               width: width,
                               height: height,
-                              userRole: "Site User"),
+                              userRole: "SiteUser"),
                         ],
                       ),
                     )
@@ -186,7 +189,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
                           UserRolefAQ(
                               width: width,
                               height: height,
-                              userRole: "Site Owner"),
+                              userRole: "SiteOwner"),
                         ],
                       ),
                     )

@@ -3,6 +3,8 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
+import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -171,6 +173,7 @@ class GeneralfAQ extends StatefulWidget {
 class _GeneralfAQState extends State<GeneralfAQ> {
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -276,16 +279,26 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "General",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23),
-                        ),
-                        SizedBox(
-                          height: 20,
+                       Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "General",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 23),
+                            ),
+                            Visibility(
+                              visible: user.userRole=="AppAdmin",
+                              child: InkWell(
+                                onTap: (){
+                                  Navigator.pushNamed(context, AppRoutes.addFAQ);
+                                },
+                                child: customfab(width: widget.width, text: "Add FAQ", height: widget.height)),
+                            )
+                          ],
                         ),
                         Text(
                             "We have created a video guide to help you understand application better.",
@@ -332,11 +345,6 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                 return Center(
                                     child: CircularProgressIndicator());
                               }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
                               return ListView.builder(
                                   shrinkWrap: true,
                                   itemCount: snapshot.data?.docs.length,
@@ -344,8 +352,10 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                       (BuildContext context, int index) {
                                     final document = snapshot.data?.docs[index];
                                     return FAQ(
+
                                       widht: widget.width,
                                       FAQdesc: document!["description"],
+                                      id: document.id,
                                       height: widget.height,
                                       FAQName: document["title"],
                                       index: index,
@@ -557,6 +567,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                     return FAQ(
                                       widht: widget.width,
                                       FAQdesc: document!["description"],
+                                      id: document.id,
                                       height: widget.height,
                                       FAQName: document["title"],
                                       index: index,
