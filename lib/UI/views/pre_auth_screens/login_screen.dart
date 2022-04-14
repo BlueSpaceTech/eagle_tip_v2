@@ -621,14 +621,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     // Image.asset("assets/Logo 2 1.png"),
-<<<<<<< Updated upstream
-                    SvgPicture.asset(
-                      "/newLogo.svg",
-                      width: width * 0.22,
-                    ),
-=======
                     SvgPicture.asset("assets/newLogo.svg",width: width*0.22,),
->>>>>>> Stashed changes
                     SizedBox(
                       height: height * 0.06,
                     ),
