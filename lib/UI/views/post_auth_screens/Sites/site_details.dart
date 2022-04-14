@@ -55,7 +55,7 @@ class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
 
   final RestorableDateTimeN _startDate = RestorableDateTimeN(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day));
   final RestorableDateTimeN _endDate =
-      RestorableDateTimeN(DateTime(2022, 1, 5));
+      RestorableDateTimeN(DateTime(2022, DateTime.now().month, 30));
   late final RestorableRouteFuture<DateTimeRange?>
       _restorableDateRangePickerRouteFuture =
       RestorableRouteFuture<DateTimeRange?>(
@@ -116,7 +116,7 @@ class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
               _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
           firstDate: DateTime(DateTime.now().year,DateTime.now().month),
           currentDate: DateTime(DateTime.now().year, DateTime.now().month,DateTime.now().day),
-          lastDate: DateTime(2022,12,1),
+          lastDate: DateTime(2022,DateTime.now().month,30),
         );
       },
     );
@@ -186,16 +186,15 @@ class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
                                 InkWell(
                                   onTap: () async {
                                     _restorableDateRangePickerRouteFuture.present();
-                                    // print(_startDate.value);
-                                    // print(_endDate.value);
                                     List days=getDaysInBeteween(_startDate.value!, _endDate.value!);
-                                    print(getDaysInBeteween(_startDate.value!, _endDate.value!));
 
                                     List csvdata=[];
                                     final docss=await requests.get();
+                                    print(days);
                                     for (var element in docss.docs) { 
+                                      print(element["date"].toDate());
                                       for(int i=0;i<days.length;i++){
-                                        if(element["date"]==days[i]){
+                                        if(element["date"].toDate()==days[i]){
                                           csvdata.add(element.data());
                                         }
                                       }
@@ -872,7 +871,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                                 "tankid":123.toString(),
                                               },
                                             ],
-                                            "date":DateTime.now(),
+                                            "date":DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day),
                                             "id": Random().nextInt(10000000).toString(),
                                             "requestby":user.name,
                                             "site":user.sites[0],
@@ -919,7 +918,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.pop(context);
+                                              Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
                                             },
                                             child: Container(
                                               width: widget.width * 0.32,
