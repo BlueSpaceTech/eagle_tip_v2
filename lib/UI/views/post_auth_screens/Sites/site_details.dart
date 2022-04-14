@@ -230,7 +230,17 @@ class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
                                           color: Colors.white,
                                           fontFamily: "Poppins"),
                                     ),
-                                    FuelRequestPart(
+                                    user.userRole=="SiteUser"?Center(
+                                      child: FuelRequestPart(
+                                        valueChanged: (val) {
+                                          setState(() {
+                                            reqSent = val;
+                                          });
+                                        },
+                                        width: width * 0.23,
+                                        height: height,
+                                      ),
+                                    ):FuelRequestPart(
                                       valueChanged: (val) {
                                         setState(() {
                                           reqSent = val;
@@ -244,32 +254,41 @@ class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
                                 SizedBox(
                                   width: width * 0.05,
                                 ),
-                                VerticalDivider(
-                                  color: Colors.white,
-                                  thickness: 1.0,
-                                  endIndent: 100,
-                                  indent: 1,
+                                Visibility(
+                                  visible: user.userRole!="SiteUser",
+                                  child: VerticalDivider(
+                                    color: Colors.white,
+                                    thickness: 1.0,
+                                    endIndent: 100,
+                                    indent: 1,
+                                  ),
                                 ),
-                                SizedBox(
-                                  width: width * 0.05,
+                                Visibility(
+                                  visible: user.userRole!="SiteUser",
+                                  child: SizedBox(
+                                    width: width * 0.05,
+                                  ),
                                 ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Request History",
-                                      style: TextStyle(
-                                          fontSize: width * 0.012,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.047,
-                                    ),
-                                    RequestHistoryPart(
-                                        width: width * 0.65,
-                                        height: height * 0.9,),
-                                  ],
+                                Visibility(
+                                  visible: user.userRole!="SiteUser",
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        "Request History",
+                                        style: TextStyle(
+                                            fontSize: width * 0.012,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.047,
+                                      ),
+                                      RequestHistoryPart(
+                                          width: width * 0.65,
+                                          height: height * 0.9,),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
