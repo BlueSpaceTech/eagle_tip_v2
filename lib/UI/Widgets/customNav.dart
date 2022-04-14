@@ -69,7 +69,7 @@ class _NavbarState extends State<Navbar> {
                         Navigator.pushNamedAndRemoveUntil(
                             context, AppRoutes.homeScreen, (route) => false);
                       },
-                      child: SvgPicture.asset("/newLogo.svg",width:widget. width*0.15,),),
+                      child: SvgPicture.asset("assets/newLogo.svg",width:widget. width*0.15,),),
                   Padding(
                     padding: EdgeInsets.only(top: widget.height * 0.024),
                     child: Container(

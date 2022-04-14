@@ -16,7 +16,7 @@ class Logo extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 0),
       child: SvgPicture.asset(
-        "assets/Logo 2 1.svg",
+        "assets/newLogo.svg",
         width: Responsive.isDesktop(context) ? 200 : width * 0.42,
       ),
     );
@@ -36,7 +36,7 @@ class LogoSplash extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width * 0.2),
       child: SvgPicture.asset(
-        "assets/Logo 2 1.svg",
+        "assets/newLogo.svg",
         width: width * 0.42,
       ),
     );
