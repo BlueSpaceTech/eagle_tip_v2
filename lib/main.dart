@@ -122,10 +122,10 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        initialRoute: AppRoutes.loginscreen,
-        // home: MainFaq(),
+        // initialRoute: AuthHandling(),
+        home: AuthHandling(),
         routes: {
-          AppRoutes.dateRange:(context) => DateSelector(),
+          AppRoutes.dateRange: (context) => DateSelector(),
           AppRoutes.mainFaq: (context) => MainFaq(),
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),

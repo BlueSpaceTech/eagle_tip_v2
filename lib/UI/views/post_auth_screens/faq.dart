@@ -46,42 +46,6 @@ class _FAQScreenState extends State<FAQScreen> {
   }
 }
 
-class VideoContainer extends StatefulWidget {
-  const VideoContainer({Key? key, required this.width}) : super(key: key);
-  final double width;
-  @override
-  _VideoContainerState createState() => _VideoContainerState();
-}
-
-class _VideoContainerState extends State<VideoContainer> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: Responsive.isDesktop(context)
-          ? widget.width * 0.8
-          : widget.width * 0.9,
-      height: 140,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: false, // new line
-          // physics: NeverScrollableScrollPhysics(),
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) {
-            // final document = snapshot.data?.docs[index];
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.white,
-              ),
-              margin: EdgeInsets.only(right: 20),
-              height: 170,
-              width: 220,
-            );
-          }),
-    );
-  }
-}
-
 class MobileFAQ extends StatefulWidget {
   const MobileFAQ({
     Key? key,

@@ -604,6 +604,7 @@ class _LoginScreenState extends State<LoginScreen> {
       bottomNavigationBar: CustomFAQbottom(),
       body: SingleChildScrollView(
         child: Stack(children: [
+          // Positioned(right: 0, child: Image.asset("")),
           Padding(
             padding: EdgeInsets.only(
                 left: width * 0.1, right: width * 0.1, top: height * 0.15),
@@ -620,7 +621,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     // Image.asset("assets/Logo 2 1.png"),
-                    SvgPicture.asset("/newLogo.svg",width: width*0.22,),
+                    SvgPicture.asset(
+                      "/newLogo.svg",
+                      width: width * 0.22,
+                    ),
                     SizedBox(
                       height: height * 0.06,
                     ),

@@ -6,6 +6,7 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -14,12 +15,17 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/FAQss/addvideo.dart';
+import 'package:testttttt/UI/views/FAQss/player_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
+
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
 
 class DesktopFAQs extends StatefulWidget {
   const DesktopFAQs({Key? key}) : super(key: key);
@@ -94,15 +100,29 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                       bottom: height * 0.04),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "FAQ",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w500,
-                        fontSize: width * 0.012,
-                        color: Colors.white,
+                    child: Row(children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
                       ),
-                    ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        "FAQ",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
+                          fontSize: width * 0.012,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]),
                   ),
                 ),
                 // items: [
@@ -181,99 +201,12 @@ class GeneralfAQ extends StatefulWidget {
 }
 
 class _GeneralfAQState extends State<GeneralfAQ> {
-  PlatformFile? pickedfile;
-  UploadTask? task;
-
-  File? file;
-  FToast? fToast;
-  FilePickerResult? result;
-  bool isuploading = false;
   @override
   void initState() {
     // TODO: implement initState
 
     super.initState();
-    fToast = FToast();
-    fToast!.init(context);
   }
-
-  void uploadfileee() async {
-    try {
-      result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ["mp4"],
-      );
-    } catch (e) {
-      print(e);
-    }
-
-    if (result != null) {
-      try {
-        setState(() {
-          isuploading = true;
-        });
-        Uint8List? uploadfile = result!.files.single.bytes;
-
-        String filename = result!.files.single.name;
-        // final ref = FirebaseStorage.instance
-        //   .ref()
-        //   .child("video")
-        //   .child(today)
-        //   .child(storageId);
-
-        final storageRef =
-            FirebaseStorage.instance.ref().child('faqvideos/$filename');
-
-        final UploadTask uploadTask = storageRef.putData(uploadfile!);
-        setState(() {
-          task = uploadTask;
-        });
-
-        final snapshot = await uploadTask.whenComplete(() {
-          fToast!.showToast(
-            child: ToastMessage().show(300, context, "Video Uploaded"),
-            gravity: ToastGravity.BOTTOM,
-            toastDuration: Duration(seconds: 3),
-          );
-          setState(() {
-            isuploading = false;
-          });
-        });
-
-        final TaskSnapshot downloadUrl = await uploadTask;
-
-        final String attchurl = (await downloadUrl.ref.getDownloadURL());
-        // print(downloadUrl);
-        print(attchurl);
-
-        // await AttachmentService(orgid: orgID, orgname: orgName, projid: projID)
-        //     .addattachmentobjs(objType, objID, attchdate, filename, attchurl);
-      } catch (e) {
-        print(e);
-      }
-    }
-  }
-
-  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
-        stream: task.snapshotEvents,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final snap = snapshot.data!;
-            final progress = snap.bytesTransferred / snap.totalBytes;
-            final percentage = (progress * 100).toStringAsFixed(2);
-
-            return Text(
-              '$percentage %',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            );
-          } else {
-            return Container();
-          }
-        },
-      );
 
   @override
   Widget build(BuildContext context) {
@@ -299,23 +232,23 @@ class _GeneralfAQState extends State<GeneralfAQ> {
               // SizedBox(
               //   height: 20,
               // ),
-              Visibility(
-                visible: Responsive.isDesktop(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Visibility(
+              //   visible: Responsive.isDesktop(context),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       InkWell(
+              //         onTap: () {
+              //           Navigator.pop(context);
+              //         },
+              //         child: Icon(
+              //           Icons.arrow_back,
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height:
                     Responsive.isDesktop(context) ? widget.height * 0.06 : 10,
@@ -397,22 +330,28 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: user.userRole == "AppAdmin",
+                                  visible: user.userRole == "AppAdmin" ||
+                                      user.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
-                                        uploadfileee();
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AddVideo(userRole: "general"),
+                                            ));
                                       },
                                       child: customfab(
                                           width: widget.width,
                                           text: "Add Video",
                                           height: widget.height)),
                                 ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                task != null && isuploading
-                                    ? buildUploadStatus(task!)
-                                    : Container()
+                                // SizedBox(
+                                //   width: 20,
+                                // ),
+                                // task != null && isuploading
+                                //     ? buildUploadStatus(task!)
+                                //     : Container()
                               ],
                             ),
                           ],
@@ -446,8 +385,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                           height: 20,
                         ),
                         VideoContainer(
-                          width: widget.width,
-                        ),
+                            width: widget.width, userRole: "general"),
                         SizedBox(
                           height: 20,
                         ),
@@ -455,14 +393,15 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Visibility(
-                              visible: user.userRole == "AppAdmin",
+                              visible: user.userRole == "AppAdmin" ||
+                                  user.userRole == "SuperAdmin",
                               child: InkWell(
                                   onTap: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => AddFAQ(
-                                            userRole: "General",
+                                            userRole: "general",
                                           ),
                                         ));
                                   },
@@ -472,6 +411,9 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                       height: widget.height)),
                             ),
                           ],
+                        ),
+                        SizedBox(
+                          height: 10,
                         ),
                         Container(
                           child: StreamBuilder(
@@ -523,6 +465,158 @@ class _GeneralfAQState extends State<GeneralfAQ> {
   }
 }
 
+class VideoContainer extends StatefulWidget {
+  const VideoContainer({Key? key, required this.width, required this.userRole})
+      : super(key: key);
+  final double width;
+  final String userRole;
+
+  @override
+  _VideoContainerState createState() => _VideoContainerState();
+}
+
+class _VideoContainerState extends State<VideoContainer> {
+  // _getImage(videoPathUrl) async {
+  //   var appDocDir = await getApplicationDocumentsDirectory();
+  //   final folderPath = appDocDir.path;
+  //   String thumb = await Thumbnails.getThumbnail(
+  //       thumbnailFolder: folderPath,
+  //       videoFile: videoPathUrl,
+  //       imageType:
+  //           ThumbFormat.PNG, //this image will store in created folderpath
+  //       quality: 30);
+  //   print(thumb);
+  //   return thumb;
+  // }
+  // Uint8List? urll;
+
+  // getthumbnail(String url) async {
+  //   final uint8list = await VideoThumbnail.thumbnailData(
+  //     video: url,
+  //     imageFormat: ImageFormat.JPEG,
+  //     maxWidth:
+  //         128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+  //     quality: 25,
+  //   );
+  //   setState(() {
+  //     urll = uint8list!;
+  //   });
+  // }
+  FToast? fToast;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
+    return Container(
+      width: Responsive.isDesktop(context)
+          ? widget.width * 0.8
+          : widget.width * 0.9,
+      height: 140,
+      child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("faqvideos")
+              .where("userRole", isEqualTo: widget.userRole)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: false, // new line
+                // physics: NeverScrollableScrollPhysics(),
+                itemCount: snapshot.data?.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final document = snapshot.data?.docs[index];
+
+                  // getthumbnail(document!["videourl"]);
+
+                  //  print(document!["videourl"]);
+                  return Row(
+                    children: [
+                      Visibility(
+                        visible: user.userRole == "AppAdmin",
+                        child: InkWell(
+                            onTap: () {
+                              FirebaseFirestore.instance
+                                  .collection("faqvideos")
+                                  .doc(document!.id)
+                                  .delete()
+                                  .then((value) {
+                                fToast!.showToast(
+                                  child: ToastMessage()
+                                      .show(300, context, "Video Deleted"),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: Duration(seconds: 3),
+                                );
+                              });
+                            },
+                            child: Icon(
+                              Icons.delete_outline,
+                              color: Colors.white,
+                            )),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VideoPlayerScreen(
+                                  videourl: document!["videourl"],
+                                  title: document["title"],
+                                ),
+                              ));
+                        },
+                        child: Container(
+                          width: 240,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white
+                                    // image: DecorationImage(
+                                    //   image: NetworkImage(document["videourl"]),
+                                    // ),
+                                    ),
+                                margin: EdgeInsets.only(right: 20),
+                                height: 150,
+                                width: 220,
+                                child: SvgPicture.asset(
+                                  "/newLogo.svg",
+                                  width: 150,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(document!["title"],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          }),
+    );
+  }
+}
+
 class UserRolefAQ extends StatefulWidget {
   const UserRolefAQ(
       {Key? key,
@@ -541,7 +635,6 @@ class _UserRolefAQState extends State<UserRolefAQ> {
   PlatformFile? pickedfile;
   UploadTask? task;
 
-  File? file;
   FToast? fToast;
   FilePickerResult? result;
   bool isuploading = false;
@@ -586,6 +679,9 @@ class _UserRolefAQState extends State<UserRolefAQ> {
           task = uploadTask;
         });
 
+        final TaskSnapshot downloadUrl = await uploadTask;
+
+        final String attchurl = (await downloadUrl.ref.getDownloadURL());
         final snapshot = await uploadTask.whenComplete(() {
           fToast!.showToast(
             child: ToastMessage().show(300, context, "Video Uploaded"),
@@ -595,11 +691,12 @@ class _UserRolefAQState extends State<UserRolefAQ> {
           setState(() {
             isuploading = false;
           });
+          FirebaseFirestore.instance.collection("faqvideos").add({
+            "videourl": attchurl,
+            "userRole": widget.userRole,
+          });
         });
 
-        final TaskSnapshot downloadUrl = await uploadTask;
-
-        final String attchurl = (await downloadUrl.ref.getDownloadURL());
         // print(downloadUrl);
         print(attchurl);
 
@@ -654,23 +751,23 @@ class _UserRolefAQState extends State<UserRolefAQ> {
               //       )
               //     : SizedBox(),
 
-              Visibility(
-                visible: Responsive.isDesktop(context),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Visibility(
+              //   visible: Responsive.isDesktop(context),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       InkWell(
+              //         onTap: () {
+              //           Navigator.pop(context);
+              //         },
+              //         child: Icon(
+              //           Icons.arrow_back,
+              //           color: Colors.white,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(
                 height:
                     Responsive.isDesktop(context) ? widget.height * 0.06 : 10,
@@ -755,19 +852,24 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                   visible: user.userRole == "AppAdmin",
                                   child: InkWell(
                                       onTap: () {
-                                        uploadfileee();
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => AddVideo(
+                                                  userRole: widget.userRole),
+                                            ));
                                       },
                                       child: customfab(
                                           width: widget.width,
                                           text: "Add Video",
                                           height: widget.height)),
                                 ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                task != null && isuploading
-                                    ? buildUploadStatus(task!)
-                                    : Container()
+                                // SizedBox(
+                                //   width: 20,
+                                // ),
+                                // task != null && isuploading
+                                //     ? buildUploadStatus(task!)
+                                //     : Container()
                               ],
                             ),
                           ],
@@ -804,9 +906,10 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                         ),
                         VideoContainer(
                           width: widget.width,
+                          userRole: widget.userRole,
                         ),
                         SizedBox(
-                          height: 20,
+                          height: 40,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
