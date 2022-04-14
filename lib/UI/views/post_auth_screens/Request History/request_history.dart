@@ -16,15 +16,11 @@ class Requests extends StatelessWidget {
   const Requests({
     Key? key,
     required this.height,
-    required this.requestId,
     required this.width,
-    required this.requestDate,
   }) : super(key: key);
 
   final double height;
-  final List requestId;
   final double width;
-  final List requestDate;
 
   @override
   Widget build(BuildContext context) {

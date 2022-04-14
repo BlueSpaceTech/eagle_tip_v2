@@ -33,6 +33,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Notifications/notifications
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/particularNotification.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Request%20History/particular_request.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Request%20History/request_history.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Sites/dateSelect.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Support/support.dart';
@@ -124,6 +125,7 @@ class MyApp extends StatelessWidget {
         initialRoute: AppRoutes.loginscreen,
         // home: MainFaq(),
         routes: {
+          AppRoutes.dateRange:(context) => DateSelector(),
           AppRoutes.mainFaq: (context) => MainFaq(),
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),

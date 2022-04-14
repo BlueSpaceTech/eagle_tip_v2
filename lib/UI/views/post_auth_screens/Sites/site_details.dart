@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
-
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 // import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -9,6 +12,7 @@ import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Request%20History/request_history.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/tanks_request.dart';
@@ -17,10 +21,12 @@ import 'package:lottie/lottie.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:flutter/material.dart';
-
+import 'package:testttttt/Models/user.dart' as model;
 import '../../../../Providers/user_provider.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
+
+CollectionReference requests=FirebaseFirestore.instance.collection("requesthistory");
 class SiteDetails extends StatelessWidget {
   SiteDetails({Key? key}) : super(key: key);
 
@@ -35,32 +41,100 @@ class SiteDetails extends StatelessWidget {
 }
 
 class MobileSiteDet extends StatefulWidget {
+  final String? restorationId="";
+
   @override
   State<MobileSiteDet> createState() => _MobileSiteDetState();
 }
 
-class _MobileSiteDetState extends State<MobileSiteDet> {
-  bool? _isTapped = false;
-
-  bool? _requested = false;
-
-  List requestId = [
-    "345635",
-    "342635",
-    "345835",
-    "345735",
-    "345655",
-  ];
-
-  List requestDate = [
-    "5/27/15",
-    "10/17/14",
-    "15/7/10",
-    "3/7/19",
-    "22/15/10",
-  ];
-
+class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
+  
   bool? reqSent = false;
+  @override
+  String? get restorationId => widget.restorationId;
+
+  final RestorableDateTimeN _startDate = RestorableDateTimeN(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day));
+  final RestorableDateTimeN _endDate =
+      RestorableDateTimeN(DateTime(2022, 1, 5));
+  late final RestorableRouteFuture<DateTimeRange?>
+      _restorableDateRangePickerRouteFuture =
+      RestorableRouteFuture<DateTimeRange?>(
+    onComplete: _selectDateRange,
+    onPresent: (NavigatorState navigator, Object? arguments) {
+      return navigator
+          .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
+        'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
+        'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
+      });
+    },
+  );
+  List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
+  List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+    }
+    return days;
+}
+
+// String convertDateTimeDisplay(String date) {
+//     final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
+//     final DateFormat serverFormater = DateFormat('dd-MM-yyyy');
+//     final DateTime displayDate = displayFormater.parse(date);
+//     final String formatted = serverFormater.format(displayDate);
+//     return formatted;
+//   }
+
+  void _selectDateRange(DateTimeRange? newSelectedDate) {
+    if (newSelectedDate != null) {
+      setState(() {
+        _startDate.value = newSelectedDate.start;
+        _endDate.value = newSelectedDate.end;
+        // print(convertDateTimeDisplay(_startDate.value.toString()));
+      // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
+      });
+    }
+  }
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_startDate, 'start_date');
+    registerForRestoration(_endDate, 'end_date');
+    registerForRestoration(
+        _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
+  }
+
+  static Route<DateTimeRange?> _dateRangePickerRoute(
+    BuildContext context,
+    Object? arguments,
+  ) {
+    return DialogRoute<DateTimeRange?>(
+      context: context,
+      builder: (BuildContext context) {
+        return DateRangePickerDialog(
+          restorationId: 'date_picker_dialog',
+          initialDateRange:
+              _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
+          firstDate: DateTime(DateTime.now().year,DateTime.now().month),
+          currentDate: DateTime(DateTime.now().year, DateTime.now().month,DateTime.now().day),
+          lastDate: DateTime(2022,12,1),
+        );
+      },
+    );
+  }
+
+  static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
+    if (arguments['initialStartDate'] != null &&
+        arguments['initialEndDate'] != null) {
+      return DateTimeRange(
+        start: DateTime.fromMillisecondsSinceEpoch(
+            arguments['initialStartDate'] as int),
+        end: DateTime.fromMillisecondsSinceEpoch(
+            arguments['initialEndDate'] as int),
+      );
+    }
+
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +181,28 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                 SiteNameAndLocation(
                                     fontSize: 17.0, fontSize2: 13.0),
                                 SizedBox(
-                                  width: width * 0.18,
+                                  width: width * 0.1,
                                 ),
+                                InkWell(
+                                  onTap: () async {
+                                    _restorableDateRangePickerRouteFuture.present();
+                                    // print(_startDate.value);
+                                    // print(_endDate.value);
+                                    List days=getDaysInBeteween(_startDate.value!, _endDate.value!);
+                                    print(getDaysInBeteween(_startDate.value!, _endDate.value!));
+
+                                    List csvdata=[];
+                                    final docss=await requests.get();
+                                    for (var element in docss.docs) { 
+                                      for(int i=0;i<days.length;i++){
+                                        if(element["date"]==days[i]){
+                                          csvdata.add(element.data());
+                                        }
+                                      }
+                                    }
+                                    print(csvdata);
+          },
+                                  child: customfab(width: width, text: "Create Report", height: height)),
                                 reqSent!
                                     ? Image.asset(
                                         Common.assetImages +
@@ -145,8 +239,6 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                       },
                                       width: width * 0.23,
                                       height: height,
-                                      requestDate: requestDate,
-                                      requestId: requestId,
                                     ),
                                   ],
                                 ),
@@ -177,9 +269,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                     ),
                                     RequestHistoryPart(
                                         width: width * 0.65,
-                                        height: height * 0.9,
-                                        requestId: requestId,
-                                        requestDate: requestDate),
+                                        height: height * 0.9,),
                                   ],
                                 ),
                               ],
@@ -271,16 +361,12 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                               },
                               width: width,
                               height: height,
-                              requestDate: requestDate,
-                              requestId: requestId,
                             ),
                             Visibility(
                               visible: user.userRole != "SiteUser",
                               child: RequestHistoryPart(
                                   width: width,
-                                  height: height,
-                                  requestId: requestId,
-                                  requestDate: requestDate),
+                                  height: height,),
                             )
                           ],
                         ),
@@ -292,6 +378,9 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
             ),
           );
   }
+
+
+  
 }
 
 class FuelRequestPart extends StatelessWidget {
@@ -299,15 +388,11 @@ class FuelRequestPart extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
-    required this.requestDate,
-    required this.requestId,
     required this.valueChanged,
   }) : super(key: key);
 
   final double width;
   final double height;
-  final List requestDate;
-  final List requestId;
   final ValueChanged valueChanged;
 
   @override
@@ -319,8 +404,6 @@ class FuelRequestPart extends StatelessWidget {
         valueChanged: (val) {
           valueChanged(val);
         },
-        requestDate: requestDate,
-        requestId: requestId,
         height: height,
         width: width,
       ),
@@ -333,14 +416,10 @@ class RequestHistoryPart extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
-    required this.requestId,
-    required this.requestDate,
   }) : super(key: key);
 
   final double width;
   final double height;
-  final List requestId;
-  final List requestDate;
 
   @override
   Widget build(BuildContext context) {
@@ -349,9 +428,7 @@ class RequestHistoryPart extends StatelessWidget {
           left: width * 0.04, right: width * 0.04, top: height * 0.03),
       child: Requests(
           height: height,
-          requestId: requestId,
-          width: width,
-          requestDate: requestDate),
+          width: width,),
     );
   }
 }
@@ -361,15 +438,11 @@ class FuelReqColumn extends StatefulWidget {
     Key? key,
     required this.height,
     required this.width,
-    required this.requestId,
-    required this.requestDate,
     required this.valueChanged,
   }) : super(key: key);
 
   final double height;
   final double width;
-  final List requestId;
-  final List requestDate;
 
   final ValueChanged valueChanged;
 
@@ -431,6 +504,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -520,6 +594,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           onTap: () {
             print(regularVal);
             if (isTapped!) {
+
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -769,6 +844,40 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 widget.valueChanged(reqSent);
                                 print(reqSent);
                                 Navigator.pop(context);
+                                requests.doc().set({
+                                            "data":[
+                                              
+                                              {
+                                                "amount":regularVal,
+                                                "fueltype":"Regular",
+                                                "tanknumber":"1",
+                                                "tankid":223.toString(),
+                                              },
+                                              {
+                                                "amount":midgradeVal,
+                                                "fueltype":"Midgrade",
+                                                "tanknumber":"2",
+                                                "tankid":323.toString(),
+                                              },
+                                              {
+                                                "amount":premiumVal,
+                                                "fueltype":"Premium",
+                                                "tanknumber":"3",
+                                                "tankid":423.toString(),
+                                              },
+                                              {
+                                                "amount":ulsdVal,
+                                                "fueltype":"ULSD",
+                                                "tanknumber":"4",
+                                                "tankid":123.toString(),
+                                              },
+                                            ],
+                                            "date":DateTime.now(),
+                                            "id": Random().nextInt(10000000).toString(),
+                                            "requestby":user.name,
+                                            "site":user.sites[0],
+                                            
+                                          },);
 
                                 // setState(() {
                                 //   _requested = true;

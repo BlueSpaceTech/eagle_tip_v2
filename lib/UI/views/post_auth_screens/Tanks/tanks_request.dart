@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/product_request.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -7,7 +10,9 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'dart:math';
+import 'package:testttttt/Models/user.dart' as model;
+CollectionReference requests= FirebaseFirestore.instance.collection("requesthistory");
 class TanksRequest extends StatefulWidget {
   const TanksRequest({Key? key}) : super(key: key);
 
@@ -22,9 +27,18 @@ class _TanksRequestState extends State<TanksRequest> {
   String? premiumVal = "0";
   String? ulsdVal = "0";
   bool? _requested = false;
+  List data=[];
+  fuelamounts(String amount,String fueltype,String tankid,String tanknumber){
+    if(amount!=0){
+      data.add({
+        "amount"
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -356,6 +370,7 @@ class _TanksRequestState extends State<TanksRequest> {
                                     ),
                                     InkWell(
                                       onTap: () {
+                                        
                                         Navigator.pop(context);
                                         setState(() {
                                           _requested = true;
@@ -532,7 +547,7 @@ class _TankState extends State<Tank> {
           child: Container(
             width: widget.width * 0.72,
             height: Responsive.isDesktop(context)
-                ? widget.height * 0.066
+                ? widget.height * 0.068
                 : widget.height * 0.075,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(17.0),
@@ -569,7 +584,7 @@ class _TankState extends State<Tank> {
                         Visibility(
                           visible: Responsive.isDesktop(context),
                           child: SizedBox(
-                            height: 50.0,
+                            height: 3.0,
                           ),
                         ),
                         Row(
@@ -584,7 +599,7 @@ class _TankState extends State<Tank> {
                                 autofocus: true,
                                 style: TextStyle(
                                   fontSize: Responsive.isDesktop(context)
-                                      ? widget.width * 0.044
+                                      ? widget.width * 0.042
                                       : 15.0,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: "Poppins",
