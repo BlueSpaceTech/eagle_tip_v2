@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
+import 'dart:convert';
+import 'dart:html';
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-// import 'package:audioplayers/audioplayers.dart';
+import 'package:csv/csv.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
@@ -20,15 +20,13 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:lottie/lottie.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
-import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import '../../../../Providers/user_provider.dart';
-import 'package:testttttt/Models/user.dart' as model;
 
 
-CollectionReference requests=FirebaseFirestore.instance.collection("requesthistory");
+
 class SiteDetails extends StatelessWidget {
-  SiteDetails({Key? key}) : super(key: key);
+  const SiteDetails({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,98 +41,16 @@ class SiteDetails extends StatelessWidget {
 class MobileSiteDet extends StatefulWidget {
   final String? restorationId="";
 
+  const MobileSiteDet({Key? key}) : super(key: key);
+
   @override
   State<MobileSiteDet> createState() => _MobileSiteDetState();
 }
 
-class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
+class _MobileSiteDetState extends State<MobileSiteDet>{
   
   bool? reqSent = false;
-  @override
-  String? get restorationId => widget.restorationId;
-
-  final RestorableDateTimeN _startDate = RestorableDateTimeN(DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day));
-  final RestorableDateTimeN _endDate =
-      RestorableDateTimeN(DateTime(2022, DateTime.now().month, 30));
-  late final RestorableRouteFuture<DateTimeRange?>
-      _restorableDateRangePickerRouteFuture =
-      RestorableRouteFuture<DateTimeRange?>(
-    onComplete: _selectDateRange,
-    onPresent: (NavigatorState navigator, Object? arguments) {
-      return navigator
-          .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
-        'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
-        'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
-      });
-    },
-  );
-  List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
-  List<DateTime> days = [];
-    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
-      days.add(startDate.add(Duration(days: i)));
-    }
-    return days;
-}
-
-// String convertDateTimeDisplay(String date) {
-//     final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
-//     final DateFormat serverFormater = DateFormat('dd-MM-yyyy');
-//     final DateTime displayDate = displayFormater.parse(date);
-//     final String formatted = serverFormater.format(displayDate);
-//     return formatted;
-//   }
-
-  void _selectDateRange(DateTimeRange? newSelectedDate) {
-    if (newSelectedDate != null) {
-      setState(() {
-        _startDate.value = newSelectedDate.start;
-        _endDate.value = newSelectedDate.end;
-        // print(convertDateTimeDisplay(_startDate.value.toString()));
-      // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
-      });
-    }
-  }
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_startDate, 'start_date');
-    registerForRestoration(_endDate, 'end_date');
-    registerForRestoration(
-        _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
-  }
-
-  static Route<DateTimeRange?> _dateRangePickerRoute(
-    BuildContext context,
-    Object? arguments,
-  ) {
-    return DialogRoute<DateTimeRange?>(
-      context: context,
-      builder: (BuildContext context) {
-        return DateRangePickerDialog(
-          restorationId: 'date_picker_dialog',
-          initialDateRange:
-              _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
-          firstDate: DateTime(DateTime.now().year,DateTime.now().month),
-          currentDate: DateTime(DateTime.now().year, DateTime.now().month,DateTime.now().day),
-          lastDate: DateTime(2022,DateTime.now().month,30),
-        );
-      },
-    );
-  }
-
-  static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
-    if (arguments['initialStartDate'] != null &&
-        arguments['initialEndDate'] != null) {
-      return DateTimeRange(
-        start: DateTime.fromMillisecondsSinceEpoch(
-            arguments['initialStartDate'] as int),
-        end: DateTime.fromMillisecondsSinceEpoch(
-            arguments['initialEndDate'] as int),
-      );
-    }
-
-    return null;
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -183,25 +99,7 @@ class _MobileSiteDetState extends State<MobileSiteDet>  with RestorationMixin{
                                 SizedBox(
                                   width: width * 0.1,
                                 ),
-                                InkWell(
-                                  onTap: () async {
-                                    _restorableDateRangePickerRouteFuture.present();
-                                    List days=getDaysInBeteween(_startDate.value!, _endDate.value!);
-
-                                    List csvdata=[];
-                                    final docss=await requests.get();
-                                    print(days);
-                                    for (var element in docss.docs) { 
-                                      print(element["date"].toDate());
-                                      for(int i=0;i<days.length;i++){
-                                        if(element["date"].toDate()==days[i]){
-                                          csvdata.add(element.data());
-                                        }
-                                      }
-                                    }
-                                    print(csvdata);
-          },
-                                  child: customfab(width: width, text: "Create Report", height: height)),
+                                
                                 reqSent!
                                     ? Image.asset(
                                         Common.assetImages +
@@ -896,6 +794,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                             "site":user.sites[0],
                                             
                                           },);
+
+                                          
 
                                 // setState(() {
                                 //   _requested = true;

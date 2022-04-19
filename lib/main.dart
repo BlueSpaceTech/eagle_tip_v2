@@ -74,6 +74,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:provider/provider.dart';
+import 'package:testttttt/Utils/test.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -122,10 +123,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        // initialRoute: AuthHandling(),
+        // initialRoute: AppRoutes.test,
         home: AuthHandling(),
         routes: {
           AppRoutes.dateRange: (context) => DateSelector(),
+          AppRoutes.test:(context)=>OpenCSV(),
           AppRoutes.mainFaq: (context) => MainFaq(),
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),

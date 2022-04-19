@@ -54,4 +54,5 @@ class AppRoutes {
   static final String finaltourmain = "/finaltourmain";
   static final String mainFaq="/mainfaq";
   static final String dateRange="/dateSelect";
+  static final String test="/test";
 }

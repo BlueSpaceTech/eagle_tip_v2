@@ -1,10 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
+import 'package:csv/csv.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
+import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
@@ -156,7 +161,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
     fToast = FToast();
     fToast!.init(context);
   }
-
+List inviteData=[];
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -199,7 +204,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                             Row(
                               children: [
                                 Text(
-                                  "    ",
+                                  "       ",
                                   style: TextStyle(
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.bold,
@@ -209,13 +214,48 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                               ],
                             ),
                             Text(
-                              "Add new Employee",
+                              "Add new User",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   color: Colors.white,
                                   fontSize: 20),
                             ),
-                            Text("                       "),
+                            InkWell(
+                              onTap: ()async{
+                                FilePickerResult? csvFile= await FilePicker.platform.pickFiles(allowedExtensions: ['csv'],           type: FileType.custom,allowMultiple: false);
+                                if(csvFile!=null){
+                                final bytes = utf8.decode(csvFile.files[0].bytes!.toList());                              
+                                List<List<dynamic>> rowsAsListOfValues  = const  CsvToListConverter().convert(bytes);
+                                for(int i=1;i<rowsAsListOfValues.length;i++){
+                                setState(() {
+                                  inviteData.add(rowsAsListOfValues.elementAt(i));
+                                });
+                  
+                              }
+                              // print(inviteData.length);
+                              print(inviteData);
+                              for(int i=0;i<inviteData.length;i++){
+                              print(inviteData.elementAt(i).elementAt(0));
+                              // print(inviteData.elementAt(i)[1]);
+                              String sites=inviteData.elementAt(i)[1];
+                              List sitess=sites.split(",");
+                              // print(sitess.length);
+                              // print(sitess);
+                              AuthFunctions().addUserTodb(
+                                        name: inviteData.elementAt(i)[0].toString(),
+                                        email: inviteData.elementAt(i)[2].toString(),
+                                        phonenumber: inviteData.elementAt(i)[3].toString(),
+                                        userRole: inviteData.elementAt(i)[4].toString(),
+                                        phoneisverified: false,
+                                        sites: sitess,
+                                      );
+                  
+                            }
+
+                          }
+                        },
+                              
+                              child: customfab(width: width, text: "Import CSV", height: height),),
                           ],
                         ),
                       ),

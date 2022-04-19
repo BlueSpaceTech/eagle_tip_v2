@@ -373,7 +373,7 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         // print(phone);
         // print(userRole);
-        // addData();
+        addData();
 
         // Navigator.pushReplacement(
         //     context, MaterialPageRoute(builder: (context) => LoginScreen()));
@@ -385,9 +385,14 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => HomeScreen(
-                      showdialog: false,
-                    )));
+                builder: (context) => (userRole == "TerminalUser" ||
+                          userRole == "TerminalManager")
+                      ? TerminalHome()
+                      : Responsive.isDesktop(context)
+                          ? HomeScreen(
+                              showdialog: true,
+                            )
+                          : BottomNav()));
 
         // if (PlatformInfo().isWeb()) {
         //   print("isweb");
