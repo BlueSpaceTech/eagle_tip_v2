@@ -26,7 +26,7 @@ class CustomFAQbottom extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, AppRoutes.faq);
+                Navigator.pushNamed(context, AppRoutes.faqLogout);
               },
               child: Text(
                 "FAQ",

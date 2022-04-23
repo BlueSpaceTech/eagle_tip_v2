@@ -1,30 +1,32 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_sidemenu/easy_sidemenu.dart';
+// import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
-import 'package:testttttt/Providers/user_provider.dart';
-import 'package:testttttt/Routes/approutes.dart';
-import 'package:testttttt/Services/utils.dart';
+// // import 'package:provider/provider.dart';
+// import 'package:testttttt/Providers/user_provider.dart';
+// import 'package:testttttt/Routes/approutes.dart';
+// import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
-import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
-import 'package:testttttt/Utils/common.dart';
+// import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
+// import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
-import 'package:testttttt/Utils/responsive.dart';
-import 'package:testttttt/Models/user.dart' as model;
+// import 'package:testttttt/Utils/responsive.dart';
+// import 'package:testttttt/Models/user.dart' as model;
 
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class AddVideo extends StatefulWidget {
@@ -49,7 +51,7 @@ class _AddVideoState extends State<AddVideo> {
     fToast!.init(context);
   }
 
-  File? _video;
+  // File? _video;
   final picker = ImagePicker;
   String downloadurl = "";
   // void _pickFile() async {
