@@ -358,6 +358,9 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: 10,
+                        ),
 
                         Text(
                             "We have created a some FAQs that will guide you to help you understand application better.",

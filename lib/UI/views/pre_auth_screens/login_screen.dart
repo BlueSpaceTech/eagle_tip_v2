@@ -244,15 +244,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void _handleRemeberme(bool? value) {
     ischecked = value!;
     // if (ischecked) {
-      SharedPreferences.getInstance().then(
-        (prefs) {
-          prefs.setBool("remember_me", value);
-          prefs.setString('email', _email.text);
-          prefs.setString('password', _password.text);
-        },
-      );
-      
-    
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        prefs.setBool("remember_me", value);
+        prefs.setString('email', _email.text);
+        prefs.setString('password', _password.text);
+      },
+    );
 
     setState(() {
       ischecked = value;
@@ -260,27 +258,25 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _loadUserEmailPassword() async {
-try {
-SharedPreferences _prefs = await SharedPreferences.getInstance();
-var _email1 = _prefs.getString("email") ?? "";
-var _password1 = _prefs.getString("password") ?? "";
-var _remeberMe = _prefs.getBool("remember_me") ?? false;
-print(_remeberMe);
-print(_email);
+    try {
+      SharedPreferences _prefs = await SharedPreferences.getInstance();
+      var _email1 = _prefs.getString("email") ?? "";
+      var _password1 = _prefs.getString("password") ?? "";
+      var _remeberMe = _prefs.getBool("remember_me") ?? false;
+      print(_remeberMe);
+      print(_email);
 // print(_password);
-if (_remeberMe) {
-setState(() {
-ischecked = true;
-});
-_email.text = _email1 ;
-_password.text = _password1;
-}
-} catch (e) 
-{
-print(e);
-}
-}
-
+      if (_remeberMe) {
+        setState(() {
+          ischecked = true;
+        });
+        _email.text = _email1;
+        _password.text = _password1;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   String uid = "";
   String phone = "";
@@ -562,15 +558,26 @@ print(e);
     }
   }
 
-  Color? getotp;
+  Widget? getotp = Container();
   getColor() {
     if (_email.text.isNotEmpty && _password.text.isNotEmpty) {
       setState(() {
-        getotp = Colors.blue;
+        getotp = Container(
+          alignment: Alignment.center,
+          width: 80,
+          height: 35,
+          decoration: BoxDecoration(
+              color: Color(0xff5081DB),
+              borderRadius: BorderRadius.circular(15)),
+          child: Text(
+            "Get OTP",
+            style: TextStyle(color: Colors.white),
+          ),
+        );
       });
     } else {
       setState(() {
-        getotp = Colors.grey;
+        getotp = Container();
       });
     }
   }
@@ -696,18 +703,10 @@ print(e);
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              loginuser(width);
-                            },
-                            child: Text(
-                              "Get OTP",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: getotp,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ),
+                              onTap: () {
+                                loginuser(width);
+                              },
+                              child: getotp),
                         ],
                       ),
                     ),
@@ -715,26 +714,24 @@ print(e);
                       height: height * 0.015,
                     ),
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-Padding( padding: EdgeInsets.only(left: width*0.1),
-  child:   Theme(
-    data: ThemeData(
-      unselectedWidgetColor: Colors.white,
-    ),
-    child: Checkbox(
-    
-    activeColor: Color(0xff00C8E8),
-    
-    value: ischecked,
-    
-    onChanged: _handleRemeberme),
-  ),
-),
-SizedBox(width: 10.0),
-Text("Remember Me",
-style: TextStyle(
-color: Colors.white,
-fontSize: 12,
-fontFamily: 'Rubic'))
+                      Padding(
+                        padding: EdgeInsets.only(left: width * 0.1),
+                        child: Theme(
+                          data: ThemeData(
+                            unselectedWidgetColor: Colors.white,
+                          ),
+                          child: Checkbox(
+                              activeColor: Color(0xff00C8E8),
+                              value: ischecked,
+                              onChanged: _handleRemeberme),
+                        ),
+                      ),
+                      SizedBox(width: 10.0),
+                      Text("Remember Me",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontFamily: 'Rubic'))
                     ]),
                     SizedBox(
                       height: height * 0.06,

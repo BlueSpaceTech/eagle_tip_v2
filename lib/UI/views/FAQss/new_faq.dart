@@ -230,7 +230,7 @@ class _NewFaqState extends State<NewFaq> {
                 SizedBox(
                   height: 40,
                 ),
-                Row(
+                Wrap(
                   children: [
                     InkWell(
                         onTap: () {
@@ -363,8 +363,9 @@ class _NewFaqState extends State<NewFaq> {
                     ),
                     InkWell(
                       onTap: () async {
-                        final pickedVideo =
-                            await picker.pickVideo(source: ImageSource.gallery);
+                        final pickedVideo = await picker.pickVideo(
+                            source: ImageSource.gallery,
+                            maxDuration: Duration(seconds: 60));
                         //   .then(((value) {
 
                         // _video.add(File(pickedVideo!.path));

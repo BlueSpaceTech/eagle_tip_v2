@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
+import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/FAQss/desktopfaq.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Support/support_desktop.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
+
 class MobileFaqs extends StatefulWidget {
   const MobileFaqs({Key? key}) : super(key: key);
 
@@ -23,7 +26,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
         child: Text(
           list[i],
           style: TextStyle(
-              fontSize: 13.0,
+              fontSize: 12.0,
               fontWeight: FontWeight.w600,
               fontFamily: "Poppins"),
         ),
@@ -125,18 +128,28 @@ class _MobileFaqsState extends State<MobileFaqs> {
                       ),
                     ),
                     SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: width * 0.2,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          color: Color(0xff5081DB),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Text(
-                        "Support",
-                        style: TextStyle(color: Colors.white),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: ((context) {
+                            return SupportDesktop();
+                          })),
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: width * 0.2,
+                        height: 35,
+                        decoration: BoxDecoration(
+                            color: Color(0xff5081DB),
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Text(
+                          "Support",
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                   ],

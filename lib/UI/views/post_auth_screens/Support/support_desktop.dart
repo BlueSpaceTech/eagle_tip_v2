@@ -103,6 +103,14 @@ class _SupportDesktopState extends State<SupportDesktop> {
       FirebaseFirestore.instance.collection("tickets");
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    name.dispose();
+    email.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // model.User user = Provider.of<UserProvider>(context).getUser;
 
@@ -121,276 +129,295 @@ class _SupportDesktopState extends State<SupportDesktop> {
                     : height * 0.1,
                 left: width * 0.07,
                 right: width * 0.07),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Row(
               children: [
-                Responsive.isDesktop(context)
-                    ? Text(
-                        "",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: Responsive.isDesktop(context)
-                                ? width * 0.01
-                                : width * 0.023,
-                            fontFamily: "Poppins"),
-                      )
-                    : TopRow(width: width),
-                SizedBox(
-                  height: Responsive.isDesktop(context)
-                      ? height * 0.013
-                      : height * 0.05,
-                ),
-                CustomContainer(
-                    child: Column(
-                      children: [
-                        Text(
-                          "Support",
-                          style: TextStyle(
+                InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    )),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Responsive.isDesktop(context)
+                        ? InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
                               color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: Responsive.isDesktop(context)
-                                  ? width * 0.013
-                                  : width * 0.05,
-                              fontFamily: "Poppins"),
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Container(
-                          width: Responsive.isDesktop(context)
-                              ? width * 0.3
-                              : Responsive.isTablet(context)
-                                  ? width * 0.6
-                                  : width * 0.9,
-                          padding: EdgeInsets.only(
-                              top: Responsive.isDesktop(context)
-                                  ? height * 0.006
+                            ))
+                        : TopRow(width: width),
+                    SizedBox(
+                      height: Responsive.isDesktop(context)
+                          ? height * 0.013
+                          : height * 0.05,
+                    ),
+                    CustomContainer(
+                        child: Column(
+                          children: [
+                            Text(
+                              "Support",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Responsive.isDesktop(context)
+                                      ? width * 0.013
+                                      : width * 0.05,
+                                  fontFamily: "Poppins"),
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            Container(
+                              width: Responsive.isDesktop(context)
+                                  ? width * 0.3
                                   : Responsive.isTablet(context)
+                                      ? width * 0.6
+                                      : width * 0.9,
+                              padding: EdgeInsets.only(
+                                  top: Responsive.isDesktop(context)
                                       ? height * 0.006
-                                      : 0.0,
-                              left: Responsive.isDesktop(context)
-                                  ? width * 0.014
+                                      : Responsive.isTablet(context)
+                                          ? height * 0.006
+                                          : 0.0,
+                                  left: Responsive.isDesktop(context)
+                                      ? width * 0.014
+                                      : Responsive.isTablet(context)
+                                          ? width * 0.021
+                                          : width * 0.06,
+                                  right: width * 0.06),
+                              height: height * 0.07,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      focusNode: myFocusNode,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          EmployerCode = value;
+                                        });
+                                      },
+                                      style: TextStyle(fontFamily: "Poppins"),
+                                      cursorColor: Colors.black12,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        labelText: "Employer Code",
+                                        labelStyle: TextStyle(
+                                            fontSize:
+                                                Responsive.isDesktop(context)
+                                                    ? width * 0.009
+                                                    : width * 0.023,
+                                            color: myFocusNode.hasFocus
+                                                ? Color(0xFF5E8BE0)
+                                                : Color(0xffAEB0C3),
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                      onTap: () async {
+                                        final doc = await FirebaseFirestore
+                                            .instance
+                                            .collection("invitations")
+                                            .doc(EmployerCode)
+                                            .get()
+                                            .then((value) => value);
+                                        setState(() {
+                                          name.text =
+                                              doc.get("name").toString();
+                                          email.text =
+                                              doc.get("email").toString();
+                                          userRole =
+                                              doc.get("userRole").toString();
+                                          sites = doc["sites"];
+                                          print(sites);
+                                        });
+                                      },
+                                      child: Icon(
+                                        Icons.search,
+                                        color: Colors.black,
+                                      )),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.012,
+                            ),
+                            Container(
+                              width: Responsive.isDesktop(context)
+                                  ? width * 0.3
                                   : Responsive.isTablet(context)
-                                      ? width * 0.021
-                                      : width * 0.06,
-                              right: width * 0.06),
-                          height: height * 0.07,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  focusNode: myFocusNode,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      EmployerCode = value;
-                                    });
-                                  },
-                                  style: TextStyle(fontFamily: "Poppins"),
-                                  cursorColor: Colors.black12,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    labelText: "Employer Code",
-                                    labelStyle: TextStyle(
+                                      ? width * 0.6
+                                      : width * 0.9,
+                              padding: EdgeInsets.only(
+                                  top: Responsive.isDesktop(context)
+                                      ? height * 0.006
+                                      : Responsive.isTablet(context)
+                                          ? height * 0.006
+                                          : 0.0,
+                                  left: Responsive.isDesktop(context)
+                                      ? width * 0.014
+                                      : Responsive.isTablet(context)
+                                          ? width * 0.021
+                                          : width * 0.06,
+                                  right: width * 0.06),
+                              height: height * 0.07,
+                              decoration: BoxDecoration(
+                                // color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Color(0xffEFF0F6).withOpacity(0.7),
+                              ),
+                              child: TextField(
+                                enabled: false,
+                                controller: name,
+                                style: TextStyle(fontFamily: "Poppins"),
+                                cursorColor: Colors.black12,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  labelText: "Name",
+                                  labelStyle: TextStyle(
+                                      color: Color(0xff5e8be0),
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.012,
+                            ),
+                            Container(
+                              width: Responsive.isDesktop(context)
+                                  ? width * 0.3
+                                  : Responsive.isTablet(context)
+                                      ? width * 0.6
+                                      : width * 0.9,
+                              padding: EdgeInsets.only(
+                                  top: Responsive.isDesktop(context)
+                                      ? height * 0.006
+                                      : Responsive.isTablet(context)
+                                          ? height * 0.006
+                                          : 0.0,
+                                  left: Responsive.isDesktop(context)
+                                      ? width * 0.014
+                                      : Responsive.isTablet(context)
+                                          ? width * 0.021
+                                          : width * 0.06,
+                                  right: width * 0.06),
+                              height: height * 0.07,
+                              decoration: BoxDecoration(
+                                // color: Colors.white,
+                                color: Color(0xffEFF0F6).withOpacity(0.7),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                              ),
+                              child: TextField(
+                                enabled: false,
+                                controller: email,
+                                style: TextStyle(fontFamily: "Poppins"),
+                                cursorColor: Colors.black12,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  labelText: "Email",
+                                  labelStyle: TextStyle(
+                                      color: Color(0xff5e8be0),
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.012,
+                            ),
+                            SupportTextField(
+                                valueChanged: (value) {
+                                  setState(() {
+                                    Subject = value;
+                                  });
+                                },
+                                width: width,
+                                height: height,
+                                labelText: "Subject"),
+                            SizedBox(
+                              height: height * 0.012,
+                            ),
+                            MessageTextField(
+                                valueChanged: (value) {
+                                  setState(() {
+                                    Message = value;
+                                  });
+                                },
+                                width: width,
+                                height: height,
+                                labelText: "Message"),
+                            SizedBox(
+                              height: height * 0.04,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (Message != null || Subject != null) {
+                                  addTicket(context);
+                                  fToast!.showToast(
+                                    child: ToastMessage()
+                                        .show(width, context, "Ticket Added"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3),
+                                  );
+                                  Navigator.pop(context);
+                                } else {
+                                  fToast!.showToast(
+                                    child: ToastMessage().show(width, context,
+                                        "Please enter all detailss"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                width: Responsive.isDesktop(context)
+                                    ? width * 0.3
+                                    : Responsive.isTablet(context)
+                                        ? width * 0.6
+                                        : width * 0.9,
+                                height: height * 0.065,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(13.0),
+                                  color: Color(0xFF5081DB),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Send",
+                                    style: TextStyle(
                                         fontSize: Responsive.isDesktop(context)
                                             ? width * 0.009
-                                            : width * 0.023,
-                                        color: myFocusNode.hasFocus
-                                            ? Color(0xFF5E8BE0)
-                                            : Color(0xffAEB0C3),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500),
+                                            : width * 0.04,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Poppins"),
                                   ),
                                 ),
                               ),
-                              InkWell(
-                                  onTap: () async {
-                                    final doc = await FirebaseFirestore.instance
-                                        .collection("invitations")
-                                        .doc(EmployerCode)
-                                        .get()
-                                        .then((value) => value);
-                                    setState(() {
-                                      name.text = doc.get("name").toString();
-                                      email.text = doc.get("email").toString();
-                                      userRole = doc.get("userRole").toString();
-                                      sites = doc["sites"];
-                                      print(sites);
-                                    });
-                                  },
-                                  child: Icon(
-                                    Icons.search,
-                                    color: Colors.black,
-                                  )),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        Container(
-                          width: Responsive.isDesktop(context)
-                              ? width * 0.3
-                              : Responsive.isTablet(context)
-                                  ? width * 0.6
-                                  : width * 0.9,
-                          padding: EdgeInsets.only(
-                              top: Responsive.isDesktop(context)
-                                  ? height * 0.006
-                                  : Responsive.isTablet(context)
-                                      ? height * 0.006
-                                      : 0.0,
-                              left: Responsive.isDesktop(context)
-                                  ? width * 0.014
-                                  : Responsive.isTablet(context)
-                                      ? width * 0.021
-                                      : width * 0.06,
-                              right: width * 0.06),
-                          height: height * 0.07,
-                          decoration: BoxDecoration(
-                            // color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            color: Color(0xffEFF0F6).withOpacity(0.7),
-                          ),
-                          child: TextField(
-                            enabled: false,
-                            controller: name,
-                            style: TextStyle(fontFamily: "Poppins"),
-                            cursorColor: Colors.black12,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Name",
-                              labelStyle: TextStyle(
-                                  color: Color(0xff5e8be0),
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        Container(
-                          width: Responsive.isDesktop(context)
-                              ? width * 0.3
-                              : Responsive.isTablet(context)
-                                  ? width * 0.6
-                                  : width * 0.9,
-                          padding: EdgeInsets.only(
-                              top: Responsive.isDesktop(context)
-                                  ? height * 0.006
-                                  : Responsive.isTablet(context)
-                                      ? height * 0.006
-                                      : 0.0,
-                              left: Responsive.isDesktop(context)
-                                  ? width * 0.014
-                                  : Responsive.isTablet(context)
-                                      ? width * 0.021
-                                      : width * 0.06,
-                              right: width * 0.06),
-                          height: height * 0.07,
-                          decoration: BoxDecoration(
-                            // color: Colors.white,
-                            color: Color(0xffEFF0F6).withOpacity(0.7),
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: TextField(
-                            enabled: false,
-                            controller: email,
-                            style: TextStyle(fontFamily: "Poppins"),
-                            cursorColor: Colors.black12,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Email",
-                              labelStyle: TextStyle(
-                                  color: Color(0xff5e8be0),
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Subject = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Subject"),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        MessageTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Message = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Message"),
-                        SizedBox(
-                          height: height * 0.04,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (Message != null || Subject != null) {
-                              addTicket(context);
-                              fToast!.showToast(
-                                child: ToastMessage()
-                                    .show(width, context, "Ticket Added"),
-                                gravity: ToastGravity.BOTTOM,
-                                toastDuration: Duration(seconds: 3),
-                              );
-                              Navigator.pop(context);
-                            } else {
-                              fToast!.showToast(
-                                child: ToastMessage().show(width, context,
-                                    "Please enter all detailss"),
-                                gravity: ToastGravity.BOTTOM,
-                                toastDuration: Duration(seconds: 3),
-                              );
-                            }
-                          },
-                          child: Container(
-                            width: Responsive.isDesktop(context)
-                                ? width * 0.3
-                                : Responsive.isTablet(context)
-                                    ? width * 0.6
-                                    : width * 0.9,
-                            height: height * 0.065,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13.0),
-                              color: Color(0xFF5081DB),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Send",
-                                style: TextStyle(
-                                    fontSize: Responsive.isDesktop(context)
-                                        ? width * 0.009
-                                        : width * 0.04,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "Poppins"),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    width: Responsive.isDesktop(context) ? width : width * 0.9,
-                    topPad: 0.0,
-                    height: height,
-                    opacity: 0.0)
+                        width:
+                            Responsive.isDesktop(context) ? width : width * 0.9,
+                        topPad: 0.0,
+                        height: height,
+                        opacity: 0.0)
+                  ],
+                ),
               ],
             ),
           ),

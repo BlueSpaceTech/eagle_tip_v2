@@ -112,122 +112,139 @@ class _SupportScreenState extends State<SupportScreen> {
                 top: Responsive.isDesktop(context)
                     ? height * 0.05
                     : height * 0.1,
-                left: width * 0.07,
-                right: width * 0.07),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+                left: width * 0.04,
+                right: width * 0.04),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Responsive.isDesktop(context)
-                    ? Text(
-                        "",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: Responsive.isDesktop(context)
-                                ? width * 0.01
-                                : width * 0.023,
-                            fontFamily: "Poppins"),
-                      )
-                    : TopRow(width: width),
-                SizedBox(
-                  height: Responsive.isDesktop(context)
-                      ? height * 0.013
-                      : height * 0.05,
-                ),
-                CustomContainer(
-                    child: Column(
-                      children: [
-                        Text(
-                          "Support",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                              fontSize: Responsive.isDesktop(context)
-                                  ? width * 0.013
-                                  : width * 0.05,
-                              fontFamily: "Poppins"),
-                        ),
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        SupportTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Subject = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Subject"),
-                        SizedBox(
-                          height: height * 0.012,
-                        ),
-                        MessageTextField(
-                            valueChanged: (value) {
-                              setState(() {
-                                Message = value;
-                              });
-                            },
-                            width: width,
-                            height: height,
-                            labelText: "Message"),
-                        SizedBox(
-                          height: height * 0.04,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (Message != null || Subject != null) {
-                              addTicket(context);
-                              fToast!.showToast(
-                                child: ToastMessage()
-                                    .show(width, context, "Ticket Added"),
-                                gravity: ToastGravity.BOTTOM,
-                                toastDuration: Duration(seconds: 3),
-                              );
-                              Navigator.pop(context);
-                            } else {
-                              fToast!.showToast(
-                                child: ToastMessage().show(width, context,
-                                    "Please enter all detailss"),
-                                gravity: ToastGravity.BOTTOM,
-                                toastDuration: Duration(seconds: 3),
-                              );
-                            }
-                          },
-                          child: Container(
-                            width: Responsive.isDesktop(context)
-                                ? width * 0.3
-                                : Responsive.isTablet(context)
-                                    ? width * 0.6
-                                    : width * 0.9,
-                            height: height * 0.065,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(13.0),
-                              color: Color(0xFF5081DB),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Send",
-                                style: TextStyle(
-                                    fontSize: Responsive.isDesktop(context)
-                                        ? width * 0.009
-                                        : width * 0.04,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "Poppins"),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+                InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.white,
+                    )),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Responsive.isDesktop(context)
+                        ? Container()
+                        : TopRow(width: width),
+                    SizedBox(
+                      height: Responsive.isDesktop(context)
+                          ? height * 0.013
+                          : height * 0.05,
                     ),
-                    width: Responsive.isDesktop(context) ? width : width * 0.9,
-                    topPad: 0.0,
-                    height: height,
-                    opacity: 0.0)
+                    CustomContainer(
+                        child: Column(
+                          children: [
+                            Text(
+                              "Support",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: Responsive.isDesktop(context)
+                                      ? width * 0.013
+                                      : width * 0.05,
+                                  fontFamily: "Poppins"),
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            SizedBox(
+                              height: height * 0.012,
+                            ),
+                            SupportTextField(
+                                valueChanged: (value) {
+                                  setState(() {
+                                    Subject = value;
+                                  });
+                                },
+                                width: width,
+                                height: height,
+                                labelText: "Subject"),
+                            SizedBox(
+                              height: height * 0.012,
+                            ),
+                            MessageTextField(
+                                valueChanged: (value) {
+                                  setState(() {
+                                    Message = value;
+                                  });
+                                },
+                                width: width,
+                                height: height,
+                                labelText: "Message"),
+                            SizedBox(
+                              height: height * 0.04,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if (Message != null || Subject != null) {
+                                  addTicket(context);
+                                  fToast!.showToast(
+                                    child: ToastMessage()
+                                        .show(width, context, "Ticket Added"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3),
+                                  );
+                                  Navigator.pop(context);
+                                } else {
+                                  fToast!.showToast(
+                                    child: ToastMessage().show(width, context,
+                                        "Please enter all detailss"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3),
+                                  );
+                                }
+                              },
+                              child: Container(
+                                width: Responsive.isDesktop(context)
+                                    ? width * 0.3
+                                    : Responsive.isTablet(context)
+                                        ? width * 0.6
+                                        : width * 0.9,
+                                height: height * 0.065,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(13.0),
+                                  color: Color(0xFF5081DB),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Send",
+                                    style: TextStyle(
+                                        fontSize: Responsive.isDesktop(context)
+                                            ? width * 0.009
+                                            : width * 0.04,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        width:
+                            Responsive.isDesktop(context) ? width : width * 0.9,
+                        topPad: 0.0,
+                        height: height,
+                        opacity: 0.0)
+                  ],
+                ),
+                Visibility(
+                  visible: false,
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      )),
+                ),
               ],
             ),
           ),

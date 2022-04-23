@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/responsive.dart';
 import 'package:video_player/video_player.dart';
 
 class DisplayFaq extends StatefulWidget {
@@ -204,8 +205,8 @@ class _VideoWidgetState extends State<VideoWidget> {
     final height = MediaQuery.of(context).size.height;
     return Container(
       padding: EdgeInsets.only(top: 30, bottom: 30),
-      width: width * 0.4,
-      height: height * 0.6,
+      width: Responsive.isDesktop(context) ? width * 0.4 : width * 0.6,
+      height: height * 0.8,
       child: Stack(children: [
         FutureBuilder(
             future: _initializeVideoPlayerFuture,
