@@ -16,6 +16,8 @@ import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/FAQss/addvideo.dart';
+import 'package:testttttt/UI/views/FAQss/displayfaqs.dart';
+import 'package:testttttt/UI/views/FAQss/new_faq.dart';
 import 'package:testttttt/UI/views/FAQss/player_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
@@ -338,12 +340,12 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  AddVideo(userRole: "general"),
+                                                  NewFaq(userRole: "general"),
                                             ));
                                       },
                                       child: customfab(
                                           width: widget.width,
-                                          text: "Add Video",
+                                          text: "Add Faq",
                                           height: widget.height)),
                                 ),
                                 // SizedBox(
@@ -358,7 +360,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                         ),
 
                         Text(
-                            "We have created a video guide to help you understand application better.",
+                            "We have created a some FAQs that will guide you to help you understand application better.",
                             style: TextStyle(
                                 color: Color(0xffBABABA),
                                 fontSize: 19,
@@ -384,45 +386,49 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                         SizedBox(
                           height: 20,
                         ),
-                        VideoContainer(
-                            width: widget.width, userRole: "general"),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: user.userRole == "AppAdmin" ||
-                                  user.userRole == "SuperAdmin",
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AddFAQ(
-                                            userRole: "general",
-                                          ),
-                                        ));
-                                  },
-                                  child: customfab(
-                                      width: widget.width,
-                                      text: "Add FAQ",
-                                      height: widget.height)),
-                            ),
-                          ],
-                        ),
+                        // VideoContainer(
+                        //     width: widget.width, userRole: "general"),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: [
+                        //     Visibility(
+                        //       visible: user.userRole == "AppAdmin" ||
+                        //           user.userRole == "SuperAdmin",
+                        //       child: InkWell(
+                        //           onTap: () {
+                        //             Navigator.push(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                   builder: (context) => AddFAQ(
+                        //                     userRole: "general",
+                        //                   ),
+                        //                 ));
+                        //           },
+                        //           child: customfab(
+                        //               width: widget.width,
+                        //               text: "Add FAQ",
+                        //               height: widget.height)),
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(
                           height: 10,
                         ),
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("faq")
+                                .collection("FAQs")
                                 .where("userRole", isEqualTo: "general")
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
                               if (snapshot.hasData) {
                                 return ListView.builder(
                                     shrinkWrap: true,
@@ -431,13 +437,26 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                         (BuildContext context, int index) {
                                       final document =
                                           snapshot.data?.docs[index];
-                                      return FAQ(
-                                        widht: widget.width,
-                                        FAQdesc: document!["description"],
-                                        id: document.id,
-                                        height: widget.height,
-                                        FAQName: document["title"],
-                                        index: index,
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DisplayFaq(
+                                                  docid: document!.id,
+                                                  title: document["title"],
+                                                ),
+                                              ));
+                                        },
+                                        child: FAQ(
+                                          widht: widget.width,
+                                          //  FAQdesc: document!["description"],
+                                          id: document!.id,
+                                          height: widget.height,
+                                          FAQName: document["title"],
+                                          index: index,
+                                        ),
                                       );
                                     });
                               }
@@ -750,7 +769,9 @@ class _UserRolefAQState extends State<UserRolefAQ> {
               //         height: height,
               //       )
               //     : SizedBox(),
-
+              // SizedBox(
+              //   height: 20,
+              // ),
               // Visibility(
               //   visible: Responsive.isDesktop(context),
               //   child: Row(
@@ -782,24 +803,24 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                 child: Column(
                   children: [
                     // Responsive.isMobile(context)
-                    //     ? Row(
-                    //         children: [
-                    //           InkWell(
-                    //             onTap: () {
-                    //               Navigator.pop(context);
-                    //             },
-                    //             child: Icon(
-                    //               Icons.arrow_back,
-                    //               color: Colors.white,
-                    //               size: widget.width * 0.06,
-                    //             ),
-                    //           ),
-                    //           SizedBox(
-                    //             width: widget.width * 0.2,
-                    //           ),
-                    //           Image.asset(Common.assetImages + "Logo 2 2.png"),
-                    //         ],
-                    //       )
+                    //     // ? Row(
+                    //     //     children: [
+                    //     //       InkWell(
+                    //     //         onTap: () {
+                    //     //           Navigator.pop(context);
+                    //     //         },
+                    //     //         child: Icon(
+                    //     //           Icons.arrow_back,
+                    //     //           color: Colors.white,
+                    //     //           size: widget.width * 0.06,
+                    //     //         ),
+                    //     //       ),
+                    //     //       SizedBox(
+                    //     //         width: widget.width * 0.2,
+                    //     //       ),
+                    //     //       Image.asset(Common.assetImages + "Logo 2 2.png"),
+                    //     //     ],
+                    //     //   )
                     //     : SizedBox(),
                     SizedBox(
                       height: Responsive.isDesktop(context)
@@ -822,7 +843,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                       height: Responsive.isDesktop(context) ? 10 : 0,
                     ),
                     Text(
-                      "Have a question? Look here",
+                      "Have a question? Look here.",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Poppins",
@@ -839,7 +860,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              widget.userRole,
+                              "General",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: "Poppins",
@@ -849,19 +870,20 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: user.userRole == "AppAdmin",
+                                  visible: user.userRole == "AppAdmin" ||
+                                      user.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => AddVideo(
+                                              builder: (context) => NewFaq(
                                                   userRole: widget.userRole),
                                             ));
                                       },
                                       child: customfab(
                                           width: widget.width,
-                                          text: "Add Video",
+                                          text: "Add Faq",
                                           height: widget.height)),
                                 ),
                                 // SizedBox(
@@ -874,11 +896,9 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
+
                         Text(
-                            "We have created a video guide to help you understand application better.",
+                            "We have created a some FAQs that will guide you to help you understand application better.",
                             style: TextStyle(
                                 color: Color(0xffBABABA),
                                 fontSize: 19,
@@ -904,42 +924,41 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                         SizedBox(
                           height: 20,
                         ),
-                        VideoContainer(
-                          width: widget.width,
-                          userRole: widget.userRole,
-                        ),
+                        // VideoContainer(
+                        //     width: widget.width, userRole: "general"),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.end,
+                        //   children: [
+                        //     Visibility(
+                        //       visible: user.userRole == "AppAdmin" ||
+                        //           user.userRole == "SuperAdmin",
+                        //       child: InkWell(
+                        //           onTap: () {
+                        //             Navigator.push(
+                        //                 context,
+                        //                 MaterialPageRoute(
+                        //                   builder: (context) => AddFAQ(
+                        //                     userRole: "general",
+                        //                   ),
+                        //                 ));
+                        //           },
+                        //           child: customfab(
+                        //               width: widget.width,
+                        //               text: "Add FAQ",
+                        //               height: widget.height)),
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(
-                          height: 40,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Visibility(
-                              visible: user.userRole == "AppAdmin",
-                              child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => AddFAQ(
-                                            userRole: widget.userRole,
-                                          ),
-                                        ));
-                                  },
-                                  child: customfab(
-                                      width: widget.width,
-                                      text: "Add FAQ",
-                                      height: widget.height)),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
                         Container(
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
-                                .collection("faq")
+                                .collection("FAQs")
                                 .where("userRole", isEqualTo: widget.userRole)
                                 .snapshots(),
                             builder: (BuildContext context,
@@ -948,26 +967,45 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                 return Center(
                                     child: CircularProgressIndicator());
                               }
-                              // if (snapshot.connectionState ==
-                              //     ConnectionState.waiting) {
-                              //   return Center(
-                              //       child: CircularProgressIndicator());
-                              // }
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.data?.docs.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final document = snapshot.data?.docs[index];
-                                    return FAQ(
-                                      widht: widget.width,
-                                      FAQdesc: document!["description"],
-                                      id: document.id,
-                                      height: widget.height,
-                                      FAQName: document["title"],
-                                      index: index,
-                                    );
-                                  });
+                              if (snapshot.hasData) {
+                                return ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: snapshot.data?.docs.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final document =
+                                          snapshot.data?.docs[index];
+                                      return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DisplayFaq(
+                                                  docid: document!.id,
+                                                  title: document["title"],
+                                                ),
+                                              ));
+                                        },
+                                        child: FAQ(
+                                          widht: widget.width,
+                                          //  FAQdesc: document!["description"],
+                                          id: document!.id,
+                                          height: widget.height,
+                                          FAQName: document["title"],
+                                          index: index,
+                                        ),
+                                      );
+                                    });
+                              }
+                              if (snapshot.hasData) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                              return Center(
+                                child: Text(""),
+                              );
                             },
                           ),
                         ),

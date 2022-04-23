@@ -386,13 +386,13 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(
                 builder: (context) => (userRole == "TerminalUser" ||
-                          userRole == "TerminalManager")
-                      ? TerminalHome()
-                      : Responsive.isDesktop(context)
-                          ? HomeScreen(
-                              showdialog: true,
-                            )
-                          : BottomNav()));
+                        userRole == "TerminalManager")
+                    ? TerminalHome()
+                    : Responsive.isDesktop(context)
+                        ? HomeScreen(
+                            showdialog: true,
+                          )
+                        : BottomNav()));
 
         // if (PlatformInfo().isWeb()) {
         //   print("isweb");
@@ -453,7 +453,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _loading = false;
         });
         fToast!.showToast(
-          child: ToastMessage().show(width, context, "There's some error"),
+          child: ToastMessage().show(width, context, res),
           gravity: ToastGravity.BOTTOM,
           toastDuration: Duration(seconds: 3),
         );
@@ -626,7 +626,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     // Image.asset("assets/Logo 2 1.png"),
-                    SvgPicture.asset("assets/newLogo.svg",width: width*0.22,),
+                    SvgPicture.asset(
+                      "assets/newLogo.svg",
+                      width: width * 0.22,
+                    ),
                     SizedBox(
                       height: height * 0.06,
                     ),

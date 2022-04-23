@@ -15,7 +15,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
-CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
+CollectionReference faqs = FirebaseFirestore.instance.collection("FAQs");
 
 class FAQScreen extends StatefulWidget {
   FAQScreen({Key? key}) : super(key: key);
@@ -119,7 +119,7 @@ class _MobileFAQState extends State<MobileFAQ> {
                           return FAQ(
                             widht: width,
                             id: document!.id,
-                            FAQdesc: document["description"],
+                            // FAQdesc: document["description"],
                             height: height,
                             FAQName: document["title"],
                             index: index,
@@ -281,13 +281,16 @@ class DesktopFAQ extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     final document = snapshot.data?.docs[index];
-                                    return FAQ(
-                                      widht: width,
-                                      FAQdesc: document!["description"],
-                                      height: height,
-                                      FAQName: document["title"],
-                                      index: index,
-                                      id: document.id,
+                                    return Padding(
+                                      padding: EdgeInsets.only(bottom: 10),
+                                      child: FAQ(
+                                        widht: width,
+                                        // FAQdesc: document!["description"],
+                                        height: height,
+                                        FAQName: document!["title"],
+                                        index: index,
+                                        id: document.id,
+                                      ),
                                     );
                                   });
                             },
@@ -312,7 +315,7 @@ class FAQ extends StatefulWidget {
     required this.index,
     required this.FAQName,
     required this.widht,
-    required this.FAQdesc,
+    // required this.FAQdesc,
     required this.height,
     required this.id,
   }) : super(key: key);
@@ -320,7 +323,7 @@ class FAQ extends StatefulWidget {
   final String FAQName;
   final int index;
   final String id;
-  final String FAQdesc;
+  // final String FAQdesc;
   final double widht;
   final double height;
 
@@ -341,6 +344,7 @@ class _FAQState extends State<FAQ> {
         children: [
           Container(
             // width: widget.widht * 0.85,
+            // margin: EdgeInsets.only(bottom: 10),
 
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -363,7 +367,8 @@ class _FAQState extends State<FAQ> {
                               faqs.doc(widget.id).delete();
                             },
                             child: Visibility(
-                              visible: user.userRole == "AppAdmin",
+                              visible: user.userRole == "AppAdmin" ||
+                                  user.userRole == "SuperAdmin",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
                                 width: Responsive.isDesktop(context)
@@ -375,40 +380,40 @@ class _FAQState extends State<FAQ> {
                           SizedBox(
                             width: widget.widht * 0.01,
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return EditFAQ(
-                                    answertext: widget.FAQdesc,
-                                    docid: widget.id,
-                                    questiontext: widget.FAQName);
-                              }));
-                            },
-                            child: Visibility(
-                              visible: user.userRole == "AppAdmin",
-                              child: Image.asset(
-                                Common.assetImages + "edit_pen.png",
-                                width: Responsive.isDesktop(context)
-                                    ? widget.widht * 0.012
-                                    : 15.0,
-                              ),
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     Navigator.push(context, MaterialPageRoute(
+                          //         builder: (BuildContext context) {
+                          //       return EditFAQ(
+                          //           answertext: widget.FAQdesc,
+                          //           docid: widget.id,
+                          //           questiontext: widget.FAQName);
+                          //     }));
+                          //   },
+                          //   child: Visibility(
+                          //     visible: user.userRole == "AppAdmin" ||  user.userRole == "SuperAdmin" ,
+                          //     child: Image.asset(
+                          //       Common.assetImages + "edit_pen.png",
+                          //       width: Responsive.isDesktop(context)
+                          //           ? widget.widht * 0.012
+                          //           : 15.0,
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             width: widget.widht * 0.01,
                           ),
-                          InkWell(
-                            onTap: () {
-                              isExpanded = !isExpanded!;
-                            },
-                            child: Image.asset(
-                              Common.assetImages + "Forward.png",
-                              width: Responsive.isDesktop(context)
-                                  ? widget.widht * 0.01
-                                  : 15.0,
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     isExpanded = !isExpanded!;
+                          //   },
+                          //   child: Image.asset(
+                          //     Common.assetImages + "Forward.png",
+                          //     width: Responsive.isDesktop(context)
+                          //         ? widget.widht * 0.01
+                          //         : 15.0,
+                          //   ),
+                          // ),
                         ],
                       )
                     : Row(
@@ -418,7 +423,8 @@ class _FAQState extends State<FAQ> {
                               faqs.doc(widget.id).delete();
                             },
                             child: Visibility(
-                              visible: user.userRole == "AppAdmin",
+                              visible: user.userRole == "AppAdmin" ||
+                                  user.userRole == "SuperAdmin",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
                                 width: Responsive.isDesktop(context)
@@ -430,41 +436,41 @@ class _FAQState extends State<FAQ> {
                           SizedBox(
                             width: widget.widht * 0.01,
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                return EditFAQ(
-                                    answertext: widget.FAQdesc,
-                                    docid: widget.id,
-                                    questiontext: widget.FAQName);
-                              }));
-                            },
-                            child: Visibility(
-                              visible: user.userRole == "AppAdmin",
-                              child: Image.asset(
-                                Common.assetImages + "edit_pen.png",
-                                width: Responsive.isDesktop(context)
-                                    ? widget.widht * 0.012
-                                    : 15.0,
-                              ),
-                            ),
-                          ),
+                          // // InkWell(
+                          // //   onTap: () {
+                          // //     Navigator.push(context, MaterialPageRoute(
+                          // //         builder: (BuildContext context) {
+                          // //       return EditFAQ(
+                          // //           answertext: widget.FAQdesc,
+                          // //           docid: widget.id,
+                          // //           questiontext: widget.FAQName);
+                          // //     }));
+                          // //   },
+                          //   child: Visibility(
+                          //     visible: user.userRole == "AppAdmin" ||  user.userRole == "SuperAdmin" ,
+                          //     child: Image.asset(
+                          //       Common.assetImages + "edit_pen.png",
+                          //       width: Responsive.isDesktop(context)
+                          //           ? widget.widht * 0.012
+                          //           : 15.0,
+                          //     ),
+                          //   ),
+                          //   ),
                           SizedBox(
                             width: widget.widht * 0.01,
                           ),
-                          InkWell(
-                            onTap: () {
-                              isExpanded = !isExpanded!;
-                            },
-                            child: Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white,
-                              size: Responsive.isDesktop(context)
-                                  ? widget.widht * 0.01
-                                  : 15.0,
-                            ),
-                          ),
+                          // InkWell(
+                          //   onTap: () {
+                          //     isExpanded = !isExpanded!;
+                          //   },
+                          //   child: Icon(
+                          //     Icons.arrow_forward_ios,
+                          //     color: Colors.white,
+                          //     size: Responsive.isDesktop(context)
+                          //         ? widget.widht * 0.01
+                          //         : 15.0,
+                          //   ),
+                          // ),
                         ],
                       )
               ],
@@ -473,24 +479,24 @@ class _FAQState extends State<FAQ> {
           // SizedBox(
           //   height: 10.0,
           // ),
-          Visibility(
-            visible: isExpanded!,
-            child: Padding(
-              padding: EdgeInsets.only(top: 10.0),
-              child: Container(
-                  width: widget.widht * 0.85,
-                  child: Text(
-                    widget.FAQdesc,
-                    style: TextStyle(
-                        fontSize: Responsive.isDesktop(context)
-                            ? widget.widht * 0.01
-                            : widget.widht * 0.03,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: "Poppins"),
-                  )),
-            ),
-          )
+          // Visibility(
+          //   visible: isExpanded!,
+          //   child: Padding(
+          //     padding: EdgeInsets.only(top: 10.0),
+          //     child: Container(
+          //         width: widget.widht * 0.85,
+          //         child: Text(
+          //           widget.FAQdesc,
+          //           style: TextStyle(
+          //               fontSize: Responsive.isDesktop(context)
+          //                   ? widget.widht * 0.01
+          //                   : widget.widht * 0.03,
+          //               color: Colors.white,
+          //               fontWeight: FontWeight.w500,
+          //               fontFamily: "Poppins"),
+          //         )),
+          //   ),
+          // )
         ],
       ),
     );

@@ -102,6 +102,7 @@ class _AddVideoState extends State<AddVideo> {
         Uint8List? uploadfile = result!.files.single.bytes;
 
         String filename = result!.files.single.name;
+        result!.files.single.path;
         // final ref = FirebaseStorage.instance
         //   .ref()
         //   .child("video")

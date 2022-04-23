@@ -49,7 +49,7 @@ class _UploadImageState extends State<UploadImage> {
     });
 
     super.initState();
-    super.initState();
+
     fToast = FToast();
     fToast!.init(context);
   }
