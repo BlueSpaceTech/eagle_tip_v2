@@ -23,6 +23,7 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
+import 'package:testttttt/Utils/test.dart';
 
 class AddNewUserByOwner extends StatefulWidget {
   AddNewUserByOwner({Key? key}) : super(key: key);
@@ -232,27 +233,13 @@ List inviteData=[];
                                 });
                   
                               }
-                              // print(inviteData.length);
-                              print(inviteData);
-                              for(int i=0;i<inviteData.length;i++){
-                              print(inviteData.elementAt(i).elementAt(0));
-                              // print(inviteData.elementAt(i)[1]);
-                              String sites=inviteData.elementAt(i)[1];
-                              List sitess=sites.split(",");
-                              // print(sitess.length);
-                              // print(sitess);
-                              AuthFunctions().addUserTodb(
-                                        name: inviteData.elementAt(i)[0].toString(),
-                                        email: inviteData.elementAt(i)[2].toString(),
-                                        phonenumber: inviteData.elementAt(i)[3].toString(),
-                                        userRole: inviteData.elementAt(i)[4].toString(),
-                                        phoneisverified: false,
-                                        sites: sitess,
-                                      );
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                return OpenCSV(inviteData: inviteData);
+                              }));
                   
                             }
 
-                          }
+                          
                         },
                               
                               child: customfab(width: width, text: "Import CSV", height: height),),

@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //     (_) => _email.text = c.get("email") == null ? "" : c.get("email"));
     // print(c.get("email"));
     fToast!.init(context);
-    // _loadUserEmailPassword();
+    _loadUserEmailPassword();
     _email.addListener(getColor);
     _password.addListener(getColor);
   }
@@ -241,9 +241,9 @@ class _LoginScreenState extends State<LoginScreen> {
   //   UserProvider _userProvider = await Provider.of(context, listen: false);
   //   await _userProvider.refreshUser();
   // }
-  void _handleRemeberme(bool value) {
-    // ischecked = value;
-    if (ischecked) {
+  void _handleRemeberme(bool? value) {
+    ischecked = value!;
+    // if (ischecked) {
       SharedPreferences.getInstance().then(
         (prefs) {
           prefs.setBool("remember_me", value);
@@ -251,47 +251,36 @@ class _LoginScreenState extends State<LoginScreen> {
           prefs.setString('password', _password.text);
         },
       );
-    } else {
-      SharedPreferences.getInstance().then(
-        (prefs) {
-          prefs.setBool("remember_me", false);
-          prefs.setString('email', "");
-          prefs.setString('password', "");
-        },
-      );
-    }
+      
+    
 
-    // setState(() {
-    //   ischecked = value;
-    // });
+    setState(() {
+      ischecked = value;
+    });
   }
 
-  var email;
-
-  var remeberMe;
   void _loadUserEmailPassword() async {
-    try {
-      SharedPreferences _prefs = await SharedPreferences.getInstance();
-      setState(() {
-        email = _prefs.getString("email") ?? "";
-        password = _prefs.getString("password") ?? "";
-        remeberMe = _prefs.getBool("remember_me") ?? false;
-      });
+try {
+SharedPreferences _prefs = await SharedPreferences.getInstance();
+var _email1 = _prefs.getString("email") ?? "";
+var _password1 = _prefs.getString("password") ?? "";
+var _remeberMe = _prefs.getBool("remember_me") ?? false;
+print(_remeberMe);
+print(_email);
+// print(_password);
+if (_remeberMe) {
+setState(() {
+ischecked = true;
+});
+_email.text = _email1 ;
+_password.text = _password1;
+}
+} catch (e) 
+{
+print(e);
+}
+}
 
-      print(remeberMe);
-      print(email);
-      print(password);
-      // if (remeberMe) {
-      //   setState(() {
-      //     ischecked = true;
-      //     _email.text = email;
-      //     _password.text = password;
-      //   });
-      // }
-    } catch (e) {
-      print(e);
-    }
-  }
 
   String uid = "";
   String phone = "";
@@ -598,6 +587,10 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // void _handleRemeberme(bool value){
+
+  // }
+
   @override
   Widget build(BuildContext context) {
     //UserProvider _userProvider = Provider.of(context, listen: false);
@@ -721,6 +714,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.015,
                     ),
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+Padding( padding: EdgeInsets.only(left: width*0.1),
+  child:   Theme(
+    data: ThemeData(
+      unselectedWidgetColor: Colors.white,
+    ),
+    child: Checkbox(
+    
+    activeColor: Color(0xff00C8E8),
+    
+    value: ischecked,
+    
+    onChanged: _handleRemeberme),
+  ),
+),
+SizedBox(width: 10.0),
+Text("Remember Me",
+style: TextStyle(
+color: Colors.white,
+fontSize: 12,
+fontFamily: 'Rubic'))
+                    ]),
                     SizedBox(
                       height: height * 0.06,
                     ),

@@ -123,11 +123,11 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           backgroundColor: Color(0xff2B343B),
         ),
-        // initialRoute: AppRoutes.test,
+        // initialRoute: AppRoutes.sentto,
         home: AuthHandling(),
         routes: {
           AppRoutes.dateRange: (context) => DateSelector(),
-          AppRoutes.test:(context)=>OpenCSV(),
+          // AppRoutes.test:(context)=>OpenCSV(),
           AppRoutes.mainFaq: (context) => MainFaq(),
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
