@@ -58,6 +58,7 @@ dependencies:
   lottie: ^1.2.2
   otp_text_field: ^1.1.2
   permission_handler: ^9.2.0
+  html:
   persistent_bottom_nav_bar: ^4.0.2
   provider: ^6.0.2
   shared_preferences: null
@@ -67,6 +68,7 @@ dependencies:
   timeago: ^3.2.2
   url_launcher: ^6.0.20
   video_player: ^2.3.0
+  universal_html: ^2.0.8
 
 dev_dependencies:
 

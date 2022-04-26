@@ -12,14 +12,15 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
 class MobileFaqs extends StatefulWidget {
-  const MobileFaqs({Key? key}) : super(key: key);
+  final String userrOLE;
+  const MobileFaqs({Key? key, required this.userrOLE}) : super(key: key);
 
   @override
   _MobileFaqsState createState() => _MobileFaqsState();
 }
 
 class _MobileFaqsState extends State<MobileFaqs> {
-  String userRole = "AppAdmin";
+  // String userRole = "AppAdmin";
   getItems(List list) {
     List<Widget> item = [];
     for (int i = 0; i < list.length; i++) {
@@ -38,7 +39,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     List foradmin = [
       "General",
       "Terminal Manager",
@@ -49,12 +50,12 @@ class _MobileFaqsState extends State<MobileFaqs> {
     ];
     List foruser = [
       "General",
-      userRole,
+      widget.userrOLE,
     ];
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return DefaultTabController(
-      length: userRole == "AppAdmin" || userRole == "SuperAdmin" ? 6 : 2,
+      length: widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin" ? 6 : 2,
       child: Scaffold(
         body: SafeArea(
           child: Container(
@@ -157,6 +158,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
                     ],
                   ),
                 ),
+<<<<<<< HEAD
                 Container(
                   height: height * 0.07,
                   child: Material(
@@ -210,6 +212,61 @@ class _MobileFaqsState extends State<MobileFaqs> {
                       )
               ],
             ),
+=======
+              ),
+              Container(
+                height: height * 0.07,
+                child: Material(
+                  color: Color(0xFF2E3840),
+                  child: TabBar(
+                    tabs: getItems(
+                        widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
+                            ? foradmin
+                            : foruser),
+                  ),
+                ),
+              ),
+              widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
+                  ? Expanded(
+                      child: TabBarView(
+                        children: [
+                          GeneralfAQ(width: width, height: height,userrole: widget.userrOLE,),
+                          UserRolefAQ(
+                              width: width,
+                              height: height,
+                              userRole: "TerminalManager"),
+                          UserRolefAQ(
+                              width: width,
+                              height: height,
+                              userRole: "TerminalUser"),
+                          UserRolefAQ(
+                              width: width,
+                              height: height,
+                              userRole: "SiteOwner"),
+                          UserRolefAQ(
+                              width: width,
+                              height: height,
+                              userRole: "SiteManager"),
+                          UserRolefAQ(
+                              width: width,
+                              height: height,
+                              userRole: "SiteUser"),
+                        ],
+                      ),
+                    )
+                  : Expanded(
+                      child: TabBarView(
+                        children: [
+                          GeneralfAQ(width: width, height: height,userrole: widget.userrOLE,),
+                          UserRolefAQ(
+                              width: width,
+                              height: height,
+                              userRole: "SiteOwner"),
+                        ],
+                      ),
+                    )
+            ],
+>>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
           ),
         ),
       ),

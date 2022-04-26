@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/pushNotificationService.dart';
+import 'package:testttttt/UI/views/FAQss/FAQLogout.dart';
 import 'package:testttttt/UI/views/FAQss/desktopfaq.dart';
 import 'package:testttttt/UI/views/FAQss/mainfaq.dart';
 import 'package:testttttt/UI/views/auth_handling.dart';
@@ -132,8 +133,8 @@ class MyApp extends StatelessWidget {
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
           AppRoutes.support: (context) => SupportScreen(),
-
-          AppRoutes.faq: (context) => FAQScreen(),
+          AppRoutes.faqLogout:(context)=>FAQLogout(),
+          // AppRoutes.faq: (context) => FAQScreen(),
           AppRoutes.loginscreen: (context) => LoginScreen(),
           AppRoutes.employercode: (context) => EmployerCode(),
           AppRoutes.bottomNav: (context) => BottomNav(),

@@ -18,7 +18,8 @@ import 'package:testttttt/Models/user.dart' as model;
 CollectionReference faqs = FirebaseFirestore.instance.collection("FAQs");
 
 class FAQScreen extends StatefulWidget {
-  FAQScreen({Key? key}) : super(key: key);
+  final String userRole;
+  FAQScreen({Key? key, required this.userRole}) : super(key: key);
 
   @override
   State<FAQScreen> createState() => _FAQScreenState();
@@ -32,6 +33,7 @@ class _FAQScreenState extends State<FAQScreen> {
     return Scaffold(
       body: Responsive(
         mobile: MobileFAQ(
+          userRole: widget.userRole,
           width: width,
           height: height,
         ),
@@ -51,8 +53,10 @@ class MobileFAQ extends StatefulWidget {
     Key? key,
     required this.width,
     required this.height,
+    required this.userRole,
   }) : super(key: key);
   final double width;
+  final String userRole;
   final double height;
   @override
   _MobileFAQState createState() => _MobileFAQState();
@@ -119,6 +123,7 @@ class _MobileFAQState extends State<MobileFAQ> {
                           return FAQ(
                             widht: width,
                             id: document!.id,
+                            userrOLE: widget.userRole,
                             // FAQdesc: document["description"],
                             height: height,
                             FAQName: document["title"],
@@ -141,10 +146,12 @@ class DesktopFAQ extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
+    required this.userrole,
   }) : super(key: key);
 
   final double width;
   final double height;
+  final String userrole;
 
   @override
   Widget build(BuildContext context) {
@@ -285,6 +292,7 @@ class DesktopFAQ extends StatelessWidget {
                                       padding: EdgeInsets.only(bottom: 10),
                                       child: FAQ(
                                         widht: width,
+                                        userrOLE: userrole,
                                         // FAQdesc: document!["description"],
                                         height: height,
                                         FAQName: document!["title"],
@@ -317,12 +325,14 @@ class FAQ extends StatefulWidget {
     required this.widht,
     // required this.FAQdesc,
     required this.height,
+    required this.userrOLE,
     required this.id,
   }) : super(key: key);
 
   final String FAQName;
   final int index;
   final String id;
+  final String userrOLE;
   // final String FAQdesc;
   final double widht;
   final double height;
@@ -335,7 +345,7 @@ class _FAQState extends State<FAQ> {
   bool? isExpanded = false;
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(border: Border.all(color: Colors.white)),
@@ -367,8 +377,8 @@ class _FAQState extends State<FAQ> {
                               faqs.doc(widget.id).delete();
                             },
                             child: Visibility(
-                              visible: user.userRole == "AppAdmin" ||
-                                  user.userRole == "SuperAdmin",
+                              visible: widget.userrOLE == "AppAdmin" ||
+                                  widget.userrOLE == "SuperAdmin",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
                                 width: Responsive.isDesktop(context)
@@ -423,8 +433,8 @@ class _FAQState extends State<FAQ> {
                               faqs.doc(widget.id).delete();
                             },
                             child: Visibility(
-                              visible: user.userRole == "AppAdmin" ||
-                                  user.userRole == "SuperAdmin",
+                              visible: widget.userrOLE == "AppAdmin" ||
+                                  widget.userrOLE == "SuperAdmin",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
                                 width: Responsive.isDesktop(context)

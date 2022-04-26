@@ -55,4 +55,5 @@ class AppRoutes {
   static final String mainFaq="/mainfaq";
   static final String dateRange="/dateSelect";
   static final String test="/test";
+  static final String faqLogout="/FAQlogout";
 }

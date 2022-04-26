@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 import 'dart:io';
+=======
+// ignore_for_file: prefer_const_constructors
+
+// import 'dart:html';
+>>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,13 +31,14 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
-import 'package:testttttt/Models/user.dart' as model;
+
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class DesktopFAQs extends StatefulWidget {
-  const DesktopFAQs({Key? key}) : super(key: key);
+  final String userrOLE;
+  const DesktopFAQs({Key? key, required this.userrOLE}) : super(key: key);
 
   @override
   _DesktopFAQsState createState() => _DesktopFAQsState();
@@ -39,7 +46,7 @@ class DesktopFAQs extends StatefulWidget {
 
 class _DesktopFAQsState extends State<DesktopFAQs> {
   PageController page = PageController();
-  String userrOLE = "AppAdmin";
+  // String userrOLE = "AppAdmin";
   CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
   getItems(List list) {
     List<SideMenuItem> item = [];
@@ -57,7 +64,7 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     List foradmin = [
       "General",
       "Terminal Manager",
@@ -68,7 +75,7 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
     ];
     List foruser = [
       "General",
-      user.userRole,
+      widget.userrOLE,
     ];
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -147,17 +154,17 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                 //   ),
                 // ],
                 items: getItems(
-                    user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+                    widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
                         ? foradmin
                         : foruser),
               ),
             ),
-            user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+            widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
                 ? Expanded(
                     child: PageView(
                     controller: page,
                     children: [
-                      GeneralfAQ(width: width, height: height),
+                      GeneralfAQ(width: width, height: height, userrole: widget.userrOLE,),
                       UserRolefAQ(
                           width: width,
                           height: height,
@@ -180,11 +187,11 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                     child: PageView(
                     controller: page,
                     children: [
-                      GeneralfAQ(width: width, height: height),
+                      GeneralfAQ(width: width, height: height, userrole: widget.userrOLE,),
                       UserRolefAQ(
                           width: width,
                           height: height,
-                          userRole: user.userRole),
+                          userRole: widget.userrOLE),
                     ],
                   ))
           ],
@@ -195,10 +202,11 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
 }
 
 class GeneralfAQ extends StatefulWidget {
-  const GeneralfAQ({Key? key, required this.width, required this.height})
+  const GeneralfAQ({Key? key, required this.width, required this.height, required this.userrole})
       : super(key: key);
   final double width;
   final double height;
+  final String userrole;
   @override
   _GeneralfAQState createState() => _GeneralfAQState();
 }
@@ -213,7 +221,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -333,6 +341,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
+<<<<<<< HEAD
                                   visible: PlatformInfo().isWeb() &&
                                           user.userRole == "AppAdmin" ||
                                       user.userRole == "SuperAdmin",
@@ -342,6 +351,10 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                   //     (user.userRole == "AppAdmin" ||
                                   //         user.userRole == "SuperAdmin" &&
                                   //             !Platform.isAndroid),
+=======
+                                  visible:widget.userrole == "AppAdmin" ||
+                                      widget.userrole == "SuperAdmin",
+>>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -464,6 +477,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                               ));
                                         },
                                         child: FAQ(
+                                          userrOLE: widget.userrole,
                                           widht: widget.width,
                                           //  FAQdesc: document!["description"],
                                           id: document!.id,
@@ -544,6 +558,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 //     fToast!.init(context);
 //   }
 
+<<<<<<< HEAD
 //   @override
 //   Widget build(BuildContext context) {
 //     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -570,9 +585,37 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 //                 itemCount: snapshot.data?.docs.length,
 //                 itemBuilder: (BuildContext context, int index) {
 //                   final document = snapshot.data?.docs[index];
+=======
+  @override
+  Widget build(BuildContext context) {
+    
+    return Container(
+      width: Responsive.isDesktop(context)
+          ? widget.width * 0.8
+          : widget.width * 0.9,
+      height: 140,
+      child: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection("faqvideos")
+              .where("userRole", isEqualTo: widget.userRole)
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: false, // new line
+                // physics: NeverScrollableScrollPhysics(),
+                itemCount: snapshot.data?.docs.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final document = snapshot.data?.docs[index];
+>>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 
 //                   // getthumbnail(document!["videourl"]);
 
+<<<<<<< HEAD
 //                   //  print(document!["videourl"]);
 //                   return Row(
 //                     children: [
@@ -650,6 +693,85 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 //     );
 //   }
 // }
+=======
+                  //  print(document!["videourl"]);
+                  return Row(
+                    children: [
+                      Visibility(
+                        visible: widget.userRole == "AppAdmin",
+                        child: InkWell(
+                            onTap: () {
+                              FirebaseFirestore.instance
+                                  .collection("faqvideos")
+                                  .doc(document!.id)
+                                  .delete()
+                                  .then((value) {
+                                fToast!.showToast(
+                                  child: ToastMessage()
+                                      .show(300, context, "Video Deleted"),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: Duration(seconds: 3),
+                                );
+                              });
+                            },
+                            child: Icon(
+                              Icons.delete_outline,
+                              color: Colors.white,
+                            )),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VideoPlayerScreen(
+                                  videourl: document!["videourl"],
+                                  title: document["title"],
+                                ),
+                              ));
+                        },
+                        child: Container(
+                          width: 240,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color: Colors.white
+                                    // image: DecorationImage(
+                                    //   image: NetworkImage(document["videourl"]),
+                                    // ),
+                                    ),
+                                margin: EdgeInsets.only(right: 20),
+                                height: 150,
+                                width: 220,
+                                child: SvgPicture.asset(
+                                  "/newLogo.svg",
+                                  width: 150,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(document!["title"],
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          }),
+    );
+  }
+}
+>>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 
 class UserRolefAQ extends StatefulWidget {
   const UserRolefAQ(
@@ -765,7 +887,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    // model.User user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -885,9 +1007,14 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             Row(
                               children: [
                                 Visibility(
+<<<<<<< HEAD
                                   visible: PlatformInfo().isWeb() &&
                                           user.userRole == "AppAdmin" ||
                                       user.userRole == "SuperAdmin",
+=======
+                                  visible: widget.userRole == "AppAdmin" ||
+                                     widget.userRole == "SuperAdmin",
+>>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1008,6 +1135,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                               ));
                                         },
                                         child: FAQ(
+                                          userrOLE:widget.userRole,
                                           widht: widget.width,
                                           //  FAQdesc: document!["description"],
                                           id: document!.id,
