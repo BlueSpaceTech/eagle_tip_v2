@@ -5,6 +5,15 @@ import 'package:flutter/material.dart';
 
 class Tour3 extends StatelessWidget {
   const Tour3({Key? key}) : super(key: key);
+  getleftlength(BuildContext context, double width) {
+    if (Responsive.isDesktop(context)) {
+      return width * 0.35;
+    } else if (Responsive.isTablet(context)) {
+      return width * 0.14;
+    } else {
+      return width * 0.06;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +34,7 @@ class Tour3 extends StatelessWidget {
           children: [
             Positioned(
               top: Responsive.isDesktop(context) ? height * 0.58 : height * 0.5,
-              left: Responsive.isDesktop(context) ? width * 0.35 : width * 0.14,
+              left: getleftlength(context, width),
               child: TourUpContainer(
                 onnext: () {
                   Navigator.pushNamed(context, AppRoutes.tour4);

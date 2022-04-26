@@ -1,8 +1,8 @@
-import 'dart:html';
+// ignore: avoid_web_libraries_in_flutter
 
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
-
+import 'dart:io' as io;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:file_picker/file_picker.dart';
@@ -49,7 +49,8 @@ class _AddVideoState extends State<AddVideo> {
     fToast!.init(context);
   }
 
-  File? _video;
+  // ignore: unused_field
+  io.File? _video;
   final picker = ImagePicker;
   String downloadurl = "";
   // void _pickFile() async {

@@ -135,6 +135,55 @@ class _NewFaqState extends State<NewFaq> {
 //    }
 
 //  }
+  List selectedrole = [];
+  List Role = [
+    "General",
+    "AppAdmin",
+    "TerminalManager",
+    "TerminalUser",
+    "SiteOwner",
+    "SiteManager",
+    "SiteUser"
+  ];
+  _buildsiteschip() {
+    bool issel = false;
+
+    List<Widget> choices = [];
+    Role.forEach((item) {
+      choices.add(Container(
+        padding: const EdgeInsets.all(3),
+        child: ChoiceChip(
+          label: Text(
+            item,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+          selectedColor: Color(0xFF5081db),
+          disabledColor: Color(0xFF535c65),
+          backgroundColor: Color(0xFF535c65),
+          selected: selectedrole.contains(item),
+          onSelected: (selected) {
+            setState(() {
+              issel = selected;
+
+              print("else");
+              selectedrole.contains(item)
+                  ? selectedrole.remove(item)
+                  : selectedrole.add(item);
+              print(selectedrole);
+              // _onsearchange();
+              // +added
+            });
+          },
+        ),
+      ));
+    });
+    return choices;
+  }
+
   UploadTask? task;
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
         stream: task.snapshotEvents,
@@ -231,37 +280,38 @@ class _NewFaqState extends State<NewFaq> {
                   height: 40,
                 ),
                 Wrap(
+                  runSpacing: 20,
                   children: [
                     InkWell(
                         onTap: () {
                           final field = Row(
                             children: [
-                              Flexible(
-                                child: Container(
-                                  width: Responsive.isDesktop(context)
-                                      ? width * 0.42
-                                      : width * 0.1,
-                                  padding: EdgeInsets.only(
-                                      left: width * 0.01, right: width * 0.06),
-                                  height: height * 0.08,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(15)),
-                                  ),
-                                  child: TextFormField(
-                                    controller: controller,
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontFamily: "Poppins"),
-                                    cursorColor: Colors.black12,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      labelText: "Description",
-                                      labelStyle: TextStyle(
-                                          color: Color(0xff6e7191),
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w500),
-                                    ),
+                              Container(
+                                width: Responsive.isDesktop(context)
+                                    ? width * 0.42
+                                    : width * 0.6,
+                                padding: EdgeInsets.only(
+                                    left: width * 0.01,
+                                    right: width * 0.06,
+                                    bottom: 10),
+                                height: height * 0.08,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                ),
+                                child: TextFormField(
+                                  controller: controller,
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(fontFamily: "Poppins"),
+                                  cursorColor: Colors.black12,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    labelText: "Description",
+                                    labelStyle: TextStyle(
+                                        color: Color(0xff6e7191),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ),
@@ -295,7 +345,7 @@ class _NewFaqState extends State<NewFaq> {
                                   alignment: Alignment.center,
                                   width: Responsive.isDesktop(context)
                                       ? width * 0.13
-                                      : width * 0.42,
+                                      : width * 0.3,
                                   height: height * 0.064,
                                   decoration: BoxDecoration(
                                     color: Color(0xff5081DB),
@@ -404,6 +454,16 @@ class _NewFaqState extends State<NewFaq> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 20,
+                ),
+                Wrap(
+                  runSpacing: 20,
+                  children: _buildsiteschip(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: allwidgets.length,
@@ -451,9 +511,19 @@ class _NewFaqState extends State<NewFaq> {
                           setState(() {
                             _loading = false;
                           });
+                        } else if (selectedrole.isEmpty) {
+                          fToast!.showToast(
+                            child: ToastMessage().show(width, context,
+                                "Please select at least one user role"),
+                            gravity: ToastGravity.BOTTOM,
+                            toastDuration: Duration(seconds: 3),
+                          );
+                          setState(() {
+                            _loading = false;
+                          });
                         } else {
                           textdata["count"] = count;
-                          textdata["userRole"] = widget.userRole;
+                          textdata["visibleto"] = selectedrole;
                           textdata["title"] = title;
                           await FirebaseFirestore.instance
                               .collection("FAQs")

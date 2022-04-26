@@ -130,15 +130,19 @@ class _SupportDesktopState extends State<SupportDesktop> {
                 left: width * 0.07,
                 right: width * 0.07),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    )),
+                Visibility(
+                  visible: Responsive.isDesktop(context),
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      )),
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

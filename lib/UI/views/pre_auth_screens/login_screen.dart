@@ -332,11 +332,17 @@ class _LoginScreenState extends State<LoginScreen> {
 //     });
 
       if (res == "success") {
-        // await addData();
+        addData();
         // FirebaseAuth.instance.setPersistence(
         //     ischecked ? Persistence.LOCAL : Persistence.SESSION);
         // _handleRemeberme(ischecked);
         //setemailpass(ischecked);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => HomeScreen(
+                      showdialog: false,
+                    )));
 
         DocumentReference dbRef = FirebaseFirestore.instance
             .collection('users')
@@ -367,44 +373,53 @@ class _LoginScreenState extends State<LoginScreen> {
         // print({"here "});
         // print("phonenumber");
         // Navigator.pushNamed(context, AppRoutes.homeScreen);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => (userRole == "TerminalUser" ||
-                        userRole == "TerminalManager")
-                    ? TerminalHome()
-                    : Responsive.isDesktop(context)
-                        ? HomeScreen(
-                            showdialog: true,
-                          )
-                        : BottomNav()));
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => (userRole == "TerminalUser" ||
+        //                 userRole == "TerminalManager")
+        //             ? TerminalHome()
+        //             : Responsive.isDesktop(context)
+        //                 ? HomeScreen(
+        //                     showdialog: true,
+        //                   )
+        //                 : BottomNav()));
 
-        // if (PlatformInfo().isWeb()) {
-        //   print("isweb");
+        if (PlatformInfo().isWeb()) {
+          // print("isweb");
 
-        //   AuthFunctions.signOut;
-        //   // print(phone);
-        //   // print(userRole);
-        //   ConfirmationResult result =
-        //       await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-        //   fToast!.showToast(
-        //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-        //       gravity: ToastGravity.BOTTOM,
-        //       toastDuration: Duration(seconds: 3));
+          // AuthFunctions.signOut;
+          // // print(phone);
+          // // print(userRole);
+          // ConfirmationResult result =
+          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          // if (result == null) {
+          //   fToast!.showToast(
+          //       child: ToastMessage()
+          //           .show(200, context, "Please try some time later"),
+          //       gravity: ToastGravity.BOTTOM,
+          //       toastDuration: Duration(seconds: 3));
+          // } else {
+          //   fToast!.showToast(
+          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+          //       gravity: ToastGravity.BOTTOM,
+          //       toastDuration: Duration(seconds: 3));
 
-        //   setState(() {
-        //     ress = result;
-        //   });
-        //   setState(() {
-        //     _loading = false;
-        //   });
-        //   addData();
+          //   setState(() {
+          //     ress = result;
+          //   });
+          //   setState(() {
+          //     _loading = false;
+          //   });
+          //   addData();
 
-        //   print(ress);
-        // } else {
-        //   registerUser(phone, context);
-        //   addData();
-        // }
+          //   print(ress);
+          // }
+        } else {
+          AuthFunctions.signOut;
+          registerUser(phone, context);
+          addData();
+        }
 
         try {
           if (Platform.isAndroid || Platform.isIOS) {
@@ -628,7 +643,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Image.asset("assets/Logo 2 1.png"),
                     SvgPicture.asset(
                       "assets/newLogo.svg",
-                      width: width * 0.22,
+                      width: Responsive.isDesktop(context)
+                          ? width * 0.22
+                          : width * 0.7,
                     ),
                     SizedBox(
                       height: height * 0.06,

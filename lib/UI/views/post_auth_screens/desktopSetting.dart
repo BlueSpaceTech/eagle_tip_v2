@@ -337,8 +337,13 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                       ),
                                       */
                           InkWell(
-                            onTap: () {
-                              AuthFunctions().resetpassword(user.email);
+                            onTap: () async {
+                              String res = await AuthFunctions()
+                                  .resetpassword(user.email);
+                              fToast!.showToast(
+                                  child: ToastMessage().show(200, context, res),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: Duration(seconds: 3));
                             },
                             child: Container(
                               width: Responsive.isDesktop(context)

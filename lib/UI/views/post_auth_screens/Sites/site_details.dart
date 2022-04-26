@@ -2,7 +2,7 @@
 
 import 'dart:async';
 import 'dart:convert';
-import 'dart:html';
+
 import 'dart:math';
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +23,6 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import '../../../../Providers/user_provider.dart';
 
-
-
 class SiteDetails extends StatelessWidget {
   const SiteDetails({Key? key}) : super(key: key);
 
@@ -39,7 +37,7 @@ class SiteDetails extends StatelessWidget {
 }
 
 class MobileSiteDet extends StatefulWidget {
-  final String? restorationId="";
+  final String? restorationId = "";
 
   const MobileSiteDet({Key? key}) : super(key: key);
 
@@ -47,10 +45,8 @@ class MobileSiteDet extends StatefulWidget {
   State<MobileSiteDet> createState() => _MobileSiteDetState();
 }
 
-class _MobileSiteDetState extends State<MobileSiteDet>{
-  
+class _MobileSiteDetState extends State<MobileSiteDet> {
   bool? reqSent = false;
-  
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +95,6 @@ class _MobileSiteDetState extends State<MobileSiteDet>{
                                 SizedBox(
                                   width: width * 0.1,
                                 ),
-                                
                                 reqSent!
                                     ? Image.asset(
                                         Common.assetImages +
@@ -128,32 +123,34 @@ class _MobileSiteDetState extends State<MobileSiteDet>{
                                           color: Colors.white,
                                           fontFamily: "Poppins"),
                                     ),
-                                    user.userRole=="SiteUser"?Center(
-                                      child: FuelRequestPart(
-                                        valueChanged: (val) {
-                                          setState(() {
-                                            reqSent = val;
-                                          });
-                                        },
-                                        width: width * 0.23,
-                                        height: height,
-                                      ),
-                                    ):FuelRequestPart(
-                                      valueChanged: (val) {
-                                        setState(() {
-                                          reqSent = val;
-                                        });
-                                      },
-                                      width: width * 0.23,
-                                      height: height,
-                                    ),
+                                    user.userRole == "SiteUser"
+                                        ? Center(
+                                            child: FuelRequestPart(
+                                              valueChanged: (val) {
+                                                setState(() {
+                                                  reqSent = val;
+                                                });
+                                              },
+                                              width: width * 0.23,
+                                              height: height,
+                                            ),
+                                          )
+                                        : FuelRequestPart(
+                                            valueChanged: (val) {
+                                              setState(() {
+                                                reqSent = val;
+                                              });
+                                            },
+                                            width: width * 0.23,
+                                            height: height,
+                                          ),
                                   ],
                                 ),
                                 SizedBox(
                                   width: width * 0.05,
                                 ),
                                 Visibility(
-                                  visible: user.userRole!="SiteUser",
+                                  visible: user.userRole != "SiteUser",
                                   child: VerticalDivider(
                                     color: Colors.white,
                                     thickness: 1.0,
@@ -162,13 +159,13 @@ class _MobileSiteDetState extends State<MobileSiteDet>{
                                   ),
                                 ),
                                 Visibility(
-                                  visible: user.userRole!="SiteUser",
+                                  visible: user.userRole != "SiteUser",
                                   child: SizedBox(
                                     width: width * 0.05,
                                   ),
                                 ),
                                 Visibility(
-                                  visible: user.userRole!="SiteUser",
+                                  visible: user.userRole != "SiteUser",
                                   child: Column(
                                     children: [
                                       Text(
@@ -183,8 +180,9 @@ class _MobileSiteDetState extends State<MobileSiteDet>{
                                         height: height * 0.047,
                                       ),
                                       RequestHistoryPart(
-                                          width: width * 0.65,
-                                          height: height * 0.9,),
+                                        width: width * 0.65,
+                                        height: height * 0.9,
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -281,8 +279,9 @@ class _MobileSiteDetState extends State<MobileSiteDet>{
                             Visibility(
                               visible: user.userRole != "SiteUser",
                               child: RequestHistoryPart(
-                                  width: width,
-                                  height: height,),
+                                width: width,
+                                height: height,
+                              ),
                             )
                           ],
                         ),
@@ -294,9 +293,6 @@ class _MobileSiteDetState extends State<MobileSiteDet>{
             ),
           );
   }
-
-
-  
 }
 
 class FuelRequestPart extends StatelessWidget {
@@ -343,8 +339,9 @@ class RequestHistoryPart extends StatelessWidget {
       padding: EdgeInsets.only(
           left: width * 0.04, right: width * 0.04, top: height * 0.03),
       child: Requests(
-          height: height,
-          width: width,),
+        height: height,
+        width: width,
+      ),
     );
   }
 }
@@ -510,7 +507,6 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           onTap: () {
             print(regularVal);
             if (isTapped!) {
-
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -760,42 +756,43 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 widget.valueChanged(reqSent);
                                 print(reqSent);
                                 Navigator.pop(context);
-                                requests.doc().set({
-                                            "data":[
-                                              
-                                              {
-                                                "amount":regularVal,
-                                                "fueltype":"Regular",
-                                                "tanknumber":"1",
-                                                "tankid":223.toString(),
-                                              },
-                                              {
-                                                "amount":midgradeVal,
-                                                "fueltype":"Midgrade",
-                                                "tanknumber":"2",
-                                                "tankid":323.toString(),
-                                              },
-                                              {
-                                                "amount":premiumVal,
-                                                "fueltype":"Premium",
-                                                "tanknumber":"3",
-                                                "tankid":423.toString(),
-                                              },
-                                              {
-                                                "amount":ulsdVal,
-                                                "fueltype":"ULSD",
-                                                "tanknumber":"4",
-                                                "tankid":123.toString(),
-                                              },
-                                            ],
-                                            "date":DateTime(DateTime.now().year,DateTime.now().month,DateTime.now().day),
-                                            "id": Random().nextInt(10000000).toString(),
-                                            "requestby":user.name,
-                                            "site":user.sites[0],
-                                            
-                                          },);
-
-                                          
+                                requests.doc().set(
+                                  {
+                                    "data": [
+                                      {
+                                        "amount": regularVal,
+                                        "fueltype": "Regular",
+                                        "tanknumber": "1",
+                                        "tankid": 223.toString(),
+                                      },
+                                      {
+                                        "amount": midgradeVal,
+                                        "fueltype": "Midgrade",
+                                        "tanknumber": "2",
+                                        "tankid": 323.toString(),
+                                      },
+                                      {
+                                        "amount": premiumVal,
+                                        "fueltype": "Premium",
+                                        "tanknumber": "3",
+                                        "tankid": 423.toString(),
+                                      },
+                                      {
+                                        "amount": ulsdVal,
+                                        "fueltype": "ULSD",
+                                        "tanknumber": "4",
+                                        "tankid": 123.toString(),
+                                      },
+                                    ],
+                                    "date": DateTime(
+                                        DateTime.now().year,
+                                        DateTime.now().month,
+                                        DateTime.now().day),
+                                    "id": Random().nextInt(10000000).toString(),
+                                    "requestby": user.name,
+                                    "site": user.sites[0],
+                                  },
+                                );
 
                                 // setState(() {
                                 //   _requested = true;
@@ -837,7 +834,9 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.pushReplacementNamed(context, AppRoutes.homeScreen);
+                                              Navigator.pushReplacementNamed(
+                                                  context,
+                                                  AppRoutes.homeScreen);
                                             },
                                             child: Container(
                                               width: widget.width * 0.32,

@@ -5,6 +5,7 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/FAQss/desktopfaq.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Support/support.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Support/support_desktop.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -55,158 +56,160 @@ class _MobileFaqsState extends State<MobileFaqs> {
     return DefaultTabController(
       length: userRole == "AppAdmin" || userRole == "SuperAdmin" ? 6 : 2,
       child: Scaffold(
-        body: Container(
-          width: width,
-          height: height,
-          color: backGround_color,
-          child: Column(
-            //  crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            Navigator.pop(context);
-                          },
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                            size: width * 0.06,
+        body: SafeArea(
+          child: Container(
+            width: width,
+            height: height,
+            color: backGround_color,
+            child: Column(
+              //  crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                              size: width * 0.06,
+                            ),
+                          ),
+                          SizedBox(
+                            width: width * 0.15,
+                          ),
+                          Logo(width: width),
+                          SizedBox(
+                            width: width * 0.14,
+                          ),
+                          Text(""),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("FAQ",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: width * 0.03,
+                              fontFamily: "Poppins")),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Visibility(
+                        visible: Responsive.isDesktop(context),
+                        child: Text(
+                          "Have a question? Look here.",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 21),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: width * 0.8,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "If you cannot find an answer to your question in FAQ, you can take help of our support team.",
+                          style: TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                              fontSize: width * 0.03,
+                              fontFamily: "Poppins"),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: ((context) {
+                              return SupportScreen();
+                            })),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: width * 0.2,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              color: Color(0xff5081DB),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Text(
+                            "Support",
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        SizedBox(
-                          width: width * 0.15,
-                        ),
-                        Logo(width: width),
-                        SizedBox(
-                          width: width * 0.14,
-                        ),
-                        Text(""),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text("FAQ",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
-                            fontSize: width * 0.03,
-                            fontFamily: "Poppins")),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Visibility(
-                      visible: Responsive.isDesktop(context),
-                      child: Text(
-                        "Have a question? Look here.",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                            fontSize: 21),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: width * 0.8,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "If you cannot find an answer to your question in FAQ, you can take help of our support team.",
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
-                            fontSize: width * 0.03,
-                            fontFamily: "Poppins"),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: ((context) {
-                            return SupportDesktop();
-                          })),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: width * 0.2,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            color: Color(0xff5081DB),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Text(
-                          "Support",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: height * 0.07,
-                child: Material(
-                  color: Color(0xFF2E3840),
-                  child: TabBar(
-                    tabs: getItems(
-                        userRole == "AppAdmin" || userRole == "SuperAdmin"
-                            ? foradmin
-                            : foruser),
+                    ],
                   ),
                 ),
-              ),
-              userRole == "AppAdmin" || userRole == "SuperAdmin"
-                  ? Expanded(
-                      child: TabBarView(
-                        children: [
-                          GeneralfAQ(width: width, height: height),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "TerminalManager"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "TerminalUser"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteOwner"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteManager"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteUser"),
-                        ],
-                      ),
-                    )
-                  : Expanded(
-                      child: TabBarView(
-                        children: [
-                          GeneralfAQ(width: width, height: height),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteOwner"),
-                        ],
-                      ),
-                    )
-            ],
+                Container(
+                  height: height * 0.07,
+                  child: Material(
+                    color: Color(0xFF2E3840),
+                    child: TabBar(
+                      tabs: getItems(
+                          userRole == "AppAdmin" || userRole == "SuperAdmin"
+                              ? foradmin
+                              : foruser),
+                    ),
+                  ),
+                ),
+                userRole == "AppAdmin" || userRole == "SuperAdmin"
+                    ? Expanded(
+                        child: TabBarView(
+                          children: [
+                            GeneralfAQ(width: width, height: height),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "TerminalManager"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "TerminalUser"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteOwner"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteManager"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteUser"),
+                          ],
+                        ),
+                      )
+                    : Expanded(
+                        child: TabBarView(
+                          children: [
+                            GeneralfAQ(width: width, height: height),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteOwner"),
+                          ],
+                        ),
+                      )
+              ],
+            ),
           ),
         ),
       ),

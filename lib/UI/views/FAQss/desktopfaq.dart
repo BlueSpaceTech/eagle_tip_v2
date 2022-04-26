@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,6 +23,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
@@ -332,8 +333,15 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: user.userRole == "AppAdmin" ||
+                                  visible: PlatformInfo().isWeb() &&
+                                          user.userRole == "AppAdmin" ||
                                       user.userRole == "SuperAdmin",
+                                  // (user.userRole == "AppAdmin" ||
+                                  //         user.userRole == "SuperAdmin" &&
+                                  //             !Platform.isIOS) ||
+                                  //     (user.userRole == "AppAdmin" ||
+                                  //         user.userRole == "SuperAdmin" &&
+                                  //             !Platform.isAndroid),
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -424,7 +432,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection("FAQs")
-                                .where("userRole", isEqualTo: "general")
+                                .where("visibleto", arrayContains: "General")
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -434,6 +442,9 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                               }
                               if (snapshot.hasData) {
                                 return ListView.builder(
+                                    physics: PlatformInfo().isWeb()
+                                        ? BouncingScrollPhysics()
+                                        : NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: snapshot.data?.docs.length,
                                     itemBuilder:
@@ -487,157 +498,158 @@ class _GeneralfAQState extends State<GeneralfAQ> {
   }
 }
 
-class VideoContainer extends StatefulWidget {
-  const VideoContainer({Key? key, required this.width, required this.userRole})
-      : super(key: key);
-  final double width;
-  final String userRole;
+// class VideoContainer extends StatefulWidget {
+//   const VideoContainer({Key? key, required this.width, required this.userRole})
+//       : super(key: key);
+//   final double width;
+//   final String userRole;
 
-  @override
-  _VideoContainerState createState() => _VideoContainerState();
-}
+//   @override
+//   _VideoContainerState createState() => _VideoContainerState();
+// }
 
-class _VideoContainerState extends State<VideoContainer> {
-  // _getImage(videoPathUrl) async {
-  //   var appDocDir = await getApplicationDocumentsDirectory();
-  //   final folderPath = appDocDir.path;
-  //   String thumb = await Thumbnails.getThumbnail(
-  //       thumbnailFolder: folderPath,
-  //       videoFile: videoPathUrl,
-  //       imageType:
-  //           ThumbFormat.PNG, //this image will store in created folderpath
-  //       quality: 30);
-  //   print(thumb);
-  //   return thumb;
-  // }
-  // Uint8List? urll;
+// class _VideoContainerState extends State<VideoContainer> {
+//   // _getImage(videoPathUrl) async {
+//   //   var appDocDir = await getApplicationDocumentsDirectory();
+//   //   final folderPath = appDocDir.path;
+//   //   String thumb = await Thumbnails.getThumbnail(
+//   //       thumbnailFolder: folderPath,
+//   //       videoFile: videoPathUrl,
+//   //       imageType:
+//   //           ThumbFormat.PNG, //this image will store in created folderpath
+//   //       quality: 30);
+//   //   print(thumb);
+//   //   return thumb;
+//   // }
+//   // Uint8List? urll;
 
-  // getthumbnail(String url) async {
-  //   final uint8list = await VideoThumbnail.thumbnailData(
-  //     video: url,
-  //     imageFormat: ImageFormat.JPEG,
-  //     maxWidth:
-  //         128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
-  //     quality: 25,
-  //   );
-  //   setState(() {
-  //     urll = uint8list!;
-  //   });
-  // }
-  FToast? fToast;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    fToast = FToast();
-    fToast!.init(context);
-  }
+//   // getthumbnail(String url) async {
+//   //   final uint8list = await VideoThumbnail.thumbnailData(
+//   //     video: url,
+//   //     imageFormat: ImageFormat.JPEG,
+//   //     maxWidth:
+//   //         128, // specify the width of the thumbnail, let the height auto-scaled to keep the source aspect ratio
+//   //     quality: 25,
+//   //   );
+//   //   setState(() {
+//   //     urll = uint8list!;
+//   //   });
+//   // }
+//   FToast? fToast;
+//   @override
+//   void initState() {
+//     // TODO: implement initState
+//     super.initState();
+//     fToast = FToast();
+//     fToast!.init(context);
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
-    return Container(
-      width: Responsive.isDesktop(context)
-          ? widget.width * 0.8
-          : widget.width * 0.9,
-      height: 140,
-      child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("faqvideos")
-              .where("userRole", isEqualTo: widget.userRole)
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: false, // new line
-                // physics: NeverScrollableScrollPhysics(),
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final document = snapshot.data?.docs[index];
+//   @override
+//   Widget build(BuildContext context) {
+//     model.User user = Provider.of<UserProvider>(context).getUser;
+//     return Container(
+//       width: Responsive.isDesktop(context)
+//           ? widget.width * 0.8
+//           : widget.width * 0.9,
+//       height: 140,
+//       child: StreamBuilder(
+//           stream: FirebaseFirestore.instance
+//               .collection("faqvideos")
+//               .where("visibleto",
+//                                     arrayContains: widget.userRole)
+//               .snapshots(),
+//           builder:
+//               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+//             if (!snapshot.hasData) {
+//               return Center(child: CircularProgressIndicator());
+//             }
+//             return ListView.builder(
+//                 scrollDirection: Axis.horizontal,
+//                 shrinkWrap: false, // new line
+//                 // physics: NeverScrollableScrollPhysics(),
+//                 itemCount: snapshot.data?.docs.length,
+//                 itemBuilder: (BuildContext context, int index) {
+//                   final document = snapshot.data?.docs[index];
 
-                  // getthumbnail(document!["videourl"]);
+//                   // getthumbnail(document!["videourl"]);
 
-                  //  print(document!["videourl"]);
-                  return Row(
-                    children: [
-                      Visibility(
-                        visible: user.userRole == "AppAdmin",
-                        child: InkWell(
-                            onTap: () {
-                              FirebaseFirestore.instance
-                                  .collection("faqvideos")
-                                  .doc(document!.id)
-                                  .delete()
-                                  .then((value) {
-                                fToast!.showToast(
-                                  child: ToastMessage()
-                                      .show(300, context, "Video Deleted"),
-                                  gravity: ToastGravity.BOTTOM,
-                                  toastDuration: Duration(seconds: 3),
-                                );
-                              });
-                            },
-                            child: Icon(
-                              Icons.delete_outline,
-                              color: Colors.white,
-                            )),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VideoPlayerScreen(
-                                  videourl: document!["videourl"],
-                                  title: document["title"],
-                                ),
-                              ));
-                        },
-                        child: Container(
-                          width: 240,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white
-                                    // image: DecorationImage(
-                                    //   image: NetworkImage(document["videourl"]),
-                                    // ),
-                                    ),
-                                margin: EdgeInsets.only(right: 20),
-                                height: 150,
-                                width: 220,
-                                child: SvgPicture.asset(
-                                  "/newLogo.svg",
-                                  width: 150,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(document!["title"],
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                });
-          }),
-    );
-  }
-}
+//                   //  print(document!["videourl"]);
+//                   return Row(
+//                     children: [
+//                       Visibility(
+//                         visible: user.userRole == "AppAdmin",
+//                         child: InkWell(
+//                             onTap: () {
+//                               FirebaseFirestore.instance
+//                                   .collection("faqvideos")
+//                                   .doc(document!.id)
+//                                   .delete()
+//                                   .then((value) {
+//                                 fToast!.showToast(
+//                                   child: ToastMessage()
+//                                       .show(300, context, "Video Deleted"),
+//                                   gravity: ToastGravity.BOTTOM,
+//                                   toastDuration: Duration(seconds: 3),
+//                                 );
+//                               });
+//                             },
+//                             child: Icon(
+//                               Icons.delete_outline,
+//                               color: Colors.white,
+//                             )),
+//                       ),
+//                       InkWell(
+//                         onTap: () {
+//                           Navigator.push(
+//                               context,
+//                               MaterialPageRoute(
+//                                 builder: (context) => VideoPlayerScreen(
+//                                   videourl: document!["videourl"],
+//                                   title: document["title"],
+//                                 ),
+//                               ));
+//                         },
+//                         child: Container(
+//                           width: 240,
+//                           child: Column(
+//                             crossAxisAlignment: CrossAxisAlignment.center,
+//                             children: [
+//                               Container(
+//                                 decoration: BoxDecoration(
+//                                     borderRadius: BorderRadius.circular(20),
+//                                     color: Colors.white
+//                                     // image: DecorationImage(
+//                                     //   image: NetworkImage(document["videourl"]),
+//                                     // ),
+//                                     ),
+//                                 margin: EdgeInsets.only(right: 20),
+//                                 height: 150,
+//                                 width: 220,
+//                                 child: SvgPicture.asset(
+//                                   "/newLogo.svg",
+//                                   width: 150,
+//                                 ),
+//                               ),
+//                               SizedBox(
+//                                 height: 5,
+//                               ),
+//                               Text(document!["title"],
+//                                   style: TextStyle(
+//                                       color: Colors.white,
+//                                       fontSize: 15,
+//                                       fontFamily: "Poppins",
+//                                       fontWeight: FontWeight.w500)),
+//                             ],
+//                           ),
+//                         ),
+//                       ),
+//                     ],
+//                   );
+//                 });
+//           }),
+//     );
+//   }
+// }
 
 class UserRolefAQ extends StatefulWidget {
   const UserRolefAQ(
@@ -863,7 +875,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "General",
+                              widget.userRole,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: "Poppins",
@@ -873,7 +885,8 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: user.userRole == "AppAdmin" ||
+                                  visible: PlatformInfo().isWeb() &&
+                                          user.userRole == "AppAdmin" ||
                                       user.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
@@ -962,7 +975,8 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                           child: StreamBuilder(
                             stream: FirebaseFirestore.instance
                                 .collection("FAQs")
-                                .where("userRole", isEqualTo: widget.userRole)
+                                .where("visibleto",
+                                    arrayContains: widget.userRole)
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -972,6 +986,9 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                               }
                               if (snapshot.hasData) {
                                 return ListView.builder(
+                                    physics: PlatformInfo().isWeb()
+                                        ? BouncingScrollPhysics()
+                                        : NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: snapshot.data?.docs.length,
                                     itemBuilder:
