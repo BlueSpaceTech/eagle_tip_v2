@@ -1,13 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
-<<<<<<< HEAD
 import 'dart:convert';
 
-=======
-// import 'dart:convert';
-// import 'dart:html';
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 import 'dart:math';
 // import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';

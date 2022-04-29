@@ -125,7 +125,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xff2B343B),
         ),
         // initialRoute: AppRoutes.sentto,
-        home: AuthHandling(),
+        home: DecidingScreen(),
         routes: {
           AppRoutes.dateRange: (context) => DateSelector(),
           // AppRoutes.test:(context)=>OpenCSV(),
@@ -133,7 +133,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
           AppRoutes.support: (context) => SupportScreen(),
-          AppRoutes.faqLogout:(context)=>FAQLogout(),
+          AppRoutes.faqLogout: (context) => FAQLogout(),
           // AppRoutes.faq: (context) => FAQScreen(),
           AppRoutes.loginscreen: (context) => LoginScreen(),
           AppRoutes.employercode: (context) => EmployerCode(),

@@ -332,17 +332,17 @@ class _LoginScreenState extends State<LoginScreen> {
 //     });
 
       if (res == "success") {
-        addData();
+        // addData();
         // FirebaseAuth.instance.setPersistence(
         //     ischecked ? Persistence.LOCAL : Persistence.SESSION);
         // _handleRemeberme(ischecked);
         //setemailpass(ischecked);
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => HomeScreen(
-                      showdialog: false,
-                    )));
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => HomeScreen(
+        //               showdialog: false,
+        //             )));
 
         DocumentReference dbRef = FirebaseFirestore.instance
             .collection('users')
@@ -386,35 +386,35 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          // print("isweb");
+          print("isweb");
 
-          // AuthFunctions.signOut;
-          // // print(phone);
-          // // print(userRole);
-          // ConfirmationResult result =
-          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          // if (result == null) {
-          //   fToast!.showToast(
-          //       child: ToastMessage()
-          //           .show(200, context, "Please try some time later"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
-          // } else {
-          //   fToast!.showToast(
-          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
+          AuthFunctions.signOut;
+          // print(phone);
+          // print(userRole);
+          ConfirmationResult result =
+              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          if (result == null) {
+            fToast!.showToast(
+                child: ToastMessage()
+                    .show(200, context, "Please try some time later"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
+          } else {
+            fToast!.showToast(
+                child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
 
-          //   setState(() {
-          //     ress = result;
-          //   });
-          //   setState(() {
-          //     _loading = false;
-          //   });
-          //   addData();
+            setState(() {
+              ress = result;
+            });
+            setState(() {
+              _loading = false;
+            });
+            addData();
 
-          //   print(ress);
-          // }
+            print(ress);
+          }
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);
@@ -534,7 +534,7 @@ class _LoginScreenState extends State<LoginScreen> {
           password: _password.text,
         );
         if (resss == "success") {
-          // addData();
+          addData();
           FirebaseAuth.instance.setPersistence(
               ischecked ? Persistence.LOCAL : Persistence.SESSION);
           Navigator.pushReplacement(

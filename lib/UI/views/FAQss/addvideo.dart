@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 // ignore: avoid_web_libraries_in_flutter
-=======
-// ignore_for_file: must_be_immutable
-
-import 'dart:html';
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 
 import 'package:flutter/material.dart';
 import 'dart:typed_data';
@@ -55,12 +49,8 @@ class _AddVideoState extends State<AddVideo> {
     fToast!.init(context);
   }
 
-<<<<<<< HEAD
   // ignore: unused_field
   io.File? _video;
-=======
-  // File? _video;
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
   final picker = ImagePicker;
   String downloadurl = "";
   // void _pickFile() async {

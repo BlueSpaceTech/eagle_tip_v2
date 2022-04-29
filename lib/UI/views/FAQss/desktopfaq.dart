@@ -1,10 +1,4 @@
-<<<<<<< HEAD
 import 'dart:io';
-=======
-// ignore_for_file: prefer_const_constructors
-
-// import 'dart:html';
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -341,20 +335,8 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
-<<<<<<< HEAD
-                                  visible: PlatformInfo().isWeb() &&
-                                          user.userRole == "AppAdmin" ||
-                                      user.userRole == "SuperAdmin",
-                                  // (user.userRole == "AppAdmin" ||
-                                  //         user.userRole == "SuperAdmin" &&
-                                  //             !Platform.isIOS) ||
-                                  //     (user.userRole == "AppAdmin" ||
-                                  //         user.userRole == "SuperAdmin" &&
-                                  //             !Platform.isAndroid),
-=======
                                   visible:widget.userrole == "AppAdmin" ||
                                       widget.userrole == "SuperAdmin",
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -558,7 +540,6 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 //     fToast!.init(context);
 //   }
 
-<<<<<<< HEAD
 //   @override
 //   Widget build(BuildContext context) {
 //     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -585,37 +566,9 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 //                 itemCount: snapshot.data?.docs.length,
 //                 itemBuilder: (BuildContext context, int index) {
 //                   final document = snapshot.data?.docs[index];
-=======
-  @override
-  Widget build(BuildContext context) {
-    
-    return Container(
-      width: Responsive.isDesktop(context)
-          ? widget.width * 0.8
-          : widget.width * 0.9,
-      height: 140,
-      child: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection("faqvideos")
-              .where("userRole", isEqualTo: widget.userRole)
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: false, // new line
-                // physics: NeverScrollableScrollPhysics(),
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final document = snapshot.data?.docs[index];
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 
 //                   // getthumbnail(document!["videourl"]);
 
-<<<<<<< HEAD
 //                   //  print(document!["videourl"]);
 //                   return Row(
 //                     children: [
@@ -693,85 +646,6 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 //     );
 //   }
 // }
-=======
-                  //  print(document!["videourl"]);
-                  return Row(
-                    children: [
-                      Visibility(
-                        visible: widget.userRole == "AppAdmin",
-                        child: InkWell(
-                            onTap: () {
-                              FirebaseFirestore.instance
-                                  .collection("faqvideos")
-                                  .doc(document!.id)
-                                  .delete()
-                                  .then((value) {
-                                fToast!.showToast(
-                                  child: ToastMessage()
-                                      .show(300, context, "Video Deleted"),
-                                  gravity: ToastGravity.BOTTOM,
-                                  toastDuration: Duration(seconds: 3),
-                                );
-                              });
-                            },
-                            child: Icon(
-                              Icons.delete_outline,
-                              color: Colors.white,
-                            )),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VideoPlayerScreen(
-                                  videourl: document!["videourl"],
-                                  title: document["title"],
-                                ),
-                              ));
-                        },
-                        child: Container(
-                          width: 240,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: Colors.white
-                                    // image: DecorationImage(
-                                    //   image: NetworkImage(document["videourl"]),
-                                    // ),
-                                    ),
-                                margin: EdgeInsets.only(right: 20),
-                                height: 150,
-                                width: 220,
-                                child: SvgPicture.asset(
-                                  "/newLogo.svg",
-                                  width: 150,
-                                ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(document!["title"],
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                });
-          }),
-    );
-  }
-}
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 
 class UserRolefAQ extends StatefulWidget {
   const UserRolefAQ(
@@ -1007,14 +881,8 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             Row(
                               children: [
                                 Visibility(
-<<<<<<< HEAD
-                                  visible: PlatformInfo().isWeb() &&
-                                          user.userRole == "AppAdmin" ||
-                                      user.userRole == "SuperAdmin",
-=======
                                   visible: widget.userRole == "AppAdmin" ||
                                      widget.userRole == "SuperAdmin",
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(

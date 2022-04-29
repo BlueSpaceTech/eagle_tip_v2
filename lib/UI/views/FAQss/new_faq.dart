@@ -14,6 +14,7 @@ import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/FAQss/mainfaq.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
@@ -547,16 +548,7 @@ class _NewFaqState extends State<NewFaq> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          (user.userRole == "TerminalUser" ||
-                                                  user.userRole ==
-                                                      "TerminalManager")
-                                              ? TerminalHome()
-                                              : Responsive.isDesktop(context)
-                                                  ? HomeScreen(
-                                                      showdialog: false,
-                                                    )
-                                                  : BottomNav()));
+                                      builder: (context) => MainFaq()));
                             });
                           } else if (videodata.isEmpty) {
                             imagedata.forEach((key, value) async {
@@ -589,16 +581,7 @@ class _NewFaqState extends State<NewFaq> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            (user.userRole == "TerminalUser" ||
-                                                    user.userRole ==
-                                                        "TerminalManager")
-                                                ? TerminalHome()
-                                                : Responsive.isDesktop(context)
-                                                    ? HomeScreen(
-                                                        showdialog: false,
-                                                      )
-                                                    : BottomNav()));
+                                        builder: (context) => MainFaq()));
                               }
 
                               // print(finaldata);
@@ -647,16 +630,7 @@ class _NewFaqState extends State<NewFaq> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            (user.userRole == "TerminalUser" ||
-                                                    user.userRole ==
-                                                        "TerminalManager")
-                                                ? TerminalHome()
-                                                : Responsive.isDesktop(context)
-                                                    ? HomeScreen(
-                                                        showdialog: false,
-                                                      )
-                                                    : BottomNav()));
+                                        builder: (context) => MainFaq()));
                               }
                             });
                             fToast!.showToast(
@@ -734,16 +708,7 @@ class _NewFaqState extends State<NewFaq> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            (user.userRole == "TerminalUser" ||
-                                                    user.userRole ==
-                                                        "TerminalManager")
-                                                ? TerminalHome()
-                                                : Responsive.isDesktop(context)
-                                                    ? HomeScreen(
-                                                        showdialog: false,
-                                                      )
-                                                    : BottomNav()));
+                                        builder: (context) => MainFaq()));
                               }
                             });
                           }

@@ -55,7 +55,9 @@ class _MobileFaqsState extends State<MobileFaqs> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return DefaultTabController(
-      length: widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin" ? 6 : 2,
+      length: widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
+          ? 6
+          : 2,
       child: Scaffold(
         body: SafeArea(
           child: Container(
@@ -158,24 +160,27 @@ class _MobileFaqsState extends State<MobileFaqs> {
                     ],
                   ),
                 ),
-<<<<<<< HEAD
                 Container(
                   height: height * 0.07,
                   child: Material(
                     color: Color(0xFF2E3840),
                     child: TabBar(
-                      tabs: getItems(
-                          userRole == "AppAdmin" || userRole == "SuperAdmin"
-                              ? foradmin
-                              : foruser),
+                      tabs: getItems(widget.userrOLE == "AppAdmin" ||
+                              widget.userrOLE == "SuperAdmin"
+                          ? foradmin
+                          : foruser),
                     ),
                   ),
                 ),
-                userRole == "AppAdmin" || userRole == "SuperAdmin"
+                widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
                     ? Expanded(
                         child: TabBarView(
                           children: [
-                            GeneralfAQ(width: width, height: height),
+                            GeneralfAQ(
+                              width: width,
+                              height: height,
+                              userrole: widget.userrOLE,
+                            ),
                             UserRolefAQ(
                                 width: width,
                                 height: height,
@@ -202,7 +207,11 @@ class _MobileFaqsState extends State<MobileFaqs> {
                     : Expanded(
                         child: TabBarView(
                           children: [
-                            GeneralfAQ(width: width, height: height),
+                            GeneralfAQ(
+                              width: width,
+                              height: height,
+                              userrole: widget.userrOLE,
+                            ),
                             UserRolefAQ(
                                 width: width,
                                 height: height,
@@ -212,61 +221,6 @@ class _MobileFaqsState extends State<MobileFaqs> {
                       )
               ],
             ),
-=======
-              ),
-              Container(
-                height: height * 0.07,
-                child: Material(
-                  color: Color(0xFF2E3840),
-                  child: TabBar(
-                    tabs: getItems(
-                        widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
-                            ? foradmin
-                            : foruser),
-                  ),
-                ),
-              ),
-              widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
-                  ? Expanded(
-                      child: TabBarView(
-                        children: [
-                          GeneralfAQ(width: width, height: height,userrole: widget.userrOLE,),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "TerminalManager"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "TerminalUser"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteOwner"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteManager"),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteUser"),
-                        ],
-                      ),
-                    )
-                  : Expanded(
-                      child: TabBarView(
-                        children: [
-                          GeneralfAQ(width: width, height: height,userrole: widget.userrOLE,),
-                          UserRolefAQ(
-                              width: width,
-                              height: height,
-                              userRole: "SiteOwner"),
-                        ],
-                      ),
-                    )
-            ],
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
           ),
         ),
       ),

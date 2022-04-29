@@ -1,13 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-<<<<<<< HEAD
 // import 'dart:html';
 
-=======
-import 'dart:html';
-// import 'package:universal_html/html.dart' as html;ss
->>>>>>> 370f5242fac2dcab2b5bc76ade2874d239f71a5e
 import 'package:csv/csv.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
