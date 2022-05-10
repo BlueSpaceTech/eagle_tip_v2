@@ -206,7 +206,9 @@ class _LoginScreenState extends State<LoginScreen> {
             MaterialPageRoute(
                 builder: (context) => (userRole == "TerminalUser" ||
                         userRole == "TerminalManager")
-                    ? TerminalHome()
+                    ? TerminalHome(
+                        sites: sites,
+                      )
                     : Responsive.isDesktop(context)
                         ? HomeScreen(
                             showdialog: true,
@@ -388,33 +390,46 @@ class _LoginScreenState extends State<LoginScreen> {
         if (PlatformInfo().isWeb()) {
           print("isweb");
 
-          AuthFunctions.signOut;
-          // print(phone);
-          // print(userRole);
-          ConfirmationResult result =
-              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          if (result == null) {
-            fToast!.showToast(
-                child: ToastMessage()
-                    .show(200, context, "Please try some time later"),
-                gravity: ToastGravity.BOTTOM,
-                toastDuration: Duration(seconds: 3));
-          } else {
-            fToast!.showToast(
-                child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-                gravity: ToastGravity.BOTTOM,
-                toastDuration: Duration(seconds: 3));
+          // AuthFunctions.signOut;
+          // // print(phone);
+          // // print(userRole);
+          // ConfirmationResult result =
+          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          // if (result == null) {
+          //   fToast!.showToast(
+          //       child: ToastMessage()
+          //           .show(200, context, "Please try some time later"),
+          //       gravity: ToastGravity.BOTTOM,
+          //       toastDuration: Duration(seconds: 3));
+          // } else {
+          //   fToast!.showToast(
+          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+          //       gravity: ToastGravity.BOTTOM,
+          //       toastDuration: Duration(seconds: 3));
 
-            setState(() {
-              ress = result;
-            });
-            setState(() {
-              _loading = false;
-            });
-            addData();
+          //   setState(() {
+          //     ress = result;
+          //   });
+          //   setState(() {
+          //     _loading = false;
+          //   });
+          //   addData();
 
-            print(ress);
-          }
+          //   print(ress);
+          // }
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => (userRole == "TerminalUser" ||
+                          userRole == "TerminalManager")
+                      ? TerminalHome(
+                          sites: sites,
+                        )
+                      : Responsive.isDesktop(context)
+                          ? HomeScreen(
+                              showdialog: true,
+                            )
+                          : BottomNav()));
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);
@@ -542,7 +557,9 @@ class _LoginScreenState extends State<LoginScreen> {
               MaterialPageRoute(
                   builder: (context) => (userRole == "TerminalUser" ||
                           userRole == "TerminalManager")
-                      ? TerminalHome()
+                      ? TerminalHome(
+                          sites: sites,
+                        )
                       : Responsive.isDesktop(context)
                           ? HomeScreen(
                               showdialog: true,

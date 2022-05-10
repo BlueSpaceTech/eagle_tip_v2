@@ -82,7 +82,7 @@ class _UploadImageState extends State<UploadImage> {
             builder: (context) =>
                 (_userProvider.getUser.userRole == "TerminalUser" ||
                         _userProvider.getUser.userRole == "TerminalManager")
-                    ? TerminalHome()
+                    ? TerminalHome(sites: _userProvider.getUser.sites)
                     : WelcomeTour()));
   }
 

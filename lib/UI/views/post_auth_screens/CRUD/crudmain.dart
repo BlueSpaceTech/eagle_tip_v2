@@ -906,14 +906,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          callUserInfoScreen(
-                                              document["name"],
-                                              document["email"],
-                                              document["userRole"],
-                                              document["dpUrl"],
-                                              document["sites"],
-                                              document["phonenumber"],
-                                              document["uid"]);
+                                          deletUserDialog(height, width, document["name"], document["uid"]);
                                         },
                                         child: Container(
                                             width: Responsive.isDesktop(context)

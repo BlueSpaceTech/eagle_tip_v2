@@ -50,6 +50,13 @@ class _NotificationsState extends State<Notifications> {
   List isNew = [true, true, false, false, false];
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print(Uri.base);
+  }
+
+  @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;

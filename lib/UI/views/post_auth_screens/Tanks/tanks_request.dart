@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field, unrelated_type_equality_checks, unused_local_variable, division_optimization
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +10,7 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math';
+// import 'dart:math';
 import 'package:testttttt/Models/user.dart' as model;
 CollectionReference requests= FirebaseFirestore.instance.collection("requesthistory");
 class TanksRequest extends StatefulWidget {
@@ -96,7 +96,7 @@ class _TanksRequestState extends State<TanksRequest> {
                 SizedBox(
                   height: height * 0.07,
                 ),
-                Container(
+                SizedBox(
                   height: height * 0.35,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,7 +193,7 @@ class _TanksRequestState extends State<TanksRequest> {
                               color: Colors.black,
                             ),
                           ),
-                          content: Container(
+                          content: SizedBox(
                             height: height * 0.37,
                             child: Column(
                               children: [
@@ -393,7 +393,7 @@ class _TanksRequestState extends State<TanksRequest> {
                                                 color: Colors.black,
                                               ),
                                             ),
-                                            content: Container(
+                                            content: SizedBox(
                                               height: height * 0.25,
                                               child: Column(
                                                 children: [
@@ -527,7 +527,7 @@ class Tank extends StatefulWidget {
 }
 
 class _TankState extends State<Tank> {
-  TextEditingController _controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
   bool? isTapped = false;
   @override
   Widget build(BuildContext context) {
@@ -590,7 +590,7 @@ class _TankState extends State<Tank> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
+                            SizedBox(
                               height: Responsive.isDesktop(context)
                                   ? widget.height * 0.012
                                   : widget.height * 0.03,
@@ -664,7 +664,6 @@ class _TankState extends State<Tank> {
               if (_controller.text != "0") {
                 widget.valueChanged(isTapped);
               }
-              print(isTapped);
             });
           },
           child: Image.asset(

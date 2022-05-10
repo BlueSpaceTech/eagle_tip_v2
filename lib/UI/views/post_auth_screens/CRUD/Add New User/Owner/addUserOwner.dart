@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:csv/csv.dart';
+import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -23,7 +27,8 @@ import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
-import 'package:testttttt/Utils/test.dart';
+import 'package:testttttt/Utils/InviteCSV.dart';
+import 'package:universal_html/html.dart';
 
 class AddNewUserByOwner extends StatefulWidget {
   AddNewUserByOwner({Key? key}) : super(key: key);
@@ -155,14 +160,17 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
     return choicess;
   }
 
+  late Future<ListResult> file;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fToast = FToast();
     fToast!.init(context);
+    file = FirebaseStorage.instance.ref('/Templates').list();
   }
-List inviteData=[];
+
+  List inviteData = [];
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -202,17 +210,8 @@ List inviteData=[];
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                Text(
-                                  "       ",
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 25),
-                                ),
-                              ],
+                            SizedBox(
+                              width: width * 0.24,
                             ),
                             Text(
                               "Add new User",
@@ -222,27 +221,76 @@ List inviteData=[];
                                   fontSize: 20),
                             ),
                             InkWell(
-                              onTap: ()async{
-                                FilePickerResult? csvFile= await FilePicker.platform.pickFiles(allowedExtensions: ['csv'],           type: FileType.custom,allowMultiple: false);
-                                if(csvFile!=null){
-                                final bytes = utf8.decode(csvFile.files[0].bytes!.toList());                              
-                                List<List<dynamic>> rowsAsListOfValues  = const  CsvToListConverter().convert(bytes);
-                                for(int i=1;i<rowsAsListOfValues.length;i++){
-                                setState(() {
-                                  inviteData.add(rowsAsListOfValues.elementAt(i));
-                                });
-                  
-                              }
-                              Navigator.push(context, MaterialPageRoute(builder: (context){
-                                return OpenCSV(inviteData: inviteData);
-                              }));
-                  
-                            }
-
-                          
-                        },
-                              
-                              child: customfab(width: width, text: "Import CSV", height: height),),
+                              onTap: () async {
+                                FilePickerResult? csvFile =
+                                    await FilePicker.platform.pickFiles(
+                                        allowedExtensions: ['csv'],
+                                        type: FileType.custom,
+                                        allowMultiple: false);
+                                if (csvFile != null) {
+                                  final bytes = utf8
+                                      .decode(csvFile.files[0].bytes!.toList());
+                                  List<List<dynamic>> rowsAsListOfValues =
+                                      const CsvToListConverter().convert(bytes);
+                                  for (int i = 1;
+                                      i < rowsAsListOfValues.length;
+                                      i++) {
+                                    setState(() {
+                                      inviteData
+                                          .add(rowsAsListOfValues.elementAt(i));
+                                    });
+                                  }
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return OpenCSV(inviteData: inviteData);
+                                  }));
+                                }
+                              },
+                              child: customfab(
+                                  width: width,
+                                  text: "Import CSV",
+                                  height: height),
+                            ),
+                            InkWell(
+                                onTap: () async {
+                                  var downloadURL = await FirebaseStorage
+                                      .instance
+                                      .ref()
+                                      .child("/Templates")
+                                      .child("Template.csv")
+                                      .getDownloadURL();
+                                  print(downloadURL);
+                                  AnchorElement anchorElement =
+                                      AnchorElement(href: downloadURL);
+                                  anchorElement.download = downloadURL;
+                                  anchorElement.click();
+                                  // await Dio().download(downloadURL, "./template.csv");
+                                },
+                                child: Container(
+                                  // alignment: Alignment.center,
+                                  width: Responsive.isDesktop(context)
+                                      ? width * 0.13
+                                      : width * 0.42,
+                                  height: height * 0.064,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff5081DB),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Download CSV Template",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ],
                         ),
                       ),

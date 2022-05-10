@@ -304,6 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // TODO: implement didChangeDependencies
     addData();
     super.didChangeDependencies();
+    print(Uri.base);
   }
 
   @override
@@ -345,17 +346,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 children: [
                                   SiteNameAndLocation(
                                       fontSize: 17.0, fontSize2: 13.0),
-                                      SizedBox(
-                                        width: 30.0,
-                                      ),
-                                      Text(
-            "AUT-001",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 17.0,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Poppins"),
-          ),
+                                  SizedBox(
+                                    width: 30.0,
+                                  ),
+                                  Text(
+                                    "AUT-001",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17.0,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                  ),
                                 ],
                               ),
                               SizedBox(
@@ -442,21 +443,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: height * 0.05,
                             ),
-                             Row(
-                               mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SiteNameAndLocation(
-                                      fontSize: 17.0, fontSize2: 13.0),
-                                      Text(
-            "AUT-001",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 17.0,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Poppins"),
-          ),
-                                ],
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SiteNameAndLocation(
+                                    fontSize: 17.0, fontSize2: 13.0),
+                                Text(
+                                  "AUT-001",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 17.0,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Poppins"),
+                                ),
+                              ],
+                            ),
                             SizedBox(
                               height: height * 0.05,
                             ),

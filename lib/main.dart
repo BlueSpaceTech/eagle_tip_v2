@@ -75,7 +75,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:provider/provider.dart';
-import 'package:testttttt/Utils/test.dart';
+import 'package:testttttt/Utils/InviteCSV.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -209,7 +209,7 @@ class MyApp extends StatelessWidget {
                 // friendname: "Start chat by clicking on user",
                 // frienduid: "",
               ),
-          AppRoutes.terminalhome: (context) => TerminalHome(),
+          // AppRoutes.terminalhome: (context) => TerminalHome(),
           AppRoutes.settings: (context) => Setting(),
           AppRoutes.sentto: (context) => SentTo(),
           AppRoutes.finaltourmain: (context) => FinalTourMain(),

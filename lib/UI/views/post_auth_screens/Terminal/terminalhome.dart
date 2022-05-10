@@ -1,15 +1,21 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, avoid_print
 
 import 'dart:convert';
+import 'dart:html';
 // import 'dart:html';
+import 'package:intl/intl.dart';
 
 import 'package:csv/csv.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
+
 // import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/tanks_request.dart';
 
@@ -26,7 +32,8 @@ List rowHeader = [
 List<List<dynamic>> csvdata = <List<dynamic>>[];
 
 class TerminalHome extends StatefulWidget {
-  const TerminalHome({Key? key}) : super(key: key);
+  final List sites;
+  const TerminalHome({Key? key, required this.sites}) : super(key: key);
 
   get restorationId => null;
 
@@ -40,12 +47,12 @@ class _TerminalHomeState extends State<TerminalHome> with RestorationMixin {
 
   final RestorableDateTimeN _startDate = RestorableDateTimeN(
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
-  final RestorableDateTimeN _endDate =
-      RestorableDateTimeN(DateTime(2022, DateTime.now().month, 30));
+  final RestorableDateTimeN _endDate = RestorableDateTimeN(
+      DateTime(DateTime.now().year, DateTime.now().month, 15));
   late final RestorableRouteFuture<DateTimeRange?>
       _restorableDateRangePickerRouteFuture =
       RestorableRouteFuture<DateTimeRange?>(
-    // onComplete: _selectDateRange,
+    onComplete: _selectDateRange,
     onPresent: (NavigatorState navigator, Object? arguments) {
       return navigator
           .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
@@ -62,55 +69,53 @@ class _TerminalHomeState extends State<TerminalHome> with RestorationMixin {
     return days;
   }
 
-// String convertDateTimeDisplay(String date) {
-//     final DateFormat displayFormater = DateFormat('yyyy-MM-dd HH:mm:ss.SSS');
-//     final DateFormat serverFormater = DateFormat('dd-MM-yyyy');
-//     final DateTime displayDate = displayFormater.parse(date);
-//     final String formatted = serverFormater.format(displayDate);
-//     return formatted;
-//   }
+  void _selectDateRange(DateTimeRange? newSelectedDate) async {
+    if (newSelectedDate != null) {
+      setState(() {
+        _startDate.value = newSelectedDate.start;
+        _endDate.value = newSelectedDate.end;
+        // print(convertDateTimeDisplay(_startDate.value.toString()));
+        // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
+      });
+      List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
+      // print(days);
 
-  // void _selectDateRange(DateTimeRange? newSelectedDate) async{
-  //   if (newSelectedDate != null) {
-  //     setState(() {
-  //       _startDate.value = newSelectedDate.start;
-  //       _endDate.value = newSelectedDate.end;
-  //       // print(convertDateTimeDisplay(_startDate.value.toString()));
-  //     // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
-  //     });
-  //     if(_endDate.value==newSelectedDate.end){
-  //       List days=getDaysInBeteween(_startDate.value!, _endDate.value!);
+      if (csvdata.isEmpty) {
+        csvdata.add(rowHeader);
+      }
+      print(widget.sites);
 
-  //                                   if(csvdata.isEmpty){
-  //                                     csvdata.add(rowHeader);
-  //                                   }
-  //                                   final docss=await requests.get();
-  //                                   for (var element in docss.docs.where((element) => days.contains(element["date"].toDate()))) {
-
-  //                                         List row=[];
-  //                                         List data=element.get("data");
-  //                                         print(element.get("date").runtimeType);
-  //                                         row.add(element.get("requestby"));
-  //                                         row.add(element.get("site"));
-  //                                         row.add(element.get("id"));
-  //                                         row.add(element.get("date").toDate());
-  //                                         row.add(data[0]);
-  //                                         row.add(data[1]);
-  //                                         row.add(data[2]);
-  //                                         row.add(data[3]);
-  //                                              csvdata.add(row);
-
-  //                                   }
-  //       String csv= ListToCsvConverter().convert(csvdata);
-  //                                   final bytes = utf8.encode(csv);
-  //                                   final text=utf8.decode(bytes);
-  //                                   final blob = Blob([text]);
-  //                                   final url = Url.createObjectUrlFromBlob(blob);
-  //                                   AnchorElement(href: url)..setAttribute("download", "file.csv")..click();
-  //                                   csvdata.clear();
-  //     }
-  //   }
-  // }
+      final docss = await requests.get().then((value) => value.docs.where(
+          (element) =>
+              days.contains(element["date"].toDate()) &&
+              widget.sites.contains(element["site"])));
+      for (var element in docss) {
+        List row = [];
+        List data = element.get("data");
+        print(element.get("date").runtimeType);
+        row.add(element.get("requestby"));
+        row.add(element.get("site"));
+        row.add(element.get("id"));
+        row.add(element.get("date").toDate());
+        row.add(data[0]);
+        row.add(data[1]);
+        row.add(data[2]);
+        row.add(data[3]);
+        csvdata.add(row);
+      }
+      // print(csvdata);
+      // print(csvdata.length);
+      String csv = ListToCsvConverter().convert(csvdata);
+      final bytes = utf8.encode(csv);
+      final text = utf8.decode(bytes);
+      final blob = Blob([text]);
+      final url = Url.createObjectUrlFromBlob(blob);
+      AnchorElement(href: url)
+        ..setAttribute("download", "file.csv")
+        ..click();
+      csvdata.clear();
+    }
+  }
 
   @override
   void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
@@ -131,10 +136,10 @@ class _TerminalHomeState extends State<TerminalHome> with RestorationMixin {
           restorationId: 'date_picker_dialog',
           initialDateRange:
               _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
-          firstDate: DateTime(DateTime.now().year, DateTime.now().month),
+          firstDate: DateTime(DateTime.now().year, 1),
           currentDate: DateTime(
               DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          lastDate: DateTime(2022, DateTime.now().month, 30),
+          lastDate: DateTime(DateTime.now().year, 12, 30),
         );
       },
     );
@@ -159,6 +164,8 @@ class _TerminalHomeState extends State<TerminalHome> with RestorationMixin {
   List sitelocation = ["Tampa,FL", "Leesburg,FL"];
   @override
   Widget build(BuildContext context) {
+    // model.User user = Provider.of<UserProvider>(context).getUser;
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
