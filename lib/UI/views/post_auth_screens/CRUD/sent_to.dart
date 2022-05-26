@@ -217,12 +217,19 @@ class _SentToState extends State<SentTo> {
   TextEditingController _search = TextEditingController();
 
   getUserdetails(List sites, String uid, model.User user) async {
-    var data = await FirebaseFirestore.instance
-        .collection("invitations")
-        .where("isverified", isEqualTo: false)
-        .where("invitedby", isEqualTo: uid)
-        // .where("userRole", whereIn: CrudFunction().visibleRole(user))
-        .get();
+    var data = user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+        ? await FirebaseFirestore.instance
+            .collection("invitations")
+            .where("visibleto", arrayContains: user.userRole)
+            // .where("sites", arrayContains: user.sites)
+            // .where("userRole", whereIn: CrudFunction().visibleRole(user))
+            .get()
+        : await FirebaseFirestore.instance
+            .collection("invitations")
+            .where("visibleto", arrayContains: user.userRole)
+            .where("sites", arrayContains: user.sites)
+            // .where("userRole", whereIn: CrudFunction().visibleRole(user))
+            .get();
 
     setState(() {
       _allResults = data.docs;

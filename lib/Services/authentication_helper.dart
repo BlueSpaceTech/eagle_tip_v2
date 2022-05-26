@@ -148,6 +148,7 @@ class AuthFunctions with ChangeNotifier {
           phoneisverified: isverified,
           dpurl: photoUrl,
           userRole: role,
+          currentsite: Sites[0],
         );
         _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
 
@@ -244,13 +245,15 @@ class AuthFunctions with ChangeNotifier {
   }
 
   sendinvite() {}
-  String addUserTodb(
-      {required String name,
-      required String email,
-      required String phonenumber,
-      required String userRole,
-      required bool phoneisverified,
-      required List sites}) {
+  String addUserTodb({
+    required String name,
+    required String email,
+    required String phonenumber,
+    required String userRole,
+    required bool phoneisverified,
+    required List sites,
+    required List visibleto,
+  }) {
     String code = genrateemployercode();
     String res = "Invite Sent Successfully";
     if (name.isNotEmpty || email.isNotEmpty || phonenumber.isNotEmpty) {
@@ -263,8 +266,10 @@ class AuthFunctions with ChangeNotifier {
         "sites": sites,
         "employercode": code,
         "invitedby": FirebaseAuth.instance.currentUser!.uid,
-      }).then((value) =>
-          sendemailinvite(name: name, employercode: code, email: email));
+        "visibleto": visibleto,
+      });
+      // }).then((value) =>
+      //     sendemailinvite(name: name, employercode: code, email: email));
     }
     return res;
   }

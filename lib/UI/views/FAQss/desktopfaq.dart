@@ -18,6 +18,7 @@ import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/FAQss/addvideo.dart';
 import 'package:testttttt/UI/views/FAQss/displayfaqs.dart';
 import 'package:testttttt/UI/views/FAQss/new_faq.dart';
+import 'package:testttttt/UI/views/FAQss/newfaq2.dart';
 import 'package:testttttt/UI/views/FAQss/player_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
@@ -25,7 +26,6 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
-
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -147,18 +147,23 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                 //     icon: Icon(null),
                 //   ),
                 // ],
-                items: getItems(
-                    widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
-                        ? foradmin
-                        : foruser),
+                items: getItems(widget.userrOLE == "AppAdmin" ||
+                        widget.userrOLE == "SuperAdmin"
+                    ? foradmin
+                    : foruser),
               ),
             ),
+            // Text(widget.userrOLE),
             widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
                 ? Expanded(
                     child: PageView(
                     controller: page,
                     children: [
-                      GeneralfAQ(width: width, height: height, userrole: widget.userrOLE,),
+                      GeneralfAQ(
+                        width: width,
+                        height: height,
+                        userrole: widget.userrOLE,
+                      ),
                       UserRolefAQ(
                           width: width,
                           height: height,
@@ -181,7 +186,11 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
                     child: PageView(
                     controller: page,
                     children: [
-                      GeneralfAQ(width: width, height: height, userrole: widget.userrOLE,),
+                      GeneralfAQ(
+                        width: width,
+                        height: height,
+                        userrole: widget.userrOLE,
+                      ),
                       UserRolefAQ(
                           width: width,
                           height: height,
@@ -196,7 +205,11 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
 }
 
 class GeneralfAQ extends StatefulWidget {
-  const GeneralfAQ({Key? key, required this.width, required this.height, required this.userrole})
+  const GeneralfAQ(
+      {Key? key,
+      required this.width,
+      required this.height,
+      required this.userrole})
       : super(key: key);
   final double width;
   final double height;
@@ -335,7 +348,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible:widget.userrole == "AppAdmin" ||
+                                  visible: widget.userrole == "AppAdmin" ||
                                       widget.userrole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
@@ -343,7 +356,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  NewFaq(userRole: "general"),
+                                                  NewFaq2(userRole: "general"),
                                             ));
                                       },
                                       child: customfab(
@@ -882,7 +895,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                               children: [
                                 Visibility(
                                   visible: widget.userRole == "AppAdmin" ||
-                                     widget.userRole == "SuperAdmin",
+                                      widget.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -1003,7 +1016,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                               ));
                                         },
                                         child: FAQ(
-                                          userrOLE:widget.userRole,
+                                          userrOLE: widget.userRole,
                                           widht: widget.width,
                                           //  FAQdesc: document!["description"],
                                           id: document!.id,
@@ -1014,11 +1027,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                       );
                                     });
                               }
-                              if (snapshot.hasData) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
+
                               return Center(
                                 child: Text(""),
                               );

@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/Crud_functions.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
@@ -31,7 +32,7 @@ class Invitation extends StatefulWidget {
 
 class _InvitationState extends State<Invitation> {
   bool? isTapped = false;
-  
+
   FToast? fToast;
   TextEditingController _name = new TextEditingController();
   TextEditingController _email = new TextEditingController();
@@ -119,7 +120,6 @@ class _InvitationState extends State<Invitation> {
                                   fontSize: 20),
                             ),
                             Text("                       "),
-                            
                           ],
                         ),
                       ),
@@ -165,7 +165,6 @@ class _InvitationState extends State<Invitation> {
                                 fontFamily: "Poppins",
                               ),
                             ),
-                            
                           ],
                         ),
                       ),
@@ -370,14 +369,16 @@ class _InvitationState extends State<Invitation> {
                               toastDuration: Duration(seconds: 3),
                             );
                           } else {
+                            List visibleto = CrudFunction()
+                                .visibletoInvitations(widget.role);
                             String res = AuthFunctions().addUserTodb(
-                              name: _name.text,
-                              email: _email.text,
-                              phonenumber: _phone.text,
-                              userRole: widget.role,
-                              phoneisverified: false,
-                              sites: widget.sites,
-                            );
+                                name: _name.text,
+                                email: _email.text,
+                                phonenumber: _phone.text,
+                                userRole: widget.role,
+                                phoneisverified: false,
+                                sites: widget.sites,
+                                visibleto: visibleto);
                             if (res == "Invite Sent Successfully") {
                               fToast!.showToast(
                                 child: ToastMessage().show(width, context, res),

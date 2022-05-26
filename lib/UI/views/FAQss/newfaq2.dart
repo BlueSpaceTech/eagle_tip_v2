@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:testttttt/Models/faq.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Services/storagemethods.dart';
 import 'package:testttttt/Services/utils.dart';
@@ -19,22 +20,25 @@ import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dar
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
+import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:video_player/video_player.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
-class NewFaq extends StatefulWidget {
-  const NewFaq({Key? key, required this.userRole}) : super(key: key);
+class NewFaq2 extends StatefulWidget {
+  const NewFaq2({Key? key, required this.userRole}) : super(key: key);
   final String userRole;
 
   @override
-  _NewFaqState createState() => _NewFaqState();
+  _NewFaq2State createState() => _NewFaq2State();
 }
 
-class _NewFaqState extends State<NewFaq> {
+class _NewFaq2State extends State<NewFaq2> {
   String? title;
-  List<Widget> allwidgets = [];
+  // FAQMODEL _faq = FAQMODEL();
+
+  List allwidgets = [];
   // List<TextEditingController> controllers = [];
 
   // getController(int overall,int textt) {
@@ -46,6 +50,7 @@ class _NewFaqState extends State<NewFaq> {
   // List<TextField> _fields = [];
 
   int overallitem = 0;
+  int textitem = 0;
   // int textitem = 0;
   // int imageitem = 0;
   // int videoitem = 0;
@@ -62,7 +67,6 @@ class _NewFaqState extends State<NewFaq> {
   VideoPlayerController? _controller;
   FToast? fToast;
 
-  final controller = TextEditingController();
   Future<Uint8List> selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
     return im;
@@ -71,18 +75,20 @@ class _NewFaqState extends State<NewFaq> {
   @override
   void initState() {
     // TODO: implement initState
-    allwidgets.add(Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 20),
-      child: AddFAQTextField(
-        labelText: "Title",
-        valueChanged: (val) {
-          setState(() {
-            title = val;
-          });
-        },
-        isactive: true,
-      ),
-    ));
+    // allwidgets.add(
+
+    //   Padding(
+    //   padding: EdgeInsets.only(top: 20, bottom: 20),
+    //   child: AddFAQTextField(
+    //     labelText: "Title",
+    //     valueChanged: (val) {
+    //       setState(() {
+    //         title = val;
+    //       });
+    //     },
+    //     isactive: true,
+    //   ),
+    // ));
     fToast = FToast();
     fToast!.init(context);
     super.initState();
@@ -137,7 +143,7 @@ class _NewFaqState extends State<NewFaq> {
 
 //  }
   List selectedrole = [];
-
+  bool textvalid = true;
   List Role = [
     "General",
     "AppAdmin",
@@ -229,6 +235,8 @@ class _NewFaqState extends State<NewFaq> {
     );
   }
 
+  bool _readonly = false;
+
   bool _loading = false;
 
   @override
@@ -251,6 +259,7 @@ class _NewFaqState extends State<NewFaq> {
             padding: EdgeInsets.symmetric(
                 horizontal: width * 0.05, vertical: height * 0.02),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
                   height: 40,
@@ -268,7 +277,7 @@ class _NewFaqState extends State<NewFaq> {
                       ),
                     ),
                     Text(
-                      "Add new Faq",
+                      "Add new Faq3",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Poppins",
@@ -285,60 +294,260 @@ class _NewFaqState extends State<NewFaq> {
                   runSpacing: 20,
                   children: [
                     InkWell(
-                        onTap: () {
-                          final field = Row(
-                            children: [
-                              Container(
-                                width: Responsive.isDesktop(context)
-                                    ? width * 0.42
-                                    : width * 0.6,
-                                padding: EdgeInsets.only(
-                                    left: width * 0.01,
-                                    right: width * 0.06,
-                                    bottom: 10),
-                                height: height * 0.08,
-                                decoration: BoxDecoration(
+                      onTap: () {
+                        final controller = TextEditingController();
+                        setState(() {
+                          // _controllers.add(controller);
+
+                          // textitem++;
+                          textvalid = false;
+                          overallitem++;
+                          allwidgets.add(FAQfield(
+                              overallindex: overallitem,
+                              controllerr: controller,
+                              type: "field",
+                              isreadonly: false));
+                        });
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: Responsive.isDesktop(context)
+                            ? width * 0.13
+                            : width * 0.42,
+                        height: height * 0.064,
+                        decoration: BoxDecoration(
+                          color: Color(0xff5081DB),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Add Text",
+                              style: TextStyle(
+                                  fontSize: 16,
                                   color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                ),
-                                child: TextFormField(
-                                  controller: controller,
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(fontFamily: "Poppins"),
-                                  cursorColor: Colors.black12,
-                                  decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    labelText: "Description",
-                                    labelStyle: TextStyle(
-                                        color: Color(0xff6e7191),
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500),
-                                  ),
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            SizedBox(
+                              width: width * 0.012,
+                            ),
+                            Icon(Icons.add, color: Colors.white),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    InkWell(
+                        onTap: () async {
+                          // selectImage();
+                          // await Future.delayed(const Duration(seconds: 3));
+                          Uint8List im = await selectImage();
+                          //print(im);
+                          // Widget imagewidget = Container(
+                          //   width: 700,
+                          //   height: 500,
+                          //   decoration: BoxDecoration(
+                          //     image: DecorationImage(
+                          //       image: MemoryImage(im),
+                          //     ),
+                          //   ),
+                          // );
+                          // await Future.delayed(const Duration(seconds: 3));
+                          setState(() {
+                            overallitem++;
+                            allwidgets.add(FAQimage(
+                                overallindex: overallitem,
+                                image: im,
+                                categoryindex: 2,
+                                type: "image"));
+
+                            imagedata["image${overallitem}"] = im;
+                          });
+
+                          // print(imagedata);
+                        },
+                        child: customfab(
+                            width: width, text: "Add Image", height: height)),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    InkWell(
+                      onTap: () async {
+                        final pickedVideo = await picker.pickVideo(
+                            source: ImageSource.gallery,
+                            maxDuration: Duration(seconds: 60));
+                        //   .then(((value) {
+
+                        // _video.add(File(pickedVideo!.path));
+                        setState(() {
+                          overallitem++;
+                          _controller =
+                              VideoPlayerController.network(pickedVideo!.path);
+                          _controller!.initialize();
+                          _controller!.play();
+                          pickedVideo.readAsBytes().then((value) {
+                            videodata["video$overallitem"] = value;
+                            // print(videodata);
+                          });
+                        });
+                        allwidgets.add(FAQVideo(
+                            overallindex: overallitem,
+                            controller: _controller!,
+                            categoryindex: 2,
+                            type: "video",
+                            path: ""));
+
+                        //  final result = await FilePicker.platform.pickFiles(
+                        //         type: FileType.custom,
+                        //         allowedExtensions: ["mp4"],
+                        //       );
+                        //        Uint8List? uploadfile = result!.files.single.bytes;
+                      },
+                      child: customfab(
+                        width: width,
+                        text: 'Add Video',
+                        height: height,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          allwidgets.clear();
+                          textdata.clear();
+                          imagedata.clear();
+                          videodata.clear();
+                        });
+
+                        //  final result = await FilePicker.platform.pickFiles(
+                        //         type: FileType.custom,
+                        //         allowedExtensions: ["mp4"],
+                        //       );
+                        //        Uint8List? uploadfile = result!.files.single.bytes;
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: Responsive.isDesktop(context)
+                            ? width * 0.13
+                            : width * 0.42,
+                        height: height * 0.064,
+                        decoration: BoxDecoration(
+                          color: Color(0xff5081DB),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Reset",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Wrap(
+                  runSpacing: 20,
+                  children: _buildsiteschip(),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20, bottom: 20),
+                  child: AddFAQTextField(
+                    labelText: "Title",
+                    valueChanged: (val) {
+                      setState(() {
+                        title = val;
+                      });
+                    },
+                    isactive: true,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: allwidgets.length,
+                    itemBuilder: (context, index) {
+                      if (allwidgets[index].type == "field") {
+                        return Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(bottom: 5),
+                              width: Responsive.isDesktop(context)
+                                  ? width * 0.42
+                                  : width * 0.6,
+                              padding: EdgeInsets.only(
+                                  left: width * 0.01,
+                                  right: width * 0.06,
+                                  bottom: 10,
+                                  top: 10),
+                              height: 5 * 18.0,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                              ),
+                              child: TextFormField(
+                                maxLines: 5,
+                                readOnly: allwidgets[index].isreadonly,
+                                controller: allwidgets[index].controllerr,
+                                textAlign: TextAlign.left,
+                                style: TextStyle(fontFamily: "Poppins"),
+                                cursorColor: Colors.black12,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  labelText: "Description",
+                                  labelStyle: TextStyle(
+                                      color: Color(0xff6e7191),
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              InkWell(
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Visibility(
+                              visible: !allwidgets[index].isreadonly,
+                              child: InkWell(
                                 onTap: () {
                                   setState(() {
-                                    overallitem++;
-                                    allwidgets.removeLast();
-                                    allwidgets.add(Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 30, bottom: 30),
-                                      child: Text(
-                                        controller.text,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "Poppins",
-                                            fontSize: 18),
-                                      ),
-                                    ));
-                                    textdata["text${overallitem}"] =
-                                        controller.text;
-                                    controller.clear();
+                                    // textitem++;
+                                    textvalid = true;
+                                    allwidgets[index].isreadonly = true;
+
+                                    // allwidgets.add(FAQtext(
+                                    //     overallindex: overallitem,
+                                    //     data: allwidgets[index].controller.text,
+                                    //     type: "text",
+                                    //     categoryindex: textitem));
+                                    // allwidgets[index].controllerr.text =
+                                    //     controller.text;
+                                    textdata[
+                                            "text${allwidgets[index].overallindex}"] =
+                                        allwidgets[index].controllerr.text;
+
+                                    // controller.clear();
+                                    print(textdata);
 
                                     // print(finaldata);
                                   });
@@ -369,142 +578,59 @@ class _NewFaqState extends State<NewFaq> {
                                   ),
                                 ),
                               ),
-                              InkWell(
-                                  onTap: () {
-                                    allwidgets.removeAt(
-                                        allwidgets.indexOf(Text("f")));
-                                  },
-                                  child: Icon(Icons.edit)),
-                            ],
-                          );
-
-                          setState(() {
-                            // _controllers.add(controller);
-
-                            // textitem++;
-                            allwidgets.add(TextWidget(
-                                key: ValueKey(overallitem),
-                                data: "",
-                                width: width,
-                                height: height,
-                                ontapdone: () {
-                                  setState(() {
-                                    print("yesss");
-                                    overallitem++;
-                                    allwidgets.removeLast();
-                                    allwidgets.add(Padding(
-                                      padding:
-                                          EdgeInsets.only(top: 30, bottom: 30),
-                                      child: Text(
-                                        controller.text,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "Poppins",
-                                            fontSize: 18),
-                                      ),
-                                    ));
-                                    textdata["text${overallitem}"] =
-                                        controller.text;
-                                    controller.clear();
-
-                                    // print(finaldata);
-                                  });
-                                },
-                                controller: controller));
-                          });
-                        },
-                        child: customfab(
-                            width: width, text: "Add Text", height: height)),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                        onTap: () async {
-                          // selectImage();
-                          // await Future.delayed(const Duration(seconds: 3));
-                          Uint8List im = await selectImage();
-                          //print(im);
-                          Widget imagewidget = Container(
-                            width: 700,
-                            height: 500,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: MemoryImage(im),
-                              ),
                             ),
-                          );
-                          // await Future.delayed(const Duration(seconds: 3));
-                          setState(() {
-                            allwidgets.add(imagewidget);
-                            overallitem++;
-                            imagedata["image${overallitem}"] = im;
-                          });
-
-                          // print(imagedata);
-                        },
-                        child: customfab(
-                            width: width, text: "Add Image", height: height)),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        final pickedVideo = await picker.pickVideo(
-                            source: ImageSource.gallery,
-                            maxDuration: Duration(seconds: 60));
-                        //   .then(((value) {
-
-                        // _video.add(File(pickedVideo!.path));
-                        setState(() {
-                          overallitem++;
-                          _controller =
-                              VideoPlayerController.network(pickedVideo!.path);
-                          _controller!.initialize();
-                          _controller!.play();
-                          pickedVideo.readAsBytes().then((value) {
-                            videodata["video$overallitem"] = value;
-                            // print(videodata);
-                          });
-                        });
-                        allwidgets.add(Row(
-                          children: [
-                            Container(
-                                padding: EdgeInsets.only(top: 30, bottom: 30),
-                                width: width * 0.4,
-                                height: height * 0.6,
-                                child: VideoPlayer(_controller!)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Visibility(
+                              visible: allwidgets[index].isreadonly,
+                              child: InkWell(
+                                  onTap: () {
+                                    allwidgets[index].isreadonly = false;
+                                    // allwidgets.removeAt(
+                                    //     allwidgets.indexOf(Text("f")));
+                                  },
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 35,
+                                  )),
+                            ),
+                            // Visibility(
+                            //   visible: true,
+                            //   child: InkWell(
+                            //       onTap: () {
+                            //         allwidgets.removeAt(index);
+                            //         // allwidgets.removeAt(
+                            //         //     allwidgets.indexOf(Text("f")));
+                            //       },
+                            //       child: Icon(
+                            //         Icons.delete,
+                            //         color: Colors.white,
+                            //         size: 35,
+                            //       )),
+                            // ),
                           ],
-                        ));
+                        );
+                      } else if (allwidgets[index].type == "image") {
+                        return Container(
+                          width: 700,
+                          height: 500,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: MemoryImage(allwidgets[index].image),
+                            ),
+                          ),
+                        );
+                      } else if (allwidgets[index].type == "video") {
+                        return Container(
+                            padding: EdgeInsets.only(top: 30, bottom: 30),
+                            width: width * 0.4,
+                            height: height * 0.6,
+                            child: VideoPlayer(allwidgets[index].controller));
+                      }
 
-                        //  final result = await FilePicker.platform.pickFiles(
-                        //         type: FileType.custom,
-                        //         allowedExtensions: ["mp4"],
-                        //       );
-                        //        Uint8List? uploadfile = result!.files.single.bytes;
-                      },
-                      child: customfab(
-                        width: width,
-                        text: 'Add Video',
-                        height: height,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Wrap(
-                  runSpacing: 20,
-                  children: _buildsiteschip(),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: allwidgets.length,
-                    itemBuilder: (context, index) {
-                      return allwidgets[index];
+                      return Container();
                     }),
                 SizedBox(
                   height: 40,

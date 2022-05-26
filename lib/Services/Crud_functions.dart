@@ -1,3 +1,5 @@
+// ignore_for_file: no_duplicate_case_values
+
 import 'package:testttttt/Models/user.dart' as model;
 
 class CrudFunction {
@@ -30,6 +32,26 @@ class CrudFunction {
           "SiteManager",
           "SiteUser"
         ];
+    }
+    return [];
+  }
+
+  List visibletoInvitations(String userRole) {
+    switch (userRole) {
+      case "SuperAdmin":
+        return ["SuperAdmin"];
+      case "AppAdmin":
+        return ["AppAdmin", "SuperAdmin"];
+      case "TerminalManager":
+        return ["AppAdmin", "TerminalManager"];
+      case "TerminalUser":
+        return ["TerminalManager", "TerminalUser", "AppAdmin"];
+      case "SiteOwner":
+        return ["TerminalManager", "TerminalUser", "SiteOwner"];
+      case "SiteManager":
+        return ["TerminalManager", "TerminalUser", "SiteOwner", "SiteManager"];
+      case "SiteUser":
+        return ["SiteOwner", "SiteManager", "SiteUser"];
     }
     return [];
   }

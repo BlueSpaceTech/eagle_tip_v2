@@ -5,7 +5,6 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class ChatListTile extends StatefulWidget {
   const ChatListTile({

@@ -20,6 +20,8 @@ import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/Utils/responsive.dart';
 
+import '../Services/Crud_functions.dart';
+
 class OpenCSV extends StatefulWidget {
   final List inviteData;
 
@@ -416,19 +418,27 @@ class _InviteButtonState extends State<InviteButton> {
                           for (int i = 0; i < widget.inviteData.length; i++) {
                             String sites = widget.inviteData.elementAt(i)[1];
                             List sitess = sites.split(",");
+                            List visibleto = CrudFunction()
+                                .visibletoInvitations(widget.inviteData
+                                    .elementAt(i)[4]
+                                    .toString());
 
                             AuthFunctions().addUserTodb(
-                              name:
-                                  widget.inviteData.elementAt(i)[0].toString(),
-                              email:
-                                  widget.inviteData.elementAt(i)[2].toString(),
-                              phonenumber:
-                                  widget.inviteData.elementAt(i)[3].toString(),
-                              userRole:
-                                  widget.inviteData.elementAt(i)[4].toString(),
-                              phoneisverified: false,
-                              sites: sitess,
-                            );
+                                name: widget.inviteData
+                                    .elementAt(i)[0]
+                                    .toString(),
+                                email: widget.inviteData
+                                    .elementAt(i)[2]
+                                    .toString(),
+                                phonenumber: widget.inviteData
+                                    .elementAt(i)[3]
+                                    .toString(),
+                                userRole: widget.inviteData
+                                    .elementAt(i)[4]
+                                    .toString(),
+                                phoneisverified: false,
+                                sites: sitess,
+                                visibleto: visibleto);
                             fToast!.showToast(
                                 child: ToastMessage().show(width, context,
                                     "Invitations Sent Successfully"),

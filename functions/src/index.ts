@@ -9,36 +9,42 @@ admin.initializeApp(functions.config().firebase);
 const db= admin.firestore();
 const fcm =admin.messaging();
 
+// export const heeloworld = functions.https.onRequest((request,response)=>{
+//     functions.logger.info("Hello log!",{structuraldata:true});
+//     response.send("Rakshit kamboj!");
+// });
 const app=express();
 const main=express();
 
-const requestsCollection= 'requesthistory';
-main.use('/api/v1',app);
-main.use(bodyParser.json());
-main.use(bodyParser.urlencoded({
-    extended:false
-}));
 
-export const webApi=functions.https.onRequest(main);
-console.log(main.path);
-app.post('/requesthistory/', async (req, res) => {
-    try {
-        const request = {
-            firstName: req.body['date'],
-            // lastName: req.body['lastName'],
-            // email: req.body['email']
-        }
-const newDoc = await firebaseHelper.firestoreHelper
-            .createNewDocument(db, requestsCollection, request);
-        res.status(201).send(`Created a new contact: ${newDoc.id}`);
-    } catch (error) {
-        res.status(400).send(`Contact should only contains firstName, lastName and email!!!`)
-    }        
-})
-app.get('/requesthistory/',(req,res)=>{
-    firebaseHelper.firestoreHelper.backup("/requesthistory/").then(data=>res.status(200).send(data)).catch(error=>res.status(400).send("Cannot get request data",));
-    console.log(firebaseHelper.firestoreHelper.backup("/requesthistory").then(data=>data));
-});
+
+// const requestsCollection= 'requesthistory';
+// main.use('/api/v1',app);
+// main.use(bodyParser.json());
+// main.use(bodyParser.urlencoded({
+//     extended:false
+// }));
+
+// export const webApi=functions.https.onRequest(main);
+// console.log(main.path);
+// app.post('/requesthistory/', async (req, res) => {
+//     try {
+//         const request = {
+//             firstName: req.body['date'],
+//             // lastName: req.body['lastName'],
+//             // email: req.body['email']
+//         }
+// const newDoc = await firebaseHelper.firestoreHelper
+//             .createNewDocument(db, requestsCollection, request);
+//         res.status(201).send(`Created a new contact: ${newDoc.id}`);
+//     } catch (error) {
+//         res.status(400).send(`Contact should only contains firstName, lastName and email!!!`)
+//     }        
+// })
+// app.get('/requesthistory/',(req,res)=>{
+//     firebaseHelper.firestoreHelper.backup("/requesthistory/").then(data=>res.status(200).send(data)).catch(error=>res.status(400).send("Cannot get request data",));
+//     console.log(firebaseHelper.firestoreHelper.backup("/requesthistory").then(data=>data));
+// });
 
 export const schedfunc=functions.pubsub.schedule("every 5 minutes").onRun(async (context)=>{
     const query =await db.collection("notifications").where('scheduledTime','<=',admin.firestore.Timestamp.now()).get();
