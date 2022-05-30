@@ -5,15 +5,17 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
-import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserSites.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -307,6 +309,7 @@ class _CrudScreenState extends State<CrudScreen> {
     if (mounted) {
       getCurrentUserRole();
     }
+    getData();
 
     _controllers = LinkedScrollControllerGroup();
     _letters = _controllers!.addAndGet();
@@ -321,6 +324,18 @@ class _CrudScreenState extends State<CrudScreen> {
     _search.removeListener(_onsearchange);
     _search.dispose();
     super.dispose();
+  }
+
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      allsitename.add(document.sitename);
+    }
+    print(allsitename);
   }
 
   callUserInfoScreen(String name, String email, String userRole, String dpUrl,
@@ -544,193 +559,223 @@ class _CrudScreenState extends State<CrudScreen> {
                               : height * 0.02,
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: Responsive.isDesktop(context)
-                                  ? 0
-                                  : width * 0.04),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Visibility(
-                                visible: Responsive.isDesktop(context),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: Responsive.isDesktop(context)
+                                    ? 0
+                                    : width * 0.04),
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Visibility(
+                                    visible: Responsive.isDesktop(context),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          "         ",
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 25),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      "Edit Users",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          color: Colors.white,
-                                          fontSize: 20),
-                                    ),
-                                    Text("                       "),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 60,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                        left: width * 0.06,
-                                        right: width * 0.06),
-                                    height: height * 0.064,
-                                    width: Responsive.isDesktop(context)
-                                        ? width * 0.6
-                                        : width * 0.9,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff535C65),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: TextField(
-                                      controller: _search,
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          color: Colors.white),
-                                      cursorColor: Colors.white,
-                                      decoration: InputDecoration(
-                                        hintText: "Search by name",
-                                        hintStyle: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.5)),
-                                        border: InputBorder.none,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Visibility(
-                                    visible: Responsive.isDesktop(context),
-                                    child: InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.addUserOwner);
-                                        },
-                                        child: customfab(
-                                          height: height,
-                                          width: width,
-                                          text: "Add new user",
-                                        )),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Row(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                        left: width * 0.06,
-                                        right: width * 0.06),
-                                    height: height * 0.064,
-                                    width: Responsive.isDesktop(context)
-                                        ? width * 0.6
-                                        : width * 0.9,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Visibility(
-                                    visible: Responsive.isDesktop(context),
-                                    child: InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, AppRoutes.sentto);
-                                      },
-                                      child: Container(
-                                        alignment: Alignment.center,
-                                        width: Responsive.isDesktop(context)
-                                            ? width * 0.13
-                                            : width * 0.42,
-                                        height: height * 0.064,
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff5081DB),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10)),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                        Row(
                                           children: [
                                             Text(
-                                              "Sent Invitations",
+                                              "         ",
                                               style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.white,
                                                   fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            SizedBox(
-                                              width: width * 0.012,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 25),
                                             ),
                                           ],
                                         ),
-                                      ),
+                                        Text(
+                                          "Edit Users",
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        ),
+                                        Text("                       "),
+                                      ],
                                     ),
                                   ),
-                                ],
-                              ),
-                              SizedBox(height: height * 0.02),
-                              Text(
-                                "Site",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Poppins",
-                                    fontSize: 15),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Row(
-                                children: [
-                                  Wrap(
-                                    children: _buildall(user.sites),
+                                  SizedBox(
+                                    height: 60,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(
+                                            left: width * 0.06,
+                                            right: width * 0.06),
+                                        height: height * 0.064,
+                                        width: Responsive.isDesktop(context)
+                                            ? width * 0.6
+                                            : width * 0.9,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff535C65),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10)),
+                                        ),
+                                        child: TextField(
+                                          controller: _search,
+                                          style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              color: Colors.white),
+                                          cursorColor: Colors.white,
+                                          decoration: InputDecoration(
+                                            hintText: "Search by name",
+                                            hintStyle: TextStyle(
+                                                color: Colors.white
+                                                    .withOpacity(0.5)),
+                                            border: InputBorder.none,
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Visibility(
+                                        visible: Responsive.isDesktop(context),
+                                        child: InkWell(
+                                            onTap: () {
+                                              Navigator.pushNamed(context,
+                                                  AppRoutes.addUserOwner);
+                                            },
+                                            child: customfab(
+                                              height: height,
+                                              width: width,
+                                              text: "Add new user",
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        padding: EdgeInsets.only(
+                                            left: width * 0.06,
+                                            right: width * 0.06),
+                                        height: height * 0.064,
+                                        width: Responsive.isDesktop(context)
+                                            ? width * 0.6
+                                            : width * 0.9,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Visibility(
+                                        visible: Responsive.isDesktop(context),
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.pushNamed(
+                                                context, AppRoutes.sentto);
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.13
+                                                : width * 0.42,
+                                            height: height * 0.064,
+                                            decoration: BoxDecoration(
+                                              color: Color(0xff5081DB),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Sent Invitations",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontFamily: "Poppins",
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                SizedBox(
+                                                  width: width * 0.012,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: height * 0.02),
+                                  Text(
+                                    "Site",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Poppins",
+                                        fontSize: 15),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
                                   ),
                                   Wrap(
-                                    children: _buildsiteschip(user.sites),
+                                    children: [
+                                      Wrap(
+                                        children: [
+                                          user.userRole == "AppAdmin" ||
+                                                  user.userRole ==
+                                                      "SuperAdmin" ||
+                                                  user.userRole ==
+                                                      "TerminalManager" ||
+                                                  user.userRole ==
+                                                      "TerminalUser"
+                                              ? Wrap(
+                                                  runSpacing: 10,
+                                                  children:
+                                                      _buildall(allsitename),
+                                                )
+                                              : Wrap(
+                                                  children:
+                                                      _buildall(user.sites),
+                                                ),
+                                          user.userRole == "AppAdmin" ||
+                                                  user.userRole ==
+                                                      "SuperAdmin" ||
+                                                  user.userRole ==
+                                                      "TerminalManager" ||
+                                                  user.userRole ==
+                                                      "TerminalUser"
+                                              ? Wrap(
+                                                  runSpacing: 10,
+                                                  children: _buildsiteschip(
+                                                      allsitename),
+                                                )
+                                              : Wrap(
+                                                  children: _buildsiteschip(
+                                                      user.sites),
+                                                ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.04,
+                                      ),
+                                      Text(
+                                        "Role",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontFamily: "Poppins",
+                                            fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        height: height * 0.02,
+                                      ),
+                                      Wrap(
+                                        children: _buildRolechip(
+                                            CrudFunction().visibleRole(user)),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Text(
-                                "Role",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontFamily: "Poppins",
-                                    fontSize: 15),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Wrap(
-                                children: _buildRolechip(
-                                    CrudFunction().visibleRole(user)),
-                              ),
-                            ],
-                          ),
-                        ),
+                                ])),
+
                         SizedBox(
                           height: 25,
                         ),
@@ -906,7 +951,11 @@ class _CrudScreenState extends State<CrudScreen> {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          deletUserDialog(height, width, document["name"], document["uid"]);
+                                          deletUserDialog(
+                                              height,
+                                              width,
+                                              document["name"],
+                                              document["uid"]);
                                         },
                                         child: Container(
                                             width: Responsive.isDesktop(context)

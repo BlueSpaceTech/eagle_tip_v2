@@ -542,19 +542,19 @@ class SitesData extends StatelessWidget {
   final double height;
   final double width;
   final List Sites;
-  genratesiteROW() {
-    print(Sites);
-    for (var i = 0; i < Sites.length; i++) {
-      //  print(i + "gggggtttttt");
-      print(Sites[i]);
-      return SiteRow(
-        width: width,
-        sitename: Sites[i],
-        siteloc: " Tampa.",
-        imgpath: "site11",
-      );
-    }
-  }
+  // genratesiteROW() {
+  //   print(Sites);
+  //   for (var i = 0; i < Sites.length; i++) {
+  //     //  print(i + "gggggtttttt");
+  //     print(Sites[i]);
+  //     return SiteRow(
+  //       width: width,
+  //       sitename: Sites[i].sitename,
+  //       siteloc: " Tampa.",
+  //       imgpath: "site11",
+  //     );
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -588,7 +588,7 @@ class SitesData extends StatelessWidget {
                       padding: EdgeInsets.only(right: 20),
                       child: SiteRow(
                         width: width,
-                        sitename: Sites[index].toString(),
+                        sitename: Sites[index]["sitename"],
                         siteloc: " Tampa,Fl.",
                         imgpath: "Group 268",
                       ),

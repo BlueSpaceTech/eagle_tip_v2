@@ -378,7 +378,9 @@ class _FAQState extends State<FAQ> {
                             },
                             child: Visibility(
                               visible: widget.userrOLE == "AppAdmin" ||
-                                  widget.userrOLE == "SuperAdmin",
+                                  widget.userrOLE == "SuperAdmin" ||
+                                  widget.userrOLE == "TerminalManager" ||
+                                  widget.userrOLE == "TerminalUser",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
                                 width: Responsive.isDesktop(context)
@@ -434,7 +436,9 @@ class _FAQState extends State<FAQ> {
                             },
                             child: Visibility(
                               visible: widget.userrOLE == "AppAdmin" ||
-                                  widget.userrOLE == "SuperAdmin",
+                                  widget.userrOLE == "SuperAdmin" ||
+                                  widget.userrOLE == "TerminalManager" ||
+                                  widget.userrOLE == "TerminalUser",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
                                 width: Responsive.isDesktop(context)

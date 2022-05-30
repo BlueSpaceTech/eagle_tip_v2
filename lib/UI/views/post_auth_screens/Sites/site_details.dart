@@ -15,6 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_s3/simple_s3.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -32,14 +33,20 @@ import 'package:testttttt/Models/user.dart' as model;
 import '../../../../Providers/user_provider.dart';
 
 class SiteDetails extends StatelessWidget {
-  const SiteDetails({Key? key}) : super(key: key);
-
+  SiteDetails({Key? key, required this.sitedetail}) : super(key: key);
+  SitesDetails sitedetail;
   @override
   Widget build(BuildContext context) {
     return Responsive(
-      mobile: MobileSiteDet(),
-      tablet: MobileSiteDet(),
-      desktop: MobileSiteDet(),
+      mobile: MobileSiteDet(
+        sitedetail: sitedetail,
+      ),
+      tablet: MobileSiteDet(
+        sitedetail: sitedetail,
+      ),
+      desktop: MobileSiteDet(
+        sitedetail: sitedetail,
+      ),
     );
   }
 }
@@ -47,7 +54,8 @@ class SiteDetails extends StatelessWidget {
 class MobileSiteDet extends StatefulWidget {
   final String? restorationId = "";
 
-  const MobileSiteDet({Key? key}) : super(key: key);
+  MobileSiteDet({Key? key, required this.sitedetail}) : super(key: key);
+  SitesDetails sitedetail;
 
   @override
   State<MobileSiteDet> createState() => _MobileSiteDetState();
@@ -98,8 +106,29 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                 SizedBox(
                                   width: reqSent! ? width * 0.36 : width * 0.19,
                                 ),
-                                SiteNameAndLocation(
-                                    fontSize: 17.0, fontSize2: 13.0),
+                                Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Text(
+                                        widget.sitedetail.sitename,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17.0,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.sitedetail.sitelocation,
+                                      style: TextStyle(
+                                          color: Color(0xFF6E7191),
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ],
+                                ),
                                 SizedBox(
                                   width: width * 0.1,
                                 ),
@@ -124,7 +153,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                 Column(
                                   children: [
                                     Text(
-                                      "Tanks",
+                                      widget.sitedetail.products[0]["PRDNO"],
                                       style: TextStyle(
                                           fontSize: width * 0.012,
                                           fontWeight: FontWeight.w500,
@@ -223,7 +252,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                         height: height * 0.05,
                       ),
                       Text(
-                        "Acres Marathon",
+                        widget.sitedetail.sitename,
                         style: TextStyle(
                             fontSize: 17.0,
                             color: Colors.white,
@@ -234,7 +263,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                         height: height * 0.01,
                       ),
                       Text(
-                        "Tampa,FL",
+                        widget.sitedetail.sitelocation,
                         style: TextStyle(
                             fontSize: 13.0,
                             color: Color(0xFF6E7191),

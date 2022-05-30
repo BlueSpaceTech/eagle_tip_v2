@@ -62,6 +62,22 @@ class _DesktopSettingState extends State<DesktopSetting> {
   }
 
   FToast? fToast;
+  List<String> sitenames = [];
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    model.User user = Provider.of<UserProvider>(context).getUser;
+
+    for (var site in user.sites) {
+      if (sitenames.contains(site)) {
+      } else {
+        sitenames.add(site);
+      }
+    }
+    print(sitenames);
+    // print(sitenames);
+  }
 
   @override
   void initState() {
@@ -71,11 +87,13 @@ class _DesktopSettingState extends State<DesktopSetting> {
     fToast!.init(context);
   }
 
-  String dropdownValue = "Acers Marathon";
-
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
+    // print(user.sites.length);
+    // List<String> sitess = user.sites;
+    String dropdownValue = user.currentsite;
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -511,7 +529,6 @@ class _DesktopSettingState extends State<DesktopSetting> {
                             icon:
                                 const Icon(Icons.keyboard_arrow_down_outlined),
                             iconEnabledColor: Colors.white,
-
                             iconSize: 24,
                             dropdownColor: Colors.black,
                             elevation: 16,
@@ -523,20 +540,36 @@ class _DesktopSettingState extends State<DesktopSetting> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 dropdownValue = newValue!;
+                                FirebaseFirestore.instance
+                                    .collection('users')
+                                    .doc(_auth.currentUser!.uid)
+                                    .update({'currentsite': newValue});
+                                addData();
+                                fToast!.showToast(
+                                  child: ToastMessage()
+                                      .show(width, context, "Site Updated"),
+                                  gravity: ToastGravity.BOTTOM,
+                                  toastDuration: Duration(seconds: 3),
+                                );
                               });
                             },
-                            items: <String>[
-                              'Acers Marathon',
-                              'Bridge Marathon',
-                            ].map<DropdownMenuItem<String>>((String value) {
+                            // items: List.generate(user.sites.length, (index) {
+                            //   return DropdownMenuItem<String>(
+                            //     child: Text(
+                            //       user.sites[index]["sitename"],
+                            //       style: TextStyle(color: Colors.white),
+                            //     ),
+                            //   );
+                            // })
+
+                            items: sitenames
+                                .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(
-                                  value +
-                                      "                                                                           ",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              );
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.white),
+                                  ));
                             }).toList(),
                           )
                         ],

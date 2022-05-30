@@ -5,6 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
@@ -22,6 +23,8 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:testttttt/Models/user.dart' as model;
+
+import '../../../../Services/site_call.dart';
 
 class Notifications extends StatefulWidget {
   Notifications({Key? key}) : super(key: key);
@@ -46,12 +49,29 @@ class _NotificationsState extends State<Notifications> {
     "2/11/12",
     "5/7/16"
   ];
+  List<SitesDetails>? sitedetails;
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+  }
 
   List isNew = [true, true, false, false, false];
+  getsiteloc(String currentsite) {
+    String siteloc = "";
+    sitedetails!.forEach((element) {
+      if (element.sitename == currentsite) {
+        setState(() {
+          siteloc = element.sitelocation;
+        });
+      }
+    });
+    return siteloc;
+  }
 
   @override
   void initState() {
     // TODO: implement initState
+    getData();
     super.initState();
     print(Uri.base);
   }
@@ -199,8 +219,29 @@ class _NotificationsState extends State<Notifications> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    SiteNameAndLocation(
-                                        fontSize: 17.0, fontSize2: 13.0),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Text(
+                                            user.currentsite,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17.0,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                        ),
+                                        Text(
+                                          getsiteloc(user.currentsite),
+                                          style: TextStyle(
+                                              color: Color(0xFF6E7191),
+                                              fontSize: 13.0,
+                                              fontWeight: FontWeight.w500,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                                 SizedBox(

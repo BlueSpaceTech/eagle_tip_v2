@@ -31,7 +31,7 @@ class Requests extends StatelessWidget {
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("requesthistory")
-            .where("site", whereIn: user.sites)
+            .where("site", isEqualTo: user.currentsite)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {

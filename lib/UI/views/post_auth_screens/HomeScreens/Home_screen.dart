@@ -2,15 +2,18 @@
 
 import 'dart:async';
 
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 
 import 'package:testttttt/Services/authentication_helper.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -36,6 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isTapped = false;
 
   bool isLoading = false;
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+  String siteId = "";
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+  }
 
   @override
   void initState() {
@@ -51,17 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
     //   // tokens.doc(user.userRole).update(data);
     // });
 
-    add();
+    addData();
     checkupdateTC();
-    print(FirebaseAuth.instance.currentUser!.displayName);
+    // print(FirebaseAuth.instance.currentUser!.displayName);
+    getData();
 
     //print(checkupdateTC());
     //checkupdateTC();
   }
 
-  add() async {
-    await addData();
-  }
+  // add() async {
+  //   await addData();
+  // }
 
   // TermConditions(double widht, double height, bool show) {
   //   return showDialog(
@@ -156,6 +166,41 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   List? check;
+
+  getsiteID(String currentsite) {
+    String siteID = "";
+    sitedetails!.forEach((element) {
+      if (element.sitename == currentsite) {
+        setState(() {
+          siteID = element.siteid;
+        });
+      }
+    });
+    return siteID;
+  }
+
+  getsiteloc(String currentsite) {
+    String siteloc = "";
+    sitedetails!.forEach((element) {
+      if (element.sitename == currentsite) {
+        setState(() {
+          siteloc = element.sitelocation;
+        });
+      }
+    });
+    return siteloc;
+  }
+
+  sendsitedetails(String currentsite) {
+    late SitesDetails sitedetail;
+    sitedetails!.forEach((element) {
+      if (element.sitename == currentsite) {
+        sitedetail = element;
+      }
+    });
+    return sitedetail;
+  }
+
   DocumentReference dialog = FirebaseFirestore.instance
       .collection('termconditions')
       .doc("k5c1eJ3DFh3P9IO7HEAA")
@@ -343,13 +388,34 @@ class _HomeScreenState extends State<HomeScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  SiteNameAndLocation(
-                                      fontSize: 17.0, fontSize2: 13.0),
+                                  Column(
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {},
+                                        child: Text(
+                                          user.currentsite,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17.0,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                      ),
+                                      Text(
+                                        getsiteloc(user.currentsite),
+                                        style: TextStyle(
+                                            color: Color(0xFF6E7191),
+                                            fontSize: 13.0,
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ],
+                                  ),
                                   SizedBox(
                                     width: 30.0,
                                   ),
                                   Text(
-                                    "AUT-001",
+                                    getsiteID(user.currentsite),
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 17.0,
@@ -363,10 +429,14 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.siteDetails,
-                                  );
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SiteDetails(
+                                          sitedetail:
+                                              sendsitedetails(user.currentsite),
+                                        ),
+                                      ));
                                 },
                                 child: Stack(
                                   alignment: Alignment.center,
@@ -445,10 +515,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SiteNameAndLocation(
-                                    fontSize: 17.0, fontSize2: 13.0),
+                                Column(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {},
+                                      child: Text(
+                                        user.currentsite,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17.0,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                    Text(
+                                      getsiteloc(user.currentsite),
+                                      style: TextStyle(
+                                          color: Color(0xFF6E7191),
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ],
+                                ),
                                 Text(
-                                  "AUT-001",
+                                  getsiteID(user.currentsite),
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 17.0,
@@ -534,10 +625,12 @@ class SiteNameAndLocation extends StatelessWidget {
     Key? key,
     required this.fontSize,
     required this.fontSize2,
+    required this.currentsitename,
   }) : super(key: key);
 
   final double fontSize;
   final double fontSize2;
+  final String currentsitename;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -545,7 +638,7 @@ class SiteNameAndLocation extends StatelessWidget {
         GestureDetector(
           onTap: () {},
           child: Text(
-            "Acres Marathon",
+            currentsitename,
             style: TextStyle(
                 color: Colors.white,
                 fontSize: 17.0,

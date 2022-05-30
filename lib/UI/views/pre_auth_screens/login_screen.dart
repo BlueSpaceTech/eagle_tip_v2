@@ -201,19 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _loading = false;
         });
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => (userRole == "TerminalUser" ||
-                        userRole == "TerminalManager")
-                    ? TerminalHome(
-                        sites: sites,
-                      )
-                    : Responsive.isDesktop(context)
-                        ? HomeScreen(
-                            showdialog: true,
-                          )
-                        : BottomNav()));
+
         fToast!.showToast(
             child: ToastMessage().show(width, context, "Login Successfull"),
             gravity: ToastGravity.BOTTOM,
@@ -556,7 +544,8 @@ class _LoginScreenState extends State<LoginScreen> {
               context,
               MaterialPageRoute(
                   builder: (context) => (userRole == "TerminalUser" ||
-                          userRole == "TerminalManager")
+                          userRole == "TerminalManager" ||
+                          userRole == "AppAdmin")
                       ? TerminalHome(
                           sites: sites,
                         )

@@ -349,7 +349,9 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                               children: [
                                 Visibility(
                                   visible: widget.userrole == "AppAdmin" ||
-                                      widget.userrole == "SuperAdmin",
+                                      widget.userrole == "SuperAdmin" ||
+                                      widget.userrole == "TerminalManager" ||
+                                      widget.userrole == "TerminalUser",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -895,7 +897,9 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                               children: [
                                 Visibility(
                                   visible: widget.userRole == "AppAdmin" ||
-                                      widget.userRole == "SuperAdmin",
+                                      widget.userRole == "SuperAdmin" ||
+                                      widget.userRole == "TerminalManager" ||
+                                      widget.userRole == "TerminalUser",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(

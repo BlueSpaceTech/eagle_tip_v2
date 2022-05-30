@@ -267,9 +267,9 @@ class AuthFunctions with ChangeNotifier {
         "employercode": code,
         "invitedby": FirebaseAuth.instance.currentUser!.uid,
         "visibleto": visibleto,
-      });
-      // }).then((value) =>
-      //     sendemailinvite(name: name, employercode: code, email: email));
+        "currentsite": sites[0],
+      }).then((value) =>
+          sendemailinvite(name: name, employercode: code, email: email));
     }
     return res;
   }

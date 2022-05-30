@@ -1,4 +1,6 @@
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
@@ -27,6 +29,7 @@ class _DecidingScreenState extends State<DecidingScreen> {
   String? name;
   String? phone;
   String? email;
+  List<SitesDetails>? sitedetails;
 
   final TextEditingController _email = TextEditingController();
   @override
@@ -35,6 +38,18 @@ class _DecidingScreenState extends State<DecidingScreen> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
+    // getData();
+  }
+
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      allsitename.add(document.sitename);
+    }
+    print(allsitename);
   }
 
   @override

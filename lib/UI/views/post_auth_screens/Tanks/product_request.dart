@@ -94,7 +94,8 @@ class _ProductRequestState extends State<ProductRequest> {
                               ? width * 0.026
                               : 0.0),
                       child:
-                          SiteNameAndLocation(fontSize: 17.0, fontSize2: 13.0),
+                          SiteNameAndLocation(
+                                    fontSize: 17.0, fontSize2: 13.0,currentsitename: "",),
                     ),
                     SizedBox(
                       height: height * 0.04,
