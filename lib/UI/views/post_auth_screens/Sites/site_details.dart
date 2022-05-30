@@ -2,11 +2,19 @@
 
 import 'dart:async';
 import 'dart:convert';
-
+// import 'dart:html';
+import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:math';
 // import 'package:csv/csv.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:simple_s3/simple_s3.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -367,11 +375,56 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     with TickerProviderStateMixin {
   late final AnimationController _controller;
   bool? isTapped = false;
+  String date = DateFormat('yyyy-MM-dd').format(
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
 
   // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   // playLocal() async {
   //   int result = await audioPlayer.play("assets/pop-sound.mp3", isLocal: true);
   // }
+  void uploadtoSFTP(String? regularVal1, String? midgradeVal1,
+      String? premiumVal1, String? ulsdVal1) async {
+    var post = await http.post(
+      Uri.parse(
+          "https://aa4f9r6r3m.execute-api.us-east-1.amazonaws.com/default/inventory_requests"),
+      headers: <String, String>{
+        'x-api-key': 'xTBUwqVQCjCroKgTTYxp4Ec5PheG1FAKu2viC100',
+      },
+      body: jsonEncode([
+        {
+          "Site ID": "AUT003",
+          "Tank Product": 114.toString(),
+          "Tank Quality": 1,
+          "Timestamp": date,
+          "Inventory gallons": regularVal1.toString()
+        },
+        {
+          "Site ID": "AUT003",
+          "Tank Product": 132.toString(),
+          "Tank Quality": 2,
+          "Timestamp": date,
+          "Inventory gallons": midgradeVal1.toString()
+        },
+        {
+          "Site ID": "AUT003",
+          "Tank Product": 133.toString(),
+          "Tank Quality": 3,
+          "Timestamp": date,
+          "Inventory gallons": premiumVal1.toString()
+        },
+        {
+          "Site ID": "AUT003",
+          "Tank Product": 134.toString(),
+          "Tank Quality": 4,
+          "Timestamp": date,
+          "Inventory gallons": ulsdVal1.toString()
+        }
+      ]),
+    );
+    if (post.statusCode == 201) {
+      print("Values added successfully");
+    }
+  }
 
   bool? reqSent = false;
   void off() {
@@ -749,10 +802,9 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                   : 12.0,
                             ),
                             InkWell(
-                              onTap: () {
-                                // playsound();
-                                // playLocal();
-                                // trigger();
+                              onTap: () async {
+                                uploadtoSFTP(regularVal, midgradeVal,
+                                    premiumVal, ulsdVal);
                                 widget.valueChanged(reqSent);
                                 print(reqSent);
                                 Navigator.pop(context);
@@ -763,25 +815,25 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                         "amount": regularVal,
                                         "fueltype": "Regular",
                                         "tanknumber": "1",
-                                        "tankid": 223.toString(),
+                                        "tankid": 114.toString(),
                                       },
                                       {
                                         "amount": midgradeVal,
                                         "fueltype": "Midgrade",
                                         "tanknumber": "2",
-                                        "tankid": 323.toString(),
+                                        "tankid": 132.toString(),
                                       },
                                       {
                                         "amount": premiumVal,
                                         "fueltype": "Premium",
                                         "tanknumber": "3",
-                                        "tankid": 423.toString(),
+                                        "tankid": 133.toString(),
                                       },
                                       {
                                         "amount": ulsdVal,
                                         "fueltype": "ULSD",
                                         "tanknumber": "4",
-                                        "tankid": 123.toString(),
+                                        "tankid": 131.toString(),
                                       },
                                     ],
                                     "date": DateTime(

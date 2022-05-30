@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3927f41ce",
+  "policyUUID": "927f41ce",
+  "bucketName": "eagletipv2ebcb9271899e4e06b545a73d29511dfb",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

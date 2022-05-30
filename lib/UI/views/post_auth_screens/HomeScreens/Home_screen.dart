@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (check!.contains(auth.currentUser!.uid)) {
             // print("already viewed");
           } else {
-            WidgetsBinding.instance.addPostFrameCallback((_) async {
+            WidgetsBinding.instance?.addPostFrameCallback((_) async {
               if (true) {
                 await _showDialog();
               }
@@ -301,7 +301,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     addData();
     super.didChangeDependencies();
     print(Uri.base);

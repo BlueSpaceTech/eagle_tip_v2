@@ -1,5 +1,8 @@
-// ignore_for_file: prefer_const_constructors, unused_import, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, unused_import, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, avoid_print
 
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
+import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -76,6 +79,7 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:provider/provider.dart';
 import 'package:testttttt/Utils/InviteCSV.dart';
+import 'package:testttttt/amplifyconfiguration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -97,16 +101,40 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-/*
+
   @override
   void initState() {
-    configOneSignel();
+    configureCognitoPlugin();
   }
 
-  void configOneSignel() {
-    OneSignal.shared.setAppId(kAppId);
+  Future<void> configureCognitoPlugin() async {
+    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
+    AmplifyStorageS3 storagePlugin = AmplifyStorageS3();
+
+    await Amplify.addPlugins([authPlugin, storagePlugin]);
+
+    try {
+      await Amplify.configure(amplifyconfig);
+    } on AmplifyAlreadyConfiguredException {
+      print(
+          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    }
+
+    Amplify.Hub.listen([HubChannel.Auth], (hubEvent) {
+      switch (hubEvent.eventName) {
+        case "SIGNED_IN":
+          print("USER IS SIGNED IN");
+          break;
+        case "SIGNED_OUT":
+          print("USER IS SIGNED OUT");
+          break;
+        case "SESSION_EXPIRED":
+          print("USER IS SIGNED IN");
+          break;
+      }
+    });
   }
-*/
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

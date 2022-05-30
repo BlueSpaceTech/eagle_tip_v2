@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-eagletipv2-dev-164115-authRole",
+      "UnauthRoleArn": "arn:aws:iam::646230173552:role/amplify-eagletipv2-dev-164115-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::646230173552:role/amplify-eagletipv2-dev-164115-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-eagletipv2-dev-164115-deployment",
+      "UnauthRoleName": "amplify-eagletipv2-dev-164115-unauthRole",
+      "StackName": "amplify-eagletipv2-dev-164115",
+      "StackId": "arn:aws:cloudformation:us-east-1:646230173552:stack/amplify-eagletipv2-dev-164115/68886640-dc1b-11ec-97eb-121f74245be9",
+      "AmplifyAppId": "diw77yes0tpbw"
+    },
+    "categories": {
+      "auth": {
+        "eagletipv20b6fe6e9": {}
+      }
+    }
+  }
+}

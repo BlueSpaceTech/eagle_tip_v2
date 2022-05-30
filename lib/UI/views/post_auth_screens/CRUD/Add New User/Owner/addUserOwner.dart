@@ -1,19 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-import 'dart:io';
+import 'dart:io' as prefix;
 
 import 'package:csv/csv.dart';
-import 'package:dio/dio.dart';
+// import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
-import 'package:testttttt/Routes/approutes.dart';
+// import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
-import 'package:testttttt/Services/authentication_helper.dart';
+// import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
@@ -21,8 +21,8 @@ import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/invitation.dart';
-import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
-import 'package:testttttt/Utils/common.dart';
+// import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
+// import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -253,6 +253,8 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                             ),
                             InkWell(
                                 onTap: () async {
+                                  // we will declare the list of headers that we want
+
                                   var downloadURL = await FirebaseStorage
                                       .instance
                                       .ref()
@@ -264,7 +266,6 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                       AnchorElement(href: downloadURL);
                                   anchorElement.download = downloadURL;
                                   anchorElement.click();
-                                  // await Dio().download(downloadURL, "./template.csv");
                                 },
                                 child: Container(
                                   // alignment: Alignment.center,
