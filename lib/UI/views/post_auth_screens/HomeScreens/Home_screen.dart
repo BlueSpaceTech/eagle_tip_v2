@@ -626,11 +626,14 @@ class SiteNameAndLocation extends StatelessWidget {
     required this.fontSize,
     required this.fontSize2,
     required this.currentsitename,
+    required this.currensitelocation,
   }) : super(key: key);
 
   final double fontSize;
   final double fontSize2;
   final String currentsitename;
+  final String currensitelocation;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -647,7 +650,7 @@ class SiteNameAndLocation extends StatelessWidget {
           ),
         ),
         Text(
-          "Tampa, FL",
+          currensitelocation,
           style: TextStyle(
               color: Color(0xFF6E7191),
               fontSize: 13.0,

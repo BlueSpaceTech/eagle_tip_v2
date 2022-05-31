@@ -17,11 +17,12 @@ class Requests extends StatelessWidget {
     Key? key,
     required this.height,
     required this.width,
+    required this.currentSite,
   }) : super(key: key);
 
   final double height;
   final double width;
-
+  final String currentSite;
   @override
   Widget build(BuildContext context) {
     model.User user = Provider.of<UserProvider>(context).getUser;
@@ -45,6 +46,7 @@ class Requests extends StatelessWidget {
               final document = snapshot.data?.docs[index];
               return ReqContainer(
                   width: width,
+                  currentsite: currentSite,
                   index: index,
                   height: height,
                   requestId: document!["id"],
@@ -73,6 +75,7 @@ class ReqContainer extends StatelessWidget {
     required this.siteName,
     required this.requestId,
     required this.username,
+    required this.currentsite,
     required this.requestDate,
   }) : super(key: key);
 
@@ -83,6 +86,7 @@ class ReqContainer extends StatelessWidget {
   final String requestDate;
   final String username;
   final String siteName;
+  final String currentsite;
   final int index;
 
   @override
@@ -112,7 +116,7 @@ class ReqContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Acres Marathon #$requestId",
+                    currentsite.toString() + " #" + requestId,
                     style: TextStyle(
                       fontSize: 13.0,
                       fontWeight: FontWeight.w600,

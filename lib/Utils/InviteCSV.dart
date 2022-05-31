@@ -438,7 +438,10 @@ class _InviteButtonState extends State<InviteButton> {
                                     .toString(),
                                 phoneisverified: false,
                                 sites: sitess,
-                                visibleto: visibleto);
+                                visibleto: visibleto,
+                                currentSite: widget.inviteData
+                                    .elementAt(i)[5]
+                                    .toString());
                             fToast!.showToast(
                                 child: ToastMessage().show(width, context,
                                     "Invitations Sent Successfully"),

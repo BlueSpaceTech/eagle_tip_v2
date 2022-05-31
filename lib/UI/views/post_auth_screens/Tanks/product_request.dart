@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:provider/provider.dart';
+import 'package:testttttt/Models/sites.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
@@ -14,6 +17,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 //import 'package:flutter_circular_slider/flutter_circular_slider.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class ProductRequest extends StatefulWidget {
   const ProductRequest(
@@ -31,9 +35,22 @@ class ProductRequest extends StatefulWidget {
 
 class _ProductRequestState extends State<ProductRequest> {
   int initialVal = 0;
+  List<SitesDetails>? sitedetails;
+  getsiteloc(String currentsite) {
+    String siteloc = "";
+    sitedetails!.forEach((element) {
+      if (element.sitename == currentsite) {
+        setState(() {
+          siteloc = element.sitelocation;
+        });
+      }
+    });
+    return siteloc;
+  }
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -93,9 +110,12 @@ class _ProductRequestState extends State<ProductRequest> {
                           right: Responsive.isDesktop(context)
                               ? width * 0.026
                               : 0.0),
-                      child:
-                          SiteNameAndLocation(
-                                    fontSize: 17.0, fontSize2: 13.0,currentsitename: "",),
+                      child: SiteNameAndLocation(
+                        fontSize: 17.0,
+                        fontSize2: 13.0,
+                        currentsitename: user.currentsite,
+                        currensitelocation: "",
+                      ),
                     ),
                     SizedBox(
                       height: height * 0.04,

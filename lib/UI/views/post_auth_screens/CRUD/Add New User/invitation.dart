@@ -378,6 +378,7 @@ class _InvitationState extends State<Invitation> {
                                 userRole: widget.role,
                                 phoneisverified: false,
                                 sites: widget.sites,
+                                currentSite: widget.sites[0],
                                 visibleto: visibleto);
                             if (res == "Invite Sent Successfully") {
                               fToast!.showToast(

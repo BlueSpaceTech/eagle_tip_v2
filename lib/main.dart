@@ -184,7 +184,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.ticketHistory: (context) => TicketHistory(),
           AppRoutes.myProfile: (context) => MyProfile(),
           AppRoutes.siteScreen: (context) => Sites(),
-          AppRoutes.siteDetails: (context) => SiteDetails(),
+          // AppRoutes.siteDetails: (context) => SiteDetails(),
           AppRoutes.desktopSetting: (context) => DesktopSetting(),
           AppRoutes.displayTerms: (context) => DisplayTerms(),
           // AppRoutes.settings: (context) => Settings(),

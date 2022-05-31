@@ -12,7 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'dart:math';
 import 'package:testttttt/Models/user.dart' as model;
-CollectionReference requests= FirebaseFirestore.instance.collection("requesthistory");
+
+CollectionReference requests =
+    FirebaseFirestore.instance.collection("requesthistory");
+
 class TanksRequest extends StatefulWidget {
   const TanksRequest({Key? key}) : super(key: key);
 
@@ -27,12 +30,11 @@ class _TanksRequestState extends State<TanksRequest> {
   String? premiumVal = "0";
   String? ulsdVal = "0";
   bool? _requested = false;
-  List data=[];
-  fuelamounts(String amount,String fueltype,String tankid,String tanknumber){
-    if(amount!=0){
-      data.add({
-        "amount"
-      });
+  List data = [];
+  fuelamounts(
+      String amount, String fueltype, String tankid, String tanknumber) {
+    if (amount != 0) {
+      data.add({"amount"});
     }
   }
 
@@ -370,7 +372,6 @@ class _TanksRequestState extends State<TanksRequest> {
                                     ),
                                     InkWell(
                                       onTap: () {
-                                        
                                         Navigator.pop(context);
                                         setState(() {
                                           _requested = true;
@@ -571,7 +572,7 @@ class _TankState extends State<Tank> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.tankType + " Max ${widget.max}",
+                          widget.tankType,
                           style: TextStyle(
                             color: Color(0xFF6E7191),
                             fontSize: Responsive.isDesktop(context)
@@ -605,7 +606,9 @@ class _TankState extends State<Tank> {
                                   fontFamily: "Poppins",
                                 ),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  CustomRangeTextInputFormatter(
+                                      maxvalue: widget.max.toString()),
                                 ],
                                 controller: _controller,
                                 onChanged: (value) {
@@ -673,5 +676,26 @@ class _TankState extends State<Tank> {
         ),
       ],
     );
+  }
+}
+
+class CustomRangeTextInputFormatter extends TextInputFormatter {
+  final String maxvalue;
+
+  CustomRangeTextInputFormatter({required this.maxvalue});
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    if (newValue.text == '') {
+      return TextEditingValue();
+    } else if (int.parse(newValue.text) < 1) {
+      return TextEditingValue().copyWith(text: '0');
+    }
+
+    return int.parse(newValue.text) > int.parse(maxvalue)
+        ? TextEditingValue().copyWith(text: maxvalue)
+        : newValue;
   }
 }

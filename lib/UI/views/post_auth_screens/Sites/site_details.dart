@@ -163,6 +163,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                     user.userRole == "SiteUser"
                                         ? Center(
                                             child: FuelRequestPart(
+                                              sitedetail: widget.sitedetail,
                                               valueChanged: (val) {
                                                 setState(() {
                                                   reqSent = val;
@@ -173,6 +174,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                             ),
                                           )
                                         : FuelRequestPart(
+                                            sitedetail: widget.sitedetail,
                                             valueChanged: (val) {
                                               setState(() {
                                                 reqSent = val;
@@ -217,6 +219,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                         height: height * 0.047,
                                       ),
                                       RequestHistoryPart(
+                                        currentSite: user.currentsite,
                                         width: width * 0.65,
                                         height: height * 0.9,
                                       ),
@@ -305,6 +308,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                         child: TabBarView(
                           children: [
                             FuelRequestPart(
+                              sitedetail: widget.sitedetail,
                               valueChanged: (val) {
                                 setState(() {
                                   reqSent = val;
@@ -316,6 +320,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                             Visibility(
                               visible: user.userRole != "SiteUser",
                               child: RequestHistoryPart(
+                                currentSite: user.currentsite,
                                 width: width,
                                 height: height,
                               ),
@@ -338,9 +343,11 @@ class FuelRequestPart extends StatelessWidget {
     required this.width,
     required this.height,
     required this.valueChanged,
+    required this.sitedetail,
   }) : super(key: key);
 
   final double width;
+  final SitesDetails sitedetail;
   final double height;
   final ValueChanged valueChanged;
 
@@ -350,6 +357,7 @@ class FuelRequestPart extends StatelessWidget {
       padding: EdgeInsets.only(
           left: width * 0.05, right: width * 0.03, top: height * 0.03),
       child: FuelReqColumn(
+        sitedetail: sitedetail,
         valueChanged: (val) {
           valueChanged(val);
         },
@@ -365,10 +373,12 @@ class RequestHistoryPart extends StatelessWidget {
     Key? key,
     required this.width,
     required this.height,
+    required this.currentSite,
   }) : super(key: key);
 
   final double width;
   final double height;
+  final String currentSite;
 
   @override
   Widget build(BuildContext context) {
@@ -377,6 +387,7 @@ class RequestHistoryPart extends StatelessWidget {
           left: width * 0.04, right: width * 0.04, top: height * 0.03),
       child: Requests(
         height: height,
+        currentSite: currentSite,
         width: width,
       ),
     );
@@ -388,12 +399,13 @@ class FuelReqColumn extends StatefulWidget {
     Key? key,
     required this.height,
     required this.width,
+    required this.sitedetail,
     required this.valueChanged,
   }) : super(key: key);
 
   final double height;
   final double width;
-
+  final SitesDetails sitedetail;
   final ValueChanged valueChanged;
 
   @override
@@ -410,50 +422,6 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   // playLocal() async {
   //   int result = await audioPlayer.play("assets/pop-sound.mp3", isLocal: true);
-  // }
-  void uploadtoSFTP(String? regularVal1, String? midgradeVal1,
-      String? premiumVal1, String? ulsdVal1) async {
-    var post = await http.post(
-      Uri.parse(
-          "https://aa4f9r6r3m.execute-api.us-east-1.amazonaws.com/default/inventory_requests"),
-      headers: <String, String>{
-        'x-api-key': 'xTBUwqVQCjCroKgTTYxp4Ec5PheG1FAKu2viC100',
-      },
-      body: jsonEncode([
-        {
-          "Site ID": "AUT003",
-          "Tank Product": 114.toString(),
-          "Tank Quality": 1,
-          "Timestamp": date,
-          "Inventory gallons": regularVal1.toString()
-        },
-        {
-          "Site ID": "AUT003",
-          "Tank Product": 132.toString(),
-          "Tank Quality": 2,
-          "Timestamp": date,
-          "Inventory gallons": midgradeVal1.toString()
-        },
-        {
-          "Site ID": "AUT003",
-          "Tank Product": 133.toString(),
-          "Tank Quality": 3,
-          "Timestamp": date,
-          "Inventory gallons": premiumVal1.toString()
-        },
-        {
-          "Site ID": "AUT003",
-          "Tank Product": 134.toString(),
-          "Tank Quality": 4,
-          "Timestamp": date,
-          "Inventory gallons": ulsdVal1.toString()
-        }
-      ]),
-    );
-    if (post.statusCode == 201) {
-      print("Values added successfully");
-    }
-  }
 
   bool? reqSent = false;
   void off() {
@@ -480,6 +448,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     // TODO: implement initState
     super.initState();
     _controller = AnimationController(vsync: this);
+    fuelvals(widget.sitedetail.products.length);
   }
 
   @override
@@ -489,13 +458,62 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     _controller.dispose();
   }
 
-  String? regularVal = "0";
+  String? fuelVal = "0";
 
-  String? midgradeVal = "0";
+  List vals = [];
+  void fuelvals(int len) {
+    for (int i = 0; i < len; i++) {
+      vals.add("0");
+    }
+    // return vals;
+  }
 
-  String? premiumVal = "0";
+  String tanktype(int max) {
+    late String type;
+    switch (max) {
+      case 6000:
+        type = "Regular";
+        break;
+      case 9684:
+        type = "Midgrade";
+        break;
+      case 12000:
+        type = "Premium";
+        break;
+      case 20000:
+        type = "ULSD";
+        break;
+    }
+    return type;
+  }
 
-  String? ulsdVal = "0";
+  List sftpdata(int len) {
+    List data = [];
+    for (int i = 0; i < len; i++) {
+      data.add({
+        "Site ID": widget.sitedetail.products[i]["CONSNO"],
+        "Tank Product": widget.sitedetail.products[i]["PRDNO"],
+        "Tank Quality": i + 1,
+        "Timestamp": date,
+        "Inventory gallons": vals[i].toString()
+      });
+    }
+    return data;
+  }
+
+  List backenddata(int len) {
+    List data = [];
+    for (int i = 0; i < len; i++) {
+      data.add({
+        "amount": vals[i],
+        "fueltype":
+            tanktype(int.parse(widget.sitedetail.products[i]["TANK_SIZE"])),
+        "tanknumber": i + 1,
+        "tankid": widget.sitedetail.products[i]["PRDNO"],
+      });
+    }
+    return data;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -511,74 +529,31 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Tank(
-                valueChanged2: (val) {
-                  setState(() {
-                    regularVal = val;
-                  });
-                },
-                tankNumber: 1,
-                valueChanged: (val) {
-                  setState(() {
-                    isTapped = val;
-                  });
-                },
-                max: 8000,
-                width: widget.width,
-                height: widget.height,
-                tankType: "Tank 1: Regular (132)",
-              ),
-              Tank(
-                valueChanged2: (val) {
-                  setState(() {
-                    midgradeVal = val;
-                  });
-                },
-                tankNumber: 2,
-                valueChanged: (val) {
-                  setState(() {
-                    isTapped = val;
-                  });
-                },
-                width: widget.width,
-                max: 12000,
-                height: widget.height,
-                tankType: "Tank 2: Midgrade (131)",
-              ),
-              Tank(
-                valueChanged2: (val) {
-                  setState(() {
-                    premiumVal = val;
-                  });
-                },
-                tankNumber: 3,
-                valueChanged: (val) {
-                  setState(() {
-                    isTapped = val;
-                  });
-                },
-                width: widget.width,
-                max: 16000,
-                height: widget.height,
-                tankType: "Tank 3: Premium (133)",
-              ),
-              Tank(
-                valueChanged2: (val) {
-                  setState(() {
-                    ulsdVal = val;
-                  });
-                },
-                tankNumber: 4,
-                valueChanged: (val) {
-                  setState(() {
-                    isTapped = val;
-                  });
-                },
-                width: widget.width,
-                max: 20000,
-                height: widget.height,
-                tankType: "Tank 4: ULSD (134)",
-              ),
+              for (int i = 0; i < widget.sitedetail.products.length; i++)
+                Tank(
+                  valueChanged2: (val) {
+                    setState(() {
+                      vals[i] = val;
+                    });
+                    // print(val);
+                    print(vals[i]);
+                  },
+                  tankNumber: int.parse(widget.sitedetail.products[i]["PRDNO"]),
+                  valueChanged: (val) {
+                    setState(() {
+                      isTapped = val;
+                    });
+                  },
+                  width: widget.width,
+                  max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
+                  height: widget.height,
+                  tankType: "Tank: " +
+                      tanktype(int.parse(
+                          widget.sitedetail.products[i]["TANK_SIZE"])) +
+                      widget.sitedetail.products[i]["PRDNO"] +
+                      " Max " +
+                      widget.sitedetail.products[i]["TANK_SIZE"],
+                ),
             ],
           ),
         ),
@@ -587,7 +562,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         ),
         InkWell(
           onTap: () {
-            print(regularVal);
+            // print(regularVal);
             if (isTapped!) {
               showDialog(
                 context: context,
@@ -624,176 +599,53 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                               ? widget.height * 0.02
                               : widget.height * 0.05,
                         ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 5.0,
-                              height: 5.0,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
+                        for (var i = 0;
+                            i < widget.sitedetail.products.length;
+                            i++)
+                          Row(
+                            children: [
+                              Container(
+                                width: 5.0,
+                                height: 5.0,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              regularVal.toString().replaceAllMapped(
-                                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                  (Match m) => '${m[1]},'),
-                              style: TextStyle(
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              Text(
+                                vals[i].toString().replaceAllMapped(
+                                    RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                    (Match m) => '${m[1]},'),
+                                style: TextStyle(
+                                    fontSize: 17.0,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "Poppins"),
+                              ),
+                              Text(
+                                " Gal of ",
+                                style: TextStyle(
+                                  fontSize: 17.0,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Poppins",
+                                ),
+                              ),
+                              Text(
+                                tanktype(int.parse(widget.sitedetail.products[i]
+                                    ["TANK_SIZE"])),
+                                style: TextStyle(
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
-                            Text(
-                              " Gal of ",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
+                                  fontFamily: "Poppins",
+                                ),
                               ),
-                            ),
-                            Text(
-                              "Regular",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
                         SizedBox(
                           height: Responsive.isDesktop(context)
                               ? widget.height * 0.006
                               : 8.0,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 5.0,
-                              height: 5.0,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              midgradeVal.toString().replaceAllMapped(
-                                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                  (Match m) => '${m[1]},'),
-                              style: TextStyle(
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
-                            Text(
-                              " Gal of ",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            Text(
-                              "Midgrade",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: Responsive.isDesktop(context)
-                              ? widget.height * 0.006
-                              : 8.0,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 5.0,
-                              height: 5.0,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              premiumVal.toString().replaceAllMapped(
-                                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                  (Match m) => '${m[1]},'),
-                              style: TextStyle(
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
-                            Text(
-                              " Gal of ",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            Text(
-                              "Premium",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: Responsive.isDesktop(context)
-                              ? widget.height * 0.006
-                              : 8.0,
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 5.0,
-                              height: 5.0,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(
-                              ulsdVal.toString().replaceAllMapped(
-                                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                  (Match m) => '${m[1]},'),
-                              style: TextStyle(
-                                  fontSize: 17.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
-                            Text(
-                              " Gal of ",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                            Text(
-                              "ULSD",
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins",
-                              ),
-                            ),
-                          ],
                         ),
                         SizedBox(
                           height: widget.height * 0.02,
@@ -832,46 +684,30 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                             ),
                             InkWell(
                               onTap: () async {
-                                uploadtoSFTP(regularVal, midgradeVal,
-                                    premiumVal, ulsdVal);
+                                await http.post(
+                                  Uri.parse(
+                                      "https://aa4f9r6r3m.execute-api.us-east-1.amazonaws.com/default/inventory_requests"),
+                                  headers: <String, String>{
+                                    'x-api-key':
+                                        'xTBUwqVQCjCroKgTTYxp4Ec5PheG1FAKu2viC100',
+                                  },
+                                  body: jsonEncode(sftpdata(
+                                      widget.sitedetail.products.length)),
+                                );
                                 widget.valueChanged(reqSent);
                                 print(reqSent);
                                 Navigator.pop(context);
                                 requests.doc().set(
                                   {
-                                    "data": [
-                                      {
-                                        "amount": regularVal,
-                                        "fueltype": "Regular",
-                                        "tanknumber": "1",
-                                        "tankid": 114.toString(),
-                                      },
-                                      {
-                                        "amount": midgradeVal,
-                                        "fueltype": "Midgrade",
-                                        "tanknumber": "2",
-                                        "tankid": 132.toString(),
-                                      },
-                                      {
-                                        "amount": premiumVal,
-                                        "fueltype": "Premium",
-                                        "tanknumber": "3",
-                                        "tankid": 133.toString(),
-                                      },
-                                      {
-                                        "amount": ulsdVal,
-                                        "fueltype": "ULSD",
-                                        "tanknumber": "4",
-                                        "tankid": 131.toString(),
-                                      },
-                                    ],
+                                    "data": backenddata(
+                                        widget.sitedetail.products.length),
                                     "date": DateTime(
                                         DateTime.now().year,
                                         DateTime.now().month,
                                         DateTime.now().day),
                                     "id": Random().nextInt(10000000).toString(),
                                     "requestby": user.name,
-                                    "site": user.sites[0],
+                                    "site": user.currentsite,
                                   },
                                 );
 
