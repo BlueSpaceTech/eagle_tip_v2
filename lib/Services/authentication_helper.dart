@@ -252,6 +252,7 @@ class AuthFunctions with ChangeNotifier {
     required String userRole,
     required bool phoneisverified,
     required List sites,
+    required String currentSite,
     required List visibleto,
   }) {
     String code = genrateemployercode();
@@ -267,7 +268,7 @@ class AuthFunctions with ChangeNotifier {
         "employercode": code,
         "invitedby": FirebaseAuth.instance.currentUser!.uid,
         "visibleto": visibleto,
-        "currentsite": sites[0],
+        "currentsite": currentSite,
       }).then((value) =>
           sendemailinvite(name: name, employercode: code, email: email));
     }
