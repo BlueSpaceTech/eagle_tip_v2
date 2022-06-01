@@ -23,7 +23,7 @@ class AppRoutes {
   static final String ticketHistory = "/ticketHistory";
   static final String ticketDetails = "/ticketHistoryDetail";
   static final String siteScreen = "/sites";
-  static final String siteDetails = "/site_details";
+  // static final String siteDetails = "/site_details";
   static final String requestHistory = "/request_history";
   static final String particularRequest = "/particular_request";
   static final String settings = "/settings";
@@ -52,8 +52,8 @@ class AppRoutes {
   static final String displayTerms = "/displayTerms";
   static final String sentto = "/sentto";
   static final String finaltourmain = "/finaltourmain";
-  static final String mainFaq="/mainfaq";
-  static final String dateRange="/dateSelect";
-  static final String test="/test";
-  static final String faqLogout="/FAQlogout";
+  static final String mainFaq = "/mainfaq";
+  static final String dateRange = "/dateSelect";
+  static final String test = "/test";
+  static final String faqLogout = "/FAQlogout";
 }

@@ -268,74 +268,68 @@ class SiteDet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        Navigator.pushNamed(context, AppRoutes.siteDetails);
-      },
-      child: Padding(
-        padding: EdgeInsets.only(
-            bottom: 10.0,
-            top: Responsive.isDesktop(context) ? height * 0.01 : 0.0),
-        child: Container(
-          width: width * 0.9,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15.0),
-            border: Responsive.isDesktop(context)
-                ? Border.all(color: Colors.white)
-                : null,
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(
-                right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: width * 0.52,
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        Common.assetImages + "${"site1"}.png",
-                        width: Responsive.isDesktop(context)
-                            ? width * 0.05
-                            : width * 0.14,
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            siteName,
-                            style: TextStyle(
-                              fontSize: 17.0,
+    return Padding(
+      padding: EdgeInsets.only(
+          bottom: 10.0,
+          top: Responsive.isDesktop(context) ? height * 0.01 : 0.0),
+      child: Container(
+        width: width * 0.9,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          border: Responsive.isDesktop(context)
+              ? Border.all(color: Colors.white)
+              : null,
+        ),
+        child: Padding(
+          padding: EdgeInsets.only(
+              right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                width: width * 0.52,
+                child: Row(
+                  children: [
+                    Image.asset(
+                      Common.assetImages + "${"site1"}.png",
+                      width: Responsive.isDesktop(context)
+                          ? width * 0.05
+                          : width * 0.14,
+                    ),
+                    SizedBox(
+                      width: 10.0,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          siteName,
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontFamily: "Poppins",
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Text(
+                          sitelocation,
+                          style: TextStyle(
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w500,
                               fontFamily: "Poppins",
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Text(
-                            sitelocation,
-                            style: TextStyle(
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Poppins",
-                                color: Color(0xFF6E7191)),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                              color: Color(0xFF6E7191)),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-                Image.asset(
-                  Common.assetImages + "arrow.png",
-                  width: Responsive.isDesktop(context)
-                      ? width * 0.01
-                      : width * 0.04,
-                ),
-              ],
-            ),
+              ),
+              Image.asset(
+                Common.assetImages + "arrow.png",
+                width:
+                    Responsive.isDesktop(context) ? width * 0.01 : width * 0.04,
+              ),
+            ],
           ),
         ),
       ),
