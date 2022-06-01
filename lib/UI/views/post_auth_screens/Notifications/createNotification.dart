@@ -3,8 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:flutter/cupertino.dart';
@@ -108,7 +110,19 @@ class _CreateNotificationState extends State<CreateNotification> {
     // TODO: implement initState
     super.initState();
     fToast = FToast();
+    getData();
     fToast!.init(context);
+  }
+
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      allsitename.add(document.sitename);
+    }
   }
 
   String? title;
@@ -121,7 +135,10 @@ class _CreateNotificationState extends State<CreateNotification> {
     model.User user = Provider.of<UserProvider>(context).getUser;
 
     void _showSiteSelect() async {
-      final List _items = user.sites;
+      final List _items =
+          user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+              ? allsitename
+              : user.sites;
       for (var element in _items) {
         element = element.toString().replaceAll(" ", "");
       }

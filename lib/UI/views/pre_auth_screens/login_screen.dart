@@ -409,16 +409,11 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => (userRole == "TerminalUser" ||
-                          userRole == "TerminalManager")
-                      ? TerminalHome(
-                          sites: sites,
+                  builder: (context) => Responsive.isDesktop(context)
+                      ? HomeScreen(
+                          showdialog: true,
                         )
-                      : Responsive.isDesktop(context)
-                          ? HomeScreen(
-                              showdialog: true,
-                            )
-                          : BottomNav()));
+                      : BottomNav()));
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);

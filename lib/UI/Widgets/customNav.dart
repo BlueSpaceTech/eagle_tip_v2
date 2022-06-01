@@ -83,47 +83,57 @@ class _NavbarState extends State<Navbar> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: InkWell(
-                              onTap: () {
-                                (user.userRole == "TerminalManager" ||
-                                        user.userRole == "TerminalUser")
-                                    ? Navigator.pushReplacementNamed(
-                                        context, AppRoutes.terminalhome)
-                                    : Navigator.pushReplacementNamed(
-                                        context, AppRoutes.homeScreen);
-                                setState(() {
-                                  index = 0;
-                                });
-                              },
-                              child: Navtext(
-                                color: index == 0
-                                    ? Colors.white
-                                    : Color(0xFFA0A3BD),
-                                width: widget.width,
-                                text: "Home",
-                              ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(
+                                  context, AppRoutes.homeScreen);
+                              setState(() {
+                                index = 0;
+                              });
+                            },
+                            child: Navtext(
+                              color:
+                                  index == 0 ? Colors.white : Color(0xFFA0A3BD),
+                              width: widget.width,
+                              text: "Home",
                             ),
                           ),
-                          MouseRegion(
-                            cursor: SystemMouseCursors.click,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pushReplacementNamed(
-                                    context, AppRoutes.messagemain);
-                                setState(() {
-                                  index = 1;
-                                });
-                              },
-                              child: StreamBuilder(
-                                stream: FirebaseFirestore.instance
-                                    .collection("chats")
-                                    .where("between", arrayContainsAny: [
-                                  user.uid
-                                ]).snapshots(),
-                                builder: (context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushReplacementNamed(
+                                  context, AppRoutes.messagemain);
+                              setState(() {
+                                index = 1;
+                              });
+                            },
+                            child: StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection("chats")
+                                  .where("between",
+                                      arrayContainsAny: [user.uid]).snapshots(),
+                              builder: (context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.none) {
+                                  return Navtext(
+                                    color: index == 1
+                                        ? Colors.white
+                                        : Color(0xFFA0A3BD),
+                                    text: "Chatt",
+                                    width: widget.width,
+                                  );
+                                }
+                                // if (docs2.isEmpty) {
+                                //   return Navtext(
+                                //     color: index == 1
+                                //         ? Colors.white
+                                //         : Color(0xFFA0A3BD),
+                                //     text: "Chat",
+                                //     width: widget.width,
+                                //   );
+                                // }
+
+                                if (snapshot.hasData) {
                                   List docsss = snapshot.data!.docs;
                                   List docs2 = [];
                                   for (var ele in docsss) {
@@ -132,57 +142,36 @@ class _NavbarState extends State<Navbar> {
                                       docs2.add(ele);
                                     }
                                   }
-                                  // if (snapshot.connectionState ==
-                                  //     ConnectionState.none) {
-                                  //   return Navtext(
-                                  //     color: index == 1
-                                  //         ? Colors.white
-                                  //         : Color(0xFFA0A3BD),
-                                  //     text: "Chat",
-                                  //     width: widget.width,
-                                  //   );
-                                  // }
-                                  // if (docs2.isEmpty) {
-                                  //   return Navtext(
-                                  //     color: index == 1
-                                  //         ? Colors.white
-                                  //         : Color(0xFFA0A3BD),
-                                  //     text: "Chat",
-                                  //     width: widget.width,
-                                  //   );
-                                  // }
 
-                                  if (snapshot.hasData) {
-                                    return Badge(
-                                      showBadge: false,
-                                      badgeContent: Text(
-                                        // docs2.length.toString(),
-                                        "0",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      child: Navtext(
-                                        color: index == 1
-                                            ? Colors.white
-                                            : Color(0xFFA0A3BD),
-                                        text: "Chat",
-                                        width: widget.width,
-                                      ),
-                                      // );
-                                      // },
-                                    );
-                                  } else {
-                                    return Text("Chat",
-                                        style: TextStyle(
-                                            color: index == 2
-                                                ? Colors.white
-                                                : Color(0xFFA0A3BD),
-                                            // fontSize: Responsive.isDesktop(context) ? width * 0.01 : width * 0.02,
-                                            fontSize: widget.width * 0.01,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "Poppins"));
-                                  }
-                                },
-                              ),
+                                  return Badge(
+                                    showBadge: docs2.isNotEmpty,
+                                    badgeContent: Text(
+                                      docs2.length.toString(),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    child: Navtext(
+                                      color: index == 1
+                                          ? Colors.white
+                                          : Color(0xFFA0A3BD),
+                                      text: "Chat",
+                                      width: widget.width,
+                                    ),
+                                    // );
+                                    // },
+                                  );
+                                } else {
+                                  //   return
+                                  return Text("Chat",
+                                      style: TextStyle(
+                                          color: index == 2
+                                              ? Colors.white
+                                              : Color(0xFFA0A3BD),
+                                          // fontSize: Responsive.isDesktop(context) ? width * 0.01 : width * 0.02,
+                                          fontSize: widget.width * 0.01,
+                                          fontWeight: FontWeight.w500,
+                                          fontFamily: "Poppins"));
+                                }
+                              },
                             ),
                           ),
                           // ),
@@ -205,73 +194,77 @@ class _NavbarState extends State<Navbar> {
                                         .snapshots(),
                                     builder: (context,
                                         AsyncSnapshot<QuerySnapshot> snapshot) {
-                                      // if (snapshot.connectionState ==
-                                      //     ConnectionState.none) {
-                                      //   return Navtext(
-                                      //     color: index == 2
-                                      //         ? Colors.white
-                                      //         : Color(0xFFA0A3BD),
-                                      //     text: "Notifications",
-                                      //     width: widget.width,
-                                      //   );
-                                      // }
-                                      final documents = [];
-                                      final docs = snapshot.data!.docs;
-                                      // if (docs.isNotEmpty) {
-                                      //   for (var element in docs) {
-                                      //     List notify = element["isNew"];
-                                      //     List siites = element["sites"];
-                                      //     istrue() {
-                                      //       for (int i = 0;
-                                      //           i < user.sites.length;
-                                      //           i++) {
-                                      //         for (int j = 0;
-                                      //             j < siites.length;
-                                      //             j++) {
-                                      //           if (user.sites[i] ==
-                                      //               siites[j]) {
-                                      //             return true;
-                                      //           }
-                                      //         }
-                                      //       }
-                                      //       return false;
-                                      //     }
-
-                                      //     // print(siites);
-                                      //     // if(){}
-                                      //     if (!notify.contains(FirebaseAuth
-                                      //             .instance.currentUser!.uid) &&
-                                      //         istrue()) {
-                                      //       documents.add(element);
-                                      //     }
-                                      //   }
-                                      // }
-                                      // if (documents.isEmpty) {
-                                      //   return Navtext(
-                                      //     color: index == 2
-                                      //         ? Colors.white
-                                      //         : Color(0xFFA0A3BD),
-                                      //     text: "Notifications",
-                                      //     width: widget.width,
-                                      //   );
-                                      // }
-                                      return Badge(
-                                        showBadge: false,
-                                        badgeContent: Text(
-                                          // documents.length.toString(),
-                                          "0",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                        child: Navtext(
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Navtext(
                                           color: index == 2
                                               ? Colors.white
                                               : Color(0xFFA0A3BD),
                                           text: "Notifications",
                                           width: widget.width,
-                                        ),
+                                        );
+                                      }
+
+                                      if (snapshot.hasData) {
+                                        final documents = [];
+                                        final docs = snapshot.data!.docs;
+                                        if (docs.isNotEmpty) {
+                                          for (var element in docs) {
+                                            List notify = element["isNew"];
+                                            List siites = element["sites"];
+                                            istrue() {
+                                              for (int i = 0;
+                                                  i < user.sites.length;
+                                                  i++) {
+                                                for (int j = 0;
+                                                    j < siites.length;
+                                                    j++) {
+                                                  if (user.sites[i] ==
+                                                      siites[j]) {
+                                                    return true;
+                                                  }
+                                                }
+                                              }
+                                              return false;
+                                            }
+
+                                            // print(siites);
+                                            // if(){}
+                                            if (!notify.contains(FirebaseAuth
+                                                    .instance
+                                                    .currentUser!
+                                                    .uid) &&
+                                                istrue()) {
+                                              documents.add(element);
+                                            }
+                                          }
+                                        }
+                                        return Badge(
+                                          showBadge: documents.isEmpty,
+                                          badgeContent: Text(
+                                            documents.length.toString(),
+                                            // "0",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          child: Navtext(
+                                            color: index == 2
+                                                ? Colors.white
+                                                : Color(0xFFA0A3BD),
+                                            text: "Notifications",
+                                            width: widget.width,
+                                          ),
+                                        );
+                                      }
+                                      return Navtext(
+                                        color: index == 2
+                                            ? Colors.white
+                                            : Color(0xFFA0A3BD),
+                                        text: "Notifications",
+                                        width: widget.width,
                                       );
                                     })),
-                          ),
+                          )
                         ],
                       ),
                     ),

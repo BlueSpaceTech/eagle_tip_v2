@@ -385,79 +385,88 @@ class _HomeScreenState extends State<HomeScreen> {
                               SizedBox(
                                 height: height * 0.05,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {},
-                                        child: Text(
-                                          user.currentsite,
+                              Visibility(
+                                visible: user.userRole != "AppAdmin" &&
+                                    user.userRole != "SuperAdmin",
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {},
+                                          child: Text(
+                                            user.currentsite,
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 17.0,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                        ),
+                                        Text(
+                                          getsiteloc(user.currentsite),
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 17.0,
-                                              fontWeight: FontWeight.w400,
+                                              color: Color(0xFF6E7191),
+                                              fontSize: 13.0,
+                                              fontWeight: FontWeight.w500,
                                               fontFamily: "Poppins"),
                                         ),
-                                      ),
-                                      Text(
-                                        getsiteloc(user.currentsite),
-                                        style: TextStyle(
-                                            color: Color(0xFF6E7191),
-                                            fontSize: 13.0,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "Poppins"),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 30.0,
-                                  ),
-                                  Text(
-                                    getsiteID(user.currentsite),
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 17.0,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: 30.0,
+                                    ),
+                                    Text(
+                                      getsiteID(user.currentsite),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 17.0,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: height * 0.05,
                               ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SiteDetails(
-                                          sitedetail:
-                                              sendsitedetails(user.currentsite),
-                                        ),
-                                      ));
-                                },
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset(
-                                      Common.assetImages + "Ellipse 49.png",
-                                      width: width * 0.15,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.069,
-                                      child: Text(
-                                        "Submit Inventories",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: width * 0.0135,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                            fontFamily: "Poppins"),
+                              Visibility(
+                                visible: user.userRole == "SiteOwner" ||
+                                    user.userRole == "SiteMananger" ||
+                                    user.userRole == "SiteUser",
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SiteDetails(
+                                            sitedetail: sendsitedetails(
+                                                user.currentsite),
+                                          ),
+                                        ));
+                                  },
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Image.asset(
+                                        Common.assetImages + "Ellipse 49.png",
+                                        width: width * 0.15,
                                       ),
-                                    ),
-                                  ],
+                                      SizedBox(
+                                        width: width * 0.069,
+                                        child: Text(
+                                          "Submit Inventories",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: width * 0.0135,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(
@@ -487,10 +496,42 @@ class _HomeScreenState extends State<HomeScreen> {
                                   },
                                   child: SiteContainer(
                                       width: width,
-                                      text: "Edit Users",
+                                      text: "Edit Employees",
                                       height: height),
                                 ),
-                              )
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Visibility(
+                                visible: user.userRole != "SiteUser",
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, AppRoutes.notifications);
+                                  },
+                                  child: SiteContainer(
+                                      width: width,
+                                      text: "Create Notifications",
+                                      height: height),
+                                ),
+                              ),
+                              SizedBox(
+                                height: height * 0.02,
+                              ),
+                              Visibility(
+                                visible: user.userRole == "SuperAdmin" ||
+                                    user.userRole == "AppAdmin" ||
+                                    user.userRole == "TerminalManager" ||
+                                    user.userRole == "TerminalUser",
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: SiteContainer(
+                                      width: width,
+                                      text: "Create Report",
+                                      height: height),
+                                ),
+                              ),
                             ],
                           ),
                           /*
@@ -551,37 +592,42 @@ class _HomeScreenState extends State<HomeScreen> {
                             SizedBox(
                               height: height * 0.05,
                             ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SiteDetails(
-                                        sitedetail:
-                                            sendsitedetails(user.currentsite),
-                                      ),
-                                    ));
-                              },
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Image.asset(
-                                    Common.assetImages + "Ellipse 49.png",
-                                    width: width * 0.7,
-                                  ),
-                                  SizedBox(
-                                    width: width * 0.4,
-                                    child: Text(
-                                      "Submit   Inventories",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 34.0,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontFamily: "Poppins"),
+                            Visibility(
+                              visible: user.userRole == "SiteOwner" ||
+                                  user.userRole == "SiteMananger" ||
+                                  user.userRole == "SiteUser",
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SiteDetails(
+                                          sitedetail:
+                                              sendsitedetails(user.currentsite),
+                                        ),
+                                      ));
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Image.asset(
+                                      Common.assetImages + "Ellipse 49.png",
+                                      width: width * 0.7,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(
+                                      width: width * 0.4,
+                                      child: Text(
+                                        "Submit   Inventories",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 34.0,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             SizedBox(
@@ -614,7 +660,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                     text: "Edit Employees",
                                     height: height),
                               ),
-                            )
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            Visibility(
+                              visible: user.userRole != "SiteUser",
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, AppRoutes.notifications);
+                                },
+                                child: SiteContainer(
+                                    width: width,
+                                    text: "Create Notifications",
+                                    height: height),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.02,
+                            ),
+                            Visibility(
+                              visible: user.userRole == "SuperAdmin" ||
+                                  user.userRole == "AppAdmin" ||
+                                  user.userRole == "TerminalManager" ||
+                                  user.userRole == "TerminalUser",
+                              child: InkWell(
+                                onTap: () {},
+                                child: SiteContainer(
+                                    width: width,
+                                    text: "Create Report",
+                                    height: height),
+                              ),
+                            ),
                           ],
                         ),
                       ),
