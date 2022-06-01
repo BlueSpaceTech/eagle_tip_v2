@@ -86,7 +86,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
         .then((QuerySnapshot querySnapshot) {
           if (querySnapshot.docs.isNotEmpty) {
             setState(() {
-              chatDocId = querySnapshot.docs.single.id;
+              chatId = querySnapshot.docs.single.id;
             });
           } else {
             chat.add({
