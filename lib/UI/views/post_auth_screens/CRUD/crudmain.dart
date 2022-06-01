@@ -361,14 +361,20 @@ class _CrudScreenState extends State<CrudScreen> {
   List _resultList = [];
   TextEditingController _search = TextEditingController();
 
-  getUserdetails(List sites, String uid) async {
-    var data = await FirebaseFirestore.instance
-        .collection("users")
-        .where("isverified", isEqualTo: true)
-        .where("sites", arrayContainsAny: sites)
-        .where("uid", isNotEqualTo: uid)
-        // .where("userRole", whereIn: CrudFunction().visibleRole(user))
-        .get();
+  getUserdetails(List sites, String uid, model.User user) async {
+    var data;
+    userRole == "AppAdmin" || userRole == "SuperAdmin"
+        ? data = await FirebaseFirestore.instance
+            .collection("users")
+            .where("uid", isNotEqualTo: uid)
+            .where("userRole", whereIn: CrudFunction().visibleRole(user))
+            .get()
+        : data = await FirebaseFirestore.instance
+            .collection("users")
+            .where("sites", arrayContainsAny: sites)
+            .where("uid", isNotEqualTo: uid)
+            .where("userRole", whereIn: CrudFunction().visibleRole(user))
+            .get();
     if (mounted) {
       setState(() {
         _allResults = data.docs;
@@ -407,7 +413,7 @@ class _CrudScreenState extends State<CrudScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites, user.uid);
+    resultsloaded = getUserdetails(user.sites, user.uid, user);
     super.didChangeDependencies();
   }
 
