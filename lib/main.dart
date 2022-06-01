@@ -106,34 +106,6 @@ class MyApp extends StatelessWidget {
     // configureCognitoPlugin();
   }
 
-  Future<void> configureCognitoPlugin() async {
-    AmplifyAuthCognito authPlugin = AmplifyAuthCognito();
-    AmplifyStorageS3 storagePlugin = AmplifyStorageS3();
-
-    await Amplify.addPlugins([authPlugin, storagePlugin]);
-
-    // try {
-    //   await Amplify.configure(amplifyconfig);
-    // } on AmplifyAlreadyConfiguredException {
-    //   print(
-    //       "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-    // }
-
-    Amplify.Hub.listen([HubChannel.Auth], (hubEvent) {
-      switch (hubEvent.eventName) {
-        case "SIGNED_IN":
-          print("USER IS SIGNED IN");
-          break;
-        case "SIGNED_OUT":
-          print("USER IS SIGNED OUT");
-          break;
-        case "SESSION_EXPIRED":
-          print("USER IS SIGNED IN");
-          break;
-      }
-    });
-  }
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

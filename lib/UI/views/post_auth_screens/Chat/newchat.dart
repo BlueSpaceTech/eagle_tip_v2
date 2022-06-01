@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -315,114 +317,131 @@ class _NewChatScreenState extends State<NewChatScreen> {
                         return Container(
                           height: height * 0.5,
                           color: Color(0xff3F4850),
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: height * 0.03,
-                              ),
-                              Text(
-                                "Choose another site",
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                    fontSize: 18),
-                              ),
-                              SizedBox(
-                                height: height * 0.05,
-                              ),
-                              ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                shrinkWrap: true,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: width * 0.08),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        FirebaseFirestore.instance
-                                            .collection('users')
-                                            .doc(user.uid)
-                                            .update({
-                                          'currentsite':
-                                              getsitesdescrp(user.sites)[index]
+                          child: SingleChildScrollView(
+                            child: SizedBox(
+                              // height: height * 0.48,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: height * 0.03,
+                                  ),
+                                  Text(
+                                    "Choose another site",
+                                    style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize: 18),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.05,
+                                  ),
+                                  ListView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: width * 0.08),
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            FirebaseFirestore.instance
+                                                .collection('users')
+                                                .doc(user.uid)
+                                                .update({
+                                              'currentsite': getsitesdescrp(
+                                                      user.sites)[index]
                                                   .sitename
-                                        });
-                                        adddata();
-                                        fToast!.showToast(
-                                          child: ToastMessage().show(
-                                              width, context, "Site Updated"),
-                                          gravity: ToastGravity.BOTTOM,
-                                          toastDuration: Duration(seconds: 3),
-                                        );
-                                      });
-                                    },
-                                    child: Padding(
-                                      padding: EdgeInsets.only(bottom: 14.0),
-                                      child: Container(
-                                        width: width * 0.9,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Container(
-                                              child: Row(
-                                                children: [
-                                                  Image.asset(
-                                                    Common.assetImages +
-                                                        "site1.png",
-                                                    width: Responsive.isDesktop(
-                                                            context)
-                                                        ? width * 0.06
-                                                        : width * 0.14,
-                                                  ),
-                                                  SizedBox(
-                                                    width: 10.0,
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
+                                            });
+                                            adddata();
+                                            fToast!.showToast(
+                                              child: ToastMessage().show(width,
+                                                  context, "Site Updated"),
+                                              gravity: ToastGravity.BOTTOM,
+                                              toastDuration:
+                                                  Duration(seconds: 3),
+                                            );
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsets.only(bottom: 14.0),
+                                          child: Container(
+                                            width: width * 0.9,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  child: Row(
                                                     children: [
-                                                      Text(
-                                                        getsitesdescrp(user
-                                                                .sites)[index]
-                                                            .sitename,
-                                                        style: TextStyle(
-                                                          fontSize: 17.0,
-                                                          fontFamily: "Poppins",
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
+                                                      Image.asset(
+                                                        Common.assetImages +
+                                                            "site1.png",
+                                                        width: Responsive
+                                                                .isDesktop(
+                                                                    context)
+                                                            ? width * 0.06
+                                                            : width * 0.14,
                                                       ),
-                                                      Text(
-                                                        getsitesdescrp(user
-                                                                .sites)[index]
-                                                            .sitelocation,
-                                                        style: TextStyle(
-                                                            fontSize: 13.0,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontFamily:
-                                                                "Poppins",
-                                                            color: Color(
-                                                                0xFFd9dbe9)),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Text(
+                                                            getsitesdescrp(user
+                                                                        .sites)[
+                                                                    index]
+                                                                .sitename,
+                                                            style: TextStyle(
+                                                              fontSize: 17.0,
+                                                              fontFamily:
+                                                                  "Poppins",
+                                                              color:
+                                                                  Colors.white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                          ),
+                                                          Text(
+                                                            getsitesdescrp(user
+                                                                        .sites)[
+                                                                    index]
+                                                                .sitelocation,
+                                                            style: TextStyle(
+                                                                fontSize: 13.0,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontFamily:
+                                                                    "Poppins",
+                                                                color: Color(
+                                                                    0xFFd9dbe9)),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                itemCount: getsitesdescrp(user.sites).length,
+                                      );
+                                    },
+                                    itemCount:
+                                        getsitesdescrp(user.sites).length,
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         );
                       },

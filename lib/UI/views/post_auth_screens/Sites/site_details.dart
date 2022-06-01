@@ -445,8 +445,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     with TickerProviderStateMixin {
   AnimationController? _controller;
   bool? isTapped = false;
-  String date = DateFormat('yyyy-MM-dd').format(
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
+  String date = DateTime.now().toString();
 
   // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   // playLocal() async {
@@ -546,8 +545,6 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     for (int i = 0; i < len; i++) {
       data.add({
         "amount": vals[i],
-        "fueltype":
-            tanktype(int.parse(widget.sitedetail.products[i]["TANK_SIZE"])),
         "tanknumber": i + 1,
         "tankid": widget.sitedetail.products[i]["PRDNO"],
       });
@@ -670,8 +667,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 ),
                               ),
                               Text(
-                                tanktype(int.parse(widget.sitedetail.products[i]
-                                    ["TANK_SIZE"])),
+                                widget.sitedetail.products[i]["PRDNO"],
                                 style: TextStyle(
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.bold,

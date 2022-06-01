@@ -71,7 +71,7 @@ class ParticularRequest extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Inventory Resquest: $orderid",
+                                  "Inventory Request: $orderid",
                                   style: TextStyle(
                                     fontSize: width * 0.013,
                                     color: Colors.white,
@@ -272,8 +272,7 @@ class Tankss extends StatelessWidget {
           },
           itemBuilder: (context, index) {
             return TankDet(
-              tankDet:
-                  "Tank ${tanksdata[index]["tanknumber"]}: ${tanksdata[index]["fueltype"]}",
+              tankDet: "Tank ${tanksdata[index]["tanknumber"]}",
               productID: "${tanksdata[index]["tankid"]}",
               requestedAmount: "${tanksdata[index]["amount"]}",
             );
