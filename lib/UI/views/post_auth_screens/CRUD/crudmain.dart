@@ -15,7 +15,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
-import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserSites.dart';
+
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -722,12 +722,12 @@ class _CrudScreenState extends State<CrudScreen> {
                                       Wrap(
                                         children: [
                                           user.userRole == "AppAdmin" ||
-                                                  user.userRole ==
-                                                      "SuperAdmin" ||
-                                                  user.userRole ==
-                                                      "TerminalManager" ||
-                                                  user.userRole ==
-                                                      "TerminalUser"
+                                                  user.userRole == "SuperAdmin"
+                                              //     ||
+                                              // user.userRole ==
+                                              //     "TerminalManager" ||
+                                              // user.userRole ==
+                                              //     "TerminalUser"
                                               ? Wrap(
                                                   runSpacing: 10,
                                                   children:
@@ -738,12 +738,12 @@ class _CrudScreenState extends State<CrudScreen> {
                                                       _buildall(user.sites),
                                                 ),
                                           user.userRole == "AppAdmin" ||
-                                                  user.userRole ==
-                                                      "SuperAdmin" ||
-                                                  user.userRole ==
-                                                      "TerminalManager" ||
-                                                  user.userRole ==
-                                                      "TerminalUser"
+                                                  user.userRole == "SuperAdmin"
+                                              //      ||
+                                              // user.userRole ==
+                                              //     "TerminalManager" ||
+                                              // user.userRole ==
+                                              //     "TerminalUser"
                                               ? Wrap(
                                                   runSpacing: 10,
                                                   children: _buildsiteschip(

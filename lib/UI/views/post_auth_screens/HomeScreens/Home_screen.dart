@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   sendsitedetails(String currentsite) {
-    late SitesDetails sitedetail;
+    SitesDetails? sitedetail;
     sitedetails!.forEach((element) {
       if (element.sitename == currentsite) {
         sitedetail = element;
@@ -553,10 +553,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             InkWell(
                               onTap: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  AppRoutes.siteDetails,
-                                );
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SiteDetails(
+                                        sitedetail:
+                                            sendsitedetails(user.currentsite),
+                                      ),
+                                    ));
                               },
                               child: Stack(
                                 alignment: Alignment.center,

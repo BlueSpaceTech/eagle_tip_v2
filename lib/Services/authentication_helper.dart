@@ -29,7 +29,11 @@ class AuthFunctions with ChangeNotifier {
   //fetch user
   Future<Model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
+    currentUser.reload();
+    currentUser = _auth.currentUser!;
+
     DocumentSnapshot? snapp;
+
     try {
       snapp = await _firestore
           .collection("users")

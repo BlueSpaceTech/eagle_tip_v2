@@ -227,19 +227,19 @@ class _NotificationsState extends State<Notifications> {
                                             user.currentsite,
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 17.0,
+                                                fontSize: 19.0,
                                                 fontWeight: FontWeight.w400,
                                                 fontFamily: "Poppins"),
                                           ),
                                         ),
-                                        Text(
-                                          getsiteloc(user.currentsite),
-                                          style: TextStyle(
-                                              color: Color(0xFF6E7191),
-                                              fontSize: 13.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins"),
-                                        ),
+                                        // Text(
+                                        //   "getsiteloc(user.currentsite)",
+                                        //   style: TextStyle(
+                                        //       color: Color(0xFF6E7191),
+                                        //       fontSize: 13.0,
+                                        //       fontWeight: FontWeight.w500,
+                                        //       fontFamily: "Poppins"),
+                                        // ),
                                       ],
                                     ),
                                   ],

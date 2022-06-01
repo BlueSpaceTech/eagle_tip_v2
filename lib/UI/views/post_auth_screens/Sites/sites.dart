@@ -1,24 +1,64 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:provider/provider.dart';
+import 'package:testttttt/Models/sites.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
-class Sites extends StatelessWidget {
+class Sites extends StatefulWidget {
   Sites({Key? key}) : super(key: key);
 
+  @override
+  State<Sites> createState() => _SitesState();
+}
+
+class _SitesState extends State<Sites> {
   List siteImg = ["site1", "site2"];
+
   List siteImgDesk = ["site11", "site21"];
+
   List siteName = ["Acres Marathon", "Akron Marathon"];
+
   List sitelocation = ["Tampa,FL", "Leesburg,FL"];
+  List<SitesDetails>? sitedetails;
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+  }
+
+  getsitesdescrp(List sites) {
+    List<SitesDetails> sitedesc = [];
+    sitedetails!.forEach((element) {
+      for (var site in sites) {
+        if (element.sitename == site) {
+          sitedesc.add(element);
+        }
+      }
+    });
+    return sitedesc;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -72,12 +112,48 @@ class Sites extends StatelessWidget {
                                           : FontWeight.bold,
                                       fontFamily: "Poppins"),
                                 ),
-                                SiteList(
-                                    height: height,
-                                    width: width,
-                                    siteImg: siteImgDesk,
-                                    siteName: siteName,
-                                    sitelocation: sitelocation),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: Responsive.isDesktop(context)
+                                          ? height * 0.03
+                                          : 0.0),
+                                  child: Container(
+                                    height: Responsive.isDesktop(context)
+                                        ? height * 0.6
+                                        : height * 0.5,
+                                    child: ListView.builder(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      SiteDetails(
+                                                    sitedetail: getsitesdescrp(
+                                                        user.sites)[index],
+                                                  ),
+                                                ));
+                                          },
+                                          child: SiteDet(
+                                              width: width,
+                                              height: height,
+                                              index: index,
+                                              siteName: getsitesdescrp(
+                                                      user.sites)[index]
+                                                  .sitename,
+                                              sitelocation: getsitesdescrp(
+                                                      user.sites)[index]
+                                                  .sitelocation),
+                                        );
+                                      },
+                                      itemCount:
+                                          getsitesdescrp(user.sites).length,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -100,12 +176,29 @@ class Sites extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                             fontFamily: "Poppins"),
                       ),
-                      SiteList(
-                          height: height,
-                          width: width,
-                          siteImg: siteImg,
-                          siteName: siteName,
-                          sitelocation: sitelocation),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: Responsive.isDesktop(context)
+                                ? height * 0.03
+                                : 0.0),
+                        child: Container(
+                          height: Responsive.isDesktop(context)
+                              ? height * 0.6
+                              : height * 0.5,
+                          child: ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return SiteDet(
+                                  width: width,
+                                  height: height,
+                                  index: index,
+                                  siteName: "",
+                                  sitelocation: "sitelocation");
+                            },
+                            itemCount: siteImg.length,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
           ),
@@ -115,64 +208,63 @@ class Sites extends StatelessWidget {
   }
 }
 
-class SiteList extends StatelessWidget {
-  const SiteList({
-    Key? key,
-    required this.height,
-    required this.width,
-    required this.siteImg,
-    required this.siteName,
-    required this.sitelocation,
-  }) : super(key: key);
+// class SiteList extends StatelessWidget {
+//   const SiteList({
+//     Key? key,
+//     required this.height,
+//     required this.width,
+//     required this.siteImg,
+//     required this.siteName,
+//     required this.sitelocation,
+//   }) : super(key: key);
 
-  final double height;
-  final double width;
-  final List siteImg;
-  final List siteName;
-  final List sitelocation;
+//   final double height;
+//   final double width;
+//   final List siteImg;
+//   final List siteName;
+//   final List sitelocation;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: Responsive.isDesktop(context) ? height * 0.03 : 0.0),
-      child: Container(
-        height: Responsive.isDesktop(context) ? height * 0.6 : height * 0.5,
-        child: ListView.builder(
-          physics: NeverScrollableScrollPhysics(),
-          itemBuilder: (BuildContext context, int index) {
-            return SiteDet(
-                width: width,
-                siteImg: siteImg,
-                height: height,
-                index: index,
-                siteName: siteName,
-                sitelocation: sitelocation);
-          },
-          itemCount: siteImg.length,
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.only(
+//           top: Responsive.isDesktop(context) ? height * 0.03 : 0.0),
+//       child: Container(
+//         height: Responsive.isDesktop(context) ? height * 0.6 : height * 0.5,
+//         child: ListView.builder(
+//           physics: NeverScrollableScrollPhysics(),
+//           itemBuilder: (BuildContext context, int index) {
+//             return SiteDet(
+//                 width: width,
+//                 siteImg: siteImg,
+//                 height: height,
+//                 index: index,
+//                 siteName: siteName,
+//                 sitelocation: sitelocation);
+//           },
+//           itemCount: siteImg.length,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class SiteDet extends StatelessWidget {
   const SiteDet({
     Key? key,
     required this.index,
     required this.width,
-    required this.siteImg,
     required this.height,
     required this.siteName,
     required this.sitelocation,
   }) : super(key: key);
 
   final double width;
-  final List siteImg;
-  final List siteName;
+
+  final String siteName;
   final int index;
   final double height;
-  final List sitelocation;
+  final String sitelocation;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +295,7 @@ class SiteDet extends StatelessWidget {
                   child: Row(
                     children: [
                       Image.asset(
-                        Common.assetImages + "${siteImg[index]}.png",
+                        Common.assetImages + "${"site1"}.png",
                         width: Responsive.isDesktop(context)
                             ? width * 0.05
                             : width * 0.14,
@@ -215,7 +307,7 @@ class SiteDet extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            siteName[index],
+                            siteName,
                             style: TextStyle(
                               fontSize: 17.0,
                               fontFamily: "Poppins",
@@ -224,7 +316,7 @@ class SiteDet extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            sitelocation[index],
+                            sitelocation,
                             style: TextStyle(
                                 fontSize: 13.0,
                                 fontWeight: FontWeight.w500,

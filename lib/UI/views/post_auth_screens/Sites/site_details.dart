@@ -17,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:simple_s3/simple_s3.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
@@ -35,17 +36,22 @@ import '../../../../Providers/user_provider.dart';
 class SiteDetails extends StatelessWidget {
   SiteDetails({Key? key, required this.sitedetail}) : super(key: key);
   SitesDetails sitedetail;
+
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     return Responsive(
       mobile: MobileSiteDet(
         sitedetail: sitedetail,
+        currentsite: user.currentsite,
       ),
       tablet: MobileSiteDet(
         sitedetail: sitedetail,
+        currentsite: user.currentsite,
       ),
       desktop: MobileSiteDet(
         sitedetail: sitedetail,
+        currentsite: user.currentsite,
       ),
     );
   }
@@ -54,8 +60,10 @@ class SiteDetails extends StatelessWidget {
 class MobileSiteDet extends StatefulWidget {
   final String? restorationId = "";
 
-  MobileSiteDet({Key? key, required this.sitedetail}) : super(key: key);
+  MobileSiteDet({Key? key, required this.sitedetail, required this.currentsite})
+      : super(key: key);
   SitesDetails sitedetail;
+  String currentsite;
 
   @override
   State<MobileSiteDet> createState() => _MobileSiteDetState();
@@ -63,6 +71,27 @@ class MobileSiteDet extends StatefulWidget {
 
 class _MobileSiteDetState extends State<MobileSiteDet> {
   bool? reqSent = false;
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+  String siteId = "";
+  SitesDetails? sitedetail;
+  getData(String currentsite) async {
+    sitedetails = await SiteCall().getSites();
+    sitedetails!.forEach((element) {
+      if (element.sitename == currentsite) {
+        setState(() {
+          sitedetail = element;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // getData(widget.currentsite);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +182,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                 Column(
                                   children: [
                                     Text(
-                                      widget.sitedetail.products[0]["PRDNO"],
+                                      "Tanks",
                                       style: TextStyle(
                                           fontSize: width * 0.012,
                                           fontWeight: FontWeight.w500,
@@ -414,7 +443,7 @@ class FuelReqColumn extends StatefulWidget {
 
 class _FuelReqColumnState extends State<FuelReqColumn>
     with TickerProviderStateMixin {
-  late final AnimationController _controller;
+  AnimationController? _controller;
   bool? isTapped = false;
   String date = DateFormat('yyyy-MM-dd').format(
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
@@ -447,15 +476,26 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.sitedetail.products);
     _controller = AnimationController(vsync: this);
     fuelvals(widget.sitedetail.products.length);
   }
+
+  // sendsitedetails(String currentsite) {
+  //   SitesDetails? sitedetail;
+  //   sitedetails!.forEach((element) {
+  //     if (element.sitename == currentsite) {
+  //       sitedetail = element;
+  //     }
+  //   });
+  //   return sitedetail;
+  // }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
+    _controller!.dispose();
   }
 
   String? fuelVal = "0";
@@ -469,7 +509,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   }
 
   String tanktype(int max) {
-    late String type;
+    String? type;
     switch (max) {
       case 6000:
         type = "Regular";
@@ -484,7 +524,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         type = "ULSD";
         break;
     }
-    return type;
+    return type!;
   }
 
   List sftpdata(int len) {
@@ -548,8 +588,6 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                   max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
                   height: widget.height,
                   tankType: "Tank: " +
-                      tanktype(int.parse(
-                          widget.sitedetail.products[i]["TANK_SIZE"])) +
                       widget.sitedetail.products[i]["PRDNO"] +
                       " Max " +
                       widget.sitedetail.products[i]["TANK_SIZE"],
@@ -740,7 +778,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                             'assets/tick_animation.json',
                                             repeat: false,
                                             onLoaded: (composition) {
-                                              _controller.duration =
+                                              _controller!.duration =
                                                   Duration(seconds: 1);
                                               // playLocal();
                                             },

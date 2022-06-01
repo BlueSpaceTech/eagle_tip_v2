@@ -28,6 +28,7 @@ import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dar
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/employer_code.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/loading.dart';
 import 'package:testttttt/UI/views/pre_auth_screens/phone_verification.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';

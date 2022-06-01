@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 // import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
+import 'package:testttttt/Services/site_call.dart';
 // import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
@@ -30,6 +31,8 @@ import 'package:testttttt/Models/user.dart' as model;
 import 'package:testttttt/Utils/InviteCSV.dart';
 import 'package:universal_html/html.dart';
 
+import '../../../../../../Models/sites.dart';
+
 class AddNewUserByOwner extends StatefulWidget {
   AddNewUserByOwner({Key? key}) : super(key: key);
 
@@ -45,6 +48,17 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
   String selectedrOLE = "";
 
   List<dynamic> selectedsites = [];
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      allsitename.add(document.sitename);
+    }
+    print(allsitename);
+  }
 
   _buildsiteschip(List site) {
     bool issel = false;
@@ -168,6 +182,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
     fToast = FToast();
     fToast!.init(context);
     file = FirebaseStorage.instance.ref('/Templates').list();
+    getData();
   }
 
   List inviteData = [];
@@ -375,14 +390,32 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                         ),
                       ),
                       */
-                      Row(
+                      Wrap(
                         children: [
-                          Wrap(
-                            children: _buildall(sites),
-                          ),
-                          Wrap(
-                            children: _buildsiteschip(sites),
-                          ),
+                          user.userRole == "AppAdmin" ||
+                                  user.userRole == "SuperAdmin"
+                              // ||
+                              // user.userRole == "TerminalManager" ||
+                              // user.userRole == "TerminalUser"
+                              ? Wrap(
+                                  runSpacing: 10,
+                                  children: _buildall(allsitename),
+                                )
+                              : Wrap(
+                                  children: _buildall(sites),
+                                ),
+                          user.userRole == "AppAdmin" ||
+                                  user.userRole == "SuperAdmin"
+                              // ||
+                              // user.userRole == "TerminalManager" ||
+                              // user.userRole == "TerminalUser"
+                              ? Wrap(
+                                  runSpacing: 10,
+                                  children: _buildsiteschip(allsitename),
+                                )
+                              : Wrap(
+                                  children: _buildsiteschip(sites),
+                                ),
                         ],
                       ),
 

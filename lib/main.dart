@@ -21,7 +21,7 @@ import 'package:testttttt/UI/views/on-borading-tour/tour4.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour5.dart';
 import 'package:testttttt/UI/views/on-borading-tour/webuser/final_tour_web.dart';
 import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
-import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Manager/addUserManager.dart';
+
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/invitation.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
@@ -79,7 +79,6 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'package:provider/provider.dart';
 import 'package:testttttt/Utils/InviteCSV.dart';
-import 'package:testttttt/amplifyconfiguration.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,7 +103,7 @@ class MyApp extends StatelessWidget {
 
   @override
   void initState() {
-    configureCognitoPlugin();
+    // configureCognitoPlugin();
   }
 
   Future<void> configureCognitoPlugin() async {
@@ -113,12 +112,12 @@ class MyApp extends StatelessWidget {
 
     await Amplify.addPlugins([authPlugin, storagePlugin]);
 
-    try {
-      await Amplify.configure(amplifyconfig);
-    } on AmplifyAlreadyConfiguredException {
-      print(
-          "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
-    }
+    // try {
+    //   await Amplify.configure(amplifyconfig);
+    // } on AmplifyAlreadyConfiguredException {
+    //   print(
+    //       "Tried to reconfigure Amplify; this can occur when your app restarts on Android.");
+    // }
 
     Amplify.Hub.listen([HubChannel.Auth], (hubEvent) {
       switch (hubEvent.eventName) {
@@ -153,7 +152,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Color(0xff2B343B),
         ),
         // initialRoute: AppRoutes.sentto,
-        home: DecidingScreen(),
+        home: AuthHandling(),
         routes: {
           AppRoutes.dateRange: (context) => DateSelector(),
           // AppRoutes.test:(context)=>OpenCSV(),
@@ -184,7 +183,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.ticketHistory: (context) => TicketHistory(),
           AppRoutes.myProfile: (context) => MyProfile(),
           AppRoutes.siteScreen: (context) => Sites(),
-          // AppRoutes.siteDetails: (context) => SiteDetails(),
+          //AppRoutes.siteDetails: (context) => SiteDetails(),
           AppRoutes.desktopSetting: (context) => DesktopSetting(),
           AppRoutes.displayTerms: (context) => DisplayTerms(),
           // AppRoutes.settings: (context) => Settings(),
@@ -198,7 +197,6 @@ class MyApp extends StatelessWidget {
                 index: 0,
               ),
           AppRoutes.addUserOwner: (context) => AddNewUserByOwner(),
-          AppRoutes.addUserManager: (context) => AddUserByManager(),
 
           AppRoutes.newchat: (context) => NewChatScreen(),
           // AppRoutes.chattingscreen: (context) => ChatScreenn(),
