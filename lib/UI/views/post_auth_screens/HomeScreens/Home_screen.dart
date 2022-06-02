@@ -433,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               Visibility(
                                 visible: user.userRole == "SiteOwner" ||
-                                    user.userRole == "SiteMananger" ||
+                                    user.userRole == "SiteManager" ||
                                     user.userRole == "SiteUser",
                                 child: InkWell(
                                   onTap: () {
@@ -594,7 +594,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             Visibility(
                               visible: user.userRole == "SiteOwner" ||
-                                  user.userRole == "SiteMananger" ||
+                                  user.userRole == "SiteManager" ||
                                   user.userRole == "SiteUser",
                               child: InkWell(
                                 onTap: () {
