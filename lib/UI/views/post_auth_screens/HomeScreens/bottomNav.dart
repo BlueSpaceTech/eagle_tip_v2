@@ -110,32 +110,32 @@ class _BottomNavState extends State<BottomNav> {
                     // .where("isNew", ar: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  final documents = [];
-                  final docs = snapshot.data!.docs;
-                  if (docs.isNotEmpty) {
-                    for (var element in docs) {
-                      List notify = element["isNew"];
+                  if (snapshot.hasData) {
+                    final documents = [];
+                    final docs = snapshot.data!.docs;
+                    if (docs.isNotEmpty) {
+                      for (var element in docs) {
+                        List notify = element["isNew"];
 
-                      if (!notify
-                          .contains(FirebaseAuth.instance.currentUser!.uid)) {
-                        documents.add(element);
+                        if (!notify
+                            .contains(FirebaseAuth.instance.currentUser!.uid)) {
+                          documents.add(element);
+                        }
                       }
                     }
+                    return Badge(
+                      showBadge: documents.isEmpty ? false : true,
+                      badgeContent: Text(
+                        documents.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: Image.asset(
+                        Common.assetImages + "activeNotification.png",
+                        width: width * 0.05,
+                      ),
+                    );
                   }
-                  if (!snapshot.hasData) {
-                    return SizedBox();
-                  }
-                  return Badge(
-                    showBadge: documents.isEmpty ? false : true,
-                    badgeContent: Text(
-                      documents.length.toString(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    child: Image.asset(
-                      Common.assetImages + "activeNotification.png",
-                      width: width * 0.05,
-                    ),
-                  );
+                  return Container();
                 }),
             icon: StreamBuilder(
                 stream: FirebaseFirestore.instance
@@ -146,30 +146,31 @@ class _BottomNavState extends State<BottomNav> {
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   final documents = [];
                   final docs = snapshot.data!.docs;
-                  if (docs.isNotEmpty) {
-                    for (var element in docs) {
-                      List notify = element["isNew"];
 
-                      if (!notify
-                          .contains(FirebaseAuth.instance.currentUser!.uid)) {
-                        documents.add(element);
+                  if (snapshot.hasData) {
+                    if (docs.isNotEmpty) {
+                      for (var element in docs) {
+                        List notify = element["isNew"];
+
+                        if (!notify
+                            .contains(FirebaseAuth.instance.currentUser!.uid)) {
+                          documents.add(element);
+                        }
                       }
                     }
+                    return Badge(
+                      showBadge: documents.isEmpty ? false : true,
+                      badgeContent: Text(
+                        documents.length.toString(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      child: Image.asset(
+                        Common.assetImages + "Group 308.png",
+                        width: width * 0.05,
+                      ),
+                    );
                   }
-                  if (!snapshot.hasData) {
-                    return SizedBox();
-                  }
-                  return Badge(
-                    showBadge: documents.isEmpty ? false : true,
-                    badgeContent: Text(
-                      documents.length.toString(),
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    child: Image.asset(
-                      Common.assetImages + "Group 308.png",
-                      width: width * 0.05,
-                    ),
-                  );
+                  return Container();
                 }),
             label: 'Notifications',
           ),
@@ -179,27 +180,30 @@ class _BottomNavState extends State<BottomNav> {
                     .collection("chats")
                     .where("between", arrayContainsAny: [user.uid]).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  List docsss = snapshot.data!.docs;
-                  List docs2 = [];
-                  for (var ele in docsss) {
-                    if (ele["isNew"] != user.uid &&
-                        ele["isNew"] != "constant") {
-                      docs2.add(ele);
+                  if (snapshot.hasData) {
+                    List docsss = snapshot.data!.docs;
+                    List docs2 = [];
+                    for (var ele in docsss) {
+                      if (ele["isNew"] != user.uid &&
+                          ele["isNew"] != "constant") {
+                        docs2.add(ele);
+                      }
                     }
+                    return Badge(
+                        showBadge: docs2.isNotEmpty,
+                        badgeContent: Text(
+                          docs2.length.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        child: Image.asset(
+                          Common.assetImages + "activeChat.png",
+                          width: width * 0.05,
+                        )
+                        // );
+                        // },
+                        );
                   }
-                  return Badge(
-                      showBadge: docs2.isNotEmpty,
-                      badgeContent: Text(
-                        docs2.length.toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      child: Image.asset(
-                        Common.assetImages + "activeChat.png",
-                        width: width * 0.05,
-                      )
-                      // );
-                      // },
-                      );
+                  return Container();
                 },
               ),
               icon: StreamBuilder(
@@ -207,27 +211,30 @@ class _BottomNavState extends State<BottomNav> {
                     .collection("chats")
                     .where("between", arrayContainsAny: [user.uid]).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  List docsss = snapshot.data!.docs;
-                  List docs2 = [];
-                  for (var ele in docsss) {
-                    if (ele["isNew"] != user.uid &&
-                        ele["isNew"] != "constant") {
-                      docs2.add(ele);
+                  if (snapshot.hasData) {
+                    List docsss = snapshot.data!.docs;
+                    List docs2 = [];
+                    for (var ele in docsss) {
+                      if (ele["isNew"] != user.uid &&
+                          ele["isNew"] != "constant") {
+                        docs2.add(ele);
+                      }
                     }
+                    return Badge(
+                        showBadge: docs2.isNotEmpty,
+                        badgeContent: Text(
+                          docs2.length.toString(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        child: Image.asset(
+                          Common.assetImages + "message.png",
+                          width: width * 0.05,
+                        )
+                        // );
+                        // },
+                        );
                   }
-                  return Badge(
-                      showBadge: docs2.isNotEmpty,
-                      badgeContent: Text(
-                        docs2.length.toString(),
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      child: Image.asset(
-                        Common.assetImages + "message.png",
-                        width: width * 0.05,
-                      )
-                      // );
-                      // },
-                      );
+                  return Container();
                 },
               ),
               label: "chat")
