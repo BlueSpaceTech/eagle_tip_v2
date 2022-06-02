@@ -198,7 +198,6 @@ class _AllChatScreenState extends State<AllChatScreen> {
                     SizedBox(
                       height: height * 0.04,
                     ),
-                   
                     document!.isEmpty
                         ? Center(
                             child: Text(
@@ -226,6 +225,12 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                   //     .update({
                                   //   "isNew": false,
                                   // });
+                                  FirebaseFirestore.instance
+                                      .collection("chats")
+                                      .doc(document![index].id)
+                                      .update({
+                                    "isNew": "constant",
+                                  });
 
                                   callChatScreen(
                                       document[index]['uid1'] == user.uid
