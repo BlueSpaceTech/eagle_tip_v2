@@ -124,7 +124,7 @@ class _BottomNavState extends State<BottomNav> {
                       }
                     }
                     return Badge(
-                      showBadge: documents.isEmpty ? false : true,
+                      showBadge: documents.isNotEmpty,
                       badgeContent: Text(
                         documents.length.toString(),
                         style: TextStyle(color: Colors.white),
@@ -159,7 +159,7 @@ class _BottomNavState extends State<BottomNav> {
                       }
                     }
                     return Badge(
-                      showBadge: documents.isEmpty ? false : true,
+                      showBadge: documents.isNotEmpty,
                       badgeContent: Text(
                         documents.length.toString(),
                         style: TextStyle(color: Colors.white),

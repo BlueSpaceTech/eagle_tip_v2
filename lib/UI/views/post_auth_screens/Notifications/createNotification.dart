@@ -515,7 +515,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                   notifys.doc().set({
                                     "description": description,
                                     "title": title,
-                                    "createdBy": user.employerCode,
+                                    "createdBy": user.uid,
                                     "hyperLink": link,
                                     "sites": _selectedItems2,
                                     "visibleto": _selectedItems,
@@ -528,7 +528,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                       notifys.doc().set({
                                         "description": description,
                                         "title": title,
-                                        "createdBy": user.employerCode,
+                                        "createdBy": user.uid,
                                         "hyperLink": link,
                                         "sites": _selectedItems2,
                                         "visibleto": _selectedItems,

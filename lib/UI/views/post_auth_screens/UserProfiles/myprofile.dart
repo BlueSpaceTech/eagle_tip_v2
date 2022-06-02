@@ -558,47 +558,48 @@ class SitesData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: Responsive.isDesktop(context) ? height * 0.2 : height * 0.14,
       width: width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Sites",
-            style: TextStyle(
-                fontSize: Responsive.isDesktop(context) ? width * 0.011 : 15.0,
-                fontFamily: "Poppins",
-                fontWeight: Responsive.isDesktop(context)
-                    ? FontWeight.w500
-                    : FontWeight.w600,
-                color: Colors.white),
-          ),
-          Visibility(
-            visible: Responsive.isMobile(context),
-            child: SizedBox(
-              height: height * 0.02,
-            ),
-          ),
-          Responsive.isDesktop(context)
-              ? Row(
-                  children: List.generate(Sites.length, (index) {
-                    return Padding(
-                      padding: EdgeInsets.only(right: 20),
-                      child: SiteRow(
-                        width: width,
-                        sitename: Sites[index]["sitename"],
-                        siteloc: " Tampa,Fl.",
-                        imgpath: "Group 268",
-                      ),
-                    );
-                  }),
-                )
-              : SizedBox(
-                  height: height * 0.099,
-                  child: SingleChildScrollView(
-                    child: Column(
+      child: SingleChildScrollView(
+        child: SizedBox(
+          height: height * 0.2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Sites",
+                style: TextStyle(
+                    fontSize:
+                        Responsive.isDesktop(context) ? width * 0.011 : 15.0,
+                    fontFamily: "Poppins",
+                    fontWeight: Responsive.isDesktop(context)
+                        ? FontWeight.w500
+                        : FontWeight.w600,
+                    color: Colors.white),
+              ),
+              Visibility(
+                visible: Responsive.isMobile(context),
+                child: SizedBox(
+                  height: height * 0.02,
+                ),
+              ),
+              Responsive.isDesktop(context)
+                  ? Row(
+                      children: List.generate(Sites.length, (index) {
+                        return Padding(
+                          padding: EdgeInsets.only(right: 20),
+                          child: SiteRow(
+                            width: width,
+                            sitename: Sites[index]["sitename"],
+                            siteloc: " Tampa,Fl.",
+                            imgpath: "Group 268",
+                          ),
+                        );
+                      }),
+                    )
+                  : Column(
                       children: List.generate(Sites.length, (index) {
                         return Padding(
                           padding: EdgeInsets.only(bottom: 10),
@@ -611,9 +612,9 @@ class SitesData extends StatelessWidget {
                         );
                       }),
                     ),
-                  ),
-                ),
-        ],
+            ],
+          ),
+        ),
       ),
     );
   }

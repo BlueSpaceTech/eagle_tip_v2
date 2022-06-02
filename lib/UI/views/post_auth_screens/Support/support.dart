@@ -112,8 +112,8 @@ class _SupportScreenState extends State<SupportScreen> {
                 top: Responsive.isDesktop(context)
                     ? height * 0.05
                     : height * 0.1,
-                left: width * 0.01,
-                right: width * 0.01),
+                left: Responsive.isDesktop(context) ? width * 0.01 : 0.0,
+                right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -169,33 +169,14 @@ class _NotificationsState extends State<Notifications> {
                   visible: Responsive.isMobile(context),
                   child: Padding(
                     padding: EdgeInsets.only(left: width * 0.08),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Notifications",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Container(
-                          child: CircleAvatar(
-                            backgroundColor: Color(0xFFED5C62),
-                            radius: 8.0,
-                            child: Center(
-                              child: Text(
-                                "",
-                                style: TextStyle(fontSize: 10.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    child: Text(
+                      "Notifications",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontFamily: "Poppins",
+                      ),
                     ),
                   ),
                 ),
