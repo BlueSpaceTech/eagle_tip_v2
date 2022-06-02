@@ -29,22 +29,6 @@ class _BottomNavState extends State<BottomNav> {
     fontWeight: FontWeight.bold,
     color: Color(0xFFA0A3BD),
   );
-  List<Widget> _widgetOptions = <Widget>[
-    MyProfile(),
-    HomeScreen(
-      showdialog: true,
-    ),
-    Notifications(),
-    //  MessageMain(
-    // photourlfriend: "",
-    // photourluser: "",
-    // currentusername: "s",
-    // friendname: "noname",
-    // frienduid: "no uid",
-    // index: 0,
-    AllChatScreen(),
-    //  ),
-  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -66,8 +50,25 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     model.User user = Provider.of<UserProvider>(context).getUser;
+    double height = MediaQuery.of(context).size.height;
+    List<Widget> _widgetOptions = <Widget>[
+      MyProfile(),
+      HomeScreen(
+        showdialog: true,
+        sites: user.sites,
+      ),
+      Notifications(),
+      //  MessageMain(
+      // photourlfriend: "",
+      // photourluser: "",
+      // currentusername: "s",
+      // friendname: "noname",
+      // frienduid: "no uid",
+      // index: 0,
+      AllChatScreen(),
+      //  ),
+    ];
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Center(

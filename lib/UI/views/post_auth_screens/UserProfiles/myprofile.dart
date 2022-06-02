@@ -595,19 +595,24 @@ class SitesData extends StatelessWidget {
                     );
                   }),
                 )
-              : Column(
-                  children: List.generate(Sites.length, (index) {
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: SiteRow(
-                        width: width,
-                        sitename: Sites[index].toString(),
-                        siteloc: " Tampa,Fl.",
-                        imgpath: "Group 268",
-                      ),
-                    );
-                  }),
-                )
+              : SizedBox(
+                  height: height * 0.099,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: List.generate(Sites.length, (index) {
+                        return Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: SiteRow(
+                            width: width,
+                            sitename: Sites[index].toString(),
+                            siteloc: " Tampa,Fl.",
+                            imgpath: "Group 268",
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                ),
         ],
       ),
     );

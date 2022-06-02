@@ -50,7 +50,10 @@ class _UserNavigatorState extends State<UserNavigator> {
             // if (user.phoneisverified) {
             //   print(user.phoneisverified);
             if (Responsive.isDesktop(context)) {
-              return HomeScreen(showdialog: true,);
+              return HomeScreen(
+                showdialog: true,
+                sites: [],
+              );
             } else {
               return BottomNav();
             }

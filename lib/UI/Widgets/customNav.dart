@@ -8,6 +8,7 @@ import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -66,8 +67,13 @@ class _NavbarState extends State<Navbar> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, AppRoutes.homeScreen, (route) => false);
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) =>
+                              HomeScreen(showdialog: true, sites: user.sites)),
+                        ),
+                      );
                     },
                     child: SvgPicture.asset(
                       "assets/newLogo.svg",
@@ -85,8 +91,13 @@ class _NavbarState extends State<Navbar> {
                         children: [
                           InkWell(
                             onTap: () {
-                              Navigator.pushReplacementNamed(
-                                  context, AppRoutes.homeScreen);
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: ((context) => HomeScreen(
+                                      showdialog: true, sites: user.sites)),
+                                ),
+                              );
                               setState(() {
                                 index = 0;
                               });
@@ -240,7 +251,7 @@ class _NavbarState extends State<Navbar> {
                                           }
                                         }
                                         return Badge(
-                                          showBadge: documents.isEmpty,
+                                          showBadge: documents.isNotEmpty,
                                           badgeContent: Text(
                                             documents.length.toString(),
                                             // "0",

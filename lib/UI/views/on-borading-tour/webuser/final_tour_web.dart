@@ -1,14 +1,18 @@
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour1.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class FinalTourWeb extends StatelessWidget {
   const FinalTourWeb({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    model.User user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -29,8 +33,13 @@ class FinalTourWeb extends StatelessWidget {
               right: -100,
               child: TourUpContainer1(
                 onnext: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen(showdialog: false,)));
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomeScreen(
+                                showdialog: false,
+                                sites: user.sites,
+                              )));
                 },
                 containertype: "right",
                 distance: height * 0.028,

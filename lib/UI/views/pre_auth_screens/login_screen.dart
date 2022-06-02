@@ -130,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Responsive.isDesktop(context)
                           ? HomeScreen(
                               showdialog: true,
+                              sites: sites,
                             )
                           : BottomNav()));
           // FirebaseFirestore.instance
@@ -412,6 +413,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   builder: (context) => Responsive.isDesktop(context)
                       ? HomeScreen(
                           showdialog: true,
+                          sites: sites,
                         )
                       : BottomNav()));
         } else {
@@ -548,6 +550,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       : Responsive.isDesktop(context)
                           ? HomeScreen(
                               showdialog: true,
+                              sites: sites,
                             )
                           : BottomNav()));
           fToast!.showToast(

@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_element, avoid_print
 
 import 'dart:convert';
-import 'dart:html';
+// import 'dart:html';
 // import 'dart:html';
 import 'package:intl/intl.dart';
 
@@ -19,146 +19,15 @@ import 'package:testttttt/Models/user.dart' as model;
 // import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/tanks_request.dart';
 
-List rowHeader = [
-  "Name",
-  "Site",
-  "Order id",
-  "Date",
-  "Tank 1",
-  "Tank 2",
-  "Tank 3",
-  "Tank 4"
-];
-List<List<dynamic>> csvdata = <List<dynamic>>[];
-
 class TerminalHome extends StatefulWidget {
   final List sites;
   const TerminalHome({Key? key, required this.sites}) : super(key: key);
-
-  get restorationId => null;
 
   @override
   _TerminalHomeState createState() => _TerminalHomeState();
 }
 
-class _TerminalHomeState extends State<TerminalHome> with RestorationMixin {
-  @override
-  String? get restorationId => widget.restorationId;
-
-  final RestorableDateTimeN _startDate = RestorableDateTimeN(
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
-  final RestorableDateTimeN _endDate = RestorableDateTimeN(
-      DateTime(DateTime.now().year, DateTime.now().month, 15));
-  late final RestorableRouteFuture<DateTimeRange?>
-      _restorableDateRangePickerRouteFuture =
-      RestorableRouteFuture<DateTimeRange?>(
-    onComplete: _selectDateRange,
-    onPresent: (NavigatorState navigator, Object? arguments) {
-      return navigator
-          .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
-        'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
-        'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
-      });
-    },
-  );
-  List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
-    List<DateTime> days = [];
-    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
-      days.add(startDate.add(Duration(days: i)));
-    }
-    return days;
-  }
-
-  void _selectDateRange(DateTimeRange? newSelectedDate) async {
-    if (newSelectedDate != null) {
-      setState(() {
-        _startDate.value = newSelectedDate.start;
-        _endDate.value = newSelectedDate.end;
-        // print(convertDateTimeDisplay(_startDate.value.toString()));
-        // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
-      });
-      List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
-      // print(days);
-
-      if (csvdata.isEmpty) {
-        csvdata.add(rowHeader);
-      }
-      print(widget.sites);
-
-      final docss = await requests.get().then((value) => value.docs.where(
-          (element) =>
-              days.contains(element["date"].toDate()) &&
-              widget.sites.contains(element["site"])));
-      for (var element in docss) {
-        List row = [];
-        List data = element.get("data");
-        print(element.get("date").runtimeType);
-        row.add(element.get("requestby"));
-        row.add(element.get("site"));
-        row.add(element.get("id"));
-        row.add(element.get("date").toDate());
-        row.add(data[0]);
-        row.add(data[1]);
-        row.add(data[2]);
-        row.add(data[3]);
-        csvdata.add(row);
-      }
-      // print(csvdata);
-      // print(csvdata.length);
-      String csv = ListToCsvConverter().convert(csvdata);
-      final bytes = utf8.encode(csv);
-      final text = utf8.decode(bytes);
-      final blob = Blob([text]);
-      final url = Url.createObjectUrlFromBlob(blob);
-      AnchorElement(href: url)
-        ..setAttribute("download", "file.csv")
-        ..click();
-      csvdata.clear();
-    }
-  }
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_startDate, 'start_date');
-    registerForRestoration(_endDate, 'end_date');
-    registerForRestoration(
-        _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
-  }
-
-  static Route<DateTimeRange?> _dateRangePickerRoute(
-    BuildContext context,
-    Object? arguments,
-  ) {
-    return DialogRoute<DateTimeRange?>(
-      context: context,
-      builder: (BuildContext context) {
-        return DateRangePickerDialog(
-          restorationId: 'date_picker_dialog',
-          initialDateRange:
-              _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
-          firstDate: DateTime(DateTime.now().year, 1),
-          currentDate: DateTime(
-              DateTime.now().year, DateTime.now().month, DateTime.now().day),
-          lastDate: DateTime(DateTime.now().year, 12, 30),
-        );
-      },
-    );
-  }
-
-  static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
-    if (arguments['initialStartDate'] != null &&
-        arguments['initialEndDate'] != null) {
-      return DateTimeRange(
-        start: DateTime.fromMillisecondsSinceEpoch(
-            arguments['initialStartDate'] as int),
-        end: DateTime.fromMillisecondsSinceEpoch(
-            arguments['initialEndDate'] as int),
-      );
-    }
-
-    return null;
-  }
-
+class _TerminalHomeState extends State<TerminalHome> {
   List siteImg = ["site1", "site2"];
   List siteName = ["Acres Marathon", "Akron Marathon"];
   List sitelocation = ["Tampa,FL", "Leesburg,FL"];
@@ -260,10 +129,7 @@ class _TerminalHomeState extends State<TerminalHome> with RestorationMixin {
                                   ),
                                   SizedBox(width: width * 0.06),
                                   InkWell(
-                                    onTap: () async {
-                                      _restorableDateRangePickerRouteFuture
-                                          .present();
-                                    },
+                                    onTap: () async {},
                                     child: customfab(
                                         width: width,
                                         text: "Create Report",

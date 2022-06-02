@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, duplicate_ignore, unused_import, prefer_const_literals_to_create_immutables
 
 import 'dart:async';
-
+import 'dart:convert';
+// import 'dart:convert';
+// import 'dart:html' as html;
+import 'dart:typed_data';
+import 'package:csv/csv.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -27,10 +31,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key, required this.showdialog}) : super(key: key);
-  bool showdialog;
+import '../Tanks/tanks_request.dart';
 
+List<List<dynamic>> csvdata = <List<dynamic>>[];
+List rowHeader = [
+  "Name",
+  "Site",
+  "Order id",
+  "Date",
+  "Tank 1",
+  "Tank 2",
+  "Tank 3",
+  "Tank 4"
+];
+
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key, required this.showdialog, required this.sites})
+      : super(key: key);
+  bool showdialog;
+  final List sites;
+  get restorationId => null;
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -45,6 +65,124 @@ class _HomeScreenState extends State<HomeScreen> {
   getData() async {
     sitedetails = await SiteCall().getSites();
   }
+
+  // @override
+  // String? get restorationId => widget.restorationId;
+
+  // final RestorableDateTimeN _startDate = RestorableDateTimeN(
+  //     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
+  // final RestorableDateTimeN _endDate = RestorableDateTimeN(
+  //     DateTime(DateTime.now().year, DateTime.now().month, 15));
+  // late final RestorableRouteFuture<DateTimeRange?>
+  //     _restorableDateRangePickerRouteFuture =
+  //     RestorableRouteFuture<DateTimeRange?>(
+  //   onComplete: _selectDateRange,
+  //   onPresent: (NavigatorState navigator, Object? arguments) {
+  //     return navigator
+  //         .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
+  //       'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
+  //       'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
+  //     });
+  //   },
+  // );
+  // List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
+  //   List<DateTime> days = [];
+  //   for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+  //     days.add(startDate.add(Duration(days: i)));
+  //   }
+  //   return days;
+  // }
+
+  // void _selectDateRange(DateTimeRange? newSelectedDate) async {
+  //   if (newSelectedDate != null) {
+  //     setState(() {
+  //       _startDate.value = newSelectedDate.start;
+  //       _endDate.value = newSelectedDate.end;
+  //       // print(convertDateTimeDisplay(_startDate.value.toString()));
+  //       // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
+  //     });
+  //     List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
+  //     // print(days);
+
+  //     if (csvdata.isEmpty) {
+  //       csvdata.add(rowHeader);
+  //     }
+  //     print(widget.sites);
+
+  //     final docss = await requests.get().then((value) => value.docs.where(
+  //         (element) =>
+  //             days.contains(element["date"].toDate()) &&
+  //             widget.sites.contains(element["site"])));
+  //     for (var element in docss) {
+  //       List row = [];
+  //       List data = element.get("data");
+  //       print(element.get("date").runtimeType);
+  //       row.add(element.get("requestby"));
+  //       row.add(element.get("site"));
+  //       row.add(element.get("id"));
+  //       row.add(element.get("date").toDate());
+  //       row.add(data[0]);
+  //       row.add(data[1]);
+  //       row.add(data[2]);
+  //       row.add(data[3]);
+  //       csvdata.add(row);
+  //     }
+  //     // print(csvdata);
+  //     // print(csvdata.length);
+  //     String csv = ListToCsvConverter().convert(csvdata);
+  //     final bytes = utf8.encode(csv);
+  //     final text = utf8.decode(bytes);
+  //     // final blob = Blob([text]);
+  //     final blob = html.Blob([text]);
+  //     final url = html.Url.createObjectUrlFromBlob(blob);
+  //     html.AnchorElement(href: url)
+  //       ..setAttribute("download", "file.csv")
+  //       ..click();
+  //     csvdata.clear();
+  //   }
+  // }
+
+  // @override
+  // void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+  //   registerForRestoration(_startDate, 'start_date');
+  //   registerForRestoration(_endDate, 'end_date');
+  //   registerForRestoration(
+  //       _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
+  // }
+
+  // static Route<DateTimeRange?> _dateRangePickerRoute(
+  //   BuildContext context,
+  //   Object? arguments,
+  // ) {
+  //   return DialogRoute<DateTimeRange?>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return DateRangePickerDialog(
+  //         restorationId: 'date_picker_dialog',
+  //         initialDateRange:
+  //             _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
+  //         firstDate: DateTime(DateTime.now().year, 1),
+  //         currentDate: DateTime(
+  //             DateTime.now().year, DateTime.now().month, DateTime.now().day),
+  //         lastDate: DateTime(DateTime.now().year, 12, 30),
+  //       );
+  //     },
+  //   );
+  // }
+
+  // static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
+  //   if (arguments['initialStartDate'] != null &&
+  //       arguments['initialEndDate'] != null) {
+  //     return DateTimeRange(
+  //       start: DateTime.fromMillisecondsSinceEpoch(
+  //           arguments['initialStartDate'] as int),
+  //       end: DateTime.fromMillisecondsSinceEpoch(
+  //           arguments['initialEndDate'] as int),
+  //     );
+  //   }
+
+  //   return null;
+  // }
 
   @override
   void initState() {
@@ -525,7 +663,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     user.userRole == "TerminalManager" ||
                                     user.userRole == "TerminalUser",
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    // _restorableDateRangePickerRouteFuture
+                                    //     .present();
+                                  },
                                   child: SiteContainer(
                                       width: width,
                                       text: "Create Report",
