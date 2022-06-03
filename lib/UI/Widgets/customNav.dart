@@ -45,7 +45,7 @@ Map ScreeRoutes = {
 class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return Visibility(
       visible: Responsive.isDesktop(context),
       child: Container(
@@ -71,7 +71,7 @@ class _NavbarState extends State<Navbar> {
                         context,
                         MaterialPageRoute(
                           builder: ((context) =>
-                              HomeScreen(showdialog: true, sites: user.sites)),
+                              HomeScreen(showdialog: true, sites: user!.sites)),
                         ),
                       );
                     },
@@ -95,7 +95,7 @@ class _NavbarState extends State<Navbar> {
                                 context,
                                 MaterialPageRoute(
                                   builder: ((context) => HomeScreen(
-                                      showdialog: true, sites: user.sites)),
+                                      showdialog: true, sites: user!.sites)),
                                 ),
                               );
                               setState(() {
@@ -120,8 +120,9 @@ class _NavbarState extends State<Navbar> {
                             child: StreamBuilder(
                               stream: FirebaseFirestore.instance
                                   .collection("chats")
-                                  .where("between",
-                                      arrayContainsAny: [user.uid]).snapshots(),
+                                  .where("between", arrayContainsAny: [
+                                user!.uid
+                              ]).snapshots(),
                               builder: (context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.connectionState ==
