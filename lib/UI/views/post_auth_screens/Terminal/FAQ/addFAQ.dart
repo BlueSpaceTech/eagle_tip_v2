@@ -53,7 +53,7 @@ class _AddFAQState extends State<AddFAQ> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: Responsive.isDesktop(context)
@@ -202,7 +202,7 @@ class _AddFAQState extends State<AddFAQ> {
                                           if (question!.isNotEmpty &&
                                               answer!.isNotEmpty) {
                                             faqs.doc().set({
-                                              "id": user.uid,
+                                              "id": user!.uid,
                                               "title": question,
                                               "description": answer,
                                               "userRole": widget.userRole,

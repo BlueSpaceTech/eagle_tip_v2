@@ -105,7 +105,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: () {
@@ -150,7 +150,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
               .collection("chats")
-              .where("between", arrayContainsAny: [user.uid]).snapshots(),
+              .where("between", arrayContainsAny: [user!.uid]).snapshots(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(
@@ -227,7 +227,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                   // });
                                   FirebaseFirestore.instance
                                       .collection("chats")
-                                      .doc(document![index].id)
+                                      .doc(document[index].id)
                                       .update({
                                     "isNew": "constant",
                                   });

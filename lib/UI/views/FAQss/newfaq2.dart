@@ -241,7 +241,7 @@ class _NewFaq2State extends State<NewFaq2> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     // getwidgets(List list) {
     //   for (int i = 0; i < list.length; i++) {
     //     return list[i];

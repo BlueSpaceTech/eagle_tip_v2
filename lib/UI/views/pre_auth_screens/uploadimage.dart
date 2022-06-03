@@ -80,9 +80,9 @@ class _UploadImageState extends State<UploadImage> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                (_userProvider.getUser.userRole == "TerminalUser" ||
-                        _userProvider.getUser.userRole == "TerminalManager")
-                    ? TerminalHome(sites: _userProvider.getUser.sites)
+                (_userProvider.getUser!.userRole == "TerminalUser" ||
+                        _userProvider.getUser!.userRole == "TerminalManager")
+                    ? TerminalHome(sites: _userProvider.getUser!.sites)
                     : WelcomeTour()));
   }
 

@@ -89,7 +89,7 @@ class _ChatListTileState extends State<ChatListTile> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return Ink(
       padding: EdgeInsets.only(top: widget.height * 0.03),
       child: Row(
@@ -97,7 +97,7 @@ class _ChatListTileState extends State<ChatListTile> {
         children: [
           CircleAvatar(
             radius: 25,
-            backgroundImage: NetworkImage(widget.doc["photo1"] == user.dpurl
+            backgroundImage: NetworkImage(widget.doc["photo1"] == user!.dpurl
                 ? widget.doc["photo2"]
                 : widget.doc["photo1"]),
           ),

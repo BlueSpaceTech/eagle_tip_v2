@@ -141,7 +141,7 @@ class _MessageMainState extends State<MessageMain> {
   @override
   Widget build(BuildContext context) {
     // ChatSCREEN = widget.Chatscreen;
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -172,7 +172,7 @@ class _MessageMainState extends State<MessageMain> {
                           stream: FirebaseFirestore.instance
                               .collection("chats")
                               .where("between",
-                                  arrayContainsAny: [user.uid]).snapshots(),
+                                  arrayContainsAny: [user!.uid]).snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return Center(

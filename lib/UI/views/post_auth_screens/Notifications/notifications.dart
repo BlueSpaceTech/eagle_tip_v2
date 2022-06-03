@@ -78,7 +78,7 @@ class _NotificationsState extends State<Notifications> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -205,7 +205,7 @@ class _NotificationsState extends State<Notifications> {
                                         GestureDetector(
                                           onTap: () {},
                                           child: Text(
-                                            user.currentsite,
+                                            user!.currentsite,
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 19.0,

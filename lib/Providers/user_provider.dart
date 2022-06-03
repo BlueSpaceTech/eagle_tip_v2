@@ -6,8 +6,9 @@ import 'package:testttttt/Models/user.dart';
 
 class UserProvider extends ChangeNotifier {
   User? _user;
-  User get getUser => _user!;
+  User? get getUser => _user;
   final AuthFunctions _authFunctions = AuthFunctions();
+
   Future<void> refreshUser() async {
     try {
       User user = await _authFunctions.getUserDetails();

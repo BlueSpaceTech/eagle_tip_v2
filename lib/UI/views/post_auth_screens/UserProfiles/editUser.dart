@@ -77,7 +77,7 @@ class _EditUserState extends State<EditUser> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -172,7 +172,8 @@ class _EditUserState extends State<EditUser> {
                                             height: height * 0.18,
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
-                                                image: NetworkImage(user.dpurl),
+                                                image:
+                                                    NetworkImage(user!.dpurl),
                                               ),
                                               color: Colors.white,
                                               shape: BoxShape.circle,
@@ -297,7 +298,7 @@ class _EditUserState extends State<EditUser> {
                                     InkWell(
                                       onTap: () {
                                         AuthFunctions()
-                                            .resetpassword(user.email);
+                                            .resetpassword(user!.email);
                                       },
                                       child: Container(
                                         width: Responsive.isDesktop(context)

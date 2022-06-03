@@ -25,14 +25,14 @@ class Requests extends StatelessWidget {
   final String currentSite;
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return SizedBox(
       height: height * 0.6,
       width: width * 0.3,
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("requesthistory")
-            .where("site", isEqualTo: user.currentsite)
+            .where("site", isEqualTo: user!.currentsite)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {

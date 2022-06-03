@@ -50,13 +50,13 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     List<Widget> _widgetOptions = <Widget>[
       MyProfile(),
       HomeScreen(
         showdialog: true,
-        sites: user.sites,
+        sites: user!.sites,
       ),
       Notifications(),
       //  MessageMain(
@@ -144,10 +144,9 @@ class _BottomNavState extends State<BottomNav> {
                     // .where("isNew", ar: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  final documents = [];
-                  final docs = snapshot.data!.docs;
-
                   if (snapshot.hasData) {
+                    final documents = [];
+                    final docs = snapshot.data!.docs;
                     if (docs.isNotEmpty) {
                       for (var element in docs) {
                         List notify = element["isNew"];

@@ -91,8 +91,8 @@ class _CreateNotificationState extends State<CreateNotification> {
     final List<String>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
-        model.User user = Provider.of<UserProvider>(context).getUser;
-        return MultiSelect(items: visibleRole(user));
+        model.User? user = Provider.of<UserProvider>(context).getUser;
+        return MultiSelect(items: visibleRole(user!));
       },
     );
 
@@ -132,13 +132,13 @@ class _CreateNotificationState extends State<CreateNotification> {
   List dates = [];
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
 
     void _showSiteSelect() async {
       final List _items =
-          user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+          user?.userRole == "AppAdmin" || user?.userRole == "SuperAdmin"
               ? allsitename
-              : user.sites;
+              : user!.sites;
       for (var element in _items) {
         element = element.toString().replaceAll(" ", "");
       }
@@ -515,7 +515,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                   notifys.doc().set({
                                     "description": description,
                                     "title": title,
-                                    "createdBy": user.uid,
+                                    "createdBy": user!.uid,
                                     "hyperLink": link,
                                     "sites": _selectedItems2,
                                     "visibleto": _selectedItems,

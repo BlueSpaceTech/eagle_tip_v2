@@ -48,7 +48,7 @@ class TicketDetail extends StatefulWidget {
 class _TicketDetailState extends State<TicketDetail> {
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -192,7 +192,7 @@ class _TicketDetailState extends State<TicketDetail> {
                                 ),
                                 Visibility(
                                   visible: widget.doc["isopen"] &&
-                                      widget.doc["visibleto"] == user.userRole,
+                                      widget.doc["visibleto"] == user?.userRole,
                                   child: InkWell(
                                     onTap: () {
                                       Navigator.push(

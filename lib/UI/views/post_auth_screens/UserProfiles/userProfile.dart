@@ -65,7 +65,7 @@ class UserProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -147,8 +147,13 @@ class UserProfile extends StatelessWidget {
                                         visible: !fromsentto,
                                         child: InkWell(
                                           onTap: () {
-                                            callChatScreen(uid, name, user.name,
-                                                dpUrl, user.dpurl, context);
+                                            callChatScreen(
+                                                uid,
+                                                name,
+                                                user!.name,
+                                                dpUrl,
+                                                user.dpurl,
+                                                context);
                                           },
                                           child: Container(
                                             width: width * 0.06,
@@ -178,14 +183,18 @@ class UserProfile extends StatelessWidget {
                                     width: width,
                                     child: Column(
                                       children: [
-dpUrl=="sentto"?
-                                       Icon(Icons.person,size: 50,):
-                                      
-                                        CircleAvatar(
-                                          radius: 22,
-                                          backgroundColor: backGround_color,
-                                          backgroundImage: NetworkImage(dpUrl),
-                                        ), 
+                                        dpUrl == "sentto"
+                                            ? Icon(
+                                                Icons.person,
+                                                size: 50,
+                                              )
+                                            : CircleAvatar(
+                                                radius: 22,
+                                                backgroundColor:
+                                                    backGround_color,
+                                                backgroundImage:
+                                                    NetworkImage(dpUrl),
+                                              ),
                                         SizedBox(
                                           height: height * 0.005,
                                         ),
@@ -199,8 +208,13 @@ dpUrl=="sentto"?
                                         ),
                                         InkWell(
                                           onTap: () {
-                                            callChatScreen(uid, name, user.name,
-                                                dpUrl, user.dpurl, context);
+                                            callChatScreen(
+                                                uid,
+                                                name,
+                                                user!.name,
+                                                dpUrl,
+                                                user.dpurl,
+                                                context);
                                           },
                                           child: Container(
                                             width: width * 0.2,
@@ -278,7 +292,7 @@ dpUrl=="sentto"?
                               child: SitesData(
                                 height: height * 1.08,
                                 width: width,
-                                Sites: user.sites,
+                                Sites: user!.sites,
                               ),
                             ),
                             Visibility(

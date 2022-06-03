@@ -172,8 +172,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites, user.uid, user.currentsite);
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    resultsloaded = getUserdetails(user!.sites, user.uid, user.currentsite);
   }
 
   _onsearchange() {
@@ -262,7 +262,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     List siteImg = ["site1", "site2"];
     List siteName = ["Acres Marathon", "Akron Marathon"];
     List sitelocation = ["Tampa,FL", "Leesburg,FL"];
@@ -348,7 +348,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                           setState(() {
                                             FirebaseFirestore.instance
                                                 .collection('users')
-                                                .doc(user.uid)
+                                                .doc(user!.uid)
                                                 .update({
                                               'currentsite': getsitesdescrp(
                                                       user.sites)[index]
@@ -395,7 +395,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                                                 .start,
                                                         children: [
                                                           Text(
-                                                            getsitesdescrp(user
+                                                            getsitesdescrp(user!
                                                                         .sites)[
                                                                     index]
                                                                 .sitename,
@@ -437,7 +437,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                       );
                                     },
                                     itemCount:
-                                        getsitesdescrp(user.sites).length,
+                                        getsitesdescrp(user!.sites).length,
                                   ),
                                 ],
                               ),
@@ -456,7 +456,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                user.currentsite,
+                                user!.currentsite,
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,

@@ -49,7 +49,7 @@ class _MyProfileState extends State<MyProfile> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     // print(user.sites);
@@ -103,7 +103,8 @@ class _MyProfileState extends State<MyProfile> {
                                     CircleAvatar(
                                       radius: 35,
                                       backgroundColor: backGround_color,
-                                      backgroundImage: NetworkImage(user.dpurl),
+                                      backgroundImage:
+                                          NetworkImage(user!.dpurl),
                                     ),
                                     SizedBox(
                                       width: width * 0.02,
@@ -151,7 +152,7 @@ class _MyProfileState extends State<MyProfile> {
                                         radius: 40,
                                         backgroundColor: backGround_color,
                                         backgroundImage:
-                                            NetworkImage(user.dpurl),
+                                            NetworkImage(user!.dpurl),
                                       ),
                                       SizedBox(
                                         height: 20,

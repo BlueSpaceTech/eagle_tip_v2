@@ -58,7 +58,7 @@ class _SitesState extends State<Sites> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -133,7 +133,7 @@ class _SitesState extends State<Sites> {
                                                   builder: (context) =>
                                                       SiteDetails(
                                                     sitedetail: getsitesdescrp(
-                                                        user.sites)[index],
+                                                        user!.sites)[index],
                                                   ),
                                                 ));
                                           },
@@ -142,7 +142,7 @@ class _SitesState extends State<Sites> {
                                               height: height,
                                               index: index,
                                               siteName: getsitesdescrp(
-                                                      user.sites)[index]
+                                                      user!.sites)[index]
                                                   .sitename,
                                               sitelocation: getsitesdescrp(
                                                       user.sites)[index]
@@ -150,7 +150,7 @@ class _SitesState extends State<Sites> {
                                         );
                                       },
                                       itemCount:
-                                          getsitesdescrp(user.sites).length,
+                                          getsitesdescrp(user!.sites).length,
                                     ),
                                   ),
                                 ),
@@ -194,8 +194,8 @@ class _SitesState extends State<Sites> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SiteDetails(
-                                          sitedetail:
-                                              getsitesdescrp(user.sites)[index],
+                                          sitedetail: getsitesdescrp(
+                                              user!.sites)[index],
                                         ),
                                       ));
                                 },
@@ -203,7 +203,7 @@ class _SitesState extends State<Sites> {
                                     width: width,
                                     height: height,
                                     index: index,
-                                    siteName: getsitesdescrp(user.sites)[index]
+                                    siteName: getsitesdescrp(user!.sites)[index]
                                         .sitename,
                                     sitelocation:
                                         getsitesdescrp(user.sites)[index]

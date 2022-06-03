@@ -50,7 +50,7 @@ class _ProductRequestState extends State<ProductRequest> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -113,7 +113,7 @@ class _ProductRequestState extends State<ProductRequest> {
                       child: SiteNameAndLocation(
                         fontSize: 17.0,
                         fontSize2: 13.0,
-                        currentsitename: user.currentsite,
+                        currentsitename: user!.currentsite,
                         currensitelocation: "",
                       ),
                     ),

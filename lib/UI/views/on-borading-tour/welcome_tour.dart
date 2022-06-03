@@ -10,7 +10,7 @@ class WelcomeTour extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -50,7 +50,7 @@ class WelcomeTour extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Welcome ${user.name}!",
+                                  "Welcome ${user!.name}!",
                                   style: TextStyle(
                                     fontSize: 19,
                                     fontFamily: "Poppins",

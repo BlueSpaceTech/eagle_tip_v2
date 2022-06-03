@@ -412,8 +412,8 @@ class _CrudScreenState extends State<CrudScreen> {
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
-    model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites, user.uid, user);
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    resultsloaded = getUserdetails(user!.sites, user.uid, user);
     super.didChangeDependencies();
   }
 
@@ -480,7 +480,7 @@ class _CrudScreenState extends State<CrudScreen> {
   @override
   Widget build(BuildContext context) {
     bool? isTapped = false;
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     List Site = [
@@ -727,8 +727,8 @@ class _CrudScreenState extends State<CrudScreen> {
                                     children: [
                                       Wrap(
                                         children: [
-                                          user.userRole == "AppAdmin" ||
-                                                  user.userRole == "SuperAdmin"
+                                          user?.userRole == "AppAdmin" ||
+                                                  user?.userRole == "SuperAdmin"
                                               //     ||
                                               // user.userRole ==
                                               //     "TerminalManager" ||
@@ -741,10 +741,10 @@ class _CrudScreenState extends State<CrudScreen> {
                                                 )
                                               : Wrap(
                                                   children:
-                                                      _buildall(user.sites),
+                                                      _buildall(user!.sites),
                                                 ),
-                                          user.userRole == "AppAdmin" ||
-                                                  user.userRole == "SuperAdmin"
+                                          user?.userRole == "AppAdmin" ||
+                                                  user?.userRole == "SuperAdmin"
                                               //      ||
                                               // user.userRole ==
                                               //     "TerminalManager" ||
@@ -757,7 +757,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                                 )
                                               : Wrap(
                                                   children: _buildsiteschip(
-                                                      user.sites),
+                                                      user!.sites),
                                                 ),
                                         ],
                                       ),
@@ -776,7 +776,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                       ),
                                       Wrap(
                                         children: _buildRolechip(
-                                            CrudFunction().visibleRole(user)),
+                                            CrudFunction().visibleRole(user!)),
                                       ),
                                     ],
                                   ),

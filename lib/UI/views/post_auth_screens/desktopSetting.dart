@@ -67,9 +67,9 @@ class _DesktopSettingState extends State<DesktopSetting> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
 
-    for (var site in user.sites) {
+    for (var site in user!.sites) {
       if (sitenames.contains(site)) {
       } else {
         sitenames.add(site);
@@ -89,10 +89,10 @@ class _DesktopSettingState extends State<DesktopSetting> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     // print(user.sites.length);
     // List<String> sitess = user.sites;
-    String dropdownValue = user.currentsite;
+    String dropdownValue = user!.currentsite;
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;

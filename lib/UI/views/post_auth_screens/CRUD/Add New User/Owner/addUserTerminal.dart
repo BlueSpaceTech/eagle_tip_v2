@@ -173,11 +173,11 @@ class _AddNewUserByTerminalState extends State<AddNewUserByTerminal> {
   List inviteData = [];
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     List sites;
-    sites = user.sites;
+    sites = user!.sites;
 
     bool isTapped = false;
     List Roles = ["Site Manager", "Site User"];

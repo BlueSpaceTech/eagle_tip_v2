@@ -40,11 +40,11 @@ class SiteDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return Responsive(
       mobile: MobileSiteDet(
         sitedetail: sitedetail,
-        currentsite: user.currentsite,
+        currentsite: user!.currentsite,
       ),
       tablet: MobileSiteDet(
         sitedetail: sitedetail,
@@ -96,7 +96,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Responsive.isDesktop(context)
@@ -190,7 +190,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                           color: Colors.white,
                                           fontFamily: "Poppins"),
                                     ),
-                                    user.userRole == "SiteUser"
+                                    user?.userRole == "SiteUser"
                                         ? Center(
                                             child: FuelRequestPart(
                                               sitedetail: widget.sitedetail,
@@ -219,7 +219,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                   width: width * 0.05,
                                 ),
                                 Visibility(
-                                  visible: user.userRole != "SiteUser",
+                                  visible: user?.userRole != "SiteUser",
                                   child: VerticalDivider(
                                     color: Colors.white,
                                     thickness: 1.0,
@@ -228,13 +228,13 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                   ),
                                 ),
                                 Visibility(
-                                  visible: user.userRole != "SiteUser",
+                                  visible: user?.userRole != "SiteUser",
                                   child: SizedBox(
                                     width: width * 0.05,
                                   ),
                                 ),
                                 Visibility(
-                                  visible: user.userRole != "SiteUser",
+                                  visible: user?.userRole != "SiteUser",
                                   child: Column(
                                     children: [
                                       Text(
@@ -249,7 +249,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                         height: height * 0.047,
                                       ),
                                       RequestHistoryPart(
-                                        currentSite: user.currentsite,
+                                        currentSite: user!.currentsite,
                                         width: width * 0.65,
                                         height: height * 0.9,
                                       ),
@@ -348,9 +348,9 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                               height: height,
                             ),
                             Visibility(
-                              visible: user.userRole != "SiteUser",
+                              visible: user?.userRole != "SiteUser",
                               child: RequestHistoryPart(
-                                currentSite: user.currentsite,
+                                currentSite: user!.currentsite,
                                 width: width,
                                 height: height,
                               ),
@@ -555,7 +555,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -741,8 +741,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                         DateTime.now().month,
                                         DateTime.now().day),
                                     "id": Random().nextInt(10000000).toString(),
-                                    "requestby": user.name,
-                                    "site": user.currentsite,
+                                    "requestby": user?.name,
+                                    "site": user?.currentsite,
                                   },
                                 );
 
@@ -795,7 +795,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                                               ? HomeScreen(
                                                                   showdialog:
                                                                       true,
-                                                                  sites: user
+                                                                  sites: user!
                                                                       .sites,
                                                                 )
                                                               : BottomNav()));

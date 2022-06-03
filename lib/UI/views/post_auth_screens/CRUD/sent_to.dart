@@ -266,8 +266,8 @@ class _SentToState extends State<SentTo> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
-    model.User user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user.sites, user.uid, user);
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    resultsloaded = getUserdetails(user!.sites, user.uid, user);
   }
 
   _onsearchange() {
@@ -333,7 +333,7 @@ class _SentToState extends State<SentTo> {
   @override
   Widget build(BuildContext context) {
     bool? isTapped = false;
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 

@@ -46,7 +46,7 @@ class _SupportScreenState extends State<SupportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
 
     String visible(model.User user) {
       switch (user.userRole) {
@@ -71,7 +71,7 @@ class _SupportScreenState extends State<SupportScreen> {
     Future<void> addTicket(context) {
       return tickets.add({
         "beforelogin": false,
-        "byid": user.uid,
+        "byid": user!.uid,
         "email": user.email,
         "isopen": true,
         "messages": [

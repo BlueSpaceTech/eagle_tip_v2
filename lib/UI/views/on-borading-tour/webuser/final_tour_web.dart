@@ -12,7 +12,7 @@ class FinalTourWeb extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -38,7 +38,7 @@ class FinalTourWeb extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => HomeScreen(
                                 showdialog: false,
-                                sites: user.sites,
+                                sites: user!.sites,
                               )));
                 },
                 containertype: "right",

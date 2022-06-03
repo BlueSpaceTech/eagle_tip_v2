@@ -395,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
@@ -428,8 +428,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: height * 0.05,
                               ),
                               Visibility(
-                                visible: user.userRole != "AppAdmin" &&
-                                    user.userRole != "SuperAdmin",
+                                visible: user?.userRole != "AppAdmin" &&
+                                    user?.userRole != "SuperAdmin",
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -438,7 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         GestureDetector(
                                           onTap: () {},
                                           child: Text(
-                                            user.currentsite,
+                                            user!.currentsite,
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17.0,
@@ -606,7 +606,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     GestureDetector(
                                       onTap: () {},
                                       child: Text(
-                                        user.currentsite,
+                                        user!.currentsite,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 17.0,

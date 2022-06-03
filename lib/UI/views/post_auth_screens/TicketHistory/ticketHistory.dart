@@ -136,11 +136,11 @@ class OpenTickets extends StatefulWidget {
 class _OpenTicketsState extends State<OpenTickets> {
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("tickets")
-            .where("sites", arrayContainsAny: user.sites)
+            .where("sites", arrayContainsAny: user!.sites)
             .where("isopen", isEqualTo: true)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -284,11 +284,11 @@ class ClosedTickets extends StatefulWidget {
 class _ClosedTicketsState extends State<ClosedTickets> {
   @override
   Widget build(BuildContext context) {
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("tickets")
-            .where("sites", arrayContainsAny: user.sites)
+            .where("sites", arrayContainsAny: user!.sites)
             .where("isopen", isEqualTo: false)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

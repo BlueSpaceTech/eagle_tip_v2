@@ -36,7 +36,6 @@ class _EditFAQState extends State<EditFAQ> {
 
   FToast? fToast;
 
-  
   CollectionReference faqs = FirebaseFirestore.instance.collection("faq");
 
   TextEditingController _questionController = TextEditingController();
@@ -54,7 +53,7 @@ class _EditFAQState extends State<EditFAQ> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: Responsive.isDesktop(context)
@@ -163,7 +162,7 @@ class _EditFAQState extends State<EditFAQ> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       InkWell(
-                                        onTap: (){
+                                        onTap: () {
                                           Navigator.pop(context);
                                         },
                                         child: Container(
@@ -192,9 +191,10 @@ class _EditFAQState extends State<EditFAQ> {
                                       InkWell(
                                         onTap: () {
                                           faqs.doc(widget.docid).update({
-                                            "id": user.uid,
+                                            "id": user!.uid,
                                             "title": _questionController.text,
-                                            "description": _answerController.text,
+                                            "description":
+                                                _answerController.text,
                                           });
                                           fToast!.showToast(
                                             child: ToastMessage().show(
