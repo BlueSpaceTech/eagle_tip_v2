@@ -24,6 +24,7 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 // import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Request%20History/request_history.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/tanks_request.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -785,9 +786,19 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                           ),
                                           InkWell(
                                             onTap: () {
-                                              Navigator.pushReplacementNamed(
+                                              Navigator.pushReplacement(
                                                   context,
-                                                  AppRoutes.homeScreen);
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          Responsive.isDesktop(
+                                                                  context)
+                                                              ? HomeScreen(
+                                                                  showdialog:
+                                                                      true,
+                                                                  sites: user
+                                                                      .sites,
+                                                                )
+                                                              : BottomNav()));
                                             },
                                             child: Container(
                                               width: widget.width * 0.32,

@@ -58,57 +58,103 @@ class _MyProfileState extends State<MyProfile> {
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
-      body: SingleChildScrollView(
-        child: Container(
-            height: Responsive.isDesktop(context) ? height * 1.15 : height,
-            color: backGround_color,
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: Responsive.isDesktop(context)
-                      ? height * 0.0
-                      : height * 0.03,
-                  left: width * 0.04,
-                  right: width * 0.05),
-              child: Column(
-                children: [
-                  Responsive.isDesktop(context)
-                      ? Navbar(
-                          width: width,
-                          height: height,
-                          text1: "Home",
-                          text2: "Sites",
-                        )
-                      : Padding(
-                          padding: EdgeInsets.only(top: height * 0.04),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Logo(width: width),
-                            ],
-                          ),
-                        ),
-                  SizedBox(
-                    height: Responsive.isDesktop(context)
-                        ? height * 0.03
-                        : height * 0.05,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Column(
+      body: Container(
+          height: Responsive.isDesktop(context) ? height * 1.15 : height,
+          color: backGround_color,
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: Responsive.isDesktop(context)
+                    ? height * 0.0
+                    : height * 0.03,
+                left: width * 0.04,
+                right: width * 0.05),
+            child: Column(
+              children: [
+                Responsive.isDesktop(context)
+                    ? Navbar(
+                        width: width,
+                        height: height,
+                        text1: "Home",
+                        text2: "Sites",
+                      )
+                    : Padding(
+                        padding: EdgeInsets.only(top: height * 0.04),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Responsive.isDesktop(context)
-                                ? Row(
+                            Logo(width: width),
+                          ],
+                        ),
+                      ),
+                SizedBox(
+                  height: Responsive.isDesktop(context)
+                      ? height * 0.03
+                      : height * 0.05,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Column(
+                        children: [
+                          Responsive.isDesktop(context)
+                              ? Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 35,
+                                      backgroundColor: backGround_color,
+                                      backgroundImage: NetworkImage(user.dpurl),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.02,
+                                    ),
+                                    UserNameandDet(
+                                      width: width,
+                                      name: user.name,
+                                      userRole: user.userRole,
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.1,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.desktopSetting);
+                                      },
+                                      child: Container(
+                                        width: width * 0.06,
+                                        height: height * 0.05,
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          color: Color(0xFF5081DB),
+                                        ),
+                                        child: Center(
+                                            child: Text(
+                                          "Settings",
+                                          style: TextStyle(
+                                            fontSize: width * 0.008,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                        )),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Container(
+                                  width: width,
+                                  child: Column(
                                     children: [
                                       CircleAvatar(
-                                        radius: 35,
+                                        radius: 40,
                                         backgroundColor: backGround_color,
                                         backgroundImage:
                                             NetworkImage(user.dpurl),
                                       ),
                                       SizedBox(
-                                        width: width * 0.02,
+                                        height: 20,
                                       ),
                                       UserNameandDet(
                                         width: width,
@@ -116,343 +162,289 @@ class _MyProfileState extends State<MyProfile> {
                                         userRole: user.userRole,
                                       ),
                                       SizedBox(
-                                        width: width * 0.1,
+                                        height: 10,
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          Navigator.pushNamed(context,
-                                              AppRoutes.desktopSetting);
+                                          Navigator.pushNamed(
+                                              context, AppRoutes.editUser);
                                         },
                                         child: Container(
-                                          width: width * 0.06,
-                                          height: height * 0.05,
+                                          width: width * 0.25,
+                                          height: height * 0.035,
                                           decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8.0),
                                             color: Color(0xFF5081DB),
                                           ),
                                           child: Center(
-                                              child: Text(
-                                            "Settings",
-                                            style: TextStyle(
-                                              fontSize: width * 0.008,
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
-                                            ),
-                                          )),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : Container(
-                                    width: width,
-                                    child: Column(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 40,
-                                          backgroundColor: backGround_color,
-                                          backgroundImage:
-                                              NetworkImage(user.dpurl),
-                                        ),
-                                        SizedBox(
-                                          height: 20,
-                                        ),
-                                        UserNameandDet(
-                                          width: width,
-                                          name: user.name,
-                                          userRole: user.userRole,
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, AppRoutes.editUser);
-                                          },
-                                          child: Container(
-                                            width: width * 0.25,
-                                            height: height * 0.035,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              color: Color(0xFF5081DB),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Edit Profile",
-                                                style: TextStyle(
-                                                  fontSize: 13.0,
-                                                  fontFamily: "Poppins",
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                            SizedBox(
-                              height: height * 0.04,
-                            ),
-                            Visibility(
-                              visible: Responsive.isDesktop(context),
-                              child: Column(
-                                children: [
-                                  Divider(
-                                    color: Colors.black,
-                                    thickness: 1.0,
-                                    indent: 1,
-                                    endIndent: 100,
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.04,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            ContactInfo(
-                                email: user.email,
-                                phonenumber: user.Phonenumber,
-                                height: Responsive.isDesktop(context)
-                                    ? height * 1.06
-                                    : height,
-                                width: width),
-                            SizedBox(
-                              height: Responsive.isDesktop(context)
-                                  ? height * 0.025
-                                  : height * 0.02,
-                            ),
-                            Divider(
-                              color: Responsive.isDesktop(context)
-                                  ? Colors.black
-                                  : Color(0xFF2E3840),
-                              thickness:
-                                  Responsive.isDesktop(context) ? 1.0 : 3.0,
-                              indent: 1,
-                              endIndent: 100,
-                            ),
-                            SizedBox(
-                              height: Responsive.isDesktop(context)
-                                  ? height * 0.04
-                                  : height * 0.02,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: Responsive.isDesktop(context)
-                                      ? 0.0
-                                      : width * 0.08,
-                                  right: Responsive.isDesktop(context)
-                                      ? 0.0
-                                      : width * 0.04),
-                              child: SitesData(
-                                  height: height * 1.08,
-                                  width: width,
-                                  Sites: user.sites),
-                            ),
-                            Visibility(
-                              visible: !Responsive.isDesktop(context),
-                              child: Padding(
-                                padding: EdgeInsets.only(top: 40),
-                                child:
-                                    MiscContainer(height: height, width: width),
-                              ),
-                            ),
-                            Visibility(
-                              visible: Responsive.isDesktop(context),
-                              child: SizedBox(
-                                height: height * 0.04,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: Responsive.isDesktop(context),
-                        child: Expanded(
-                          flex: 1,
-                          child: Container(
-                            padding: EdgeInsets.only(top: 20),
-                            width: width * 0.1,
-                            height: height * 0.85,
-                            decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(
-                                    Responsive.isDesktop(context) ? 0.6 : 0),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  left: width * 0.04,
-                                  top: height * 0.02,
-                                  right: width * 0.04),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "Support Tickets",
-                                        style: TextStyle(
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                            fontFamily: 'Poppins'),
-                                      ),
-                                      SizedBox(
-                                        width: width * 0.04,
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, AppRoutes.support);
-                                        },
-                                        child: Container(
-                                          alignment: Alignment.center,
-                                          width: width * 0.09,
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                            color: Color(0xff5081DB),
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(8)),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                "Create Ticket",
-                                                style: TextStyle(
-                                                    fontSize: width * 0.008,
-                                                    color: Colors.white,
-                                                    fontFamily: "Poppins",
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.005,
-                                              ),
-                                              Icon(
-                                                Icons.add,
+                                            child: Text(
+                                              "Edit Profile",
+                                              style: TextStyle(
+                                                fontSize: 13.0,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w600,
                                                 color: Colors.white,
                                               ),
-                                            ],
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(
-                                    height: height * 0.01,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Container(
-                                        width: width * 0.06,
+                                ),
+                          SizedBox(
+                            height: height * 0.04,
+                          ),
+                          Visibility(
+                            visible: Responsive.isDesktop(context),
+                            child: Column(
+                              children: [
+                                Divider(
+                                  color: Colors.black,
+                                  thickness: 1.0,
+                                  indent: 1,
+                                  endIndent: 100,
+                                ),
+                                SizedBox(
+                                  height: height * 0.04,
+                                ),
+                              ],
+                            ),
+                          ),
+                          ContactInfo(
+                              email: user.email,
+                              phonenumber: user.Phonenumber,
+                              height: Responsive.isDesktop(context)
+                                  ? height * 1.06
+                                  : height,
+                              width: width),
+                          SizedBox(
+                            height: Responsive.isDesktop(context)
+                                ? height * 0.025
+                                : height * 0.02,
+                          ),
+                          Divider(
+                            color: Responsive.isDesktop(context)
+                                ? Colors.black
+                                : Color(0xFF2E3840),
+                            thickness:
+                                Responsive.isDesktop(context) ? 1.0 : 3.0,
+                            indent: 1,
+                            endIndent: 100,
+                          ),
+                          SizedBox(
+                            height: Responsive.isDesktop(context)
+                                ? height * 0.04
+                                : height * 0.02,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: Responsive.isDesktop(context)
+                                    ? 0.0
+                                    : width * 0.08,
+                                right: Responsive.isDesktop(context)
+                                    ? 0.0
+                                    : width * 0.04),
+                            child: SitesData(
+                                height: height * 1.08,
+                                width: width,
+                                Sites: user.sites),
+                          ),
+                          Visibility(
+                            visible: !Responsive.isDesktop(context),
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 40),
+                              child:
+                                  MiscContainer(height: height, width: width),
+                            ),
+                          ),
+                          Visibility(
+                            visible: Responsive.isDesktop(context),
+                            child: SizedBox(
+                              height: height * 0.04,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: Responsive.isDesktop(context),
+                      child: Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.only(top: 20),
+                          width: width * 0.1,
+                          height: height * 0.85,
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(
+                                  Responsive.isDesktop(context) ? 0.6 : 0),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: width * 0.04,
+                                top: height * 0.02,
+                                right: width * 0.04),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "Support Tickets",
+                                      style: TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white,
+                                          fontFamily: 'Poppins'),
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.04,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.support);
+                                      },
+                                      child: Container(
+                                        alignment: Alignment.center,
+                                        width: width * 0.09,
+                                        height: 35,
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff5081DB),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(8)),
+                                        ),
                                         child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  if (!isOpen!) {
-                                                    isOpen = true;
-                                                  }
-                                                });
-                                              },
-                                              child: Text(
-                                                "Open",
-                                                style: isOpen!
-                                                    ? TextStyle(
-                                                        fontSize: width * 0.008,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                        fontFamily: "Poppins",
-                                                      )
-                                                    : TextStyle(
-                                                        fontSize: width * 0.008,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            Color(0xFFFCFCFC),
-                                                        fontFamily: "Poppins",
-                                                      ),
-                                              ),
+                                            Text(
+                                              "Create Ticket",
+                                              style: TextStyle(
+                                                  fontSize: width * 0.008,
+                                                  color: Colors.white,
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w400),
                                             ),
                                             SizedBox(
-                                              width: width * 0.008,
+                                              width: width * 0.005,
                                             ),
-                                            InkWell(
-                                              onTap: () {
-                                                if (isOpen!) {
-                                                  setState(() {
-                                                    isOpen = false;
-                                                    print(isOpen);
-                                                  });
-                                                }
-                                              },
-                                              child: Text(
-                                                "Closed",
-                                                style: !isOpen!
-                                                    ? TextStyle(
-                                                        fontSize: width * 0.008,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Colors.white,
-                                                        decoration:
-                                                            TextDecoration
-                                                                .underline,
-                                                        fontFamily: "Poppins",
-                                                      )
-                                                    : TextStyle(
-                                                        fontSize: width * 0.008,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color:
-                                                            Color(0xFFFCFCFC),
-                                                        fontFamily: "Poppins",
-                                                      ),
-                                              ),
-                                            )
+                                            Icon(
+                                              Icons.add,
+                                              color: Colors.white,
+                                            ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.02,
-                                  ),
-                                  isOpen!
-                                      ? Expanded(
-                                          child: OpenTickets(
-                                            width: width * 0,
-                                            height: height,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Container(
+                                      width: width * 0.06,
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              setState(() {
+                                                if (!isOpen!) {
+                                                  isOpen = true;
+                                                }
+                                              });
+                                            },
+                                            child: Text(
+                                              "Open",
+                                              style: isOpen!
+                                                  ? TextStyle(
+                                                      fontSize: width * 0.008,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontFamily: "Poppins",
+                                                    )
+                                                  : TextStyle(
+                                                      fontSize: width * 0.008,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFFFCFCFC),
+                                                      fontFamily: "Poppins",
+                                                    ),
+                                            ),
                                           ),
-                                        )
-                                      : Expanded(
-                                          child: ClosedTickets(
-                                            width: width * 0,
-                                            height: height,
+                                          SizedBox(
+                                            width: width * 0.008,
                                           ),
+                                          InkWell(
+                                            onTap: () {
+                                              if (isOpen!) {
+                                                setState(() {
+                                                  isOpen = false;
+                                                  print(isOpen);
+                                                });
+                                              }
+                                            },
+                                            child: Text(
+                                              "Closed",
+                                              style: !isOpen!
+                                                  ? TextStyle(
+                                                      fontSize: width * 0.008,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.white,
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontFamily: "Poppins",
+                                                    )
+                                                  : TextStyle(
+                                                      fontSize: width * 0.008,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFFFCFCFC),
+                                                      fontFamily: "Poppins",
+                                                    ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                isOpen!
+                                    ? Expanded(
+                                        child: OpenTickets(
+                                          width: width * 0,
+                                          height: height,
                                         ),
-                                ],
-                              ),
+                                      )
+                                    : Expanded(
+                                        child: ClosedTickets(
+                                          width: width * 0,
+                                          height: height,
+                                        ),
+                                      ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            )),
-      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )),
     );
   }
 }
@@ -563,7 +555,6 @@ class SitesData extends StatelessWidget {
       width: width,
       child: SingleChildScrollView(
         child: SizedBox(
-          height: height * 0.2,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -579,12 +570,12 @@ class SitesData extends StatelessWidget {
                         : FontWeight.w600,
                     color: Colors.white),
               ),
-              Visibility(
-                visible: Responsive.isMobile(context),
-                child: SizedBox(
-                  height: height * 0.02,
-                ),
-              ),
+              // Visibility(
+              //   visible: Responsive.isMobile(context),
+              //   child: SizedBox(
+              //     height: height * 0.02,
+              //   ),
+              // ),
               Responsive.isDesktop(context)
                   ? Row(
                       children: List.generate(Sites.length, (index) {
@@ -593,20 +584,22 @@ class SitesData extends StatelessWidget {
                           child: SiteRow(
                             width: width,
                             sitename: Sites[index]["sitename"],
-                            siteloc: " Tampa,Fl.",
+                            siteloc: "",
                             imgpath: "Group 268",
                           ),
                         );
                       }),
                     )
-                  : Column(
+                  : ListView(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
                       children: List.generate(Sites.length, (index) {
                         return Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: SiteRow(
                             width: width,
                             sitename: Sites[index].toString(),
-                            siteloc: " Tampa,Fl.",
+                            siteloc: "",
                             imgpath: "Group 268",
                           ),
                         );

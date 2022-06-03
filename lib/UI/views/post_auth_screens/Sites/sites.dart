@@ -188,12 +188,27 @@ class _SitesState extends State<Sites> {
                           child: ListView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (BuildContext context, int index) {
-                              return SiteDet(
-                                  width: width,
-                                  height: height,
-                                  index: index,
-                                  siteName: "",
-                                  sitelocation: "sitelocation");
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SiteDetails(
+                                          sitedetail:
+                                              getsitesdescrp(user.sites)[index],
+                                        ),
+                                      ));
+                                },
+                                child: SiteDet(
+                                    width: width,
+                                    height: height,
+                                    index: index,
+                                    siteName: getsitesdescrp(user.sites)[index]
+                                        .sitename,
+                                    sitelocation:
+                                        getsitesdescrp(user.sites)[index]
+                                            .sitelocation),
+                              );
                             },
                             itemCount: siteImg.length,
                           ),
@@ -305,7 +320,8 @@ class SiteDet extends StatelessWidget {
                         Text(
                           siteName,
                           style: TextStyle(
-                            fontSize: 17.0,
+                            fontSize:
+                                Responsive.isDesktop(context) ? 17.0 : 14.0,
                             fontFamily: "Poppins",
                             color: Colors.white,
                             fontWeight: FontWeight.w400,

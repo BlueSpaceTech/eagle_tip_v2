@@ -710,7 +710,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: height * 0.02,
                             ),
                             Visibility(
-                              visible: user.userRole != "SiteUser",
+                              visible: user.userRole != "SiteUser" &&
+                                  Responsive.isDesktop(context),
                               child: InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
@@ -726,10 +727,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: height * 0.02,
                             ),
                             Visibility(
-                              visible: user.userRole == "SuperAdmin" ||
-                                  user.userRole == "AppAdmin" ||
-                                  user.userRole == "TerminalManager" ||
-                                  user.userRole == "TerminalUser",
+                              visible: (user.userRole == "SuperAdmin" ||
+                                      user.userRole == "AppAdmin" ||
+                                      user.userRole == "TerminalManager" ||
+                                      user.userRole == "TerminalUser") &&
+                                  Responsive.isDesktop(context),
                               child: InkWell(
                                 onTap: () {},
                                 child: SiteContainer(

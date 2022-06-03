@@ -84,61 +84,61 @@ class _SettingState extends State<Setting> {
                 SizedBox(
                   height: height * 0.02,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Push Notifications",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "Poppins"),
-                    ),
-                    FlutterSwitch(
-                        height: 30,
-                        width: 60,
-                        padding: 2.0,
-                        toggleSize: 27,
-                        activeColor: Color(0xFF5081db),
-                        inactiveColor: Color(0xFFd9dbe9),
-                        value: switchVal1!,
-                        onToggle: (val) {
-                          setState(() {
-                            switchVal1 = val;
-                          });
-                        })
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "In-App Notifications",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "Poppins"),
-                    ),
-                    FlutterSwitch(
-                        height: 30,
-                        width: 60,
-                        padding: 2.0,
-                        toggleSize: 27,
-                        activeColor: Color(0xFF5081db),
-                        inactiveColor: Color(0xFFd9dbe9),
-                        value: switchVal2!,
-                        onToggle: (val) {
-                          setState(() {
-                            switchVal2 = val;
-                          });
-                        })
-                  ],
-                ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       "Push Notifications",
+                //       style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 18.0,
+                //           fontWeight: FontWeight.w400,
+                //           fontFamily: "Poppins"),
+                //     ),
+                //     FlutterSwitch(
+                //         height: 30,
+                //         width: 60,
+                //         padding: 2.0,
+                //         toggleSize: 27,
+                //         activeColor: Color(0xFF5081db),
+                //         inactiveColor: Color(0xFFd9dbe9),
+                //         value: switchVal1!,
+                //         onToggle: (val) {
+                //           setState(() {
+                //             switchVal1 = val;
+                //           });
+                //         })
+                //   ],
+                // ),
+                // SizedBox(
+                //   height: height * 0.02,
+                // ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Text(
+                //       "In-App Notifications",
+                //       style: TextStyle(
+                //           color: Colors.white,
+                //           fontSize: 18.0,
+                //           fontWeight: FontWeight.w400,
+                //           fontFamily: "Poppins"),
+                //     ),
+                //     FlutterSwitch(
+                //         height: 30,
+                //         width: 60,
+                //         padding: 2.0,
+                //         toggleSize: 27,
+                //         activeColor: Color(0xFF5081db),
+                //         inactiveColor: Color(0xFFd9dbe9),
+                //         value: switchVal2!,
+                //         onToggle: (val) {
+                //           setState(() {
+                //             switchVal2 = val;
+                //           });
+                //         })
+                //   ],
+                // ),
                 SizedBox(
                   height: height * 0.04,
                 ),
