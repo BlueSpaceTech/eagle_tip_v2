@@ -8,13 +8,12 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:math';
 // import 'package:csv/csv.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
+
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_s3/simple_s3.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/site_call.dart';
@@ -33,6 +32,8 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import '../../../../Providers/user_provider.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class SiteDetails extends StatelessWidget {
   SiteDetails({Key? key, required this.sitedetail}) : super(key: key);
@@ -448,9 +449,10 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   bool? isTapped = false;
   String date = DateTime.now().toString();
 
-  // AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
-  // playLocal() async {
-  //   int result = await audioPlayer.play("assets/pop-sound.mp3", isLocal: true);
+  AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+  playLocal() async {
+    int result = await audioPlayer.play("assets/pop-sound.mp3", isLocal: true);
+  }
 
   bool? reqSent = false;
   void off() {
@@ -777,7 +779,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                             onLoaded: (composition) {
                                               _controller!.duration =
                                                   Duration(seconds: 1);
-                                              // playLocal();
+                                              playLocal();
+                                              Vibrate.vibrate();
                                             },
                                             width: widget.width * 0.22,
                                           ),
@@ -794,7 +797,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                                                   context)
                                                               ? HomeScreen(
                                                                   showdialog:
-                                                                      true,
+                                                                      false,
                                                                   sites: user!
                                                                       .sites,
                                                                 )

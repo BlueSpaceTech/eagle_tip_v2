@@ -1,8 +1,7 @@
 // ignore_for_file: prefer_const_constructors, unused_import, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, avoid_print
 
-import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
-import 'package:amplify_flutter/amplify_flutter.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -82,7 +81,6 @@ import 'package:testttttt/Utils/InviteCSV.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: FirebaseOptions(
       storageBucket: "eagle-tip.appspot.com",

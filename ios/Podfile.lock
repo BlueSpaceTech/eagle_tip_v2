@@ -354,6 +354,40 @@ PODS:
     - Firebase/Functions (= 8.11.0)
     - firebase_core
     - Flutter
+  - DKImagePickerController/Core (4.3.3):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.3)
+  - DKImagePickerController/PhotoGallery (4.3.3):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.3)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - file_picker (0.0.1):
+    - DKImagePickerController/PhotoGallery
+    - Flutter
   - Firebase/Auth (8.11.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.11.0)
@@ -434,6 +468,8 @@ PODS:
     - FirebaseCore (~> 8.0)
     - GTMSessionFetcher/Core (~> 1.5)
   - Flutter (1.0.0)
+  - flutter_vibrate (0.0.1):
+    - Flutter
   - fluttertoast (0.0.2):
     - Flutter
     - Toast
@@ -493,32 +529,46 @@ PODS:
   - nanopb/encode (2.30908.0)
   - path_provider_ios (0.0.1):
     - Flutter
+  - permission_handler_apple (9.0.4):
+    - Flutter
   - PromisesObjC (2.0.0)
+  - SDWebImage (5.12.5):
+    - SDWebImage/Core (= 5.12.5)
+  - SDWebImage/Core (5.12.5)
   - shared_preferences_ios (0.0.1):
     - Flutter
+  - SwiftyGif (5.4.3)
   - Toast (4.0.0)
   - url_launcher_ios (0.0.1):
+    - Flutter
+  - video_player_avfoundation (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
+  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_vibrate (from `.symlinks/plugins/flutter_vibrate/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
 
 SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
+    - DKImagePickerController
+    - DKPhotoGallery
     - Firebase
     - FirebaseAuth
     - FirebaseCore
@@ -536,6 +586,8 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - SDWebImage
+    - SwiftyGif
     - Toast
 
 EXTERNAL SOURCES:
@@ -545,6 +597,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_functions:
     :path: ".symlinks/plugins/cloud_functions/ios"
+  file_picker:
+    :path: ".symlinks/plugins/file_picker/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -555,16 +609,22 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_vibrate:
+    :path: ".symlinks/plugins/flutter_vibrate/ios"
   fluttertoast:
     :path: ".symlinks/plugins/fluttertoast/ios"
   image_picker:
     :path: ".symlinks/plugins/image_picker/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_ios:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
+  video_player_avfoundation:
+    :path: ".symlinks/plugins/video_player_avfoundation/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -572,6 +632,9 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   cloud_firestore: c6c42fe62809b7417aa3c45a6ef0c2812f7fb0d6
   cloud_functions: 6b4859547ebc399e8ffa161486b097a8d575b24f
+  DKImagePickerController: 72fd378f244cef3d27288e0aebf217a4467e4012
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
+  file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
   firebase_auth: 99c9cdc8cc2e59f6fd4960b6e183f5430d237838
   firebase_core: 08f6a85f62060111de5e98d6a214810d11365de9
@@ -586,6 +649,7 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 02e248e8997f71fa8cc9d78e9d49ec1a701ba14a
   FirebaseStorage: 4d05cb1112ff8822a0f9f5090da8bd6d550602ec
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_vibrate: 9f4c2ab57008965f78969472367c329dd77eb801
   fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
@@ -596,11 +660,15 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
+  SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
+  video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
 
-PODFILE CHECKSUM: 32e30eb2aec018403f367dc13cb621cc438aee70
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
 COCOAPODS: 1.11.3

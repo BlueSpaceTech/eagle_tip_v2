@@ -1,8 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +17,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:testttttt/Utils/responsive.dart';
 
 import '../../../Services/authentication_helper.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class Setting extends StatefulWidget {
   Setting({Key? key}) : super(key: key);
@@ -20,13 +28,45 @@ class Setting extends StatefulWidget {
 
 class _SettingState extends State<Setting> {
   bool? switchVal1 = false;
-
+  List<String> sitenames = [];
   bool? switchVal2 = false;
-  String dropdownValue = "Acers Marathon";
+  FToast? fToast;
+  // String dropdownValue = "Acers Marathon";
+  addData() async {
+    UserProvider _userProvider = Provider.of(context, listen: false);
+    await _userProvider.refreshUser();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+
+    for (var site in user!.sites) {
+      if (sitenames.contains(site)) {
+      } else {
+        sitenames.add(site);
+      }
+    }
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fToast = FToast();
+    fToast!.init(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    // print(user.sites.length);
+    // List<String> sitess = user.sites;
+    String dropdownValue = user!.currentsite;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
@@ -169,12 +209,30 @@ class _SettingState extends State<Setting> {
                   onChanged: (String? newValue) {
                     setState(() {
                       dropdownValue = newValue!;
+                      FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(user.uid)
+                          .update({'currentsite': newValue});
+                      addData();
+                      fToast!.showToast(
+                        child:
+                            ToastMessage().show(width, context, "Site Updated"),
+                        gravity: ToastGravity.BOTTOM,
+                        toastDuration: Duration(seconds: 3),
+                      );
                     });
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Responsive.isDesktop(context)
+                                ? HomeScreen(
+                                    showdialog: false,
+                                    sites: user.sites,
+                                  )
+                                : BottomNav()));
                   },
-                  items: <String>[
-                    'Acers Marathon',
-                    'Bridge Marathon',
-                  ].map<DropdownMenuItem<String>>((String value) {
+                  items:
+                      sitenames.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(

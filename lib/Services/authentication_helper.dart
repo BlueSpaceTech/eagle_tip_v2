@@ -50,20 +50,20 @@ class AuthFunctions with ChangeNotifier {
     await _userProvider.refreshUser();
   }
 
-  static Widget handleEntryPoint(BuildContext context) {
-    if (_auth.currentUser == null) {
-      return LoginScreen();
-    } else {
-      if (Responsive.isDesktop(context)) {
-        return HomeScreen(
-          showdialog: true,
-          sites: [],
-        );
-      } else {
-        return BottomNav();
-      }
-    }
-  }
+  // static Widget handleEntryPoint(BuildContext context) {
+  //   if (_auth.currentUser == null) {
+  //     return LoginScreen();
+  //   } else {
+  //     if (Responsive.isDesktop(context)) {
+  //       return HomeScreen(
+  //         showdialog: true,
+  //         sites: [],
+  //       );
+  //     } else {
+  //       return BottomNav();
+  //     }
+  //   }
+  // }
 
   // getuserauthinfo(BuildContext context) async {
   //   User currentUser = await _auth.currentUser!;
