@@ -210,19 +210,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getsiteID(String currentsite) {
     String siteID = "";
-    sitedetails!.forEach((element) {
-      if (element.sitename == currentsite) {
-        setState(() {
-          siteID = element.siteid;
+    sitedetails ??
+        [].forEach((element) {
+          if (element.sitename == currentsite) {
+            setState(() {
+              siteID = element.siteid;
+            });
+          }
         });
-      }
-    });
     return siteID;
   }
 
   getsiteloc(String currentsite) {
     String siteloc = "";
-    for (var element in sitedetails!) {
+    for (var element in sitedetails ?? []) {
       if (element.sitename == currentsite) {
         setState(() {
           siteloc = element.sitelocation;
@@ -234,11 +235,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   sendsitedetails(String currentsite) {
     SitesDetails? sitedetail;
-    sitedetails!.forEach((element) {
+    for (var element in sitedetails!) {
       if (element.sitename == currentsite) {
         sitedetail = element;
       }
-    });
+    }
     return sitedetail;
   }
 
