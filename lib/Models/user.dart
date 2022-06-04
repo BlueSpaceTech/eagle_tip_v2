@@ -46,16 +46,16 @@ class User {
     var snapshot = snap.data() as Map<String, dynamic>;
     return User(
       isSubscribed: false,
-      name: snapshot["name"],
-      email: snapshot["email"],
-      Phonenumber: snapshot["phonenumber"],
-      employerCode: snapshot["employerCode"],
-      phoneisverified: snapshot["isverified"],
-      sites: snapshot["sites"],
-      userRole: snapshot["userRole"],
-      uid: snapshot["uid"],
-      dpurl: snapshot["dpUrl"],
-      currentsite: snapshot["currentsite"],
+      name: snapshot["name"] ?? false,
+      email: snapshot["email"] ?? false,
+      Phonenumber: snapshot["phonenumber"] ?? false,
+      employerCode: snapshot["employerCode"] ?? false,
+      phoneisverified: snapshot["isverified"] ?? false,
+      sites: snapshot["sites"] ?? false,
+      userRole: snapshot["userRole"] ?? false,
+      uid: snapshot["uid"] ?? false,
+      dpurl: snapshot["dpUrl"] ?? false,
+      currentsite: snapshot["currentsite"] ?? false,
     );
   }
 

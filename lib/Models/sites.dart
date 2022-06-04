@@ -16,9 +16,9 @@ class SitesDetails {
     required this.products,
   });
   factory SitesDetails.fromJson(Map<String, dynamic> json) => SitesDetails(
-        sitename: json["CONNAM"],
-        siteid: json["CONSNO"],
-        sitelocation: json["CONCIT"],
-        products: json["PRODUCTS"],
+        sitename: json["CONNAM"] ?? "",
+        siteid: json["CONSNO"]?? "",
+        sitelocation: json["CONCIT"]?? "",
+        products: json["PRODUCTS"]?? "",
       );
 }

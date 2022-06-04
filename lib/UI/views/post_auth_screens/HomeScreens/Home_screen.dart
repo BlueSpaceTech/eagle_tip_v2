@@ -59,11 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isTapped = false;
 
   bool isLoading = false;
-  List<SitesDetails>? sitedetails;
+  List<SitesDetails> ?sitedetails;
   List allsitename = [];
   String siteId = "";
   getData() async {
-    sitedetails = await SiteCall().getSites();
+    sitedetails = await SiteCall().getSites() ?? [];
   }
 
   // @override
@@ -197,11 +197,11 @@ class _HomeScreenState extends State<HomeScreen> {
     //   print(value);
     //   // tokens.doc(user.userRole).update(data);
     // });
-
+    getData();
     addData();
     checkupdateTC();
     // print(FirebaseAuth.instance.currentUser!.displayName);
-    getData();
+
 
     //print(checkupdateTC());
     //checkupdateTC();
@@ -223,13 +223,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getsiteloc(String currentsite) {
     String siteloc = "";
-    sitedetails!.forEach((element) {
+    for (var element in sitedetails!) {
       if (element.sitename == currentsite) {
         setState(() {
           siteloc = element.sitelocation;
         });
       }
-    });
+    }
     return siteloc;
   }
 
@@ -404,7 +404,7 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
-      body: isLoading == true
+      body: user == null
           ? CircularProgressIndicator()
           : SingleChildScrollView(
               child: Container(
@@ -428,8 +428,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: height * 0.05,
                               ),
                               Visibility(
-                                visible: user?.userRole != "AppAdmin" &&
-                                    user?.userRole != "SuperAdmin",
+                                visible: user.userRole != "AppAdmin" &&
+                                    user.userRole != "SuperAdmin",
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -438,7 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         GestureDetector(
                                           onTap: () {},
                                           child: Text(
-                                            user!.currentsite,
+                                            user.currentsite,
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 17.0,
@@ -606,7 +606,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     GestureDetector(
                                       onTap: () {},
                                       child: Text(
-                                        user!.currentsite,
+                                        user.currentsite,
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 17.0,

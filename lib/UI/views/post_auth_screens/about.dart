@@ -145,25 +145,31 @@ class _AboutMobileState extends State<AboutMobile> {
                             SizedBox(
                               height: height * 0.005,
                             ),
-                            RichText(
-                              text: TextSpan(
-                                text: "Read Eagle Tip's Terms and conditions",
-                                style: TextStyle(
-                                    color: Color(0xFFD4D6D9),
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "Poppins"),
-                                children: [
-                                  TextSpan(
-                                    text: "  here.",
-                                    style: TextStyle(
-                                        decoration: TextDecoration.underline,
-                                        color: Color(0xFF92B8FF),
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ],
+                            InkWell(
+                              onTap: () {
+                                Navigator.popAndPushNamed(
+                                    context, AppRoutes.displayTerms);
+                              },
+                              child: RichText(
+                                text: TextSpan(
+                                  text: "Read Eagle Tip's Terms and conditions",
+                                  style: TextStyle(
+                                      color: Color(0xFFD4D6D9),
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Poppins"),
+                                  children: [
+                                    TextSpan(
+                                      text: "  here.",
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Color(0xFF92B8FF),
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],

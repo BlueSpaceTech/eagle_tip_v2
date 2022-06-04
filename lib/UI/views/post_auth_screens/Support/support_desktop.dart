@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 // import 'dart:html';
 
@@ -38,7 +38,6 @@ class _SupportDesktopState extends State<SupportDesktop> {
   TextEditingController email = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     fToast = FToast();
@@ -124,42 +123,21 @@ class _SupportDesktopState extends State<SupportDesktop> {
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-                top: Responsive.isDesktop(context)
-                    ? height * 0.05
-                    : height * 0.1,
-                left: width * 0.07,
-                right: width * 0.07),
+              top: Responsive.isDesktop(context) ? height * 0.05 : height * 0.1,
+              // left: Responsive.isDesktop(context) ? 0 : width * 0.0,
+              // right: Responsive.isDesktop(context) ? 0 : width * 0.0,
+            ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Visibility(
-                  visible: Responsive.isDesktop(context),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      )),
-                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Responsive.isDesktop(context)
-                        ? InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
-                            ))
+                        ? SizedBox()
                         : TopRow(width: width),
                     SizedBox(
-                      height: Responsive.isDesktop(context)
-                          ? height * 0.013
-                          : height * 0.05,
+                      height: Responsive.isDesktop(context) ? 0 : height * 0.05,
                     ),
                     CustomContainer(
                         child: Column(
@@ -220,7 +198,7 @@ class _SupportDesktopState extends State<SupportDesktop> {
                                             fontSize:
                                                 Responsive.isDesktop(context)
                                                     ? width * 0.009
-                                                    : width * 0.023,
+                                                    : 12.0,
                                             color: myFocusNode.hasFocus
                                                 ? Color(0xFF5E8BE0)
                                                 : Color(0xffAEB0C3),
@@ -545,9 +523,8 @@ class _SupportTextFieldState extends State<SupportTextField> {
           border: InputBorder.none,
           labelText: widget.labelText,
           labelStyle: TextStyle(
-              fontSize: Responsive.isDesktop(context)
-                  ? widget.width * 0.009
-                  : widget.width * 0.023,
+              fontSize:
+                  Responsive.isDesktop(context) ? widget.width * 0.009 : 12.0,
               color:
                   myFocusNode.hasFocus ? Color(0xFF5E8BE0) : Color(0xffAEB0C3),
               fontFamily: "Poppins",
@@ -630,9 +607,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
           border: InputBorder.none,
           labelText: widget.labelText,
           labelStyle: TextStyle(
-              fontSize: Responsive.isDesktop(context)
-                  ? widget.width * 0.009
-                  : widget.width * 0.03,
+              fontSize:
+                  Responsive.isDesktop(context) ? widget.width * 0.009 : 12.0,
               color:
                   myFocusNode.hasFocus ? Color(0xFF5E8BE0) : Color(0xffAEB0C3),
               fontFamily: "Poppins",
