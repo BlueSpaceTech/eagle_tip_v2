@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool? isTapped = false;
 
   bool isLoading = false;
-  List<SitesDetails> ?sitedetails;
+  List<SitesDetails>? sitedetails;
   List allsitename = [];
   String siteId = "";
   getData() async {
@@ -201,7 +201,6 @@ class _HomeScreenState extends State<HomeScreen> {
     addData();
     checkupdateTC();
     // print(FirebaseAuth.instance.currentUser!.displayName);
-
 
     //print(checkupdateTC());
     //checkupdateTC();
@@ -447,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           ),
                                         ),
                                         Text(
-                                          getsiteloc(user.currentsite),
+                                          getsiteloc(user.currentsite) ?? "",
                                           style: TextStyle(
                                               color: Color(0xFF6E7191),
                                               fontSize: 13.0,
@@ -460,7 +459,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       width: 30.0,
                                     ),
                                     Text(
-                                      getsiteID(user.currentsite),
+                                      getsiteID(user.currentsite) ?? "",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 17.0,
@@ -615,7 +614,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     Text(
-                                      getsiteloc(user.currentsite),
+                                      getsiteloc(user.currentsite) ?? "",
                                       style: TextStyle(
                                           color: Color(0xFF6E7191),
                                           fontSize: 13.0,
@@ -625,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ],
                                 ),
                                 Text(
-                                  getsiteID(user.currentsite),
+                                  getsiteID(user.currentsite) ?? "",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 17.0,
