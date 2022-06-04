@@ -56,7 +56,7 @@ class _BottomNavState extends State<BottomNav> {
       MyProfile(),
       HomeScreen(
         showdialog: true,
-        sites: user!.sites,
+        sites: user?.sites ?? [],
       ),
       Notifications(),
       //  MessageMain(
@@ -106,7 +106,8 @@ class _BottomNavState extends State<BottomNav> {
             activeIcon: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("pushNotifications")
-                    .where("visibleto", arrayContainsAny: [user.userRole])
+                    .where("visibleto",
+                        arrayContainsAny: [user?.userRole ?? ""])
                     // .where("isNew", ar: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -140,7 +141,8 @@ class _BottomNavState extends State<BottomNav> {
             icon: StreamBuilder(
                 stream: FirebaseFirestore.instance
                     .collection("pushNotifications")
-                    .where("visibleto", arrayContainsAny: [user.userRole])
+                    .where("visibleto",
+                        arrayContainsAny: [user?.userRole ?? ""])
                     // .where("isNew", ar: true)
                     .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -175,15 +177,15 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
               activeIcon: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("chats")
-                    .where("between", arrayContainsAny: [user.uid]).snapshots(),
+                stream: FirebaseFirestore.instance.collection("chats").where(
+                    "between",
+                    arrayContainsAny: [user?.uid ?? ""]).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
                     List docsss = snapshot.data!.docs;
                     List docs2 = [];
                     for (var ele in docsss) {
-                      if (ele["isNew"] != user.uid &&
+                      if (ele["isNew"] != user?.uid &&
                           ele["isNew"] != "constant") {
                         docs2.add(ele);
                       }
@@ -206,15 +208,15 @@ class _BottomNavState extends State<BottomNav> {
                 },
               ),
               icon: StreamBuilder(
-                stream: FirebaseFirestore.instance
-                    .collection("chats")
-                    .where("between", arrayContainsAny: [user.uid]).snapshots(),
+                stream: FirebaseFirestore.instance.collection("chats").where(
+                    "between",
+                    arrayContainsAny: [user?.uid ?? ""]).snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
                     List docsss = snapshot.data!.docs;
                     List docs2 = [];
                     for (var ele in docsss) {
-                      if (ele["isNew"] != user.uid &&
+                      if (ele["isNew"] != user?.uid &&
                           ele["isNew"] != "constant") {
                         docs2.add(ele);
                       }
