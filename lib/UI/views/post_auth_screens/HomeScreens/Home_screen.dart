@@ -250,7 +250,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // bool showdilog = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   checkupdateTC() async {
-    bool showdilogg = false;
     // print("inside");
     if (widget.showdialog) {
       DocumentReference dbRef = await FirebaseFirestore.instance
@@ -266,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
             check = data.get("viewedby");
           });
           print("dataexts");
-          print(check);
+
           if (check!.contains(auth.currentUser!.uid)) {
             // print("already viewed");
           } else {
@@ -278,6 +277,8 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         }
       });
+    } else {
+      print("no need to show diloag");
     }
 
     // return showdilogg;

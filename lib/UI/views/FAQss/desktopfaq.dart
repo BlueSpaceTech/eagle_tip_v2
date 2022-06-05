@@ -905,7 +905,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => NewFaq(
+                                              builder: (context) => NewFaq2(
                                                   userRole: widget.userRole),
                                             ));
                                       },

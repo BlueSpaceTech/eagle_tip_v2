@@ -277,7 +277,7 @@ class _NewFaq2State extends State<NewFaq2> {
                       ),
                     ),
                     Text(
-                      "Add new Faq3",
+                      "Add new Faq",
                       style: TextStyle(
                           color: Colors.white,
                           fontFamily: "Poppins",
