@@ -210,14 +210,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getsiteID(String currentsite) {
     String siteID = "";
-    sitedetails ??
-        [].forEach((element) {
-          if (element.sitename == currentsite) {
-            setState(() {
-              siteID = element.siteid;
-            });
-          }
+    for (var element in sitedetails ?? []) {
+      if (element.sitename == currentsite) {
+        setState(() {
+          siteID = element.siteid;
         });
+      }
+    }
     return siteID;
   }
 
@@ -405,7 +404,11 @@ class _HomeScreenState extends State<HomeScreen> {
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
       body: user == null
-          ? CircularProgressIndicator()
+          ? Container(
+              height: height,
+              color: backGround_color,
+              width: width,
+              child: Center(child: CircularProgressIndicator()))
           : SingleChildScrollView(
               child: Container(
                 height: Responsive.isDesktop(context) ? height : height * 1.5,
@@ -493,10 +496,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       Image.asset(
                                         Common.assetImages + "Ellipse 49.png",
-                                        width: width * 0.15,
+                                        width: width * 0.16,
                                       ),
                                       SizedBox(
-                                        width: width * 0.069,
+                                        width: width * 0.08,
                                         child: Text(
                                           "Submit Inventories",
                                           textAlign: TextAlign.center,

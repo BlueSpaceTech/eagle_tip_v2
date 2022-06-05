@@ -373,7 +373,7 @@ class _CrudScreenState extends State<CrudScreen> {
             .collection("users")
             .where("sites", arrayContainsAny: sites)
             .where("uid", isNotEqualTo: uid)
-            .where("userRole", whereIn: CrudFunction().visibleRole(user))
+            // .where("userRole", whereIn: CrudFunction().visibleRole(user))
             .get();
     if (mounted) {
       setState(() {

@@ -584,7 +584,7 @@ class SitesData extends StatelessWidget {
                           padding: EdgeInsets.only(right: 20),
                           child: SiteRow(
                             width: width,
-                            sitename: Sites[index]["sitename"],
+                            sitename: Sites[index],
                             siteloc: "",
                             imgpath: "Group 268",
                           ),

@@ -281,20 +281,37 @@ class UserProfile extends StatelessWidget {
                                   ? height * 0.04
                                   : height * 0.02,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: Responsive.isDesktop(context)
-                                      ? 0.0
-                                      : width * 0.08,
-                                  right: Responsive.isDesktop(context)
-                                      ? 0.0
-                                      : width * 0.04),
-                              child: SitesData(
-                                height: height * 1.08,
-                                width: width,
-                                Sites: user!.sites,
-                              ),
-                            ),
+                            Responsive.isDesktop(context)
+                                ? Row(
+                                    children:
+                                        List.generate(sites.length, (index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(right: 20),
+                                        child: SiteRow(
+                                          width: width,
+                                          sitename: sites[index],
+                                          siteloc: "",
+                                          imgpath: "Group 268",
+                                        ),
+                                      );
+                                    }),
+                                  )
+                                : ListView(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    children:
+                                        List.generate(sites.length, (index) {
+                                      return Padding(
+                                        padding: EdgeInsets.only(bottom: 10),
+                                        child: SiteRow(
+                                          width: width,
+                                          sitename: sites[index].toString(),
+                                          siteloc: "",
+                                          imgpath: "Group 268",
+                                        ),
+                                      );
+                                    }),
+                                  ),
                             Visibility(
                               visible: Responsive.isDesktop(context),
                               child: SizedBox(

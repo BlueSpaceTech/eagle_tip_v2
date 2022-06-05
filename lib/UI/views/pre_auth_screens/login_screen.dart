@@ -390,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          // print("isweb");
+          print("isweb");
 
           // AuthFunctions.signOut;
           // // print(phone);
@@ -417,7 +417,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //   });
           //   addData();
 
-          print(ress);
+          //   print(ress);
           // }
           Navigator.pushReplacement(
               context,
@@ -429,18 +429,18 @@ class _LoginScreenState extends State<LoginScreen> {
                         )
                       : BottomNav()));
         } else {
-          // AuthFunctions.signOut;
-          // registerUser(phone, context);
-          // addData();
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context)
-                      ? HomeScreen(
-                          showdialog: true,
-                          sites: sites,
-                        )
-                      : BottomNav()));
+          AuthFunctions.signOut;
+          registerUser(phone, context);
+          addData();
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Responsive.isDesktop(context)
+          //             ? HomeScreen(
+          //                 showdialog: true,
+          //                 sites: sites,
+          //               )
+          //             : BottomNav()));
         }
 
         try {

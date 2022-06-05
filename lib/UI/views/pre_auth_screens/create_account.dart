@@ -224,11 +224,17 @@ class _CreateAccountState extends State<CreateAccount> {
                   children: [
                     Row(
                       children: [
-                        Visibility(
-                          visible: Responsive.isDesktop(context) ? false : true,
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
+                        InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Visibility(
+                            visible:
+                                Responsive.isDesktop(context) ? false : true,
+                            child: Icon(
+                              Icons.arrow_back,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
