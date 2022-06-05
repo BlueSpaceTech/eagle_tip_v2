@@ -510,117 +510,117 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: "Poppins"),
                           ),
-                          SizedBox(
-                            height: height * 0.07,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            children: [
-                              Text(
-                                "Messages",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "Poppins"),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: height * 0.02,
-                          ),
-                          Container(
-                            width: width * 0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Push Notifications",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Poppins"),
-                                ),
-                                Row(
-                                  children: [
-                                    FlutterSwitch(
-                                      height: 30,
-                                      width: 60,
-                                      padding: 2.0,
-                                      toggleSize: 27,
-                                      activeColor: Color(0xFF5081db),
-                                      inactiveColor: Color(0xFFd9dbe9),
-                                      value: switchVal1!,
-                                      onToggle: (val) {
-                                        setState(() {
-                                          switchVal1 = val;
-                                        });
-                                      },
-                                    ),
-                                    SizedBox(
-                                      width: 40.0,
-                                    ),
-                                    Image.asset(
-                                      Common.assetImages + "Group 2889.png",
-                                      width: width * 0.02,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: height * 0.07,
+                          // ),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.start,
+                          //   // ignore: prefer_const_literals_to_create_immutables
+                          //   children: [
+                          //     Text(
+                          //       "Messages",
+                          //       style: TextStyle(
+                          //           color: Colors.white,
+                          //           fontSize: 18.0,
+                          //           fontWeight: FontWeight.bold,
+                          //           fontFamily: "Poppins"),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(
                             height: height * 0.02,
                           ),
-                          Container(
-                            width: width * 0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "In-App Notifications",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Poppins"),
-                                ),
-                                Row(
-                                  children: [
-                                    FlutterSwitch(
-                                      height: 30,
-                                      width: 60,
-                                      padding: 2.0,
-                                      toggleSize: 27,
-                                      activeColor: Color(0xFF5081db),
-                                      inactiveColor: Color(0xFFd9dbe9),
-                                      value: switchVal2!,
-                                      onToggle: (val) {
-                                        setState(() {
-                                          switchVal2 = val;
-                                        });
-                                      },
-                                    ),
-                                    // SizedBox(
-                                    //   width: width * 0.08,
-                                    // ),
-                                    SizedBox(
-                                      width: 40.0,
-                                    ),
-                                    Image.asset(
-                                      Common.assetImages + "Group 2889.png",
-                                      width: width * 0.02,
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: height * 0.17,
-                          ),
+                          // Container(
+                          //   width: width * 0.4,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text(
+                          //         "Push Notifications",
+                          //         style: TextStyle(
+                          //             color: Colors.white,
+                          //             fontSize: 18.0,
+                          //             fontWeight: FontWeight.w400,
+                          //             fontFamily: "Poppins"),
+                          //       ),
+                          //       Row(
+                          //         children: [
+                          //           FlutterSwitch(
+                          //             height: 30,
+                          //             width: 60,
+                          //             padding: 2.0,
+                          //             toggleSize: 27,
+                          //             activeColor: Color(0xFF5081db),
+                          //             inactiveColor: Color(0xFFd9dbe9),
+                          //             value: switchVal1!,
+                          //             onToggle: (val) {
+                          //               setState(() {
+                          //                 switchVal1 = val;
+                          //               });
+                          //             },
+                          //           ),
+                          //           SizedBox(
+                          //             width: 40.0,
+                          //           ),
+                          //           Image.asset(
+                          //             Common.assetImages + "Group 2889.png",
+                          //             width: width * 0.02,
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: height * 0.02,
+                          // ),
+                          // Container(
+                          //   width: width * 0.4,
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       Text(
+                          //         "In-App Notifications",
+                          //         style: TextStyle(
+                          //             color: Colors.white,
+                          //             fontSize: 18.0,
+                          //             fontWeight: FontWeight.w400,
+                          //             fontFamily: "Poppins"),
+                          //       ),
+                          //       Row(
+                          //         children: [
+                          //           FlutterSwitch(
+                          //             height: 30,
+                          //             width: 60,
+                          //             padding: 2.0,
+                          //             toggleSize: 27,
+                          //             activeColor: Color(0xFF5081db),
+                          //             inactiveColor: Color(0xFFd9dbe9),
+                          //             value: switchVal2!,
+                          //             onToggle: (val) {
+                          //               setState(() {
+                          //                 switchVal2 = val;
+                          //               });
+                          //             },
+                          //           ),
+                          //           // SizedBox(
+                          //           //   width: width * 0.08,
+                          //           // ),
+                          //           SizedBox(
+                          //             width: 40.0,
+                          //           ),
+                          //           Image.asset(
+                          //             Common.assetImages + "Group 2889.png",
+                          //             width: width * 0.02,
+                          //           ),
+                          //         ],
+                          //       )
+                          //     ],
+                          //   ),
+                          // ),
+                          // SizedBox(
+                          //   height: height * 0.17,
+                          // ),
                           Text(
                             "Site",
                             style: TextStyle(

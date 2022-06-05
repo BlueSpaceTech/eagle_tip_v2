@@ -235,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   sendsitedetails(String currentsite) {
     SitesDetails? sitedetail;
-    for (var element in sitedetails!) {
+    for (var element in sitedetails ?? []) {
       if (element.sitename == currentsite) {
         sitedetail = element;
       }
@@ -483,6 +483,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => SiteDetails(
+                                            currentSite: user.currentsite,
                                             sitedetail: sendsitedetails(
                                                 user.currentsite),
                                           ),
@@ -550,7 +551,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: InkWell(
                                   onTap: () {
                                     Navigator.pushNamed(
-                                        context, AppRoutes.notifications);
+                                        context, AppRoutes.createNotification);
                                   },
                                   child: SiteContainer(
                                       width: width,
@@ -647,6 +648,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SiteDetails(
+                                          currentSite: user.currentsite,
                                           sitedetail:
                                               sendsitedetails(user.currentsite),
                                         ),

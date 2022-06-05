@@ -388,7 +388,7 @@ class _InvitationState extends State<Invitation> {
                               );
                               Responsive.isDesktop(context)
                                   ? Navigator.pushNamed(
-                                      context, AppRoutes.homeScreen)
+                                      context, AppRoutes.crudscreen)
                                   : Navigator.pushNamed(
                                       context, AppRoutes.bottomNav);
                             } else {

@@ -518,7 +518,7 @@ class _NotifyState extends State<Notify> {
               SizedBox(
                 width: Responsive.isDesktop(context)
                     ? widget.width * 0.3
-                    : widget.width * 0.5,
+                    : widget.width * 0.62,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
