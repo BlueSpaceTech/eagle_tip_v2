@@ -109,26 +109,14 @@ class _SupportScreenState extends State<SupportScreen> {
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-                top: Responsive.isDesktop(context)
-                    ? height * 0.05
-                    : height * 0.1,
-                left: Responsive.isDesktop(context) ? width * 0.01 : 0.0,
-                right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
+              top: Responsive.isDesktop(context) ? height * 0.05 : height * 0.1,
+              // left: Responsive.isDesktop(context) ? width * 0.01 : 0.0,
+              // right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
+            ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Visibility(
-                  visible: Responsive.isDesktop(context),
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                      )),
-                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

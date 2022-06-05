@@ -34,18 +34,18 @@ class _SitesState extends State<Sites> {
   List<SitesDetails>? sitedetails;
 
   getData() async {
-    sitedetails = await SiteCall().getSites();
+    sitedetails = await SiteCall().getSites() ?? [];
   }
 
   getsitesdescrp(List sites) {
     List<SitesDetails> sitedesc = [];
-    sitedetails!.forEach((element) {
+    for (var element in sitedetails ?? []) {
       for (var site in sites) {
         if (element.sitename == site) {
           sitedesc.add(element);
         }
       }
-    });
+    }
     return sitedesc;
   }
 
@@ -132,8 +132,13 @@ class _SitesState extends State<Sites> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       SiteDetails(
+                                                    currentSite: getsitesdescrp(
+                                                            user?.sites ??
+                                                                [])[index]
+                                                        .sitename,
                                                     sitedetail: getsitesdescrp(
-                                                        user!.sites)[index],
+                                                        user?.sites ??
+                                                            [])[index],
                                                   ),
                                                 ));
                                           },
@@ -142,15 +147,16 @@ class _SitesState extends State<Sites> {
                                               height: height,
                                               index: index,
                                               siteName: getsitesdescrp(
-                                                      user!.sites)[index]
+                                                      user?.sites ?? [])[index]
                                                   .sitename,
                                               sitelocation: getsitesdescrp(
-                                                      user.sites)[index]
+                                                      user?.sites ?? [])[index]
                                                   .sitelocation),
                                         );
                                       },
                                       itemCount:
-                                          getsitesdescrp(user!.sites).length,
+                                          getsitesdescrp(user?.sites ?? [])
+                                              .length,
                                     ),
                                   ),
                                 ),
@@ -194,8 +200,11 @@ class _SitesState extends State<Sites> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SiteDetails(
+                                          currentSite: getsitesdescrp(
+                                                  user?.sites ?? [])[index]
+                                              .sitename,
                                           sitedetail: getsitesdescrp(
-                                              user!.sites)[index],
+                                              user?.sites ?? [])[index],
                                         ),
                                       ));
                                 },
@@ -203,10 +212,11 @@ class _SitesState extends State<Sites> {
                                     width: width,
                                     height: height,
                                     index: index,
-                                    siteName: getsitesdescrp(user!.sites)[index]
-                                        .sitename,
+                                    siteName:
+                                        getsitesdescrp(user?.sites ?? [])[index]
+                                            .sitename,
                                     sitelocation:
-                                        getsitesdescrp(user.sites)[index]
+                                        getsitesdescrp(user?.sites ?? [])[index]
                                             .sitelocation),
                               );
                             },

@@ -36,24 +36,25 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class SiteDetails extends StatelessWidget {
-  SiteDetails({Key? key, required this.sitedetail}) : super(key: key);
+  SiteDetails({Key? key, required this.sitedetail, required this.currentSite})
+      : super(key: key);
   SitesDetails sitedetail;
-
+  String currentSite;
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
     return Responsive(
       mobile: MobileSiteDet(
         sitedetail: sitedetail,
-        currentsite: user!.currentsite,
+        currentsite: currentSite,
       ),
       tablet: MobileSiteDet(
         sitedetail: sitedetail,
-        currentsite: user.currentsite,
+        currentsite: currentSite,
       ),
       desktop: MobileSiteDet(
         sitedetail: sitedetail,
-        currentsite: user.currentsite,
+        currentsite: currentSite,
       ),
     );
   }
@@ -78,14 +79,14 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
   String siteId = "";
   SitesDetails? sitedetail;
   getData(String currentsite) async {
-    sitedetails = await SiteCall().getSites();
-    sitedetails!.forEach((element) {
+    sitedetails = await SiteCall().getSites() ?? [];
+    for (var element in sitedetails ?? []) {
       if (element.sitename == currentsite) {
         setState(() {
           sitedetail = element;
         });
       }
-    });
+    }
   }
 
   @override
@@ -250,7 +251,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                         height: height * 0.047,
                                       ),
                                       RequestHistoryPart(
-                                        currentSite: user!.currentsite,
+                                        currentSite: widget.currentsite,
                                         width: width * 0.65,
                                         height: height * 0.9,
                                       ),
@@ -351,7 +352,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                             Visibility(
                               visible: user?.userRole != "SiteUser",
                               child: RequestHistoryPart(
-                                currentSite: user!.currentsite,
+                                currentSite: widget.currentsite,
                                 width: width,
                                 height: height,
                               ),
