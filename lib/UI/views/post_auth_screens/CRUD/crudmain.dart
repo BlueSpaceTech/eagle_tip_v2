@@ -309,6 +309,7 @@ class _CrudScreenState extends State<CrudScreen> {
     if (mounted) {
       getCurrentUserRole();
     }
+
     getData();
 
     _controllers = LinkedScrollControllerGroup();
@@ -335,7 +336,7 @@ class _CrudScreenState extends State<CrudScreen> {
     for (var document in sitedetails!) {
       allsitename.add(document.sitename);
     }
-    print(allsitename);
+    // print(allsitename);
   }
 
   callUserInfoScreen(String name, String email, String userRole, String dpUrl,
@@ -761,24 +762,24 @@ class _CrudScreenState extends State<CrudScreen> {
                                                 ),
                                         ],
                                       ),
-                                      SizedBox(
-                                        height: height * 0.04,
-                                      ),
-                                      Text(
-                                        "Role",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontFamily: "Poppins",
-                                            fontSize: 15),
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.02,
-                                      ),
-                                      Wrap(
-                                        children: _buildRolechip(
-                                            CrudFunction().visibleRole(user!)),
-                                      ),
                                     ],
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.04,
+                                  ),
+                                  Text(
+                                    "Role",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontFamily: "Poppins",
+                                        fontSize: 15),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Wrap(
+                                    children: _buildRolechip(
+                                        CrudFunction().visibleRole(user!)),
                                   ),
                                 ])),
 
