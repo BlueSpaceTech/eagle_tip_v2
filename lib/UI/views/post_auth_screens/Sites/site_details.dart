@@ -630,6 +630,18 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                     child: Column(
                       children: [
                         Text(
+                          "Date/Time for the inventory: ${DateTime.now()}",
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "Poppins"),
+                        ),
+                        SizedBox(
+                          height: Responsive.isDesktop(context)
+                              ? widget.height * 0.02
+                              : widget.height * 0.05,
+                        ),
+                        Text(
                           "Are you sure you want to request:",
                           style: TextStyle(
                               fontSize: 18.0,
@@ -691,171 +703,178 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                         SizedBox(
                           height: widget.height * 0.02,
                         ),
-                        Row(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                width: Responsive.isDesktop(context)
-                                    ? widget.width * 0.45
-                                    : widget.width * 0.32,
-                                height: widget.height * 0.055,
-                                decoration: BoxDecoration(
-                                  color: Color(0Xffed5c62),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Cancel",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Poppins"),
+                        Padding(
+                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: Responsive.isDesktop(context)
+                                      ? widget.width * 0.45
+                                      : widget.width * 0.32,
+                                  height: widget.height * 0.055,
+                                  decoration: BoxDecoration(
+                                    color: Color(0Xffed5c62),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Poppins"),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              width: Responsive.isDesktop(context)
-                                  ? widget.width * 0.06
-                                  : 12.0,
-                            ),
-                            InkWell(
-                              onTap: () async {
-                                await http.post(
-                                  Uri.parse(
-                                      "https://aa4f9r6r3m.execute-api.us-east-1.amazonaws.com/default/inventory_requests"),
-                                  headers: <String, String>{
-                                    'x-api-key':
-                                        'xTBUwqVQCjCroKgTTYxp4Ec5PheG1FAKu2viC100',
-                                  },
-                                  body: jsonEncode(sftpdata(
-                                      widget.sitedetail.products.length)),
-                                );
-                                widget.valueChanged(reqSent);
-                                print(reqSent);
-                                Navigator.pop(context);
-                                requests.doc().set(
-                                  {
-                                    "data": backenddata(
-                                        widget.sitedetail.products.length),
-                                    "date": DateTime(
-                                        DateTime.now().year,
-                                        DateTime.now().month,
-                                        DateTime.now().day),
-                                    "id": Random().nextInt(10000000).toString(),
-                                    "requestby": user?.name,
-                                    "site": user?.currentsite,
-                                  },
-                                );
+                              // SizedBox(
+                              //   width: Responsive.isDesktop(context)
+                              //       ? widget.width * 0.23
+                              //       : 12.0,
+                              // ),
+                              InkWell(
+                                onTap: () async {
+                                  await http.post(
+                                    Uri.parse(
+                                        "https://aa4f9r6r3m.execute-api.us-east-1.amazonaws.com/default/inventory_requests"),
+                                    headers: <String, String>{
+                                      'x-api-key':
+                                          'xTBUwqVQCjCroKgTTYxp4Ec5PheG1FAKu2viC100',
+                                    },
+                                    body: jsonEncode(sftpdata(
+                                        widget.sitedetail.products.length)),
+                                  );
+                                  widget.valueChanged(reqSent);
+                                  print(reqSent);
+                                  Navigator.pop(context);
+                                  requests.doc().set(
+                                    {
+                                      "data": backenddata(
+                                          widget.sitedetail.products.length),
+                                      "date": DateTime(
+                                          DateTime.now().year,
+                                          DateTime.now().month,
+                                          DateTime.now().day),
+                                      "id":
+                                          Random().nextInt(10000000).toString(),
+                                      "requestby": user?.name,
+                                      "site": user?.currentsite,
+                                    },
+                                  );
 
-                                // setState(() {
-                                //   _requested = true;
-                                // });
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20.0)),
-                                    title: Text(
-                                      'Your Request has been sent!',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 23.0,
-                                        height: 1.2,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Poppins",
-                                        color: Colors.black,
+                                  // setState(() {
+                                  //   _requested = true;
+                                  // });
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0)),
+                                      title: Text(
+                                        'Your Request has been sent!',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 23.0,
+                                          height: 1.2,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Poppins",
+                                          color: Colors.black,
+                                        ),
                                       ),
-                                    ),
-                                    content: Container(
-                                      height: widget.height * 0.25,
-                                      child: Column(
-                                        children: [
-                                          Lottie.asset(
-                                            'assets/tick_animation.json',
-                                            repeat: false,
-                                            onLoaded: (composition) {
-                                              _controller!.duration =
-                                                  Duration(seconds: 1);
-                                              playLocal();
-                                              Vibrate.vibrate();
-                                            },
-                                            width: widget.width * 0.22,
-                                          ),
-                                          SizedBox(
-                                            height: widget.height * 0.08,
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          Responsive.isDesktop(
-                                                                  context)
-                                                              ? HomeScreen(
-                                                                  showdialog:
-                                                                      false,
-                                                                  sites: user!
-                                                                      .sites,
-                                                                )
-                                                              : BottomNav()));
-                                            },
-                                            child: Container(
-                                              width: widget.width * 0.32,
-                                              height: widget.height * 0.055,
-                                              decoration: BoxDecoration(
-                                                color: Color(0Xff5081db),
-                                                borderRadius:
-                                                    BorderRadius.circular(10.0),
-                                              ),
-                                              child: Center(
-                                                child: Text(
-                                                  "Back",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 13.0,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontFamily: "Poppins"),
+                                      content: Container(
+                                        height: widget.height * 0.25,
+                                        child: Column(
+                                          children: [
+                                            Lottie.asset(
+                                              'assets/tick_animation.json',
+                                              repeat: false,
+                                              onLoaded: (composition) {
+                                                _controller!.duration =
+                                                    Duration(seconds: 1);
+                                                playLocal();
+                                                Vibrate.vibrate();
+                                              },
+                                              width: widget.width * 0.22,
+                                            ),
+                                            SizedBox(
+                                              height: widget.height * 0.08,
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            Responsive
+                                                                    .isDesktop(
+                                                                        context)
+                                                                ? HomeScreen(
+                                                                    showdialog:
+                                                                        false,
+                                                                    sites: user!
+                                                                        .sites,
+                                                                  )
+                                                                : BottomNav()));
+                                              },
+                                              child: Container(
+                                                width: widget.width * 0.32,
+                                                height: widget.height * 0.055,
+                                                decoration: BoxDecoration(
+                                                  color: Color(0Xff5081db),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Back",
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 13.0,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontFamily: "Poppins"),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
+                                  );
+                                },
+                                child: Container(
+                                  width: Responsive.isDesktop(context)
+                                      ? widget.width * 0.45
+                                      : widget.width * 0.32,
+                                  height: widget.height * 0.055,
+                                  decoration: BoxDecoration(
+                                    color: Color(0Xff5081db),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                );
-                              },
-                              child: Container(
-                                width: Responsive.isDesktop(context)
-                                    ? widget.width * 0.45
-                                    : widget.width * 0.32,
-                                height: widget.height * 0.055,
-                                decoration: BoxDecoration(
-                                  color: Color(0Xff5081db),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "Confirm",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 13.0,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Poppins"),
+                                  child: Center(
+                                    child: Text(
+                                      "Confirm",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 13.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Poppins"),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),
