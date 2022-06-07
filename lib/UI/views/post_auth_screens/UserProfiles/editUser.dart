@@ -26,6 +26,8 @@ import 'package:flutter_switch/flutter_switch.dart';
 import '../../../../Providers/user_provider.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
+CollectionReference chats = FirebaseFirestore.instance.collection("chats");
+
 class EditUser extends StatefulWidget {
   const EditUser({Key? key}) : super(key: key);
 
@@ -51,8 +53,28 @@ class _EditUserState extends State<EditUser> {
   }
 
   updatedpURL(double width) async {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     String photourl = await StorageMethods()
         .uploadImageToStorage("profilePics", _image!, false);
+    print("Uploading1");
+    final docss = await chats
+        .where("between", arrayContains: _auth.currentUser!.uid)
+        .get()
+        .then((value) => value.docs);
+    print(docss);
+    final ids = [];
+    for (var element in docss) {
+      ids.add(element.id);
+    }
+    for (int i = 0; i < ids.length; i++) {
+      final doc = await chats.doc(ids[i]).get().then((value) => value);
+      if (doc["photo1"] == user!.dpurl) {
+        chats.doc(ids[i]).update({"photo1": photourl});
+      } else {
+        chats.doc(ids[i]).update({"photo2": photourl});
+      }
+    }
+    print("Uploading2");
     FirebaseFirestore.instance
         .collection('users')
         .doc(_auth.currentUser!.uid)

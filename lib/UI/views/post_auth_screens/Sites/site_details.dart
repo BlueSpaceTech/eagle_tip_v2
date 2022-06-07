@@ -448,7 +448,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     with TickerProviderStateMixin {
   AnimationController? _controller;
   bool? isTapped = false;
-  String date = DateTime.now().toString();
+  var date = DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc());
+  var time = DateFormat().add_Hms().format(DateTime.now());
 
   AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   playLocal() async {
@@ -511,6 +512,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     // return vals;
   }
 
+  String timezone = (DateTime.now().isUtc) ? "Z" : "L";
+
   String tanktype(int max) {
     String? type;
     switch (max) {
@@ -537,7 +540,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         "Site ID": widget.sitedetail.products[i]["CONSNO"],
         "Tank Product": widget.sitedetail.products[i]["PRDNO"],
         "Tank Quality": i + 1,
-        "Timestamp": date,
+        "Timestamp": date + "T" + time + timezone,
         "Inventory gallons": vals[i].toString()
       });
     }

@@ -22,6 +22,8 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
+CollectionReference chats = FirebaseFirestore.instance.collection("chats");
+
 class DesktopSetting extends StatefulWidget {
   @override
   State<DesktopSetting> createState() => _DesktopSettingState();
@@ -46,9 +48,29 @@ class _DesktopSettingState extends State<DesktopSetting> {
     await _userProvider.refreshUser();
   }
 
-  updatedpURL(double width) async {
+  updatedpURL(double width, String dpurl) async {
+    // model.User? user = Provider.of<UserProvider>(context).getUser;
     String photourl = await StorageMethods()
         .uploadImageToStorage("profilePics", _image!, false);
+    print("Uploading1");
+    final docss = await chats
+        .where("between", arrayContains: _auth.currentUser!.uid)
+        .get()
+        .then((value) => value.docs);
+    print(docss);
+    final ids = [];
+    for (var element in docss) {
+      ids.add(element.id);
+    }
+    for (int i = 0; i < ids.length; i++) {
+      final doc = await chats.doc(ids[i]).get().then((value) => value);
+      if (doc["photo1"] == dpurl) {
+        chats.doc(ids[i]).update({"photo1": photourl});
+      } else {
+        chats.doc(ids[i]).update({"photo2": photourl});
+      }
+    }
+    print("Uploading2");
     FirebaseFirestore.instance
         .collection('users')
         .doc(_auth.currentUser!.uid)
@@ -408,7 +430,7 @@ class _DesktopSettingState extends State<DesktopSetting> {
                             visible: _image != null,
                             child: InkWell(
                               onTap: () {
-                                updatedpURL(width);
+                                updatedpURL(width, user.dpurl);
                               },
                               child: Container(
                                 width: Responsive.isDesktop(context)
