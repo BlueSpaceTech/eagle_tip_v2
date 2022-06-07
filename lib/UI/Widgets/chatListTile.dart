@@ -90,17 +90,32 @@ class _ChatListTileState extends State<ChatListTile> {
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
+    String userdp = user!.dpurl;
+    String dptobe = widget.doc["photo1"] == userdp
+        ? widget.doc["photo2"]
+        : widget.doc["photo1"];
     return Ink(
       padding: EdgeInsets.only(top: widget.height * 0.03),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(widget.doc["photo1"] == user!.dpurl
-                ? widget.doc["photo2"]
-                : widget.doc["photo1"]),
-          ),
+          dptobe == ""
+              ? ClipRRect(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(dptobe),
+                ),
           SizedBox(
             width: 10,
           ),

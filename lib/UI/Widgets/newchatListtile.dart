@@ -19,10 +19,23 @@ class NewChatListTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 25,
-            backgroundImage: NetworkImage(doc["dpUrl"]),
-          ),
+          doc["dpUrl"] == ""
+              ? ClipRRect(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.person,
+                      size: 40,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(doc["dpUrl"]),
+                ),
           SizedBox(
             width: 10,
           ),

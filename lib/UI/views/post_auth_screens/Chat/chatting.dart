@@ -268,36 +268,29 @@ class _ChatScreennState extends State<ChatScreenn> {
                 SizedBox(
                   width: 25,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.useprofile);
-                  },
-                  child: Container(
-                    width: width * 0.5,
-                    child: Row(
-                      children: [
-                        Visibility(
-                          visible:
-                              friendname != "Start chat by clicking on user",
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                NetworkImage(widget.photourlfriend),
-                          ),
+                Container(
+                  width: width * 0.5,
+                  child: Row(
+                    children: [
+                      Visibility(
+                        visible: friendname != "Start chat by clicking on user",
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(widget.photourlfriend),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          friendname,
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        friendname,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ),
               ],

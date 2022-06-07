@@ -100,12 +100,26 @@ class _MyProfileState extends State<MyProfile> {
                           Responsive.isDesktop(context)
                               ? Row(
                                   children: [
-                                    CircleAvatar(
-                                      radius: 35,
-                                      backgroundColor: backGround_color,
-                                      backgroundImage:
-                                          NetworkImage(user!.dpurl),
-                                    ),
+                                    user!.dpurl != ""
+                                        ? CircleAvatar(
+                                            radius: 40,
+                                            backgroundColor: backGround_color,
+                                            backgroundImage:
+                                                NetworkImage(user.dpurl),
+                                          )
+                                        : ClipRRect(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: backGround_color,
+                                                shape: BoxShape.circle,
+                                              ),
+                                              child: Icon(
+                                                Icons.person,
+                                                size: 40,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
                                     SizedBox(
                                       width: width * 0.02,
                                     ),
@@ -148,12 +162,26 @@ class _MyProfileState extends State<MyProfile> {
                                   width: width,
                                   child: Column(
                                     children: [
-                                      CircleAvatar(
-                                        radius: 40,
-                                        backgroundColor: backGround_color,
-                                        backgroundImage:
-                                            NetworkImage(user!.dpurl),
-                                      ),
+                                      user!.dpurl != ""
+                                          ? CircleAvatar(
+                                              radius: 40,
+                                              backgroundColor: backGround_color,
+                                              backgroundImage:
+                                                  NetworkImage(user.dpurl),
+                                            )
+                                          : ClipRRect(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: backGround_color,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(
+                                                  Icons.person,
+                                                  size: 40,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
                                       SizedBox(
                                         height: 20,
                                       ),

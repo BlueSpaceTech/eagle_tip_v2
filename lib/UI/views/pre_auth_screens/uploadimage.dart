@@ -87,20 +87,76 @@ class _UploadImageState extends State<UploadImage> {
   }
 
   void signupUser(double width) async {
-    if (!_selected) {
+    if (_password.text == "") {
       fToast!.showToast(
         child:
             ToastMessage().show(width, context, "Please select a image first"),
         gravity: ToastGravity.BOTTOM,
         toastDuration: Duration(seconds: 3),
       );
-    } else if (_password.text == "") {
-      fToast!.showToast(
-        child:
-            ToastMessage().show(width, context, "Please set a password first"),
-        gravity: ToastGravity.BOTTOM,
-        toastDuration: Duration(seconds: 3),
+    } else if (!_selected) {
+      showDialog(
+        builder: (ctx) {
+          return Center(
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+            ),
+          );
+        },
+        context: context,
       );
+      bool issubscribed = false;
+      try {
+        if (Platform.isAndroid || Platform.isIOS) {
+          setState(() {
+            issubscribed = true;
+          });
+        } else {
+          setState(() {
+            issubscribed = false;
+          });
+        }
+      } catch (e) {
+        setState(() {
+          issubscribed = false;
+        });
+      }
+      String res = await AuthFunctions().signupusernoimage(
+        // token: widget.doc.get("token"),
+        email: widget.doc.get("email"),
+        password: _password.text,
+        username: widget.doc.get("name"),
+        phoneno: widget.doc.get("phonenumber"),
+        role: widget.doc.get("userRole"),
+        Sites: widget.doc.get("sites"),
+        employercode: widget.doc.get("employercode"),
+        isverified: true,
+        issubscribed: issubscribed,
+      );
+      startTime() async {
+        var duration = new Duration(seconds: 3);
+        return Timer(duration, route2);
+      }
+
+      //  StorageMethods().uploadStorageImage(_image!, "filePath");
+      print(res);
+      if (res == "success") {
+        addData();
+        startTime();
+
+        fToast!.showToast(
+          child: ToastMessage().show(width, context, "Your Account is Created"),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3),
+        );
+      } else {
+        //Uri url = await StorageMethods().uploadImageFile(_image!);
+        fToast!.showToast(
+          child: ToastMessage().show(width, context, res),
+          gravity: ToastGravity.BOTTOM,
+          toastDuration: Duration(seconds: 3),
+        );
+      }
     } else {
       showDialog(
         builder: (ctx) {

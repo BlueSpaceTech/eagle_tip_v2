@@ -187,6 +187,84 @@ class AuthFunctions with ChangeNotifier {
     return res;
   }
 
+  Future<String> signupusernoimage({
+    required String email,
+    required String password,
+    required String username,
+    required String phoneno,
+    required String role,
+    // required String token,
+    required List Sites,
+    required String employercode,
+    required bool isverified,
+    required bool issubscribed,
+  }) async {
+    /*
+    var status = await OneSignal.shared.getDeviceState();
+    String? tokenId = status?.userId;
+    */
+    String res = "Some error occured";
+    try {
+      if (email.isNotEmpty ||
+          password.isNotEmpty ||
+          username.isNotEmpty ||
+          phoneno.isNotEmpty ||
+          role.isNotEmpty ||
+          Sites.isNotEmpty ||
+          employercode.isNotEmpty) {
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+
+        // String photoUrl = await StorageMethods()
+        //     .uploadImageToStorage("profilePics", file, false);
+
+        //add user to database
+
+        Model.User user = Model.User(
+          name: username,
+          email: email,
+          Phonenumber: phoneno,
+          uid: cred.user!.uid,
+          isSubscribed: issubscribed,
+          sites: Sites,
+          employerCode: employercode,
+          phoneisverified: isverified,
+          dpurl: "",
+          userRole: role,
+          currentsite: Sites[0],
+        );
+        _firestore.collection("users").doc(cred.user!.uid).set(user.toJson());
+
+        // final fcmToken = await _fcm.getToken(
+        //     vapidKey:
+        //         "BLNGqXgTqC0begtlTvH532MHDnIiL7zOQwIIqj8QbEM5qZWGejX0GsMbejbqPRSDnxzRnu0STkU0AN4asyC8ujI");
+        // await _firestore
+        //     .collection("users")
+        //     .doc(cred.user!.uid)
+        //     .collection("tokens")
+        //     .doc(fcmToken)
+        //     .set(TokenModel(
+        //             createdAt: FieldValue.serverTimestamp(), token: fcmToken!)
+        //         .toJson());
+
+        res = "success";
+
+        _firestore.collection("invitations").doc(employercode).delete();
+      }
+    } on FirebaseAuthException catch (err) {
+      if (err.code == "invalid-email") {
+        res = "The email is not valid";
+      } else if (err.code == "weak-password") {
+        res = "Password is weak";
+      } else {
+        res = err.code;
+      }
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
   bool checkEmpoyerCode(String EmployerCode) {
     DocumentReference dbRef =
         FirebaseFirestore.instance.collection('users').doc(EmployerCode);

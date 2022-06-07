@@ -194,35 +194,29 @@ class _WebChatScreennState extends State<WebChatScreenn> {
                 SizedBox(
                   width: 25,
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.useprofile);
-                  },
-                  child: Container(
-                    width: width * 0.5,
-                    child: Row(
-                      children: [
-                        Visibility(
-                          visible: true,
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundImage:
-                                NetworkImage(widget.photourlfriend),
-                          ),
+                Container(
+                  width: width * 0.5,
+                  child: Row(
+                    children: [
+                      Visibility(
+                        visible: widget.photourlfriend != "",
+                        child: CircleAvatar(
+                          radius: 20,
+                          backgroundImage: NetworkImage(widget.photourlfriend),
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          widget.friendname,
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        widget.friendname,
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
                   ),
                 ),
               ],

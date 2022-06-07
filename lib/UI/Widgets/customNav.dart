@@ -304,11 +304,25 @@ class _NavbarState extends State<Navbar> {
                         // print("hello");
                       },
                       color: Color(0xFF3f4850),
-                      child: CircleAvatar(
-                        radius: 22,
-                        backgroundColor: backGround_color,
-                        backgroundImage: NetworkImage(user.dpurl),
-                      ),
+                      child: user.dpurl != ""
+                          ? CircleAvatar(
+                              radius: 22,
+                              backgroundColor: backGround_color,
+                              backgroundImage: NetworkImage(user.dpurl),
+                            )
+                          : ClipRRect(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: backGround_color,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.person,
+                                  size: 35,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                       itemBuilder: (context) => [
                         PopupMenuItem(
                           child: Text(

@@ -226,8 +226,8 @@ class _SentToState extends State<SentTo> {
             .get()
         : await FirebaseFirestore.instance
             .collection("invitations")
-            .where("visibleto", arrayContains: user.userRole)
-            .where("sites", arrayContains: user.sites)
+            // .where("visibleto", arrayContains: user.userRole)
+            .where("sites", arrayContainsAny: user.sites)
             // .where("userRole", whereIn: CrudFunction().visibleRole(user))
             .get();
 

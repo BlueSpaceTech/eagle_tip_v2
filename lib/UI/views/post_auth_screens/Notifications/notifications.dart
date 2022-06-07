@@ -341,40 +341,43 @@ class _NotificationsState extends State<Notifications> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.createNotification);
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    width: width * 0.11,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff5081DB),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(8)),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Create Notification",
-                                          style: TextStyle(
-                                              fontSize: width * 0.008,
-                                              color: Colors.white,
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.005,
-                                        ),
-                                        Icon(
-                                          Icons.add,
-                                          color: Colors.white,
-                                        ),
-                                      ],
+                                Visibility(
+                                  visible: user.userRole != "SiteUser",
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(context,
+                                          AppRoutes.createNotification);
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: width * 0.11,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff5081DB),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8)),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Create Notification",
+                                            style: TextStyle(
+                                                fontSize: width * 0.008,
+                                                color: Colors.white,
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          SizedBox(
+                                            width: width * 0.005,
+                                          ),
+                                          Icon(
+                                            Icons.add,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

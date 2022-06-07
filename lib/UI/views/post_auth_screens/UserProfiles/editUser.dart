@@ -52,8 +52,7 @@ class _EditUserState extends State<EditUser> {
     await _userProvider.refreshUser();
   }
 
-  updatedpURL(double width) async {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+  updatedpURL(double width, String dpurl) async {
     String photourl = await StorageMethods()
         .uploadImageToStorage("profilePics", _image!, false);
     print("Uploading1");
@@ -68,7 +67,7 @@ class _EditUserState extends State<EditUser> {
     }
     for (int i = 0; i < ids.length; i++) {
       final doc = await chats.doc(ids[i]).get().then((value) => value);
-      if (doc["photo1"] == user!.dpurl) {
+      if (doc["photo1"] == dpurl) {
         chats.doc(ids[i]).update({"photo1": photourl});
       } else {
         chats.doc(ids[i]).update({"photo2": photourl});
@@ -262,7 +261,7 @@ class _EditUserState extends State<EditUser> {
                                       visible: _image != null,
                                       child: InkWell(
                                         onTap: () {
-                                          updatedpURL(width);
+                                          updatedpURL(width, user!.dpurl);
                                         },
                                         child: Container(
                                           width: Responsive.isDesktop(context)

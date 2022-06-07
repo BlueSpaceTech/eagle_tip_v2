@@ -127,11 +127,26 @@ class UserProfile extends StatelessWidget {
                             Responsive.isDesktop(context)
                                 ? Row(
                                     children: [
-                                      CircleAvatar(
-                                        radius: 35,
-                                        backgroundColor: backGround_color,
-                                        backgroundImage: NetworkImage(dpUrl),
-                                      ),
+                                      dpUrl != ""
+                                          ? CircleAvatar(
+                                              radius: 35,
+                                              backgroundColor: backGround_color,
+                                              backgroundImage:
+                                                  NetworkImage(dpUrl),
+                                            )
+                                          : ClipRRect(
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                  color: backGround_color,
+                                                  shape: BoxShape.circle,
+                                                ),
+                                                child: Icon(
+                                                  Icons.person,
+                                                  size: 35,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
                                       SizedBox(
                                         width: width * 0.02,
                                       ),
@@ -183,17 +198,26 @@ class UserProfile extends StatelessWidget {
                                     width: width,
                                     child: Column(
                                       children: [
-                                        dpUrl == "sentto"
-                                            ? Icon(
-                                                Icons.person,
-                                                size: 50,
-                                              )
-                                            : CircleAvatar(
+                                        dpUrl != ""
+                                            ? CircleAvatar(
                                                 radius: 22,
                                                 backgroundColor:
                                                     backGround_color,
                                                 backgroundImage:
                                                     NetworkImage(dpUrl),
+                                              )
+                                            : ClipRRect(
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    color: backGround_color,
+                                                    shape: BoxShape.circle,
+                                                  ),
+                                                  child: Icon(
+                                                    Icons.person,
+                                                    size: 30,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
                                               ),
                                         SizedBox(
                                           height: height * 0.005,
