@@ -71,10 +71,13 @@ class _DisplayFaqState extends State<DisplayFaq> {
           continue;
         } else if (doc.data().toString().contains('image${i}')) {
           setState(() {
-            widgets.add(Image.network(
-              doc["image$i"],
-              width: 700,
-              height: 500,
+            widgets.add(Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Image.network(
+                doc["image$i"],
+                width: 700,
+                height: 500,
+              ),
             ));
           });
 
@@ -148,13 +151,16 @@ class _DisplayFaqState extends State<DisplayFaq> {
                         color: Colors.white,
                       ),
                     ),
-                    Text(
-                      widget.title,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: "Poppins",
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        widget.title,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontSize: Responsive.isDesktop(context) ? 24 : 21,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Text(""),
                   ],

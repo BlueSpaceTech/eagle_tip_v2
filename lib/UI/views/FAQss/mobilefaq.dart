@@ -179,7 +179,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
                             GeneralfAQ(
                               width: width,
                               height: height,
-                              userrole: widget.userrOLE,
+                              userrole: "General",
                             ),
                             UserRolefAQ(
                                 width: width,
@@ -210,12 +210,12 @@ class _MobileFaqsState extends State<MobileFaqs> {
                             GeneralfAQ(
                               width: width,
                               height: height,
-                              userrole: widget.userrOLE,
+                              userrole: "General",
                             ),
                             UserRolefAQ(
                                 width: width,
                                 height: height,
-                                userRole: "SiteOwner"),
+                                userRole: widget.userrOLE),
                           ],
                         ),
                       )

@@ -29,6 +29,7 @@ import 'package:testttttt/Utils/responsive.dart';
 
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:testttttt/Models/user.dart' as model;
 
 class DesktopFAQs extends StatefulWidget {
   final String userrOLE;
@@ -228,7 +229,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 
   @override
   Widget build(BuildContext context) {
-    // model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -348,10 +349,8 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: widget.userrole == "AppAdmin" ||
-                                      widget.userrole == "SuperAdmin" ||
-                                      widget.userrole == "TerminalManager" ||
-                                      widget.userrole == "TerminalUser",
+                                  visible: user!.userRole == "AppAdmin" ||
+                                      user.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -776,7 +775,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
 
   @override
   Widget build(BuildContext context) {
-    // model.User user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -896,10 +895,8 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: widget.userRole == "AppAdmin" ||
-                                      widget.userRole == "SuperAdmin" ||
-                                      widget.userRole == "TerminalManager" ||
-                                      widget.userRole == "TerminalUser",
+                                  visible: user!.userRole == "AppAdmin" ||
+                                      user.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -992,10 +989,6 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
-                              if (!snapshot.hasData) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              }
                               if (snapshot.hasData) {
                                 return ListView.builder(
                                     physics: PlatformInfo().isWeb()
@@ -1033,7 +1026,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                               }
 
                               return Center(
-                                child: Text(""),
+                                child: CircularProgressIndicator(),
                               );
                             },
                           ),
