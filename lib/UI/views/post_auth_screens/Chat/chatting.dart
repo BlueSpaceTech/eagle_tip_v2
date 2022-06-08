@@ -273,7 +273,7 @@ class _ChatScreennState extends State<ChatScreenn> {
                   child: Row(
                     children: [
                       Visibility(
-                        visible: friendname != "Start chat by clicking on user",
+                        visible: friendname != "Start chat by clicking on user" && widget.photourluser!="",
                         child: CircleAvatar(
                           radius: 20,
                           backgroundImage: NetworkImage(widget.photourlfriend),

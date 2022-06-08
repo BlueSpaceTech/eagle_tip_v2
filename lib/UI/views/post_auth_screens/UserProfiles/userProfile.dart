@@ -2,6 +2,8 @@
 
 // import 'dart:ffi';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -12,6 +14,7 @@ import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/web_chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -19,7 +22,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
-class UserProfile extends StatelessWidget {
+class UserProfile extends StatefulWidget {
   UserProfile({
     Key? key,
     required this.name,
@@ -34,33 +37,88 @@ class UserProfile extends StatelessWidget {
   final String name, email, phonenumber, dpUrl, userRole, uid;
   final List sites;
   final bool fromsentto;
+
+  @override
+  State<UserProfile> createState() => _UserProfileState();
+}
+
+class _UserProfileState extends State<UserProfile> {
+  bool _loading = false;
   void callChatScreen(String uid, String name, String currentusername,
-      String photoUrlfriend, String photourluser, BuildContext context) {
+      String photoUrlfriend, String photourluser) async {
+    setState(() {
+      _loading = true;
+    });
+    await getChatId(uid, name, currentusername, photoUrlfriend, photourluser);
+
+    await Future.delayed(const Duration(seconds: 3));
+    print(chatId + "gggggR");
+    setState(() {
+      _loading = false;
+    });
     Responsive.isDesktop(context)
         ? Navigator.push(
             context,
             CupertinoPageRoute(
                 builder: (context) => MessageMain(
-                      Chatscreen: ChatScreenn(
+                      // photourlfriend: photoUrlfriend,
+                      // photourluser: photourluser,
+                      // index: 0,
+                      // frienduid: uid,
+                      // friendname: name,
+                      // currentusername: currentusername,
+                      Chatscreen: WebChatScreenn(
                         photourlfriend: photoUrlfriend,
-                        photourluser: photourluser,
-                        index: 0,
-                        frienduid: uid,
                         friendname: name,
-                        currentusername: currentusername,
+                        chatId: chatId,
                       ),
                     )))
         : Navigator.push(
             context,
             CupertinoPageRoute(
                 builder: (context) => ChatScreenn(
-                      photourlfriend: photoUrlfriend,
-                      photourluser: photourluser,
-                      index: 0,
-                      frienduid: uid,
-                      friendname: name,
-                      currentusername: currentusername,
-                    )));
+                    photourlfriend: photoUrlfriend,
+                    photourluser: photourluser,
+                    index: 0,
+                    frienduid: uid,
+                    friendname: name,
+                    currentusername: currentusername)));
+  }
+
+  CollectionReference chat = FirebaseFirestore.instance.collection("chats");
+  final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+  var chatId;
+  getChatId(String frienduid, String friendname, String currentusername,
+      String photourlfriend, String photourluser) async {
+    await chat
+        .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            setState(() {
+              chatId = querySnapshot.docs.single.id;
+            });
+          } else {
+            chat.add({
+              'users': {frienduid: null, currentUserUID: null},
+              "between": [frienduid, currentUserUID],
+              "user1": friendname,
+              "user2": currentusername,
+              "uid1": currentUserUID,
+              "uid2": frienduid,
+              "photo1": photourluser,
+              "photo2": photourlfriend,
+              "recentTime": FieldValue.serverTimestamp(),
+              "isNew": currentUserUID,
+            }).then((value) => {
+                  setState(() {
+                    chatId = value.id;
+                  })
+                });
+          }
+        })
+        .catchError((err) {});
   }
 
   @override
@@ -127,12 +185,12 @@ class UserProfile extends StatelessWidget {
                             Responsive.isDesktop(context)
                                 ? Row(
                                     children: [
-                                      dpUrl != ""
+                                      widget.dpUrl != ""
                                           ? CircleAvatar(
                                               radius: 35,
                                               backgroundColor: backGround_color,
                                               backgroundImage:
-                                                  NetworkImage(dpUrl),
+                                                  NetworkImage(widget.dpUrl),
                                             )
                                           : ClipRRect(
                                               child: Container(
@@ -152,23 +210,23 @@ class UserProfile extends StatelessWidget {
                                       ),
                                       UserNameandDet(
                                         width: width,
-                                        name: name,
-                                        userRole: userRole,
+                                        name: widget.name,
+                                        userRole: widget.userRole,
                                       ),
                                       SizedBox(
                                         width: width * 0.1,
                                       ),
                                       Visibility(
-                                        visible: !fromsentto,
+                                        visible: !widget.fromsentto,
                                         child: InkWell(
                                           onTap: () {
                                             callChatScreen(
-                                                uid,
-                                                name,
-                                                user!.name,
-                                                dpUrl,
-                                                user.dpurl,
-                                                context);
+                                              widget.uid,
+                                              widget.name,
+                                              user!.name,
+                                              widget.dpUrl,
+                                              user.dpurl,
+                                            );
                                           },
                                           child: Container(
                                             width: width * 0.06,
@@ -198,13 +256,13 @@ class UserProfile extends StatelessWidget {
                                     width: width,
                                     child: Column(
                                       children: [
-                                        dpUrl != ""
+                                        widget.dpUrl != ""
                                             ? CircleAvatar(
                                                 radius: 22,
                                                 backgroundColor:
                                                     backGround_color,
                                                 backgroundImage:
-                                                    NetworkImage(dpUrl),
+                                                    NetworkImage(widget.dpUrl),
                                               )
                                             : ClipRRect(
                                                 child: Container(
@@ -224,8 +282,8 @@ class UserProfile extends StatelessWidget {
                                         ),
                                         UserNameandDet(
                                           width: width,
-                                          userRole: userRole,
-                                          name: name,
+                                          userRole: widget.userRole,
+                                          name: widget.name,
                                         ),
                                         SizedBox(
                                           height: height * 0.004,
@@ -233,12 +291,12 @@ class UserProfile extends StatelessWidget {
                                         InkWell(
                                           onTap: () {
                                             callChatScreen(
-                                                uid,
-                                                name,
-                                                user!.name,
-                                                dpUrl,
-                                                user.dpurl,
-                                                context);
+                                              widget.uid,
+                                              widget.name,
+                                              user!.name,
+                                              widget.dpUrl,
+                                              user.dpurl,
+                                            );
                                           },
                                           child: Container(
                                             width: width * 0.2,
@@ -282,8 +340,8 @@ class UserProfile extends StatelessWidget {
                               ),
                             ),
                             ContactInfo(
-                                email: email,
-                                phonenumber: phonenumber,
+                                email: widget.email,
+                                phonenumber: widget.phonenumber,
                                 height: Responsive.isDesktop(context)
                                     ? height * 1.06
                                     : height,
@@ -307,13 +365,13 @@ class UserProfile extends StatelessWidget {
                             ),
                             Responsive.isDesktop(context)
                                 ? Row(
-                                    children:
-                                        List.generate(sites.length, (index) {
+                                    children: List.generate(widget.sites.length,
+                                        (index) {
                                       return Padding(
                                         padding: EdgeInsets.only(right: 20),
                                         child: SiteRow(
                                           width: width,
-                                          sitename: sites[index],
+                                          sitename: widget.sites[index],
                                           siteloc: "",
                                           imgpath: "Group 268",
                                         ),
@@ -323,13 +381,14 @@ class UserProfile extends StatelessWidget {
                                 : ListView(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
-                                    children:
-                                        List.generate(sites.length, (index) {
+                                    children: List.generate(widget.sites.length,
+                                        (index) {
                                       return Padding(
                                         padding: EdgeInsets.only(bottom: 10),
                                         child: SiteRow(
                                           width: width,
-                                          sitename: sites[index].toString(),
+                                          sitename:
+                                              widget.sites[index].toString(),
                                           siteloc: "",
                                           imgpath: "Group 268",
                                         ),
