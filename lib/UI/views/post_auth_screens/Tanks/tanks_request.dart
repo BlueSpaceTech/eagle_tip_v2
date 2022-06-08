@@ -559,7 +559,7 @@ class _TankState extends State<Tank> {
                     child: Text(
                       widget.tankType,
                       style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 12.0,
                           color: Color(0xFF13131B),
                           fontWeight: FontWeight.w400,
                           fontFamily: "Poppins"),

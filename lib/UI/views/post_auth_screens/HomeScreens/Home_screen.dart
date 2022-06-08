@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 // import 'dart:convert';
-// import 'dart:html' as html;
+import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:csv/csv.dart';
 import 'package:testttttt/Models/sites.dart';
@@ -55,7 +55,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   bool? isTapped = false;
 
   bool isLoading = false;
@@ -66,123 +66,123 @@ class _HomeScreenState extends State<HomeScreen> {
     sitedetails = await SiteCall().getSites() ?? [];
   }
 
-  // @override
-  // String? get restorationId => widget.restorationId;
+  @override
+  String? get restorationId => widget.restorationId;
 
-  // final RestorableDateTimeN _startDate = RestorableDateTimeN(
-  //     DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
-  // final RestorableDateTimeN _endDate = RestorableDateTimeN(
-  //     DateTime(DateTime.now().year, DateTime.now().month, 15));
-  // late final RestorableRouteFuture<DateTimeRange?>
-  //     _restorableDateRangePickerRouteFuture =
-  //     RestorableRouteFuture<DateTimeRange?>(
-  //   onComplete: _selectDateRange,
-  //   onPresent: (NavigatorState navigator, Object? arguments) {
-  //     return navigator
-  //         .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
-  //       'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
-  //       'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
-  //     });
-  //   },
-  // );
-  // List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
-  //   List<DateTime> days = [];
-  //   for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
-  //     days.add(startDate.add(Duration(days: i)));
-  //   }
-  //   return days;
-  // }
+  final RestorableDateTimeN _startDate = RestorableDateTimeN(
+      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
+  final RestorableDateTimeN _endDate = RestorableDateTimeN(
+      DateTime(DateTime.now().year, DateTime.now().month, 15));
+  late final RestorableRouteFuture<DateTimeRange?>
+      _restorableDateRangePickerRouteFuture =
+      RestorableRouteFuture<DateTimeRange?>(
+    onComplete: _selectDateRange,
+    onPresent: (NavigatorState navigator, Object? arguments) {
+      return navigator
+          .restorablePush(_dateRangePickerRoute, arguments: <String, dynamic>{
+        'initialStartDate': _startDate.value?.millisecondsSinceEpoch,
+        'initialEndDate': _endDate.value?.millisecondsSinceEpoch,
+      });
+    },
+  );
+  List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
+    List<DateTime> days = [];
+    for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+      days.add(startDate.add(Duration(days: i)));
+    }
+    return days;
+  }
 
-  // void _selectDateRange(DateTimeRange? newSelectedDate) async {
-  //   if (newSelectedDate != null) {
-  //     setState(() {
-  //       _startDate.value = newSelectedDate.start;
-  //       _endDate.value = newSelectedDate.end;
-  //       // print(convertDateTimeDisplay(_startDate.value.toString()));
-  //       // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
-  //     });
-  //     List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
-  //     // print(days);
+  void _selectDateRange(DateTimeRange? newSelectedDate) async {
+    if (newSelectedDate != null) {
+      setState(() {
+        _startDate.value = newSelectedDate.start;
+        _endDate.value = newSelectedDate.end;
+        // print(convertDateTimeDisplay(_startDate.value.toString()));
+        // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
+      });
+      List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
+      // print(days);
 
-  //     if (csvdata.isEmpty) {
-  //       csvdata.add(rowHeader);
-  //     }
-  //     print(widget.sites);
+      if (csvdata.isEmpty) {
+        csvdata.add(rowHeader);
+      }
+      print(widget.sites);
 
-  //     final docss = await requests.get().then((value) => value.docs.where(
-  //         (element) =>
-  //             days.contains(element["date"].toDate()) &&
-  //             widget.sites.contains(element["site"])));
-  //     for (var element in docss) {
-  //       List row = [];
-  //       List data = element.get("data");
-  //       print(element.get("date").runtimeType);
-  //       row.add(element.get("requestby"));
-  //       row.add(element.get("site"));
-  //       row.add(element.get("id"));
-  //       row.add(element.get("date").toDate());
-  //       row.add(data[0]);
-  //       row.add(data[1]);
-  //       row.add(data[2]);
-  //       row.add(data[3]);
-  //       csvdata.add(row);
-  //     }
-  //     // print(csvdata);
-  //     // print(csvdata.length);
-  //     String csv = ListToCsvConverter().convert(csvdata);
-  //     final bytes = utf8.encode(csv);
-  //     final text = utf8.decode(bytes);
-  //     // final blob = Blob([text]);
-  //     final blob = html.Blob([text]);
-  //     final url = html.Url.createObjectUrlFromBlob(blob);
-  //     html.AnchorElement(href: url)
-  //       ..setAttribute("download", "file.csv")
-  //       ..click();
-  //     csvdata.clear();
-  //   }
-  // }
+      final docss = await requests.get().then((value) => value.docs.where(
+          (element) =>
+              days.contains(element["date"].toDate()) &&
+              widget.sites.contains(element["site"])));
+      for (var element in docss) {
+        List row = [];
+        List data = element.get("data");
+        print(element.get("date").runtimeType);
+        row.add(element.get("requestby"));
+        row.add(element.get("site"));
+        row.add(element.get("id"));
+        row.add(element.get("date").toDate());
+        row.add(data[0]);
+        row.add(data[1]);
+        row.add(data[2]);
+        row.add(data[3]);
+        csvdata.add(row);
+      }
+      // print(csvdata);
+      // print(csvdata.length);
+      String csv = ListToCsvConverter().convert(csvdata);
+      final bytes = utf8.encode(csv);
+      final text = utf8.decode(bytes);
+      // final blob = Blob([text]);
+      final blob = html.Blob([text]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute("download", "file.csv")
+        ..click();
+      csvdata.clear();
+    }
+  }
 
-  // @override
-  // void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-  //   registerForRestoration(_startDate, 'start_date');
-  //   registerForRestoration(_endDate, 'end_date');
-  //   registerForRestoration(
-  //       _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
-  // }
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_startDate, 'start_date');
+    registerForRestoration(_endDate, 'end_date');
+    registerForRestoration(
+        _restorableDateRangePickerRouteFuture, 'date_picker_route_future');
+  }
 
-  // static Route<DateTimeRange?> _dateRangePickerRoute(
-  //   BuildContext context,
-  //   Object? arguments,
-  // ) {
-  //   return DialogRoute<DateTimeRange?>(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return DateRangePickerDialog(
-  //         restorationId: 'date_picker_dialog',
-  //         initialDateRange:
-  //             _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
-  //         firstDate: DateTime(DateTime.now().year, 1),
-  //         currentDate: DateTime(
-  //             DateTime.now().year, DateTime.now().month, DateTime.now().day),
-  //         lastDate: DateTime(DateTime.now().year, 12, 30),
-  //       );
-  //     },
-  //   );
-  // }
+  static Route<DateTimeRange?> _dateRangePickerRoute(
+    BuildContext context,
+    Object? arguments,
+  ) {
+    return DialogRoute<DateTimeRange?>(
+      context: context,
+      builder: (BuildContext context) {
+        return DateRangePickerDialog(
+          restorationId: 'date_picker_dialog',
+          initialDateRange:
+              _initialDateTimeRange(arguments! as Map<dynamic, dynamic>),
+          firstDate: DateTime(DateTime.now().year, 1),
+          currentDate: DateTime(
+              DateTime.now().year, DateTime.now().month, DateTime.now().day),
+          lastDate: DateTime(DateTime.now().year, 12, 30),
+        );
+      },
+    );
+  }
 
-  // static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
-  //   if (arguments['initialStartDate'] != null &&
-  //       arguments['initialEndDate'] != null) {
-  //     return DateTimeRange(
-  //       start: DateTime.fromMillisecondsSinceEpoch(
-  //           arguments['initialStartDate'] as int),
-  //       end: DateTime.fromMillisecondsSinceEpoch(
-  //           arguments['initialEndDate'] as int),
-  //     );
-  //   }
+  static DateTimeRange? _initialDateTimeRange(Map<dynamic, dynamic> arguments) {
+    if (arguments['initialStartDate'] != null &&
+        arguments['initialEndDate'] != null) {
+      return DateTimeRange(
+        start: DateTime.fromMillisecondsSinceEpoch(
+            arguments['initialStartDate'] as int),
+        end: DateTime.fromMillisecondsSinceEpoch(
+            arguments['initialEndDate'] as int),
+      );
+    }
 
-  //   return null;
-  // }
+    return null;
+  }
 
   @override
   void initState() {

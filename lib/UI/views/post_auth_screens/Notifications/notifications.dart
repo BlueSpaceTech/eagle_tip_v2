@@ -524,52 +524,41 @@ class _NotifyState extends State<Notify> {
           height: widget.height * 0.06,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: Responsive.isDesktop(context)
-                    ? widget.width * 0.3
-                    : widget.width * 0.62,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    !widget.newNotify.contains(widget.userid)
-                        ? Image.asset(
-                            Common.assetImages + "Rectangle 522.png",
-                            height: Responsive.isDesktop(context)
-                                ? widget.height * 0.036
-                                : widget.height * 0.05,
-                          )
-                        : SizedBox(),
-                    SizedBox(
-                      width: Responsive.isDesktop(context)
-                          ? widget.width * 0.01
-                          : widget.width * 0.07,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.notifyName,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Poppins",
-                          ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        widget.notifyName,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "Poppins",
                         ),
-                        Text(
-                          widget.notifyDate,
-                          style: TextStyle(
-                            color: Color(0xFFD9DBE9),
-                            fontSize: 10.0,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
-                      ],
+                      ),
+                      SizedBox(
+                        width: widget.width * 0.007,
+                      ),
+                      !widget.newNotify.contains(widget.userid)
+                          ? CircleAvatar(
+                              backgroundColor: Colors.blue, maxRadius: 4.0)
+                          : SizedBox(),
+                    ],
+                  ),
+                  Text(
+                    widget.notifyDate,
+                    style: TextStyle(
+                      color: Color(0xFFD9DBE9),
+                      fontSize: 10.0,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: "Poppins",
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               Icon(
                 Icons.arrow_forward_ios,

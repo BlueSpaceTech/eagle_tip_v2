@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class Tour1 extends StatelessWidget {
   const Tour1({Key? key}) : super(key: key);
@@ -43,7 +48,7 @@ class Tour1 extends StatelessWidget {
                 height: height,
                 width: width,
                 pageno: "1",
-                head: "Tap on request fuel to place an order",
+                head: "Tap on request fuel to place a request",
               ),
             ),
           ],
@@ -84,6 +89,7 @@ class TourUpContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     return Container(
       height: pageno == "5" ? height * 0.21 : height * 0.19,
       width: Responsive.isDesktop(context) ? 430 : 350,
@@ -140,7 +146,11 @@ class TourUpContainer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    pageno == "6" ? "" : '${pageno}/5',
+                    pageno == "6"
+                        ? ""
+                        : user?.userRole == "SiteUser"
+                            ? '$pageno/3'
+                            : '$pageno/5',
                     style: TextStyle(
                       color: Color(0xffB8B8B8),
                     ),

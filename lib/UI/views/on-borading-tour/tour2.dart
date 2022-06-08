@@ -2,6 +2,9 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour1.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class Tour2 extends StatelessWidget {
   const Tour2({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class Tour2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -37,7 +41,9 @@ class Tour2 extends StatelessWidget {
               left: getleftlength(context, width),
               child: TourUpContainer(
                 onnext: () {
-                  Navigator.pushNamed(context, AppRoutes.tour3);
+                  user?.userRole == "SiteUser"
+                      ? Navigator.pushNamed(context, AppRoutes.finaltourmain)
+                      : Navigator.pushNamed(context, AppRoutes.tour3);
                 },
                 containertype: "arrowup",
                 distance: height * 0.028,

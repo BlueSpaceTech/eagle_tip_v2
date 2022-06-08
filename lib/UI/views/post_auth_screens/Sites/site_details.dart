@@ -591,10 +591,15 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                   width: widget.width,
                   max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
                   height: widget.height,
-                  tankType: "Tank: " +
+                  tankType: "Tank:${i + 1} " +
+                      "Product:" +
                       widget.sitedetail.products[i]["PRDNO"] +
-                      " Max " +
-                      widget.sitedetail.products[i]["TANK_SIZE"],
+                      " Capacity:" +
+                      widget.sitedetail.products[i]["TANK_SIZE"]
+                          .replaceAllMapped(
+                              RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                              (Match m) => '${m[1]},') +
+                      " Gal",
                 ),
             ],
           ),
@@ -625,8 +630,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                   ),
                   content: Container(
                     height: Responsive.isDesktop(context)
-                        ? widget.height * 0.3
-                        : widget.height * 0.4,
+                        ? widget.height * 0.33
+                        : widget.height * 0.405,
                     child: Column(
                       children: [
                         Text(
