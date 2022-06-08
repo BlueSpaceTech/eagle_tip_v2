@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -72,8 +74,12 @@ class WelcomeTour extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.tour1);
+                                    (user.userRole == "TerminalManager") ||
+                                            (user.userRole == "TerminalUser")
+                                        ? Navigator.pushNamed(
+                                            context, AppRoutes.tour4)
+                                        : Navigator.pushNamed(
+                                            context, AppRoutes.tour1);
                                   },
                                   child: Container(
                                     height: height * 0.06,

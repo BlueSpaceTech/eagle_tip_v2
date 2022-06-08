@@ -2,6 +2,9 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour1.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/Models/user.dart' as model;
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
 
 class Tour4 extends StatelessWidget {
   const Tour4({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class Tour4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -44,7 +48,10 @@ class Tour4 extends StatelessWidget {
                 distance: height * 0.028,
                 height: height,
                 width: width,
-                pageno: "4",
+                pageno: (user?.userRole == "TerminalManager") ||
+                        (user?.userRole == "TerminalUser")
+                    ? "1"
+                    : "4",
                 head:
                     "Delete users or add new users by clicking on edit employees.",
               ),

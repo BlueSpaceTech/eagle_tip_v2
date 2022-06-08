@@ -2,12 +2,16 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/views/on-borading-tour/tour1.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:testttttt/Providers/user_provider.dart';
+import 'package:testttttt/Models/user.dart' as model;
 
 class Tour5 extends StatelessWidget {
   const Tour5({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -34,7 +38,10 @@ class Tour5 extends StatelessWidget {
                 distance: height * 0.028,
                 height: height,
                 width: width,
-                pageno: "5",
+                pageno: (user?.userRole == "TerminalManager") ||
+                        (user?.userRole == "TerminalUser")
+                    ? "2"
+                    : "5",
                 head:
                     "Sort employees according to sites and roles or find them by searching their names.",
               ),

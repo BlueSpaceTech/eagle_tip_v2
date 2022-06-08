@@ -148,7 +148,9 @@ class TourUpContainer extends StatelessWidget {
                   Text(
                     pageno == "6"
                         ? ""
-                        : user?.userRole == "SiteUser"
+                        : (user?.userRole == "TerminalManager") ||
+                                (user?.userRole == "TerminalUser") ||
+                                (user?.userRole == "SiteUser")
                             ? '$pageno/3'
                             : '$pageno/5',
                     style: TextStyle(
