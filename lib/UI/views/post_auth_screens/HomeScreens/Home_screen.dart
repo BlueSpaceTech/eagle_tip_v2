@@ -503,7 +503,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                       SizedBox(
                                         width: width * 0.08,
                                         child: Text(
-                                          "Submit Inventories",
+                                          "Submit Inventory",
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: width * 0.0135,
@@ -573,8 +573,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                     user.userRole == "TerminalUser",
                                 child: InkWell(
                                   onTap: () {
-                                    // _restorableDateRangePickerRouteFuture
-                                    //     .present();
+                                    _restorableDateRangePickerRouteFuture
+                                        .present();
                                   },
                                   child: SiteContainer(
                                       width: width,

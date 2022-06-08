@@ -12,10 +12,22 @@ class MainFaq extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser ??
+        model.User(
+            name: "Abhishek",
+            email: "abhisheksaini1219@gmail.com",
+            userRole: "SiteManager",
+            Phonenumber: "9205426090",
+            employerCode: "AXEW8IO9",
+            dpurl: "SDSADASD",
+            phoneisverified: true,
+            sites: ["Acres"],
+            uid: "assadasdasd",
+            isSubscribed: true,
+            currentsite: "");
     return Scaffold(
       body: Responsive(
-          mobile: MobileFaqs(userrOLE: user!.userRole),
+          mobile: MobileFaqs(userrOLE: user.userRole),
           tablet: MobileFaqs(
             userrOLE: user.userRole,
           ),

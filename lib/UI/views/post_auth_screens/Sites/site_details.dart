@@ -240,7 +240,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                   child: Column(
                                     children: [
                                       Text(
-                                        "Request History",
+                                        "History",
                                         style: TextStyle(
                                             fontSize: width * 0.012,
                                             fontWeight: FontWeight.w500,
@@ -325,7 +325,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                               ),
                               Tab(
                                 child: Text(
-                                  "Request History",
+                                  "History",
                                   style: TextStyle(
                                       fontSize: 13.0,
                                       fontWeight: FontWeight.w600,
@@ -514,23 +514,23 @@ class _FuelReqColumnState extends State<FuelReqColumn>
 
   String timezone = (DateTime.now().isUtc) ? "Z" : "L";
 
-  String tanktype(int max) {
+  String tanktype(String prdno) {
     String? type;
-    switch (max) {
-      case 6000:
-        type = "Regular";
+    switch (prdno) {
+      case "114":
+        type = "ULSD-15PPM";
         break;
-      case 9684:
-        type = "Midgrade";
+      case "132":
+        type = "REG";
         break;
-      case 12000:
-        type = "Premium";
+      case "131":
+        type = "MID";
         break;
-      case 20000:
-        type = "ULSD";
+      case "133":
+        type = "PREM";
         break;
     }
-    return type!;
+    return type ?? "";
   }
 
   List sftpdata(int len) {
@@ -539,7 +539,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
       data.add({
         "Site ID": widget.sitedetail.products[i]["CONSNO"],
         "Tank Product": widget.sitedetail.products[i]["PRDNO"],
-        "Tank Quality": i + 1,
+        "Tank Qualifier": widget.sitedetail.products[i]["TNKQLR"],
+        // "Tank_PRD_DESC": widget.sitedetail.products[i]["TANK_PRD_DESC"],
         "Timestamp": date + "T" + time + timezone,
         "Inventory gallons": vals[i].toString()
       });
@@ -552,7 +553,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     for (int i = 0; i < len; i++) {
       data.add({
         "amount": vals[i],
-        "tanknumber": i + 1,
+        "tanknumber": widget.sitedetail.products[i]["TNKQLR"],
         "tankid": widget.sitedetail.products[i]["PRDNO"],
       });
     }
@@ -566,7 +567,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: widget.width * 0.86,
+          width: widget.width * 1.1,
           height: Responsive.isDesktop(context)
               ? widget.height * 0.3
               : widget.height * 0.35,
@@ -575,6 +576,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
             children: [
               for (int i = 0; i < widget.sitedetail.products.length; i++)
                 Tank(
+                  productname: widget.sitedetail.products[i]["TANK_PRD_DESC"],
                   valueChanged2: (val) {
                     setState(() {
                       vals[i] = val;
@@ -592,8 +594,6 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                   max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
                   height: widget.height,
                   tankType: "Tank:${i + 1} " +
-                      "Product:" +
-                      widget.sitedetail.products[i]["PRDNO"] +
                       " Capacity:" +
                       widget.sitedetail.products[i]["TANK_SIZE"]
                           .replaceAllMapped(

@@ -289,7 +289,7 @@ class _ProductRequestState extends State<ProductRequest> {
                                   color: Color(0xFF5081db)),
                               child: Center(
                                 child: Text(
-                                  "Request",
+                                  "Submit",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 16.0,

@@ -141,7 +141,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.forgetpass: (context) => ForgetPassword(),
           AppRoutes.mailsent: (context) => EmailSent(),
           AppRoutes.faqTerminal: (context) => TerminalFAQ(),
-          AppRoutes.tanksRequest: (context) => TanksRequest(),
+          // AppRoutes.tanksRequest: (context) => TanksRequest(),
           AppRoutes.welcometour: (context) => WelcomeTour(),
           AppRoutes.tour1: (context) => Tour1(),
           AppRoutes.tour2: (context) => Tour2(),
