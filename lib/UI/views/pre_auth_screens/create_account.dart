@@ -51,137 +51,131 @@ class _CreateAccountState extends State<CreateAccount> {
       context: context,
       builder: (ctx) => Dialog(
         child: Container(
-          padding: EdgeInsets.all(20),
-          width: widht * 0.7,
           height: height * 0.9,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          child: Column(
-            //crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(Icons.close)),
-                ],
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.all(20),
+              width: widht * 0.7,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              child: Column(
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Terms and conditions",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "Poppins",
-                        fontSize: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(Icons.close)),
+                    ],
                   ),
-                  SizedBox(
-                    height: 20,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Terms and conditions",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Poppins",
+                            fontSize: 24),
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        "Before we send you an OTP on your phone number, use the link below to view Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
+                        style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontSize: Responsive.isDesktop(context) ? 18 : 15,
+                            fontWeight: FontWeight.w300),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "Before we send you an OTP on your phone number, use the link below to view Terms and Conditions. Once you have read the content, acknowledge you understand and agree by clicking the ${"agree"} button.",
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontSize: Responsive.isDesktop(context) ? 18 : 15,
-                        fontWeight: FontWeight.w300),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                          "This agreement, effective from _____________ is between the service providing company Eagle Transport that works through the app Eagle Transport Inventory Program that works its for smooth distribution of gas to various gas stations associated with it inside the USA"),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                          "1. Whereas it is an important responsibility of the Eagle Transport Inventory app launching this app to protect data of its customers, nevertheless, for its smooth functioning, this provision will not preclude it from obtaining the email addresses, phone numbers, tracking cookies data, locations, and other important details of the gas stations it is working with"),
+                      SizedBox(
+                        height: 8,
+                      ),
+
+                      // Text(
+                      //     "3. Whereas the consumer data present on this app, including the chat and messaging service on it, will be protected, however, it can be disclosed for law enforcement purposes, business transactions, or any other such reason in the due course of time"),
+                      // SizedBox(
+                      //   height: 8,
+                      // ),
+                      // Text(
+                      //     "4. Whereas the Eagle Transport Inventory Program app will ascertain data security for its clients, nevertheless, the service providers are not responsible for any breach of privacy or misuse of private data if it is unintentionally misused"),
+                    ],
                   ),
-                ],
-              ),
-              Container(
-                height:
-                    Responsive.isDesktop(context) ? height * 0.5 : height * 0.4,
-                child: SingleChildScrollView(
-                    child: Column(children: [
-                  Container(
-                    height: height * 0.7,
-                    child: Column(
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          height: 12,
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, AppRoutes.displayTerms);
+                          },
+                          child: Text(
+                            "https://link-of-terms&conditions",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Color(0xff5081DB),
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
                         ),
-                        Text(
-                            "This agreement, effective from _____________ is between the service providing company Eagle Transport that works through the app Eagle Transport Inventory Program that works its for smooth distribution of gas to various gas stations associated with it inside the USA"),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                            "1. Whereas it is an important responsibility of the Eagle Transport Inventory app launching this app to protect data of its customers, nevertheless, for its smooth functioning, this provision will not preclude it from obtaining the email addresses, phone numbers, tracking cookies data, locations, and other important details of the gas stations it is working with"),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                            "2. Whereas the customer’s privacy and data protection will be protected under the relevant federal and state laws, yet the online access of this service by any gas station will allow the owners of this app to collect their information for advertising purposes"),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                            "3. Whereas the consumer data present on this app, including the chat and messaging service on it, will be protected, however, it can be disclosed for law enforcement purposes, business transactions, or any other such reason in the due course of time"),
-                        SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                            "4. Whereas the Eagle Transport Inventory Program app will ascertain data security for its clients, nevertheless, the service providers are not responsible for any breach of privacy or misuse of private data if it is unintentionally misused"),
-                      ],
-                    ),
+                      ]),
+                  SizedBox(
+                    height: 5,
                   ),
-                ])),
-              ),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, AppRoutes.displayTerms);
-                  },
-                  child: Text(
-                    "https://link-of-terms&conditions",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xff5081DB),
-                      decoration: TextDecoration.underline,
-                    ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: () async {
+                            if (PlatformInfo().isWeb()) {
+                              ConfirmationResult res = await OtpFucnctions()
+                                  .sendOTP("+1 ${phoneno.text}", context,
+                                      widget.doc);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VerificationScreen(
+                                      doc: widget.doc,
+                                      confirmationResult: res,
+                                    ),
+                                  ));
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VerificationMobScreen(
+                                        doc: widget.doc, phone: phoneno.text),
+                                  ));
+                            }
+                          },
+                          child:
+                              CustomSubmitButton(width: widht, title: "Agree")),
+                    ],
                   ),
-                ),
-              ]),
-              SizedBox(
-                height: 5,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  InkWell(
-                      onTap: () async {
-                        if (PlatformInfo().isWeb()) {
-                          ConfirmationResult res = await OtpFucnctions()
-                              .sendOTP(
-                                  "+1 ${phoneno.text}", context, widget.doc);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerificationScreen(
-                                  doc: widget.doc,
-                                  confirmationResult: res,
-                                ),
-                              ));
-                        } else {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VerificationMobScreen(
-                                    doc: widget.doc, phone: phoneno.text),
-                              ));
-                        }
-                      },
-                      child: CustomSubmitButton(width: widht, title: "Agree")),
                 ],
               ),
-            ],
+            ),
           ),
         ),
       ),
