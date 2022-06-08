@@ -46,7 +46,7 @@ const main=express();
 //     console.log(firebaseHelper.firestoreHelper.backup("/requesthistory").then(data=>data));
 // });
 
-export const schedfunc=functions.pubsub.schedule("every 5 minutes").onRun(async (context)=>{
+export const schedfunc=functions.pubsub.schedule("every 1 minutes").onRun(async (context)=>{
     const query =await db.collection("notifications").where('scheduledTime','<=',admin.firestore.Timestamp.now()).get();
     const documents=query.docs;
     documents.forEach((element)=>{
