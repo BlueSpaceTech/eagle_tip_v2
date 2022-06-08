@@ -109,7 +109,7 @@ class _DisplayTermsState extends State<DisplayTerms> {
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-                top: height * 0.03, left: width * 0.06, right: width * 0.06),
+                top: height * 0.09, left: width * 0.06, right: width * 0.06),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

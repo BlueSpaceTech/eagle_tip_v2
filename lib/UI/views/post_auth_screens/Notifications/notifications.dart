@@ -89,7 +89,7 @@ class _NotificationsState extends State<Notifications> {
       body: SingleChildScrollView(
         child: Container(
           width: width,
-          height: Responsive.isDesktop(context) ? height * 1.12 : height,
+          height: Responsive.isDesktop(context) ? height * 1.18 : height,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
@@ -154,10 +154,10 @@ class _NotificationsState extends State<Notifications> {
                         SizedBox(
                           width: width * 0.14,
                         ),
-                        Image.asset(
-                          Common.assetImages + "Vector.png",
-                          width: width * 0.048,
-                        ),
+                        // Image.asset(
+                        //   Common.assetImages + "Vector.png",
+                        //   width: width * 0.048,
+                        // ),
                       ],
                     ),
                   ),
@@ -309,6 +309,8 @@ class _NotificationsState extends State<Notifications> {
                                                           newNotify:
                                                               document["isNew"],
                                                           docid: document.id,
+                                                          hyperlinkk: document[
+                                                              "hyperLink"],
                                                           userid: FirebaseAuth
                                                               .instance
                                                               .currentUser!
@@ -431,6 +433,7 @@ class _NotificationsState extends State<Notifications> {
                                           width: width,
                                           // isnew: document!["isNew"],
                                           newNotify: document!["isNew"],
+                                          hyperlinkk: document["hyperLink"],
                                           docid: document.id,
                                           userid: FirebaseAuth
                                               .instance.currentUser!.uid
@@ -469,6 +472,7 @@ class Notify extends StatefulWidget {
     required this.docid,
     // required this.valueChanged,
     required this.userid,
+    required this.hyperlinkk,
   }) : super(key: key);
 
   final double width;
@@ -478,6 +482,7 @@ class Notify extends StatefulWidget {
   final String docid;
   final String notifyName;
   // final int index;
+  final String hyperlinkk;
   final String notifyDate;
   // final ValueChanged valueChanged;
   final String notifyContent;
@@ -491,6 +496,7 @@ class _NotifyState extends State<Notify> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        print(widget.hyperlinkk);
         setState(() {
           if (!widget.newNotify.contains(widget.userid)) {
             widget.newNotify.add(widget.userid);
@@ -507,6 +513,7 @@ class _NotifyState extends State<Notify> {
           MaterialPageRoute(
             builder: (context) => SpecificNotification(
                 notifyName: widget.notifyName,
+                hyperlink: widget.hyperlinkk,
                 notifyContent: widget.notifyContent),
           ),
         );

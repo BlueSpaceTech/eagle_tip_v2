@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -181,17 +183,17 @@ class _AllChatScreenState extends State<AllChatScreen> {
                     Visibility(
                       visible: !Responsive.isDesktop(context),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(""),
-                          Logo(width: width),
-                          Padding(
-                            padding: EdgeInsets.only(top: 10.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Colors.white,
-                            ),
-                          )
+                          Center(child: Logo(width: width)),
+                          // Padding(
+                          //   padding: EdgeInsets.only(top: 10.0),
+                          //   child: Icon(
+                          //     Icons.search,
+                          //     color: Colors.white,
+                          //   ),
+                          // )
                         ],
                       ),
                     ),

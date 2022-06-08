@@ -53,10 +53,7 @@ class Requests extends StatelessWidget {
                   siteName: document["site"],
                   tankdata: document["data"],
                   username: document["requestby"],
-                  requestDate: DateFormat('dd/MM/yyyy')
-                      .format(
-                          DateTime.parse(document["date"].toDate().toString()))
-                      .toString());
+                  requestDate: document["date"].toDate().toString());
             },
           );
         },

@@ -352,6 +352,8 @@ class _CreateNotificationState extends State<CreateNotification> {
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                           child: TextFormField(
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
                             onChanged: ((value) {
                               setState(() {
                                 description = value;
@@ -924,7 +926,7 @@ class _CreateNotifyTextFieldState extends State<CreateNotifyTextField> {
     return Container(
       width: width * 0.2,
       padding: EdgeInsets.only(left: width * 0.01, right: width * 0.06),
-      height: height * 0.06,
+      height: height * 0.065,
       decoration: BoxDecoration(
         color: widget.isactive!
             ? Colors.white

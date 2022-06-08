@@ -626,13 +626,13 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                   content: Container(
                     height: Responsive.isDesktop(context)
                         ? widget.height * 0.3
-                        : widget.height * 0.37,
+                        : widget.height * 0.4,
                     child: Column(
                       children: [
                         Text(
                           "Date/Time for the inventory: ${DateTime.now()}",
                           style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 15.0,
                               fontWeight: FontWeight.w400,
                               fontFamily: "Poppins"),
                         ),
@@ -644,7 +644,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                         Text(
                           "Are you sure you want to request:",
                           style: TextStyle(
-                              fontSize: 18.0,
+                              fontSize: 15.0,
                               fontWeight: FontWeight.w400,
                               fontFamily: "Poppins"),
                         ),
@@ -704,7 +704,9 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                           height: widget.height * 0.02,
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          padding: EdgeInsets.only(
+                              left: Responsive.isDesktop(context) ? 0.0 : 0.0,
+                              right: Responsive.isDesktop(context) ? 0.0 : 0.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -757,10 +759,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                     {
                                       "data": backenddata(
                                           widget.sitedetail.products.length),
-                                      "date": DateTime(
-                                          DateTime.now().year,
-                                          DateTime.now().month,
-                                          DateTime.now().day),
+                                      "date": DateTime.now(),
                                       "id":
                                           Random().nextInt(10000000).toString(),
                                       "requestby": user?.name,

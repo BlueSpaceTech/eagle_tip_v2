@@ -10,12 +10,17 @@ import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SpecificNotification extends StatelessWidget {
   SpecificNotification(
-      {Key? key, required this.notifyName, required this.notifyContent})
+      {Key? key,
+      required this.notifyName,
+      required this.notifyContent,
+      required this.hyperlink})
       : super(key: key);
   final String notifyName;
+  final String hyperlink;
   final String notifyContent;
   @override
   Widget build(BuildContext context) {
@@ -68,13 +73,33 @@ class SpecificNotification extends StatelessWidget {
                               ),
                               Container(
                                 width: width * 0.4,
-                                child: Text(
-                                  notifyContent,
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Poppins"),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      notifyContent,
+                                      style: TextStyle(
+                                          fontSize: 12.0,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w400,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                    InkWell(
+                                      onTap: (() {
+                                        launch(hyperlink);
+                                        print(hyperlink);
+                                      }),
+                                      child: Text(
+                                        hyperlink,
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               SizedBox(

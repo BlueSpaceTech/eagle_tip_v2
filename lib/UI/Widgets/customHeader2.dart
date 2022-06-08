@@ -28,10 +28,10 @@ class CustomHeader2 extends StatelessWidget {
         SizedBox(
           width: width * 0.14,
         ),
-        Image.asset(
-          Common.assetImages + "Vector.png",
-          width: width * 0.048,
-        ),
+        // Image.asset(
+        //   Common.assetImages + "Vector.png",
+        //   width: width * 0.048,
+        // ),
       ],
     );
   }

@@ -184,10 +184,6 @@ class MyApp extends StatelessWidget {
               ),
           AppRoutes.splashscreen: (context) => SplashScreen(),
           AppRoutes.createNotification: (context) => CreateNotification(),
-          AppRoutes.specificNotification: (context) => SpecificNotification(
-              notifyName: "Hurricane Coming!",
-              notifyContent:
-                  "Risus vestibulum, risus feugiat semper velit feugiat velit. Placerat elit volutpat volutpat elit bibendum molestie eget. Convallis mattis dignissim quis tincidunt quisque. Adipiscing suspendisse faucibus aliquet a turpis odio pellentesque lectus duis. Sodales odio eu bibendum massa velit maecenas eget. Maecenas facilisis nunc tincidunt sed eget viverra porttitor feugiat. Mattis dictum sed suspendisse faucibus gravida. Id eget amet dis amet ut at in eget nam. "),
           AppRoutes.webfinaltour: (context) => FinalTourWeb(),
           AppRoutes.messagemain: (context) => MessageMain(
                 Chatscreen: ChatScreenn(
