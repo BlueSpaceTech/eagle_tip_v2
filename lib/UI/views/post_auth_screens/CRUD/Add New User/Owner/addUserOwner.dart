@@ -390,66 +390,66 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       SizedBox(
                         height: height * 0.04,
                       ),
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: _showSiteSelect,
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: Responsive.isDesktop(context)
-                                  ? width * 0.13
-                                  : width * 0.42,
-                              height: height * 0.064,
-                              decoration: BoxDecoration(
-                                color: Color(0xff5081DB),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "View All Sites",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.white,
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Row(
-                            children: [
-                              for (var name in _selectedItems2)
-                                Container(
-                                  padding: const EdgeInsets.all(3.0),
-                                  child: ChoiceChip(
-                                    label: Text(
-                                      name + " ",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14.0,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                    selectedColor: Color(0xFF5081db),
-                                    disabledColor: Color(0xFF535c65),
-                                    backgroundColor: Color(0xFF535c65),
-                                    selected: true,
-                                  ),
-                                )
-                            ],
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: height * 0.04,
-                      ),
+                      // Row(
+                      //   children: [
+                      //     InkWell(
+                      //       onTap: _showSiteSelect,
+                      //       child: Container(
+                      //         alignment: Alignment.center,
+                      //         width: Responsive.isDesktop(context)
+                      //             ? width * 0.13
+                      //             : width * 0.42,
+                      //         height: height * 0.064,
+                      //         decoration: BoxDecoration(
+                      //           color: Color(0xff5081DB),
+                      //           borderRadius:
+                      //               BorderRadius.all(Radius.circular(10)),
+                      //         ),
+                      //         child: Row(
+                      //           mainAxisAlignment: MainAxisAlignment.center,
+                      //           children: [
+                      //             Text(
+                      //               "View All Sites",
+                      //               style: TextStyle(
+                      //                   fontSize: 15,
+                      //                   color: Colors.white,
+                      //                   fontFamily: "Poppins",
+                      //                   fontWeight: FontWeight.w600),
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 20,
+                      //     ),
+                      //     Row(
+                      //       children: [
+                      //         for (var name in _selectedItems2)
+                      //           Container(
+                      //             padding: const EdgeInsets.all(3.0),
+                      //             child: ChoiceChip(
+                      //               label: Text(
+                      //                 name + " ",
+                      //                 style: TextStyle(
+                      //                     color: Colors.white,
+                      //                     fontSize: 14.0,
+                      //                     fontWeight: FontWeight.w400,
+                      //                     fontFamily: "Poppins"),
+                      //               ),
+                      //               selectedColor: Color(0xFF5081db),
+                      //               disabledColor: Color(0xFF535c65),
+                      //               backgroundColor: Color(0xFF535c65),
+                      //               selected: true,
+                      //             ),
+                      //           )
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: height * 0.04,
+                      // ),
                       Text(
                         "Site",
                         style: TextStyle(

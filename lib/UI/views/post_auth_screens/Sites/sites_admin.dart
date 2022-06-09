@@ -29,18 +29,21 @@ class _SitesAdminState extends State<SitesAdmin> {
   // List siteName = ["Acres Marathon", "Akron Marathon"];
 
   // List sitelocation = ["Tampa,FL", "Leesburg,FL"];
-  List<SitesDetails>? allsites = [];
-  List<SitesDetails>? sitedetails = [];
+  List<SitesDetails>? allsites;
+  List<SitesDetails>? sitedetails;
 
   getData() async {
     sitedetails = await SiteCall().getSites();
+    print(sitedetails);
   }
 
   getsitesdescrp() {
     List<SitesDetails> sitedesc = [];
-    for (var element in sitedetails ?? []) {
+    for (var element in sitedetails!) {
       sitedesc.add(element);
+      print(sitedesc);
     }
+
     return sitedesc;
   }
 
@@ -53,7 +56,7 @@ class _SitesAdminState extends State<SitesAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    // model.User? user = Provider.of<UserProvider>(context).getUser;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -61,25 +64,24 @@ class _SitesAdminState extends State<SitesAdmin> {
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
-      body: allsites == null
+      body: sitedetails == null
           ? Container(
               height: height,
               color: backGround_color,
               width: width,
               child: Center(child: CircularProgressIndicator()))
-          : SingleChildScrollView(
-              child: Container(
-                color: backGround_color,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: Responsive.isDesktop(context)
-                          ? height * 0.04
-                          : height * 0.1,
-                      left: Responsive.isDesktop(context) ? 0.0 : width * 0.05,
-                      right:
-                          Responsive.isDesktop(context) ? 0.0 : width * 0.05),
-                  child: Responsive.isDesktop(context)
-                      ? Column(
+          : Container(
+              color: backGround_color,
+              child: Padding(
+                padding: EdgeInsets.only(
+                    top: Responsive.isDesktop(context)
+                        ? height * 0.04
+                        : height * 0.1,
+                    left: Responsive.isDesktop(context) ? 0.0 : width * 0.05,
+                    right: Responsive.isDesktop(context) ? 0.0 : width * 0.05),
+                child: Responsive.isDesktop(context)
+                    ? SingleChildScrollView(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Navbar(
@@ -91,157 +93,139 @@ class _SitesAdminState extends State<SitesAdmin> {
                             SizedBox(
                               height: height * 0.05,
                             ),
-                            Column(
+                            Stack(
                               children: [
-                                Stack(
-                                  children: [
-                                    WebBg(),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: width * 0.04,
-                                          right: width * 0.04),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: height * 0.05,
-                                          ),
-                                          Text(
-                                            "SitessAdmin",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18.0,
-                                                fontWeight:
-                                                    Responsive.isDesktop(
-                                                            context)
-                                                        ? FontWeight.w500
-                                                        : FontWeight.bold,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                top: Responsive.isDesktop(
-                                                        context)
-                                                    ? height * 0.03
-                                                    : 0.0),
-                                            child: Container(
-                                              height:
-                                                  Responsive.isDesktop(context)
-                                                      ? height * 0.6
-                                                      : height * 0.5,
-                                              child: ListView.builder(
-                                                physics:
-                                                    NeverScrollableScrollPhysics(),
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                        int index) {
-                                                  return InkWell(
-                                                    onTap: () {
-                                                      // Navigator.push(
-                                                      //     context,
-                                                      //     MaterialPageRoute(
-                                                      //       builder:
-                                                      //           (context) =>
-                                                      //               SiteDetails(
-                                                      //         currentSite:
-                                                      //             sitedetails(
-                                                      //                     user?.sites ??
-                                                      //                         [])[index]
-                                                      //                 .sitename,
-                                                      //         sitedetail: getsitesdescrp(
-                                                      //             user?.sites ??
-                                                      //                 [])[index],
-                                                      //       ),
-                                                      //     ));
-                                                    },
-                                                    child: SiteDet(
-                                                        width: width,
-                                                        height: height,
-                                                        index: index,
-                                                        siteName:
-                                                            getsitesdescrp()[
-                                                                    index]
-                                                                .sitename,
-                                                        sitelocation:
-                                                            getsitesdescrp()[
-                                                                    index]
-                                                                .sitelocation),
-                                                  );
-                                                },
-                                                itemCount:
-                                                    getsitesdescrp().length,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                WebBg(),
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      left: width * 0.04, right: width * 0.04),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: height * 0.05,
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "All Sites Admin",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight:
+                                                Responsive.isDesktop(context)
+                                                    ? FontWeight.w500
+                                                    : FontWeight.bold,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: Responsive.isDesktop(context)
+                                                ? height * 0.03
+                                                : 0.0),
+                                        child: Container(
+                                          height: Responsive.isDesktop(context)
+                                              ? height * 0.6
+                                              : height * 0.5,
+                                          child: ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SiteDetails(
+                                                            currentSite:
+                                                                sitedetails![
+                                                                        index]
+                                                                    .sitename,
+                                                            sitedetail:
+                                                                sitedetails![
+                                                                    index],
+                                                          ),
+                                                        ));
+                                                  },
+                                                  child: SiteDet(
+                                                    width: width,
+                                                    height: height,
+                                                    index: index,
+                                                    siteName:
+                                                        sitedetails![index]
+                                                            .sitename,
+                                                    sitelocation:
+                                                        sitedetails![index]
+                                                            .sitelocation,
+                                                  ));
+                                            },
+                                            itemCount: sitedetails!.length,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
                           ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CustomHeader2(),
-                            SizedBox(
-                              height: height * 0.05,
-                            ),
-                            Text(
-                              "Sites",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  top: Responsive.isDesktop(context)
-                                      ? height * 0.03
-                                      : 0.0),
-                              child: Container(
-                                height: Responsive.isDesktop(context)
-                                    ? height * 0.6
-                                    : height * 0.5,
-                                child: ListView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return InkWell(
+                        ),
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          CustomHeader2(),
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
+                          Text(
+                            "Sites",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: "Poppins"),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top: Responsive.isDesktop(context)
+                                    ? height * 0.03
+                                    : 0.0),
+                            child: Container(
+                              height: Responsive.isDesktop(context)
+                                  ? height * 0.6
+                                  : height * 0.5,
+                              child: ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return InkWell(
                                       onTap: () {
-                                        // Navigator.push(
-                                        //     context,
-                                        //     MaterialPageRoute(
-                                        //       builder: (context) => SiteDetails(
-                                        //         currentSite: getsitesdescrp(
-                                        //                 user?.sites ?? [])[index]
-                                        //             .sitename,
-                                        //         sitedetail: getsitesdescrp(
-                                        //             user?.sites ?? [])[index],
-                                        //       ),
-                                        //     ));
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => SiteDetails(
+                                                currentSite: sitedetails![index]
+                                                    .sitename,
+                                                sitedetail: sitedetails![index],
+                                              ),
+                                            ));
                                       },
                                       child: SiteDet(
-                                          width: width,
-                                          height: height,
-                                          index: index,
-                                          siteName:
-                                              getsitesdescrp()[index].sitename,
-                                          sitelocation: getsitesdescrp()[index]
-                                              .sitelocation),
-                                    );
-                                  },
-                                  itemCount: getsitesdescrp().length,
-                                ),
+                                        width: width,
+                                        height: height,
+                                        index: index,
+                                        siteName: sitedetails![index].sitename,
+                                        sitelocation:
+                                            sitedetails![index].sitelocation,
+                                      ));
+                                },
+                                itemCount: sitedetails!.length,
                               ),
                             ),
-                          ],
-                        ),
-                ),
+                          ),
+                        ],
+                      ),
               ),
             ),
     );
