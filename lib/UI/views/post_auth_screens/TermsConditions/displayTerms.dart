@@ -105,7 +105,7 @@ class _DisplayTermsState extends State<DisplayTerms> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: Responsive.isDesktop(context) ? height * 1.8 : height * 3,
+          // height: Responsive.isDesktop(context) ? height * 1.8 : height * 3,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
@@ -113,6 +113,23 @@ class _DisplayTermsState extends State<DisplayTerms> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.arrow_back,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -189,6 +206,9 @@ class _DisplayTermsState extends State<DisplayTerms> {
                   height: height * 0.06,
                 ),
                 OrderedList(termss1List),
+                SizedBox(
+                  height: height * 0.06,
+                ),
               ],
             ),
           ),
