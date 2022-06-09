@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:provider/provider.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -16,35 +14,32 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
-class Sites extends StatefulWidget {
-  Sites({Key? key}) : super(key: key);
+class SitesAdmin extends StatefulWidget {
+  SitesAdmin({Key? key}) : super(key: key);
 
   @override
-  State<Sites> createState() => _SitesState();
+  State<SitesAdmin> createState() => _SitesAdminState();
 }
 
-class _SitesState extends State<Sites> {
+class _SitesAdminState extends State<SitesAdmin> {
   List siteImg = ["site1", "site2"];
 
   List siteImgDesk = ["site11", "site21"];
 
-  List siteName = ["Acres Marathon", "Akron Marathon"];
+  // List siteName = ["Acres Marathon", "Akron Marathon"];
 
-  List sitelocation = ["Tampa,FL", "Leesburg,FL"];
-  List<SitesDetails>? sitedetails;
+  // List sitelocation = ["Tampa,FL", "Leesburg,FL"];
+  List<SitesDetails>? allsites = [];
+  List<SitesDetails>? sitedetails = [];
 
   getData() async {
-    sitedetails = await SiteCall().getSites() ?? [];
+    sitedetails = await SiteCall().getSites();
   }
 
-  getsitesdescrp(List sites) {
+  getsitesdescrp() {
     List<SitesDetails> sitedesc = [];
     for (var element in sitedetails ?? []) {
-      for (var site in sites) {
-        if (element.sitename == site) {
-          sitedesc.add(element);
-        }
-      }
+      sitedesc.add(element);
     }
     return sitedesc;
   }
@@ -58,7 +53,7 @@ class _SitesState extends State<Sites> {
 
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+    // model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -66,36 +61,37 @@ class _SitesState extends State<Sites> {
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
           : SizedBox(),
-      body: sitedetails == null
+      body: allsites == null
           ? Container(
               height: height,
               color: backGround_color,
               width: width,
               child: Center(child: CircularProgressIndicator()))
-          : Container(
-              color: backGround_color,
-              child: Padding(
-                padding: EdgeInsets.only(
-                    top: Responsive.isDesktop(context)
-                        ? height * 0.04
-                        : height * 0.1,
-                    left: Responsive.isDesktop(context) ? 0.0 : width * 0.05,
-                    right: Responsive.isDesktop(context) ? 0.0 : width * 0.05),
-                child: Responsive.isDesktop(context)
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Navbar(
-                            width: width,
-                            height: height,
-                            text1: "Home",
-                            text2: "Sites",
-                          ),
-                          SizedBox(
-                            height: height * 0.05,
-                          ),
-                          SingleChildScrollView(
-                            child: Column(
+          : SingleChildScrollView(
+              child: Container(
+                color: backGround_color,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      top: Responsive.isDesktop(context)
+                          ? height * 0.04
+                          : height * 0.1,
+                      left: Responsive.isDesktop(context) ? 0.0 : width * 0.05,
+                      right:
+                          Responsive.isDesktop(context) ? 0.0 : width * 0.05),
+                  child: Responsive.isDesktop(context)
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Navbar(
+                              width: width,
+                              height: height,
+                              text1: "Home",
+                              text2: "Sites",
+                            ),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            Column(
                               children: [
                                 Stack(
                                   children: [
@@ -112,7 +108,7 @@ class _SitesState extends State<Sites> {
                                             height: height * 0.05,
                                           ),
                                           Text(
-                                            "Sitess",
+                                            "SitessAdmin",
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 18.0,
@@ -142,41 +138,39 @@ class _SitesState extends State<Sites> {
                                                         int index) {
                                                   return InkWell(
                                                     onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    SiteDetails(
-                                                              currentSite:
-                                                                  getsitesdescrp(
-                                                                          user?.sites ??
-                                                                              [])[index]
-                                                                      .sitename,
-                                                              sitedetail: getsitesdescrp(
-                                                                  user?.sites ??
-                                                                      [])[index],
-                                                            ),
-                                                          ));
+                                                      // Navigator.push(
+                                                      //     context,
+                                                      //     MaterialPageRoute(
+                                                      //       builder:
+                                                      //           (context) =>
+                                                      //               SiteDetails(
+                                                      //         currentSite:
+                                                      //             sitedetails(
+                                                      //                     user?.sites ??
+                                                      //                         [])[index]
+                                                      //                 .sitename,
+                                                      //         sitedetail: getsitesdescrp(
+                                                      //             user?.sites ??
+                                                      //                 [])[index],
+                                                      //       ),
+                                                      //     ));
                                                     },
                                                     child: SiteDet(
                                                         width: width,
                                                         height: height,
                                                         index: index,
-                                                        siteName: getsitesdescrp(
-                                                                user?.sites ??
-                                                                    [])[index]
-                                                            .sitename,
+                                                        siteName:
+                                                            getsitesdescrp()[
+                                                                    index]
+                                                                .sitename,
                                                         sitelocation:
-                                                            getsitesdescrp(user
-                                                                        ?.sites ??
-                                                                    [])[index]
+                                                            getsitesdescrp()[
+                                                                    index]
                                                                 .sitelocation),
                                                   );
                                                 },
-                                                itemCount: getsitesdescrp(
-                                                        user?.sites ?? [])
-                                                    .length,
+                                                itemCount:
+                                                    getsitesdescrp().length,
                                               ),
                                             ),
                                           ),
@@ -187,69 +181,67 @@ class _SitesState extends State<Sites> {
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomHeader2(),
-                          SizedBox(
-                            height: height * 0.05,
-                          ),
-                          Text(
-                            "Sites",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: Responsive.isDesktop(context)
-                                    ? height * 0.03
-                                    : 0.0),
-                            child: Container(
-                              height: Responsive.isDesktop(context)
-                                  ? height * 0.6
-                                  : height * 0.5,
-                              child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SiteDetails(
-                                              currentSite: getsitesdescrp(
-                                                      user?.sites ?? [])[index]
-                                                  .sitename,
-                                              sitedetail: getsitesdescrp(
-                                                  user?.sites ?? [])[index],
-                                            ),
-                                          ));
-                                    },
-                                    child: SiteDet(
-                                        width: width,
-                                        height: height,
-                                        index: index,
-                                        siteName: getsitesdescrp(
-                                                user?.sites ?? [])[index]
-                                            .sitename,
-                                        sitelocation: getsitesdescrp(
-                                                user?.sites ?? [])[index]
-                                            .sitelocation),
-                                  );
-                                },
-                                itemCount:
-                                    getsitesdescrp(user?.sites ?? []).length,
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomHeader2(),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            Text(
+                              "Sites",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Poppins"),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: Responsive.isDesktop(context)
+                                      ? height * 0.03
+                                      : 0.0),
+                              child: Container(
+                                height: Responsive.isDesktop(context)
+                                    ? height * 0.6
+                                    : height * 0.5,
+                                child: ListView.builder(
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //       builder: (context) => SiteDetails(
+                                        //         currentSite: getsitesdescrp(
+                                        //                 user?.sites ?? [])[index]
+                                        //             .sitename,
+                                        //         sitedetail: getsitesdescrp(
+                                        //             user?.sites ?? [])[index],
+                                        //       ),
+                                        //     ));
+                                      },
+                                      child: SiteDet(
+                                          width: width,
+                                          height: height,
+                                          index: index,
+                                          siteName:
+                                              getsitesdescrp()[index].sitename,
+                                          sitelocation: getsitesdescrp()[index]
+                                              .sitelocation),
+                                    );
+                                  },
+                                  itemCount: getsitesdescrp().length,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                ),
               ),
             ),
     );

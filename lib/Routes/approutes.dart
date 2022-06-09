@@ -56,4 +56,5 @@ class AppRoutes {
   static final String dateRange = "/dateSelect";
   static final String test = "/test";
   static final String faqLogout = "/FAQlogout";
+  static final String sitescreenadmin = "/sitescreenadmin";
 }

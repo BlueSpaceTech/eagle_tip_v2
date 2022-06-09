@@ -39,6 +39,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Request%20History/request_h
 import 'package:testttttt/UI/views/post_auth_screens/Sites/dateSelect.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Sites/sites_admin.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Support/support.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/product_request.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/tanks_request.dart';
@@ -205,6 +206,7 @@ class MyApp extends StatelessWidget {
           AppRoutes.settings: (context) => Setting(),
           AppRoutes.sentto: (context) => SentTo(),
           AppRoutes.finaltourmain: (context) => FinalTourMain(),
+          AppRoutes.sitescreenadmin: (context) => SitesAdmin()
         },
       ),
     );

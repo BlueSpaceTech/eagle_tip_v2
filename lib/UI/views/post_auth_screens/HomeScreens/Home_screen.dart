@@ -523,8 +523,12 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                 visible: user.userRole != "SiteUser",
                                 child: InkWell(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.siteScreen);
+                                      user.userRole == "AppAdmin" ||
+                                              user.userRole == "SuperAdmin"
+                                          ? Navigator.pushNamed(context,
+                                              AppRoutes.sitescreenadmin)
+                                          : Navigator.pushNamed(
+                                              context, AppRoutes.siteScreen);
                                     },
                                     child: SiteContainer(
                                         width: width,
