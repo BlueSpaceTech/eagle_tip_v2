@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, duplicate_ignore, unused_import, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, duplicate_ignore, unused_import, prefer_const_literals_to_create_immutables, avoid_print
 
 import 'dart:async';
 import 'dart:convert';
@@ -9,7 +9,7 @@ import 'package:csv/csv.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
-
+import 'package:intl/intl.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
@@ -32,6 +32,9 @@ import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
 
 import '../Tanks/tanks_request.dart';
+
+CollectionReference requestss =
+    FirebaseFirestore.instance.collection("requesthistory");
 
 List<List<dynamic>> csvdata = <List<dynamic>>[];
 List rowHeader = [
@@ -85,10 +88,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       });
     },
   );
-  List<DateTime> getDaysInBeteween(DateTime startDate, DateTime endDate) {
-    List<DateTime> days = [];
+  List getDaysInBeteween(DateTime startDate, DateTime endDate) {
+    List days = [];
     for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
-      days.add(startDate.add(Duration(days: i)));
+      days.add(
+          DateFormat('yyyy-MM-dd').format(startDate.add(Duration(days: i))));
     }
     return days;
   }
@@ -102,17 +106,26 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
         // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
       });
       List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
-      // print(days);
+      print(days);
 
       if (csvdata.isEmpty) {
         csvdata.add(rowHeader);
       }
-      print(widget.sites);
-
-      final docss = await requests.get().then((value) => value.docs.where(
+      // print(widget.sites);
+      final docsss = await requestss.get().then((value) => value);
+      for (var element in docsss.docs) {
+        print(DateFormat('yyyy-MM-dd').format(element["date"].toDate()));
+      }
+      final docss = await requestss.get().then((value) => value.docs.where(
           (element) =>
-              days.contains(element["date"].toDate()) &&
+              days.contains(
+                  DateFormat('yyyy-MM-dd').format(element["date"].toDate())) &&
               widget.sites.contains(element["site"])));
+      // docss.forEach((element) {
+      //   print(element["date"].toDate());
+      // });
+      print("Updating");
+      print(docss);
       for (var element in docss) {
         List row = [];
         List data = element.get("data");
@@ -127,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
         row.add(data[3]);
         csvdata.add(row);
       }
-      // print(csvdata);
+      print(csvdata);
       // print(csvdata.length);
       String csv = ListToCsvConverter().convert(csvdata);
       final bytes = utf8.encode(csv);
@@ -692,8 +705,12 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                               visible: user.userRole != "SiteUser",
                               child: InkWell(
                                   onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.siteScreen);
+                                    user.userRole == "AppAdmin" ||
+                                            user.userRole == "SuperAdmin"
+                                        ? Navigator.pushNamed(
+                                            context, AppRoutes.sitescreenadmin)
+                                        : Navigator.pushNamed(
+                                            context, AppRoutes.siteScreen);
                                   },
                                   child: SiteContainer(
                                       width: width,
