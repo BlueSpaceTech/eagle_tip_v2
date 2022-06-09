@@ -1,13 +1,17 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/chatListTile.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/message_model.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Support/support.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,6 +54,8 @@ class _AllChatScreenState extends State<AllChatScreen> {
     print(_allChats);
     //getUserChats();
     super.initState();
+    fToast = FToast();
+    fToast!.init(context);
   }
 
   @override
@@ -103,11 +109,69 @@ class _AllChatScreenState extends State<AllChatScreen> {
                     )));
   }
 
+  String? EmployerCode;
+  String? Name;
+  String? Email;
+  String? Subject;
+  String? Message;
+  FToast? fToast;
+
+  CollectionReference tickets =
+      FirebaseFirestore.instance.collection("tickets");
+  String visible(model.User user) {
+    switch (user.userRole) {
+      case "SiteUser":
+        return "SiteManager";
+      case "SiteManager":
+        return "SiteOwner";
+      case "SiteOwner":
+        return "TerminalUser";
+      case "TerminalUser":
+        return "TerminalManager";
+      case "TerminalManager":
+        return "AppAdmin";
+      case "AppAdmin":
+        return "SuperAdmin";
+      case "SuperAdmin":
+        return "SuperAdmin";
+    }
+    return "";
+  }
+
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    Future<void> addTicket(context) {
+      return tickets.add({
+        "beforelogin": false,
+        "byid": user!.uid,
+        "email": user.email,
+        "isopen": true,
+        "messages": [
+          {
+            "title": Subject,
+            "description": Message,
+          }
+        ],
+        "name": user.name,
+        "sites": user.sites,
+        "timestamp": FieldValue.serverTimestamp(),
+        "visibleto": visible(user),
+      }).then((value) {
+        tickets.doc(value.id).update({
+          "docid": value.id,
+        });
+        tickets.doc(value.id).collection("messages").add({
+          "createdOn": FieldValue.serverTimestamp(),
+          "message": Message,
+          "by": user.uid,
+        });
+      }).catchError((error) => print("Failed to add ticket: $error"));
+    }
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+    // model.User? user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       floatingActionButton: GestureDetector(
         onTap: () {
@@ -149,117 +213,268 @@ class _AllChatScreenState extends State<AllChatScreen> {
         ),
       ),
       backgroundColor: Color(0xff2B343B),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection("chats")
-              .where("between", arrayContainsAny: [user!.uid]).snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: Colors.blue,
-                ),
-              );
-            }
-
-            var document = snapshot.data?.docs;
-            // var docid = document!.single.id;
-
-            return SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(
-                    left: Responsive.isDesktop(context)
-                        ? width * 0.01
-                        : width * 0.09,
-                    right: Responsive.isDesktop(context)
-                        ? width * 0.01
-                        : width * 0.09,
-                    top: Responsive.isDesktop(context)
-                        ? height * 0.01
-                        : height * 0.1),
+      body: Column(
+        children: [
+          Center(
+            child: Logo(
+              width: width,
+            ),
+          ),
+          SizedBox(
+            height: height * 0.03,
+          ),
+          Expanded(
+            child: DefaultTabController(
+                length: 2,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Visibility(
-                      visible: !Responsive.isDesktop(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    Container(
+                      height: height * 0.07,
+                      child: Material(
+                        color: Color(0xFF2E3840),
+                        child: TabBar(
+                          tabs: [
+                            Tab(
+                              child: Text(
+                                "Chat",
+                                style: TextStyle(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: "Poppins"),
+                              ),
+                            ),
+                            Tab(
+                              child: Text(
+                                "Support Ticket",
+                                style: TextStyle(
+                                    fontSize: 13.0,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: "Poppins"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
                         children: [
-                          Text(""),
-                          Center(child: Logo(width: width)),
-                          // Padding(
-                          //   padding: EdgeInsets.only(top: 10.0),
-                          //   child: Icon(
-                          //     Icons.search,
-                          //     color: Colors.white,
-                          //   ),
-                          // )
+                          StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection("chats")
+                                  .where("between", arrayContainsAny: [
+                                user!.uid
+                              ]).snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                      color: Colors.blue,
+                                    ),
+                                  );
+                                }
+
+                                var document = snapshot.data?.docs;
+                                // var docid = document!.single.id;
+
+                                return SingleChildScrollView(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: Responsive.isDesktop(context)
+                                            ? width * 0.01
+                                            : width * 0.09,
+                                        right: Responsive.isDesktop(context)
+                                            ? width * 0.01
+                                            : width * 0.09,
+                                        top: Responsive.isDesktop(context)
+                                            ? height * 0.01
+                                            : height * 0.1),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        document!.isEmpty
+                                            ? Center(
+                                                child: Text(
+                                                  "No Chats to display",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.white,
+                                                      fontFamily: "Poppins",
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              )
+                                            : ListView.builder(
+                                                physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    snapshot.data?.docs.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  // var document = _allChats[index];
+
+                                                  return InkWell(
+                                                    onTap: () {
+                                                      // document![index]
+                                                      //     .reference
+                                                      //     .collection("messages")
+                                                      //     .doc(document[index].id + "sent")
+                                                      //     .update({
+                                                      //   "isNew": false,
+                                                      // });
+                                                      FirebaseFirestore.instance
+                                                          .collection("chats")
+                                                          .doc(document[index]
+                                                              .id)
+                                                          .update({
+                                                        "isNew": "constant",
+                                                      });
+
+                                                      callChatScreen(
+                                                          document[index][
+                                                                      'uid1'] ==
+                                                                  user.uid
+                                                              ? document[index]
+                                                                  ["uid2"]
+                                                              : document[index]
+                                                                  ["uid1"],
+                                                          document[index][
+                                                                      'user1'] ==
+                                                                  user.name
+                                                              ? document[index]
+                                                                  ["user2"]
+                                                              : document[index]
+                                                                  ["user1"],
+                                                          user.name,
+                                                          document[index][
+                                                                      'photo1'] ==
+                                                                  user.dpurl
+                                                              ? document[index]
+                                                                  ["photo2"]
+                                                              : document[index]
+                                                                  ["photo1"],
+                                                          user.dpurl);
+                                                    },
+                                                    child: ChatListTile(
+                                                      doc: document[index],
+                                                      newChat: document[index]
+                                                          ["isNew"],
+                                                      height: height,
+                                                      width: width,
+                                                    ),
+                                                  );
+                                                }),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }),
+                          Padding(
+                            padding: EdgeInsets.only(top: height * 0.03),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Support",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: Responsive.isDesktop(context)
+                                          ? width * 0.013
+                                          : width * 0.05,
+                                      fontFamily: "Poppins"),
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                SizedBox(
+                                  height: height * 0.012,
+                                ),
+                                SupportTextField(
+                                    valueChanged: (value) {
+                                      setState(() {
+                                        Subject = value;
+                                      });
+                                    },
+                                    width: width,
+                                    height: height,
+                                    labelText: "Subject"),
+                                SizedBox(
+                                  height: height * 0.012,
+                                ),
+                                MessageTextField(
+                                    valueChanged: (value) {
+                                      setState(() {
+                                        Message = value;
+                                      });
+                                    },
+                                    width: width,
+                                    height: height,
+                                    labelText: "Message"),
+                                SizedBox(
+                                  height: height * 0.04,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    if (Message != null || Subject != null) {
+                                      addTicket(context);
+                                      fToast!.showToast(
+                                        child: ToastMessage().show(
+                                            width, context, "Ticket Added"),
+                                        gravity: ToastGravity.BOTTOM,
+                                        toastDuration: Duration(seconds: 3),
+                                      );
+                                      Navigator.pop(context);
+                                    } else {
+                                      fToast!.showToast(
+                                        child: ToastMessage().show(
+                                            width,
+                                            context,
+                                            "Please enter all detailss"),
+                                        gravity: ToastGravity.BOTTOM,
+                                        toastDuration: Duration(seconds: 3),
+                                      );
+                                    }
+                                  },
+                                  child: Container(
+                                    width: Responsive.isDesktop(context)
+                                        ? width * 0.3
+                                        : Responsive.isTablet(context)
+                                            ? width * 0.6
+                                            : width * 0.9,
+                                    height: height * 0.065,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(13.0),
+                                      color: Color(0xFF5081DB),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "Send",
+                                        style: TextStyle(
+                                            fontSize:
+                                                Responsive.isDesktop(context)
+                                                    ? width * 0.009
+                                                    : width * 0.04,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: height * 0.04,
-                    ),
-                    document!.isEmpty
-                        ? Center(
-                            child: Text(
-                              "No Chats to display",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          )
-                        : ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data?.docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              // var document = _allChats[index];
-
-                              return InkWell(
-                                onTap: () {
-                                  // document![index]
-                                  //     .reference
-                                  //     .collection("messages")
-                                  //     .doc(document[index].id + "sent")
-                                  //     .update({
-                                  //   "isNew": false,
-                                  // });
-                                  FirebaseFirestore.instance
-                                      .collection("chats")
-                                      .doc(document[index].id)
-                                      .update({
-                                    "isNew": "constant",
-                                  });
-
-                                  callChatScreen(
-                                      document[index]['uid1'] == user.uid
-                                          ? document[index]["uid2"]
-                                          : document[index]["uid1"],
-                                      document[index]['user1'] == user.name
-                                          ? document[index]["user2"]
-                                          : document[index]["user1"],
-                                      user.name,
-                                      document[index]['photo1'] == user.dpurl
-                                          ? document[index]["photo2"]
-                                          : document[index]["photo1"],
-                                      user.dpurl);
-                                },
-                                child: ChatListTile(
-                                  doc: document[index],
-                                  newChat: document[index]["isNew"],
-                                  height: height,
-                                  width: width,
-                                ),
-                              );
-                            }),
                   ],
-                ),
-              ),
-            );
-          }),
+                )),
+          ),
+        ],
+      ),
     );
   }
 }

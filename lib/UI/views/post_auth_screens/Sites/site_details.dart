@@ -450,6 +450,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   bool? isTapped = false;
   var date = DateFormat('yyyy-MM-dd').format(DateTime.now().toUtc());
   var time = DateFormat().add_Hms().format(DateTime.now());
+  TimeOfDay selectedtime = TimeOfDay.now();
 
   AudioPlayer audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
   playLocal() async {
@@ -541,11 +542,36 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         "Tank Product": widget.sitedetail.products[i]["PRDNO"],
         "Tank Qualifier": widget.sitedetail.products[i]["TNKQLR"],
         // "Tank_PRD_DESC": widget.sitedetail.products[i]["TANK_PRD_DESC"],
-        "Timestamp": date + "T" + time + timezone,
+        "Timestamp": date +
+            "T" +
+            selectedtime
+                .toString()
+                .replaceAll("TimeOfDay(", "")
+                .replaceAll(")", "") +
+            ":00" +
+            timezone,
         "Inventory gallons": vals[i].toString()
       });
     }
     return data;
+  }
+
+  Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay? picked_s = await showTimePicker(
+        context: context,
+        initialTime: selectedtime,
+        builder: (BuildContext context, Widget? child) {
+          return MediaQuery(
+            data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+            child: child!,
+          );
+        });
+
+    if (picked_s != null && picked_s != selectedtime) {
+      setState(() {
+        selectedtime = picked_s;
+      });
+    }
   }
 
   List backenddata(int len) {
@@ -607,6 +633,41 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         SizedBox(
           height: widget.height * 0.06,
         ),
+        Row(
+          mainAxisAlignment: Responsive.isDesktop(context)
+              ? MainAxisAlignment.start
+              : MainAxisAlignment.center,
+          children: [
+            Text(
+              "Timestamp: " +
+                  date +
+                  " " +
+                  selectedtime
+                      .toString()
+                      .replaceAll("TimeOfDay(", "")
+                      .replaceAll(")", "") +
+                  ":00" +
+                  " CST",
+              style: TextStyle(
+                  fontSize: 14.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: "Poppins"),
+            ),
+            SizedBox(
+              width: 40.0,
+            ),
+            InkWell(
+                onTap: () {
+                  _selectTime(context);
+                  print(selectedtime);
+                },
+                child: Icon(Icons.edit, color: Colors.white, size: 20.0)),
+          ],
+        ),
+        SizedBox(
+          height: widget.height * 0.06,
+        ),
         InkWell(
           onTap: () {
             // print(regularVal);
@@ -635,7 +696,15 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                     child: Column(
                       children: [
                         Text(
-                          "Date/Time for the inventory: ${DateTime.now()}",
+                          "Date/Time for the inventory: " "Timestamp: " +
+                              date +
+                              " " +
+                              selectedtime
+                                  .toString()
+                                  .replaceAll("TimeOfDay(", "")
+                                  .replaceAll(")", "") +
+                              ":00" +
+                              " CST",
                           style: TextStyle(
                               fontSize: 15.0,
                               fontWeight: FontWeight.w400,
