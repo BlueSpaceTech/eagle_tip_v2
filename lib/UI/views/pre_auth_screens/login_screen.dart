@@ -390,7 +390,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          print("isweb");
+          // print("isweb");
 
           // AuthFunctions.signOut;
           // // print(phone);
