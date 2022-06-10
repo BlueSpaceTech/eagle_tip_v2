@@ -11,10 +11,15 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
 import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
+import 'package:testttttt/UI/Widgets/customTextField.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/web_chatting.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Notifications/createNotification.dart';
 
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
@@ -25,6 +30,7 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:firestore_search/firestore_search.dart';
+import 'package:universal_html/html.dart';
 
 class CrudScreen extends StatefulWidget {
   const CrudScreen({Key? key}) : super(key: key);
@@ -324,6 +330,7 @@ class _CrudScreenState extends State<CrudScreen> {
     _numbers!.dispose();
     _search.removeListener(_onsearchange);
     _search.dispose();
+
     super.dispose();
   }
 
@@ -940,97 +947,15 @@ class _CrudScreenState extends State<CrudScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               final document = _resultList[index];
                               List site = document!["sites"];
+                              // double hh = 0;
 
-                              return SingleChildScrollView(
-                                physics: Responsive.isDesktop(context)
-                                    ? NeverScrollableScrollPhysics()
-                                    : BouncingScrollPhysics(),
-                                controller: _numbers,
-                                scrollDirection: Axis.horizontal,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: index % 2 == 0
-                                        ? Color(0xff2B343B)
-                                        : Color(0xff24292E),
-                                  ),
-                                  height: 60,
-                                  child: Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          deletUserDialog(
-                                              height,
-                                              width,
-                                              document["name"],
-                                              document["uid"]);
-                                        },
-                                        child: Container(
-                                            width: Responsive.isDesktop(context)
-                                                ? width * 0.08
-                                                : width * 0.16,
-                                            child: Image.asset(
-                                                "assets/delete.png")),
-                                      ),
-                                      InkWell(
-                                        onTap: () {
-                                          callUserInfoScreen(
-                                              document["name"],
-                                              document["email"],
-                                              document["userRole"],
-                                              document["dpUrl"],
-                                              document["sites"],
-                                              document["phonenumber"],
-                                              document["uid"]);
-                                        },
-                                        child: Container(
-                                          width: Responsive.isDesktop(context)
-                                              ? width * 0.22
-                                              : width * 0.4,
-                                          child: Text(
-                                            '${index + 1}. ${document["name"]}',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: Responsive.isDesktop(context)
-                                            ? width * 0.12
-                                            : width * 0.24,
-                                        child: Text(document["userRole"],
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins")),
-                                      ),
-                                      Container(
-                                        width: Responsive.isDesktop(context)
-                                            ? width * 0.32
-                                            : width * 0.52,
-                                        child: Text(site.join(", "),
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontFamily: "Poppins")),
-                                      ),
-                                      InkWell(
-                                          onTap: () {
-                                            callUserInfoScreen(
-                                                document["name"],
-                                                document["email"],
-                                                document["userRole"],
-                                                document["dpUrl"],
-                                                document["sites"],
-                                                document["phonenumber"],
-                                                document["uid"]);
-                                          },
-                                          child:
-                                              Image.asset("assets/info.png")),
-                                      SizedBox(
-                                        width: width * 0.04,
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              return CRUDtile(
+                                numbers: _numbers,
+                                width: width,
+                                document: document,
+                                site: site,
+                                index: index,
+                                allsitename: allsitename,
                               );
                             }),
                         SizedBox(
@@ -1044,5 +969,536 @@ class _CrudScreenState extends State<CrudScreen> {
             ),
           ],
         ));
+  }
+}
+
+class CRUDtile extends StatefulWidget {
+  const CRUDtile({
+    Key? key,
+    required ScrollController? numbers,
+    required this.width,
+    required this.document,
+    required this.site,
+    required this.index,
+    required this.allsitename,
+  })  : _numbers = numbers,
+        super(key: key);
+
+  final ScrollController? _numbers;
+  final double width;
+  final DocumentSnapshot document;
+  final List site;
+  final int index;
+  final List allsitename;
+
+  @override
+  State<CRUDtile> createState() => _CRUDtileState();
+}
+
+class _CRUDtileState extends State<CRUDtile> {
+  bool _loading = false;
+  void callChatScreen(String uid, String name, String currentusername,
+      String photoUrlfriend, String photourluser) async {
+    setState(() {
+      _loading = true;
+    });
+    await getChatId(uid, name, currentusername, photoUrlfriend, photourluser);
+
+    await Future.delayed(const Duration(seconds: 3));
+    print(chatId + "gggggR");
+    setState(() {
+      _loading = false;
+    });
+    Responsive.isDesktop(context)
+        ? Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => MessageMain(
+                      // photourlfriend: photoUrlfriend,
+                      // photourluser: photourluser,
+                      // index: 0,
+                      // frienduid: uid,
+                      // friendname: name,
+                      // currentusername: currentusername,
+                      Chatscreen: WebChatScreenn(
+                        photourlfriend: photoUrlfriend,
+                        friendname: name,
+                        chatId: chatId,
+                      ),
+                    )))
+        : Navigator.push(
+            context,
+            CupertinoPageRoute(
+                builder: (context) => ChatScreenn(
+                    photourlfriend: photoUrlfriend,
+                    photourluser: photourluser,
+                    index: 0,
+                    frienduid: uid,
+                    friendname: name,
+                    currentusername: currentusername)));
+  }
+
+  CollectionReference chat = FirebaseFirestore.instance.collection("chats");
+  final currentUserUID = FirebaseAuth.instance.currentUser!.uid;
+  var chatId;
+  getChatId(String frienduid, String friendname, String currentusername,
+      String photourlfriend, String photourluser) async {
+    await chat
+        .where("users", isEqualTo: {frienduid: null, currentUserUID: null})
+        .limit(1)
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+          if (querySnapshot.docs.isNotEmpty) {
+            setState(() {
+              chatId = querySnapshot.docs.single.id;
+            });
+          } else {
+            chat.add({
+              'users': {frienduid: null, currentUserUID: null},
+              "between": [frienduid, currentUserUID],
+              "user1": friendname,
+              "user2": currentusername,
+              "uid1": currentUserUID,
+              "uid2": frienduid,
+              "photo1": photourluser,
+              "photo2": photourlfriend,
+              "recentTime": FieldValue.serverTimestamp(),
+              "isNew": currentUserUID,
+            }).then((value) => {
+                  setState(() {
+                    chatId = value.id;
+                  })
+                });
+          }
+        })
+        .catchError((err) {});
+  }
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String selectedrOLE = "";
+  _buildRolechip(List role) {
+    bool isroleselected = false;
+    List<Widget> choicess = [];
+    role.forEach((item) {
+      choicess.add(Container(
+        padding: const EdgeInsets.all(3.0),
+        child: ChoiceChip(
+          label: Text(
+            item,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
+          ),
+          selectedColor: Color(0xFF5081db),
+          disabledColor: Color(0xFF535c65),
+          backgroundColor: Color(0xFF535c65),
+          selected: selectedrOLE == item,
+          onSelected: (selected) {
+            setState(() {
+              isroleselected = selected;
+              selectedrOLE = item;
+              print(selectedrOLE);
+              // +added
+            });
+          },
+        ),
+      ));
+    });
+    return choicess;
+  }
+
+  double hh = 0;
+  bool isvisibleRole = false;
+  bool isvisibleSite = false;
+  List<String> _selectedItems2 = [];
+  @override
+  Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    _showSiteSelect() async {
+      final List _items =
+          user!.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+              ? widget.allsitename
+              : user.sites;
+      for (var element in _items) {
+        element = element.toString().replaceAll(" ", "");
+      }
+
+      final List<String>? results = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SiteSelect(items: _items);
+        },
+      );
+
+      // Update UI
+      if (results != null) {
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.document.id)
+            .update({'sites': results});
+      }
+    }
+
+    final TextEditingController _phone =
+        TextEditingController(text: widget.document["phonenumber"]);
+
+    return SingleChildScrollView(
+      physics: Responsive.isDesktop(context)
+          ? NeverScrollableScrollPhysics()
+          : BouncingScrollPhysics(),
+      controller: widget._numbers,
+      scrollDirection: Axis.horizontal,
+      child: Column(children: [
+        Container(
+          decoration: BoxDecoration(
+            color:
+                widget.index % 2 == 0 ? Color(0xff2B343B) : Color(0xff24292E),
+          ),
+          height: 60,
+          child: Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  // deletUserDialog(
+                  //     height,
+                  //     width,
+                  //     document["name"],
+                  //     document["uid"]);
+                },
+                child: Container(
+                    width: Responsive.isDesktop(context)
+                        ? widget.width * 0.08
+                        : widget.width * 0.16,
+                    child: Image.asset("assets/delete.png")),
+              ),
+              InkWell(
+                onTap: () {
+                  // callUserInfoScreen(
+                  //     document["name"],
+                  //     document["email"],
+                  //     document["userRole"],
+                  //     document["dpUrl"],
+                  //     document["sites"],
+                  //     document["phonenumber"],
+                  //     document["uid"]);
+                },
+                child: Container(
+                  width: Responsive.isDesktop(context)
+                      ? widget.width * 0.22
+                      : widget.width * 0.4,
+                  child: Text(
+                    '${widget.index + 1}. ${widget.document["name"]}',
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: "Poppins"),
+                  ),
+                ),
+              ),
+              Container(
+                width: Responsive.isDesktop(context)
+                    ? widget.width * 0.12
+                    : widget.width * 0.24,
+                child: Text(widget.document["userRole"],
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: "Poppins")),
+              ),
+              Container(
+                width: Responsive.isDesktop(context)
+                    ? widget.width * 0.32
+                    : widget.width * 0.52,
+                child: Text(widget.site.join(", "),
+                    // "",
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: "Poppins")),
+              ),
+              InkWell(
+                  onTap: () {
+                    // callUserInfoScreen(
+                    //     document["name"],
+                    //     document["email"],
+                    //     document["userRole"],
+                    //     document["dpUrl"],
+                    //     document["sites"],
+                    //     document["phonenumber"],
+                    //     document["uid"]);
+
+                    setState(() {
+                      if (hh == 150) {
+                        hh = 0;
+                      } else {
+                        hh = 150;
+                      }
+                    });
+                  },
+                  child: Image.asset("assets/info.png")),
+              SizedBox(
+                width: widget.width * 0.04,
+              ),
+            ],
+          ),
+        ),
+        AnimatedContainer(
+          padding: EdgeInsets.symmetric(horizontal: 8),
+          duration: Duration(milliseconds: 250),
+          height: hh,
+          width: widget.width * 0.8,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Email : ${widget.document["email"]}",
+                          style: TextStyle(
+                              color: Colors.white, fontFamily: "Poppins")),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: widget.width * 0.3,
+                        child: Wrap(
+                          children: [
+                            Text("Sites : ${widget.site.join(", ")}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "Poppins")),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            InkWell(
+                                onTap: _showSiteSelect,
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 20,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: widget.width * 0.2,
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text("User Role : ${widget.document["userRole"]}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "Poppins")),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    if (isvisibleRole) {
+                                      isvisibleRole = false;
+                                    } else {
+                                      isvisibleRole = true;
+                                    }
+
+                                    // isvisible != isvisible;
+                                  });
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 20,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                                "Phone number : ${widget.document["phonenumber"]}",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontFamily: "Poppins")),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            InkWell(
+                                onTap: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Text('Update Phone number'),
+                                        content: Container(
+                                          height: 120,
+                                          decoration: BoxDecoration(),
+                                          child: Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? 400
+                                                : widget.width * 0.8,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    Responsive.isDesktop(
+                                                            context)
+                                                        ? widget.width * 0.02
+                                                        : widget.width * 0.06),
+                                            height: 50,
+                                            decoration: BoxDecoration(
+                                                color: Color(0xffEFF0F6)
+                                                    .withOpacity(0.7),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
+                                                border: Border.all(
+                                                    color: Colors.blue)),
+                                            child: TextField(
+                                              maxLength: 10,
+                                              enabled: true,
+                                              controller: _phone,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 16),
+                                              cursorColor: Colors.black12,
+                                              decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                labelText: "",
+                                                labelStyle: TextStyle(
+                                                    color: Color(0xff5e8be0),
+                                                    fontFamily: "Poppins",
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            child: const Text('Cancel'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            child: const Text('Ok'),
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Color(0Xff5081db),
+                                            ),
+                                            onPressed: () {
+                                              if (_phone.text.length == 10) {
+                                                FirebaseFirestore.instance
+                                                    .collection('users')
+                                                    .doc(widget.document.id)
+                                                    .update({
+                                                  'phonenumber': _phone.text
+                                                });
+                                                Navigator.pop(context);
+                                              } else {}
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 20,
+                                  color: Colors.white,
+                                )),
+                          ],
+                        ),
+                      ]),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Column(children: [
+                    InkWell(
+                      onTap: () {
+                        callChatScreen(
+                          widget.document.id,
+                          widget.document["name"],
+                          user!.name,
+                          widget.document["dpUrl"],
+                          user.dpurl,
+                        );
+                      },
+                      child: Container(
+                        width: 80,
+                        height: 40,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          color: Color(0xFF5081DB),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Chat",
+                            style: TextStyle(
+                              fontSize: 13.0,
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ]),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              isvisibleRole
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Wrap(
+                          children:
+                              _buildRolechip(CrudFunction().visibleRole(user!)),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            if (selectedrOLE != "") {
+                              FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(widget.document.id)
+                                  .update({'userRole': selectedrOLE});
+                              setState(() {
+                                isvisibleRole = false;
+                              });
+                            } else {
+                              setState(() {
+                                isvisibleRole = false;
+                              });
+                            }
+                          },
+                          child: Icon(
+                            Icons.check,
+                            size: 35,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    )
+                  : Container(),
+            ],
+          ),
+        ),
+      ]),
+    );
   }
 }

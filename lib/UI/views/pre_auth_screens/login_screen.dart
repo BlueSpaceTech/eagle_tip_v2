@@ -528,7 +528,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } else if (_otpcode.text.isEmpty) {
       fToast!.showToast(
-        child: ToastMessage().show(width, context, "Enter the otp code"),
+        child: ToastMessage().show(width, context, "Enter 2FA Code"),
         gravity: ToastGravity.BOTTOM,
         toastDuration: Duration(seconds: 3),
       );
@@ -599,13 +599,13 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         getotp = Container(
           alignment: Alignment.center,
-          width: 80,
-          height: 35,
+          width: 100,
+          height: 38,
           decoration: BoxDecoration(
               color: Color(0xff5081DB),
               borderRadius: BorderRadius.circular(15)),
           child: Text(
-            "Get OTP",
+            "Get 2FA Code",
             style: TextStyle(color: Colors.white),
           ),
         );
@@ -731,7 +731,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               cursorColor: Colors.black12,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
-                                labelText: "Enter 6 Digits otp",
+                                labelText: "Enter 2FA Code",
                                 labelStyle: TextStyle(
                                     color: Color(0xff5e8be0),
                                     fontFamily: "Poppins",
@@ -758,13 +758,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             unselectedWidgetColor: Colors.white,
                           ),
                           child: Checkbox(
-                              activeColor: Color(0xff00C8E8),
+                              activeColor: Color(0xff5081DB),
                               value: ischecked,
                               onChanged: _handleRemeberme),
                         ),
                       ),
                       SizedBox(width: 10.0),
-                      Text("Remember Me",
+                      Text("Trust this device",
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 12,

@@ -675,7 +675,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0)),
                   title: Text(
-                    'Request Confirmation',
+                    'Confirmation',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: Responsive.isDesktop(context)
