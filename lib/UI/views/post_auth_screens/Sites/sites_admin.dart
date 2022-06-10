@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:provider/provider.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -80,23 +82,23 @@ class _SitesAdminState extends State<SitesAdmin> {
                     left: Responsive.isDesktop(context) ? 0.0 : width * 0.05,
                     right: Responsive.isDesktop(context) ? 0.0 : width * 0.05),
                 child: Responsive.isDesktop(context)
-                    ? SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Navbar(
-                              width: width,
-                              height: height,
-                              text1: "Home",
-                              text2: "Sites",
-                            ),
-                            SizedBox(
-                              height: height * 0.05,
-                            ),
-                            Stack(
-                              children: [
-                                WebBg(),
-                                Padding(
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Navbar(
+                            width: width,
+                            height: height,
+                            text1: "Home",
+                            text2: "Sites",
+                          ),
+                          SizedBox(
+                            height: height * 0.05,
+                          ),
+                          SizedBox(
+                            height: height * 0.8,
+                            child: SingleChildScrollView(
+                              child: SizedBox(
+                                child: Padding(
                                   padding: EdgeInsets.only(
                                       left: width * 0.04, right: width * 0.04),
                                   child: Column(
@@ -167,10 +169,10 @@ class _SitesAdminState extends State<SitesAdmin> {
                                     ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,48 +181,72 @@ class _SitesAdminState extends State<SitesAdmin> {
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          Text(
-                            "Sites",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins"),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: Responsive.isDesktop(context)
-                                    ? height * 0.03
-                                    : 0.0),
-                            child: Container(
-                              height: Responsive.isDesktop(context)
-                                  ? height * 0.6
-                                  : height * 0.5,
-                              child: ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => SiteDetails(
-                                                currentSite: sitedetails![index]
-                                                    .sitename,
-                                                sitedetail: sitedetails![index],
-                                              ),
-                                            ));
-                                      },
-                                      child: SiteDet(
-                                        width: width,
-                                        height: height,
-                                        index: index,
-                                        siteName: sitedetails![index].sitename,
-                                        sitelocation:
-                                            sitedetails![index].sitelocation,
-                                      ));
-                                },
-                                itemCount: sitedetails!.length,
+                          SizedBox(
+                            height: height * 0.8,
+                            child: SingleChildScrollView(
+                              child: SizedBox(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Sites",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Poppins"),
+                                    ),
+                                    SizedBox(
+                                      height: height * 0.05,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          top: Responsive.isDesktop(context)
+                                              ? height * 0.03
+                                              : 0.0),
+                                      child: SizedBox(
+                                        height: Responsive.isDesktop(context)
+                                            ? height * 0.6
+                                            : height * 0.5,
+                                        child: ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            SiteDetails(
+                                                          currentSite:
+                                                              sitedetails![
+                                                                      index]
+                                                                  .sitename,
+                                                          sitedetail:
+                                                              sitedetails![
+                                                                  index],
+                                                        ),
+                                                      ));
+                                                },
+                                                child: SiteDet(
+                                                  width: width,
+                                                  height: height,
+                                                  index: index,
+                                                  siteName: sitedetails![index]
+                                                      .sitename,
+                                                  sitelocation:
+                                                      sitedetails![index]
+                                                          .sitelocation,
+                                                ));
+                                          },
+                                          itemCount: sitedetails!.length,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),

@@ -102,8 +102,6 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       setState(() {
         _startDate.value = newSelectedDate.start;
         _endDate.value = newSelectedDate.end;
-        // print(convertDateTimeDisplay(_startDate.value.toString()));
-        // print(getDaysInBeteween(_startDate.value!, _endDate.value!));
       });
       List days = getDaysInBeteween(_startDate.value!, _endDate.value!);
       print(days);
@@ -111,25 +109,20 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       if (csvdata.isEmpty) {
         csvdata.add(rowHeader);
       }
-      // print(widget.sites);
-      final docsss = await requestss.get().then((value) => value);
-      for (var element in docsss.docs) {
-        print(DateFormat('yyyy-MM-dd').format(element["date"].toDate()));
-      }
-      final docss = await requestss.get().then((value) => value.docs.where(
-          (element) =>
-              days.contains(
-                  DateFormat('yyyy-MM-dd').format(element["date"].toDate())) &&
-              widget.sites.contains(element["site"])));
-      // docss.forEach((element) {
-      //   print(element["date"].toDate());
-      // });
-      print("Updating");
-      print(docss);
+      // print(csvdata);
+      final docss = await requestss.get().then(
+            (value) => value.docs.where(
+              (element) => (days.contains(DateFormat('yyyy-MM-dd')
+                      .format(element["date"].toDate())) &&
+                  widget.sites.contains(element["site"])),
+            ),
+          );
+
+      print(docss.length);
       for (var element in docss) {
         List row = [];
         List data = element.get("data");
-        print(element.get("date").runtimeType);
+        // print(DateFormat('yyyy-MM-dd').format(element["date"].toDate()));
         row.add(element.get("requestby"));
         row.add(element.get("site"));
         row.add(element.get("id"));
@@ -139,8 +132,9 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
         row.add(data[2]);
         row.add(data[3]);
         csvdata.add(row);
+        // print(csvdata.length);
       }
-      print(csvdata);
+      // print(csvdata);
       // print(csvdata.length);
       String csv = ListToCsvConverter().convert(csvdata);
       final bytes = utf8.encode(csv);
@@ -202,21 +196,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
     //addData();
     // TODO: implement initState
     super.initState();
-    // model.User user = Provider.of<UserProvider>(context).getUser;
-    // CollectionReference tokens =
-    //     FirebaseFirestore.instance.collection("tokens");
-    // FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-    // firebaseMessaging.getToken().then((value) {
-    //   print(value);
-    //   // tokens.doc(user.userRole).update(data);
+
     // });
     getData();
     addData();
     checkupdateTC();
-    // print(FirebaseAuth.instance.currentUser!.displayName);
-
-    //print(checkupdateTC());
-    //checkupdateTC();
   }
 
   List? check;

@@ -815,7 +815,7 @@ class DetailsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Responsive.isDesktop(context)
         ? Container(
-            width: width * 0.15,
+            width: width * 0.156,
             child: Row(children: [
               Image.asset(
                 Common.assetImages + "$imgpath.png",

@@ -112,7 +112,7 @@ class _SitesState extends State<Sites> {
                                             height: height * 0.05,
                                           ),
                                           Text(
-                                            "Sitess",
+                                            "Sites",
                                             style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: 18.0,
