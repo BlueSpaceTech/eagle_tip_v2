@@ -52,18 +52,13 @@ class _TankState extends State<Tank> {
         Expanded(
           child: Row(
             children: [
-              SizedBox(
-                child: Container(
-                  width: 80.0,
-                  child: Text(
-                    widget.productname,
-                    style: TextStyle(
-                        fontSize: 13.0,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "Poppins"),
-                  ),
-                ),
+              Text(
+                widget.productname,
+                style: TextStyle(
+                    fontSize: 13.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "Poppins"),
               ),
             ],
           ),
