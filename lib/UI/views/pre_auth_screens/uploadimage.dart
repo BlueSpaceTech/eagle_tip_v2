@@ -273,33 +273,41 @@ class _UploadImageState extends State<UploadImage> {
             child: Container(
               child: Center(
                 child: Column(
-                  crossAxisAlignment: Responsive.isDesktop(context)
+                  crossAxisAlignment: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
                       ? CrossAxisAlignment.center
                       : CrossAxisAlignment.start,
                   children: [
                     Container(
                       child: Row(
-                        mainAxisAlignment: Responsive.isDesktop(context)
+                        mainAxisAlignment: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? MainAxisAlignment.center
                             : MainAxisAlignment.start,
                         children: [
                           Visibility(
-                            visible:
-                                Responsive.isDesktop(context) ? false : true,
-                            child: Icon(
-                              Icons.arrow_back,
-                              color: Colors.white,
+                            visible: true,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                           SizedBox(
-                            width: Responsive.isDesktop(context)
+                            width: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? width * 0
                                 : width * 0.12,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Responsive.isDesktop(context)
+                              Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? Image.asset("assets/Logo 2 1.png")
                                   : Image.asset("assets/Logo 2 2.png")
                             ],
@@ -345,7 +353,8 @@ class _UploadImageState extends State<UploadImage> {
                             onTap: selectImage,
                             child: Container(
                               alignment: Alignment.bottomRight,
-                              width: Responsive.isDesktop(context)
+                              width: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? width * 0.12
                                   : width * 0.4,
                               height: height * 0.24,
@@ -365,7 +374,8 @@ class _UploadImageState extends State<UploadImage> {
                             onTap: selectImage,
                             child: Container(
                               alignment: Alignment.bottomRight,
-                              width: Responsive.isDesktop(context)
+                              width: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? width * 0.12
                                   : width * 0.4,
                               height: height * 0.24,

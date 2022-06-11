@@ -398,9 +398,10 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Responsive.isDesktop(context)
-          ? MenuButton(isTapped: false, width: width)
-          : SizedBox(),
+      floatingActionButton:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? MenuButton(isTapped: false, width: width)
+              : SizedBox(),
       body: user == null
           ? Container(
               height: height,
@@ -409,9 +410,13 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
               child: Center(child: CircularProgressIndicator()))
           : SingleChildScrollView(
               child: Container(
-                height: Responsive.isDesktop(context) ? height : height * 1.5,
+                height: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? height
+                    : height * 1.5,
                 color: backGround_color,
-                child: Responsive.isDesktop(context)
+                child: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
                     ? Stack(
                         children: [
                           Opacity(opacity: 0.2, child: WebBg()),
@@ -721,8 +726,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                               height: height * 0.02,
                             ),
                             Visibility(
-                              visible: user.userRole != "SiteUser" &&
-                                  Responsive.isDesktop(context),
+                              visible: user.userRole != "SiteUser",
                               child: InkWell(
                                 onTap: () {
                                   Navigator.pushNamed(
@@ -739,10 +743,9 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                             ),
                             Visibility(
                               visible: (user.userRole == "SuperAdmin" ||
-                                      user.userRole == "AppAdmin" ||
-                                      user.userRole == "TerminalManager" ||
-                                      user.userRole == "TerminalUser") &&
-                                  Responsive.isDesktop(context),
+                                  user.userRole == "AppAdmin" ||
+                                  user.userRole == "TerminalManager" ||
+                                  user.userRole == "TerminalUser"),
                               child: InkWell(
                                 onTap: () {},
                                 child: SiteContainer(
@@ -817,18 +820,22 @@ class SiteContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Responsive.isDesktop(context) ? width * 0.2 : width * 0.72,
+      width: Responsive.isDesktop(context) || Responsive.isTablet(context)
+          ? width * 0.25
+          : width * 0.72,
       height: height * 0.062,
       decoration: BoxDecoration(
-        borderRadius:
-            BorderRadius.circular(Responsive.isDesktop(context) ? 14.0 : 16.0),
+        borderRadius: BorderRadius.circular(
+            Responsive.isDesktop(context) || Responsive.isTablet(context)
+                ? 14.0
+                : 16.0),
         color: Color(0xFF5081DB),
       ),
       child: Center(
         child: Text(
           text,
           style: TextStyle(
-              fontSize: 18.0,
+              fontSize: 17.0,
               color: Colors.white,
               fontWeight: FontWeight.w600,
               fontFamily: "Poppins"),

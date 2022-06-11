@@ -422,7 +422,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context)
+                  builder: (context) => Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
                       ? HomeScreen(
                           showdialog: true,
                           sites: sites,
@@ -652,18 +653,25 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.center,
               child: Container(
                 padding: EdgeInsets.only(top: 20),
-                width: Responsive.isDesktop(context) ? width * 0.6 : width * 1,
-                height: height * 0.8,
+                width: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? width * 0.6
+                    : width * 1,
+                // height: height * 0.8,
                 decoration: BoxDecoration(
-                    color: Colors.black
-                        .withOpacity(Responsive.isDesktop(context) ? 0.6 : 0),
+                    color: Colors.black.withOpacity(
+                        Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
+                            ? 0.6
+                            : 0),
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   children: [
                     // Image.asset("assets/Logo 2 1.png"),
                     SvgPicture.asset(
                       "assets/newLogo.svg",
-                      width: Responsive.isDesktop(context)
+                      width: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? width * 0.22
                           : width * 0.7,
                     ),
@@ -710,9 +718,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.01,
                     ),
                     Container(
-                      width: Responsive.isDesktop(context) ? 600 : width * 0.8,
+                      width: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
+                          ? 600
+                          : width * 0.8,
                       padding: EdgeInsets.symmetric(
-                          horizontal: Responsive.isDesktop(context)
+                          horizontal: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? width * 0.02
                               : width * 0.06),
                       height: height * 0.08,

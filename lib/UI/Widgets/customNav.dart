@@ -47,7 +47,7 @@ class _NavbarState extends State<Navbar> {
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
     return Visibility(
-      visible: Responsive.isDesktop(context),
+      visible: Responsive.isDesktop(context) || Responsive.isTablet(context),
       child: Container(
         color: Color(0xFF2B343B),
         width: widget.width,
@@ -70,8 +70,8 @@ class _NavbarState extends State<Navbar> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: ((context) =>
-                              HomeScreen(showdialog: true, sites: user!.sites)),
+                          builder: ((context) => HomeScreen(
+                              showdialog: false, sites: user!.sites)),
                         ),
                       );
                     },
@@ -368,7 +368,8 @@ class _NavbarState extends State<Navbar> {
                                     ),
                                   ),
                                   content: Container(
-                                    height: Responsive.isDesktop(context)
+                                    height: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
                                         ? widget.height * 0.18
                                         : widget.height * 0.23,
                                     child: Column(
@@ -381,12 +382,16 @@ class _NavbarState extends State<Navbar> {
                                               fontFamily: "Poppins"),
                                         ),
                                         SizedBox(
-                                          height: Responsive.isDesktop(context)
+                                          height: Responsive.isDesktop(
+                                                      context) ||
+                                                  Responsive.isTablet(context)
                                               ? widget.height * 0.02
                                               : widget.height * 0.05,
                                         ),
                                         SizedBox(
-                                          height: Responsive.isDesktop(context)
+                                          height: Responsive.isDesktop(
+                                                      context) ||
+                                                  Responsive.isTablet(context)
                                               ? widget.height * 0.006
                                               : 8.0,
                                         ),
@@ -401,7 +406,9 @@ class _NavbarState extends State<Navbar> {
                                               },
                                               child: Container(
                                                 width: Responsive.isDesktop(
-                                                        context)
+                                                            context) ||
+                                                        Responsive.isTablet(
+                                                            context)
                                                     ? widget.width * 0.1
                                                     : widget.width * 0.32,
                                                 height: widget.height * 0.055,
@@ -425,10 +432,12 @@ class _NavbarState extends State<Navbar> {
                                               ),
                                             ),
                                             SizedBox(
-                                              width:
-                                                  Responsive.isDesktop(context)
-                                                      ? 15.0
-                                                      : 12.0,
+                                              width: Responsive.isDesktop(
+                                                          context) ||
+                                                      Responsive.isTablet(
+                                                          context)
+                                                  ? 15.0
+                                                  : 12.0,
                                             ),
                                             InkWell(
                                               onTap: () async {
@@ -438,7 +447,9 @@ class _NavbarState extends State<Navbar> {
                                               },
                                               child: Container(
                                                 width: Responsive.isDesktop(
-                                                        context)
+                                                            context) ||
+                                                        Responsive.isTablet(
+                                                            context)
                                                     ? widget.width * 0.1
                                                     : widget.width * 0.32,
                                                 height: widget.height * 0.055,
@@ -514,7 +525,10 @@ class Navtext extends StatelessWidget {
       text,
       style: TextStyle(
           color: color,
-          fontSize: Responsive.isDesktop(context) ? width * 0.01 : width * 0.02,
+          fontSize:
+              Responsive.isDesktop(context) || Responsive.isDesktop(context)
+                  ? width * 0.01
+                  : width * 0.014,
           fontWeight: FontWeight.w500,
           fontFamily: "Poppins"),
     );

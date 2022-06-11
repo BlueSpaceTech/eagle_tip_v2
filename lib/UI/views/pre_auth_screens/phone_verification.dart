@@ -129,17 +129,23 @@ class _VerificationScreenState extends State<VerificationScreen> {
               alignment: Alignment.center,
               child: Container(
                 padding: EdgeInsets.only(top: 20),
-                width: Responsive.isDesktop(context) ? width * 0.6 : width * 1,
+                width: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? width * 0.6
+                    : width * 1,
                 height: height * 0.8,
                 decoration: BoxDecoration(
-                    color: Colors.black
-                        .withOpacity(Responsive.isDesktop(context) ? 0.6 : 0),
+                    color: Colors.black.withOpacity(
+                        Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
+                            ? 0.6
+                            : 0),
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Visibility(
-                      visible: Responsive.isDesktop(context) ? false : true,
+                      visible: true,
                       child: Row(
                         children: [
                           InkWell(
@@ -195,7 +201,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           controller: _otp,
                           keyboardType: TextInputType.number,
                           length: 6,
-                          width: Responsive.isDesktop(context)
+                          width: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? width * 0.3
                               : width * 0.8,
                           fieldWidth: 50,

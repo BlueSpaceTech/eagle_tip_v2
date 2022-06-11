@@ -62,7 +62,7 @@ class _DecidingScreenState extends State<DecidingScreen> {
         body: Responsive(
       desktop: DestopDeciding(),
       mobile: MobileDeciding(),
-      tablet: MobileDeciding(),
+      tablet: DestopDeciding(),
     ));
   }
 }

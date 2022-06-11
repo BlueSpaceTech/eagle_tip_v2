@@ -208,11 +208,17 @@ class _CreateAccountState extends State<CreateAccount> {
               alignment: Alignment.center,
               child: Container(
                 padding: EdgeInsets.only(top: 20),
-                width: Responsive.isDesktop(context) ? width * 0.6 : width * 1,
+                width: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? width * 0.6
+                    : width * 1,
                 height: height * 0.8,
                 decoration: BoxDecoration(
-                    color: Colors.black
-                        .withOpacity(Responsive.isDesktop(context) ? 0.6 : 0),
+                    color: Colors.black.withOpacity(
+                        Responsive.isDesktop(context) ||
+                                Responsive.isDesktop(context)
+                            ? 0.6
+                            : 0),
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
                   children: [
@@ -223,8 +229,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             Navigator.pop(context);
                           },
                           child: Visibility(
-                            visible:
-                                Responsive.isDesktop(context) ? false : true,
+                            visible: true,
                             child: Icon(
                               Icons.arrow_back,
                               color: Colors.white,

@@ -9,7 +9,7 @@ class WebBg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: Responsive.isDesktop(context),
+      visible: Responsive.isDesktop(context)|| Responsive.isTablet(context),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,

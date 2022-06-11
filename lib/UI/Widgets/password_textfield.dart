@@ -28,11 +28,14 @@ class _CustomPasswordTextFieldState extends State<CustomPasswordTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: Responsive.isDesktop(context) ? 600 : widget.width * 0.8,
+      width: Responsive.isDesktop(context) || Responsive.isTablet(context)
+          ? 600
+          : widget.width * 0.8,
       padding: EdgeInsets.symmetric(
-          horizontal: Responsive.isDesktop(context)
-              ? widget.width * 0.02
-              : widget.width * 0.06),
+          horizontal:
+              Responsive.isDesktop(context) || Responsive.isTablet(context)
+                  ? widget.width * 0.02
+                  : widget.width * 0.06),
       height: widget.height * 0.08,
       decoration: BoxDecoration(
         color:
