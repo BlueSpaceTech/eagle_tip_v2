@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/utils.dart';
+import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/FAQss/addvideo.dart';
@@ -78,126 +79,146 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
-        height: height,
+        height: height * 1.2,
         color: backGround_color,
         width: width,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+        child: Column(
           children: [
-            Padding(
-              padding: EdgeInsets.only(top: height * 0.04),
-              child: SideMenu(
-                controller: page,
-                style: SideMenuStyle(
-                    displayMode: SideMenuDisplayMode.auto,
-                    // hoverColor: Colors.blue[100],
-                    selectedColor: Color(0xFF353D45),
-                    selectedTitleTextStyle: TextStyle(color: Colors.white),
-                    selectedIconColor: Colors.white,
-                    unselectedTitleTextStyle: TextStyle(color: Colors.grey[600])
-                    // backgroundColor: Colors.amber
-                    // openSideMenuWidth: 200
+            Navbar(
+              width: width,
+              height: height,
+              text1: "Home",
+              text2: "Chat",
+            ),
+            SizedBox(
+              height: height,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: height * 0.04),
+                    child: SideMenu(
+                      controller: page,
+                      style: SideMenuStyle(
+                          displayMode: SideMenuDisplayMode.auto,
+                          // hoverColor: Colors.blue[100],
+                          selectedColor: Color(0xFF353D45),
+                          selectedTitleTextStyle:
+                              TextStyle(color: Colors.white),
+                          selectedIconColor: Colors.white,
+                          unselectedTitleTextStyle:
+                              TextStyle(color: Colors.grey[600])
+                          // backgroundColor: Colors.amber
+                          // openSideMenuWidth: 200
+                          ),
+                      title: Padding(
+                        padding: EdgeInsets.only(
+                            left: width * 0.025,
+                            top: height * 0.05,
+                            bottom: height * 0.04),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              "FAQ",
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                fontWeight: FontWeight.w500,
+                                fontSize: width * 0.012,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ]),
+                        ),
+                      ),
+                      // items: [
+                      //   SideMenuItem(
+                      //     priority: 0,
+                      //     title: 'General',
+                      //     onTap: () {
+                      //       page.jumpToPage(0);
+                      //     },
+                      //     icon: Icon(null),
+                      //   ),
+                      //   SideMenuItem(
+                      //     priority: 1,
+                      //     title: 'Site Owner (You)',
+                      //     onTap: () {
+                      //       page.jumpToPage(1);
+                      //     },
+                      //     icon: Icon(null),
+                      //   ),
+                      // ],
+                      items: getItems(widget.userrOLE == "AppAdmin" ||
+                              widget.userrOLE == "SuperAdmin"
+                          ? foradmin
+                          : foruser),
                     ),
-                title: Padding(
-                  padding: EdgeInsets.only(
-                      left: width * 0.025,
-                      top: height * 0.05,
-                      bottom: height * 0.04),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.arrow_back,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "FAQ",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                          fontSize: width * 0.012,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ]),
                   ),
-                ),
-                // items: [
-                //   SideMenuItem(
-                //     priority: 0,
-                //     title: 'General',
-                //     onTap: () {
-                //       page.jumpToPage(0);
-                //     },
-                //     icon: Icon(null),
-                //   ),
-                //   SideMenuItem(
-                //     priority: 1,
-                //     title: 'Site Owner (You)',
-                //     onTap: () {
-                //       page.jumpToPage(1);
-                //     },
-                //     icon: Icon(null),
-                //   ),
-                // ],
-                items: getItems(widget.userrOLE == "AppAdmin" ||
-                        widget.userrOLE == "SuperAdmin"
-                    ? foradmin
-                    : foruser),
+                  // Text(widget.userrOLE),
+                  widget.userrOLE == "AppAdmin" ||
+                          widget.userrOLE == "SuperAdmin"
+                      ? Expanded(
+                          child: PageView(
+                          controller: page,
+                          children: [
+                            GeneralfAQ(
+                              width: width,
+                              height: height,
+                              userrole: widget.userrOLE,
+                            ),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "TerminalManager"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "TerminalUser"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteOwner"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteManager"),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: "SiteUser"),
+                          ],
+                        ))
+                      : Expanded(
+                          child: PageView(
+                          controller: page,
+                          children: [
+                            GeneralfAQ(
+                              width: width,
+                              height: height,
+                              userrole: widget.userrOLE,
+                            ),
+                            UserRolefAQ(
+                                width: width,
+                                height: height,
+                                userRole: widget.userrOLE),
+                          ],
+                        ))
+                ],
               ),
             ),
-            // Text(widget.userrOLE),
-            widget.userrOLE == "AppAdmin" || widget.userrOLE == "SuperAdmin"
-                ? Expanded(
-                    child: PageView(
-                    controller: page,
-                    children: [
-                      GeneralfAQ(
-                        width: width,
-                        height: height,
-                        userrole: widget.userrOLE,
-                      ),
-                      UserRolefAQ(
-                          width: width,
-                          height: height,
-                          userRole: "TerminalManager"),
-                      UserRolefAQ(
-                          width: width,
-                          height: height,
-                          userRole: "TerminalUser"),
-                      UserRolefAQ(
-                          width: width, height: height, userRole: "SiteOwner"),
-                      UserRolefAQ(
-                          width: width,
-                          height: height,
-                          userRole: "SiteManager"),
-                      UserRolefAQ(
-                          width: width, height: height, userRole: "SiteUser"),
-                    ],
-                  ))
-                : Expanded(
-                    child: PageView(
-                    controller: page,
-                    children: [
-                      GeneralfAQ(
-                        width: width,
-                        height: height,
-                        userrole: widget.userrOLE,
-                      ),
-                      UserRolefAQ(
-                          width: width,
-                          height: height,
-                          userRole: widget.userrOLE),
-                    ],
-                  ))
           ],
         ),
       )),

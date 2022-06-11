@@ -753,7 +753,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 ),
                               ),
                               Text(
-                                widget.sitedetail.products[i]["PRDNO"],
+                                widget.sitedetail.products[i]["TANK_PRD_DESC"],
                                 style: TextStyle(
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.bold,
