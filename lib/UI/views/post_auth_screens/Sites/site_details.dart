@@ -478,6 +478,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     super.initState();
     _controller = AnimationController(vsync: this);
     fuelvals(widget.sitedetail.products.length);
+    fuels(widget.sitedetail.products.length);
     sorttt(tanks);
     sorttanks();
   }
@@ -502,6 +503,12 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   String? fuelVal = "0";
 
   List vals = [];
+  void fuels(int len) {
+    for (int i = 0; i < len; i++) {
+      vals.add("0");
+    }
+  }
+
   List tanks = [];
   void fuelvals(int len) {
     for (int i = 0; i < widget.sitedetail.products.length; i++) {
@@ -656,6 +663,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     return data;
   }
 
+  var val1 = "";
   void sorttanks() {
     for (int i = 0; i < widget.sitedetail.products.length; i++) {
       // print("tank$i");
@@ -664,11 +672,9 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           tanks[j] = Tank(
             productname: widget.sitedetail.products[i]["TANK_PRD_DESC"],
             valueChanged2: (val) {
-              setState(() {
-                vals[i] = val;
-              });
-              // print(val);
-              print(vals[i]);
+              // vals.insert(j, val);
+              vals[j] = val;
+              print(vals[j]);
             },
             tankNumber: int.parse(widget.sitedetail.products[i]["PRDNO"]),
             valueChanged: (val) {
@@ -679,20 +685,21 @@ class _FuelReqColumnState extends State<FuelReqColumn>
             width: widget.width,
             max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
             height: widget.height,
-            tankType: "Tank:${i + 1} " +
+            tankType: "Tank:${j + 1} " +
                 " Capacity:" +
                 widget.sitedetail.products[i]["TANK_SIZE"].replaceAllMapped(
                     RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                     (Match m) => '${m[1]},') +
                 " Gal",
           );
+          break;
         }
       }
 
-      print(widget.sitedetail.products[i]["TANK_PRD_DESC"]);
+      // print(widget.sitedetail.products[i]["TANK_PRD_DESC"]);
     }
 
-    print(tanks);
+    // print(tanks);
   }
 
   @override
@@ -755,6 +762,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           onTap: () {
             // print(regularVal);
             if (isTapped!) {
+              print(vals);
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -825,6 +833,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 vals[i].toString().replaceAllMapped(
                                     RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
                                     (Match m) => '${m[1]},'),
+                                // "test",
                                 style: TextStyle(
                                     fontSize: 17.0,
                                     fontWeight: FontWeight.bold,
