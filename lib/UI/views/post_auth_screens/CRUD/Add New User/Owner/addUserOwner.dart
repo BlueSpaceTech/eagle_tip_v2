@@ -232,7 +232,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
               Navbar(
                   width: width, height: height, text1: "text1", text2: "text2"),
               Container(
-                height: height * 1.9,
+                height: height * 1.4,
                 color: backGround_color,
                 child: Padding(
                   padding: EdgeInsets.only(
@@ -570,7 +570,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       ),
                       SizedBox(
                         height: Responsive.isDesktop(context)
-                            ? height * 0.28
+                            ? height * 0.22
                             : height * 0.2,
                       ),
                       Row(

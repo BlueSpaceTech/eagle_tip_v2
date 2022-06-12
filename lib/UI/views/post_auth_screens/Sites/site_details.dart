@@ -91,13 +91,6 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    // getData(widget.currentsite);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
@@ -482,11 +475,11 @@ class _FuelReqColumnState extends State<FuelReqColumn>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print(widget.sitedetail.products);
     _controller = AnimationController(vsync: this);
     fuelvals(widget.sitedetail.products.length);
+    sorttt(tanks);
+    sorttanks();
   }
 
   // sendsitedetails(String currentsite) {
@@ -509,11 +502,92 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   String? fuelVal = "0";
 
   List vals = [];
+  List tanks = [];
   void fuelvals(int len) {
-    for (int i = 0; i < len; i++) {
-      vals.add("0");
+    for (int i = 0; i < widget.sitedetail.products.length; i++) {
+      tanks.add(widget.sitedetail.products[i]["TANK_PRD_DESC"]);
     }
-    // return vals;
+    print(tanks);
+  }
+
+  void sorttt(List products) {
+    for (int i = 0; i < products.length; i++) {
+      int index = 0;
+      String product = "";
+      if (products.contains("REG")) {
+        if (products.indexOf("REG") != i) {
+          index = products.indexOf("REG");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "REG";
+          products[index] = product;
+        }
+      }
+      if (products.contains("REG TANK 1")) {
+        if (products.indexOf("REG TANK 1") != i) {
+          index = products.indexOf("REG TANK 1");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "REG TANK 1";
+          products[index] = product;
+        }
+      }
+      if (products.contains("REG TANK 2")) {
+        if (products.indexOf("REG TANK 2") != i) {
+          index = products.indexOf("REG TANK 2");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "REG TANK 2";
+          products[index] = product;
+        }
+      }
+      if (products.contains("MID")) {
+        if (products.indexOf("MID") != i) {
+          index = products.indexOf("MID");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "MID";
+          products[index] = product;
+        }
+      }
+      if (products.contains("PREM")) {
+        if (products.indexOf("PREM") != i) {
+          index = products.indexOf("PREM");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "PREM";
+          products[index] = product;
+        }
+      }
+      if (products.contains("DYED ULSD")) {
+        if (products.indexOf("DYED ULSD") != i) {
+          index = products.indexOf("DYED ULSD");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "DYED ULSD";
+          products[index] = product;
+        }
+      }
+      if (products.contains("ULSD-15PPM")) {
+        if (products.indexOf("ULSD-15PPM") != i) {
+          index = products.indexOf("ULSD-15PPM");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "ULSD-15PPM";
+          products[index] = product;
+        }
+      }
+      if (products.contains("90 REC")) {
+        if (products.indexOf("90 REC") != i) {
+          index = products.indexOf("90 REC");
+//     print(index.runtimeType);
+          product = products[i];
+          products[i] = "90 REC";
+          products[index] = product;
+        }
+      }
+    }
+    print(tanks);
   }
 
   String timezone = (DateTime.now().isUtc) ? "Z" : "L";
@@ -582,9 +656,49 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     return data;
   }
 
+  void sorttanks() {
+    for (int i = 0; i < widget.sitedetail.products.length; i++) {
+      // print("tank$i");
+      for (int j = 0; j < tanks.length; j++) {
+        if (widget.sitedetail.products[i]["TANK_PRD_DESC"] == tanks[j]) {
+          tanks[j] = Tank(
+            productname: widget.sitedetail.products[i]["TANK_PRD_DESC"],
+            valueChanged2: (val) {
+              setState(() {
+                vals[i] = val;
+              });
+              // print(val);
+              print(vals[i]);
+            },
+            tankNumber: int.parse(widget.sitedetail.products[i]["PRDNO"]),
+            valueChanged: (val) {
+              setState(() {
+                isTapped = val;
+              });
+            },
+            width: widget.width,
+            max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
+            height: widget.height,
+            tankType: "Tank:${i + 1} " +
+                " Capacity:" +
+                widget.sitedetail.products[i]["TANK_SIZE"].replaceAllMapped(
+                    RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                    (Match m) => '${m[1]},') +
+                " Gal",
+          );
+        }
+      }
+
+      print(widget.sitedetail.products[i]["TANK_PRD_DESC"]);
+    }
+
+    print(tanks);
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -595,35 +709,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
               : widget.height * 0.35,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              for (int i = 0; i < widget.sitedetail.products.length; i++)
-                Tank(
-                  productname: widget.sitedetail.products[i]["TANK_PRD_DESC"],
-                  valueChanged2: (val) {
-                    setState(() {
-                      vals[i] = val;
-                    });
-                    // print(val);
-                    print(vals[i]);
-                  },
-                  tankNumber: int.parse(widget.sitedetail.products[i]["PRDNO"]),
-                  valueChanged: (val) {
-                    setState(() {
-                      isTapped = val;
-                    });
-                  },
-                  width: widget.width,
-                  max: int.parse(widget.sitedetail.products[i]["TANK_SIZE"]),
-                  height: widget.height,
-                  tankType: "Tank:${i + 1} " +
-                      " Capacity:" +
-                      widget.sitedetail.products[i]["TANK_SIZE"]
-                          .replaceAllMapped(
-                              RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                              (Match m) => '${m[1]},') +
-                      " Gal",
-                ),
-            ],
+            children: [for (int i = 0; i < tanks.length; i++) tanks[i]],
           ),
         ),
         SizedBox(
