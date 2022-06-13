@@ -595,6 +595,8 @@ class _MessageTextFieldState extends State<MessageTextField> {
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: TextField(
+        maxLines: null,
+        keyboardType: TextInputType.multiline,
         onChanged: (val) {
           setState(() {
             widget.valueChanged(val);

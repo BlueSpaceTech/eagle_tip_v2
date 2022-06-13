@@ -151,10 +151,8 @@ class _TankState extends State<Tank> {
                                     if (value == "0") {
                                       widget.valueChanged(false);
                                     }
-                                    if (_controller.text.length > 3) {
-                                      // print("Yes");
-                                      widget.valueChanged2(_controller.text);
-                                    }
+                                    // print("Yes");
+                                    widget.valueChanged2(_controller.text);
                                   });
                                 },
                                 decoration: InputDecoration(

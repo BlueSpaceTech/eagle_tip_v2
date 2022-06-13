@@ -480,6 +480,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     fuelvals(widget.sitedetail.products.length);
     fuels(widget.sitedetail.products.length);
     sorttt(tanks);
+    sorttt(sortedvals);
+    sftpdatasort(sortedvals, widget.sitedetail.products);
     sorttanks();
   }
 
@@ -503,18 +505,29 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   String? fuelVal = "0";
 
   List vals = [];
+  List values = [];
+  List cons = [];
+  List prdnos = [];
+  List tankqlr = [];
   void fuels(int len) {
     for (int i = 0; i < len; i++) {
       vals.add("0");
+      values.add("0");
+      cons.add("0");
+      prdnos.add("0");
+      tankqlr.add("0");
     }
   }
 
   List tanks = [];
+  List sortedvals = [];
   void fuelvals(int len) {
     for (int i = 0; i < widget.sitedetail.products.length; i++) {
       tanks.add(widget.sitedetail.products[i]["TANK_PRD_DESC"]);
+      sortedvals.add(widget.sitedetail.products[i]["TANK_PRD_DESC"]);
     }
-    print(tanks);
+    // print(tanks);
+    // print(sortedvals);
   }
 
   void sorttt(List products) {
@@ -594,7 +607,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         }
       }
     }
-    print(tanks);
+    // print(tanks);
   }
 
   String timezone = (DateTime.now().isUtc) ? "Z" : "L";
@@ -618,13 +631,29 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     return type ?? "";
   }
 
+  void sftpdatasort(List sortedprod, List products) {
+    // for (int )
+    for (int i = 0; i < products.length; i++) {
+      for (int j = 0; j < sortedprod.length; j++) {
+        if (products[i]["TANK_PRD_DESC"] == sortedprod[j]) {
+          cons[j] = products[i]["CONSNO"];
+          prdnos[j] = products[i]["PRDNO"];
+          tankqlr[j] = products[i]["TNKQLR"];
+        }
+      }
+    }
+    print(cons);
+    print(prdnos);
+    print(tankqlr);
+  }
+
   List sftpdata(int len) {
     List data = [];
     for (int i = 0; i < len; i++) {
       data.add({
-        "Site ID": widget.sitedetail.products[i]["CONSNO"],
-        "Tank Product": widget.sitedetail.products[i]["PRDNO"],
-        "Tank Qualifier": widget.sitedetail.products[i]["TNKQLR"],
+        "Site ID": cons[i],
+        "Tank Product": prdnos[i],
+        "Tank Qualifier": tankqlr[i],
         // "Tank_PRD_DESC": widget.sitedetail.products[i]["TANK_PRD_DESC"],
         "Timestamp": date + "T" + time + timezone,
         "Inventory gallons": vals[i].toString()
@@ -674,7 +703,10 @@ class _FuelReqColumnState extends State<FuelReqColumn>
             valueChanged2: (val) {
               // vals.insert(j, val);
               vals[j] = val;
-              print(vals[j]);
+              values[j] = ({
+                val.toString(): widget.sitedetail.products[i]["TANK_PRD_DESC"]
+              });
+              print(values);
             },
             tankNumber: int.parse(widget.sitedetail.products[i]["PRDNO"]),
             valueChanged: (val) {
@@ -762,7 +794,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           onTap: () {
             // print(regularVal);
             if (isTapped!) {
-              print(vals);
+              print(sortedvals);
               showDialog(
                 context: context,
                 builder: (BuildContext context) => AlertDialog(
@@ -848,7 +880,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 ),
                               ),
                               Text(
-                                widget.sitedetail.products[i]["TANK_PRD_DESC"],
+                                values[i][vals[i].toString()],
                                 style: TextStyle(
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.bold,
