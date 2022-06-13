@@ -46,7 +46,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
     setState(() {
       _loading = false;
     });
-    Responsive.isDesktop(context)
+    Responsive.isDesktop(context) || Responsive.isTablet(context)
         ? Navigator.push(
             context,
             CupertinoPageRoute(
@@ -275,7 +275,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
             Column(
               children: [
                 Visibility(
-                  visible: Responsive.isDesktop(context),
+                  visible: Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context),
                   child: Container(
                     alignment: Alignment.center,
                     padding: EdgeInsets.symmetric(horizontal: 30),
@@ -310,7 +311,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
                   height: height * 0.02,
                 ),
                 Visibility(
-                  visible: Responsive.isDesktop(context),
+                  visible: Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context),
                   child: GestureDetector(
                     onTap: () {
                       showModalBottomSheet<void>(
@@ -489,13 +491,16 @@ class _NewChatScreenState extends State<NewChatScreen> {
                 ),
                 Padding(
                   padding: EdgeInsets.only(
-                      left: Responsive.isDesktop(context)
+                      left: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? width * 0.01
                           : width * 0.09,
-                      right: Responsive.isDesktop(context)
+                      right: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? width * 0.01
                           : width * 0.09,
-                      top: Responsive.isDesktop(context)
+                      top: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? height * 0.01
                           : height * 0.1),
                   child: Column(
@@ -503,7 +508,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Visibility(
-                        visible: !Responsive.isDesktop(context),
+                        visible: Responsive.isMobile(context),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -527,12 +532,13 @@ class _NewChatScreenState extends State<NewChatScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: Responsive.isDesktop(context)
+                        height: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? height * 0.01
                             : height * 0.04,
                       ),
                       Visibility(
-                        visible: !Responsive.isDesktop(context),
+                        visible: Responsive.isMobile(context),
                         child: GestureDetector(
                           onTap: () {
                             showModalBottomSheet<void>(
@@ -722,7 +728,8 @@ class _NewChatScreenState extends State<NewChatScreen> {
                         padding: EdgeInsets.only(
                             left: width * 0.06, right: width * 0.06),
                         height: height * 0.064,
-                        width: Responsive.isDesktop(context)
+                        width: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? width * 0.3
                             : width * 0.8,
                         decoration: BoxDecoration(

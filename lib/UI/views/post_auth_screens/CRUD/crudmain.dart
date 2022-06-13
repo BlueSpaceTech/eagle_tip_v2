@@ -1152,13 +1152,13 @@ class _CRUDtileState extends State<CRUDtile> {
               ? widget.allsitename
               : user.sites;
       for (var element in _items) {
-        element = element.toString().replaceAll(" ", "");
+        element = element.toString();
       }
 
       final List<String>? results = await showDialog(
         context: context,
         builder: (BuildContext context) {
-          return SiteSelect(items: _items);
+          return SiteSelectCrud(items: _items);
         },
       );
 
@@ -1540,6 +1540,75 @@ class _CRUDtileState extends State<CRUDtile> {
           ),
         ),
       ]),
+    );
+  }
+}
+
+class SiteSelectCrud extends StatefulWidget {
+  final List<dynamic> items;
+  const SiteSelectCrud({Key? key, required this.items}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SiteSelectCrudState();
+}
+
+class _SiteSelectCrudState extends State<SiteSelectCrud> {
+  // this variable holds the selected items
+  final List<String> _selectedItems = [];
+
+// This function is triggered when a checkbox is checked or unchecked
+
+  void _itemChange(String itemValue, bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        _selectedItems.add(itemValue.toString());
+        // print(itemValue);
+      } else {
+        _selectedItems.remove(itemValue.toString());
+      }
+    });
+  }
+
+  // this function is called when the Cancel button is pressed
+  void _cancel() {
+    Navigator.pop(context);
+  }
+
+// this function is called when the Submit button is tapped
+  void _submit() {
+    // print(_selectedItems);
+    Navigator.pop(context, _selectedItems);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Select Sites'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: widget.items
+              .map((item) => CheckboxListTile(
+                    value: _selectedItems.contains(item.toString()),
+                    title: Text(item),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    onChanged: (isChecked) => _itemChange(item, isChecked!),
+                  ))
+              .toList(),
+        ),
+      ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: _cancel,
+        ),
+        ElevatedButton(
+          child: const Text('Ok'),
+          style: ElevatedButton.styleFrom(
+            primary: Color(0Xff5081db),
+          ),
+          onPressed: _submit,
+        ),
+      ],
     );
   }
 }

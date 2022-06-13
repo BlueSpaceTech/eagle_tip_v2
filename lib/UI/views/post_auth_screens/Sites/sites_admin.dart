@@ -63,9 +63,10 @@ class _SitesAdminState extends State<SitesAdmin> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Responsive.isDesktop(context)
-          ? MenuButton(isTapped: false, width: width)
-          : SizedBox(),
+      floatingActionButton:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? MenuButton(isTapped: false, width: width)
+              : SizedBox(),
       body: sitedetails == null
           ? Container(
               height: height,
@@ -76,12 +77,20 @@ class _SitesAdminState extends State<SitesAdmin> {
               color: backGround_color,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: Responsive.isDesktop(context)
+                    top: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
                         ? height * 0.04
                         : height * 0.1,
-                    left: Responsive.isDesktop(context) ? 0.0 : width * 0.05,
-                    right: Responsive.isDesktop(context) ? 0.0 : width * 0.05),
-                child: Responsive.isDesktop(context)
+                    left: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
+                        ? 0.0
+                        : width * 0.05,
+                    right: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
+                        ? 0.0
+                        : width * 0.05),
+                child: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -108,18 +117,22 @@ class _SitesAdminState extends State<SitesAdmin> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18.0,
-                                      fontWeight: Responsive.isDesktop(context)
-                                          ? FontWeight.w500
-                                          : FontWeight.bold,
+                                      fontWeight:
+                                          Responsive.isDesktop(context) ||
+                                                  Responsive.isTablet(context)
+                                              ? FontWeight.w500
+                                              : FontWeight.bold,
                                       fontFamily: "Poppins"),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      top: Responsive.isDesktop(context)
+                                      top: Responsive.isDesktop(context) ||
+                                              Responsive.isTablet(context)
                                           ? height * 0.03
                                           : 0.0),
                                   child: Container(
-                                    height: Responsive.isDesktop(context)
+                                    height: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
                                         ? height * 0.6
                                         : height * 0.5,
                                     child: ListView.builder(
@@ -288,18 +301,23 @@ class SiteDet extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
           bottom: 10.0,
-          top: Responsive.isDesktop(context) ? height * 0.01 : 0.0),
+          top: Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? height * 0.01
+              : 0.0),
       child: Container(
         width: width * 0.9,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15.0),
-          border: Responsive.isDesktop(context)
+          border: Responsive.isDesktop(context) || Responsive.isTablet(context)
               ? Border.all(color: Colors.white)
               : null,
         ),
         child: Padding(
           padding: EdgeInsets.only(
-              right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
+              right:
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? width * 0.01
+                      : 0.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -309,7 +327,8 @@ class SiteDet extends StatelessWidget {
                   children: [
                     Image.asset(
                       Common.assetImages + "${"site1"}.png",
-                      width: Responsive.isDesktop(context)
+                      width: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? width * 0.05
                           : width * 0.14,
                     ),
@@ -322,8 +341,10 @@ class SiteDet extends StatelessWidget {
                         Text(
                           siteName,
                           style: TextStyle(
-                            fontSize:
-                                Responsive.isDesktop(context) ? 17.0 : 14.0,
+                            fontSize: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
+                                ? 17.0
+                                : 14.0,
                             fontFamily: "Poppins",
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
@@ -344,8 +365,10 @@ class SiteDet extends StatelessWidget {
               ),
               Image.asset(
                 Common.assetImages + "arrow.png",
-                width:
-                    Responsive.isDesktop(context) ? width * 0.01 : width * 0.04,
+                width: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? width * 0.01
+                    : width * 0.04,
               ),
             ],
           ),

@@ -349,7 +349,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                     onTap: () {
                                       Navigator.pop(context);
                                     },
-                                    child: Icon(Icons.arrow_back)),
+                                    child: Icon(Icons.arrow_back,color: Colors.white,)),
                                 Logo(width: width),
                                 MenuButton(isTapped: isTapped, width: width),
                               ],

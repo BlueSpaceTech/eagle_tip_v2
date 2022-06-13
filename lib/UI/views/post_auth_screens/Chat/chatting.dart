@@ -254,7 +254,10 @@ class _ChatScreennState extends State<ChatScreenn> {
                   width: 10,
                 ),
                 Visibility(
-                  visible: Responsive.isDesktop(context) ? false : true,
+                  visible: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? false
+                      : true,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pop(context);
@@ -272,13 +275,34 @@ class _ChatScreennState extends State<ChatScreenn> {
                   width: width * 0.5,
                   child: Row(
                     children: [
-                      Visibility(
-                        visible: friendname != "Start chat by clicking on user" && widget.photourluser!="",
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(widget.photourlfriend),
-                        ),
-                      ),
+                      widget.photourlfriend == ""
+                          ? Visibility(
+                              visible: friendname !=
+                                      "Start chat by clicking on user" &&
+                                  widget.photourluser != "",
+                              child: ClipRRect(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Visibility(
+                              visible: friendname !=
+                                      "Start chat by clicking on user" &&
+                                  widget.photourluser != "",
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage:
+                                    NetworkImage(widget.photourlfriend),
+                              ),
+                            ),
                       SizedBox(
                         width: 10,
                       ),

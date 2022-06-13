@@ -55,22 +55,29 @@ class _ProductRequestState extends State<ProductRequest> {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Responsive.isDesktop(context)
-          ? MenuButton(isTapped: false, width: width)
-          : SizedBox(),
+      floatingActionButton:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? MenuButton(isTapped: false, width: width)
+              : SizedBox(),
       body: SingleChildScrollView(
         child: Container(
-          height: Responsive.isDesktop(context) ? height * 1.17 : height,
+          height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? height * 1.17
+              : height,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-                top: Responsive.isDesktop(context)
+                top: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
                     ? height * 0.04
                     : height * 0.1,
-                left: Responsive.isDesktop(context) ? 0.0 : width * 0.04),
+                left: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? 0.0
+                    : width * 0.04),
             child: Column(
               children: [
-                Responsive.isDesktop(context)
+                Responsive.isDesktop(context) || Responsive.isTablet(context)
                     ? Navbar(
                         width: width,
                         height: height,
@@ -107,7 +114,8 @@ class _ProductRequestState extends State<ProductRequest> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          right: Responsive.isDesktop(context)
+                          right: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? width * 0.026
                               : 0.0),
                       child: SiteNameAndLocation(
@@ -214,7 +222,8 @@ class _ProductRequestState extends State<ProductRequest> {
                             height: height * 0.015,
                           ),
                           Container(
-                            width: Responsive.isDesktop(context)
+                            width: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? width * 0.1
                                 : width * 0.42,
                             child: Row(
@@ -234,7 +243,8 @@ class _ProductRequestState extends State<ProductRequest> {
                                   },
                                   child: Image.asset(
                                     Common.assetImages + "Minus.png",
-                                    width: Responsive.isDesktop(context)
+                                    width: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
                                         ? width * 0.02
                                         : width * 0.075,
                                   ),
@@ -261,7 +271,8 @@ class _ProductRequestState extends State<ProductRequest> {
                                   },
                                   child: Image.asset(
                                     Common.assetImages + "Add.png",
-                                    width: Responsive.isDesktop(context)
+                                    width: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
                                         ? width * 0.02
                                         : width * 0.075,
                                   ),
@@ -278,10 +289,12 @@ class _ProductRequestState extends State<ProductRequest> {
                                   context, {"val": initialVal, "bool": true});
                             },
                             child: Container(
-                              height: Responsive.isDesktop(context)
+                              height: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? height * 0.06
                                   : height * 0.075,
-                              width: Responsive.isDesktop(context)
+                              width: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? width * 0.1
                                   : width * 0.75,
                               decoration: BoxDecoration(

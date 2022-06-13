@@ -120,7 +120,7 @@ class _ChatListTileState extends State<ChatListTile> {
             width: 10,
           ),
           Container(
-            width: Responsive.isDesktop(context)
+            width: Responsive.isDesktop(context) || Responsive.isTablet(context)
                 ? widget.width * 0.18
                 : widget.width * 0.55,
             child: Column(

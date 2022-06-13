@@ -76,7 +76,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
 */
   void callChatScreen(String uid, String name, String currentusername,
       String photoUrlfriend, String photourluser) {
-    Responsive.isDesktop(context)
+    Responsive.isDesktop(context) || Responsive.isTablet(context)
         ? Navigator.push(
             context,
             CupertinoPageRoute(

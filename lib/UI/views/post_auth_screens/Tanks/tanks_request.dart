@@ -75,12 +75,13 @@ class _TankState extends State<Tank> {
             });
           },
           child: Container(
-            width: Responsive.isDesktop(context)
+            width: Responsive.isDesktop(context) || Responsive.isTablet(context)
                 ? widget.width * 0.72
                 : widget.width * 0.52,
-            height: Responsive.isDesktop(context)
-                ? widget.height * 0.068
-                : widget.height * 0.075,
+            height:
+                Responsive.isDesktop(context) || Responsive.isTablet(context)
+                    ? widget.height * 0.068
+                    : widget.height * 0.075,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(17.0),
               color: !isTapped! ? Color(0xff8d9298) : Colors.white,
@@ -106,7 +107,8 @@ class _TankState extends State<Tank> {
                           widget.tankType,
                           style: TextStyle(
                             color: Color(0xFF6E7191),
-                            fontSize: Responsive.isDesktop(context)
+                            fontSize: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? widget.width * 0.025
                                 : 12.0,
                             fontWeight: FontWeight.w500,
@@ -123,15 +125,17 @@ class _TankState extends State<Tank> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              height: Responsive.isDesktop(context)
+                              height: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? widget.height * 0.012
                                   : widget.height * 0.03,
                               width: widget.width * 0.52,
                               child: TextField(
                                 autofocus: true,
                                 style: TextStyle(
-                                  fontSize: Responsive.isDesktop(context)
-                                      ? widget.width * 0.042
+                                  fontSize: Responsive.isDesktop(context) ||
+                                          Responsive.isTablet(context)
+                                      ? widget.width * 0.045
                                       : 15.0,
                                   fontWeight: FontWeight.w500,
                                   fontFamily: "Poppins",
@@ -165,7 +169,8 @@ class _TankState extends State<Tank> {
                             Text(
                               "Gal",
                               style: TextStyle(
-                                fontSize: Responsive.isDesktop(context)
+                                fontSize: Responsive.isDesktop(context) ||
+                                        Responsive.isTablet(context)
                                     ? widget.width * 0.034
                                     : 15.0,
                                 fontWeight: FontWeight.w400,

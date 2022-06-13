@@ -185,8 +185,8 @@ class _CreateNotificationState extends State<CreateNotification> {
           child: Padding(
             padding: EdgeInsets.only(
               top: height * 0.02,
-              left: Responsive.isDesktop(context) ? 0.0 : width * 0.03,
-              right: Responsive.isDesktop(context) ? 0.0 : width * 0.02,
+              left: Responsive.isDesktop(context) || Responsive.isTablet(context)? 0.0 : width * 0.03,
+              right: Responsive.isDesktop(context) || Responsive.isTablet(context) ? 0.0 : width * 0.02,
             ),
             child: Column(
               children: [
@@ -852,7 +852,7 @@ class _DayState extends State<Day> {
                   } else {
                     scheduledDates
                         .remove(nextTime["${weekDay[widget.dayname]}"]);
-                    print(scheduledDates);
+                    // print(scheduledDates);
                   }
                   // print(scheduledDates);
                   widget.valueChanged(scheduledDates);

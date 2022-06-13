@@ -198,13 +198,30 @@ class _WebChatScreennState extends State<WebChatScreenn> {
                   width: width * 0.5,
                   child: Row(
                     children: [
-                      Visibility(
-                        visible: widget.photourlfriend != "",
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundImage: NetworkImage(widget.photourlfriend),
-                        ),
-                      ),
+                      widget.photourlfriend == ""
+                          ? Visibility(
+                              visible: widget.photourlfriend != "",
+                              child: ClipRRect(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 40,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Visibility(
+                              visible: widget.photourlfriend != "",
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundImage:
+                                    NetworkImage(widget.photourlfriend),
+                              ),
+                            ),
                       SizedBox(
                         width: 10,
                       ),

@@ -89,18 +89,22 @@ class _NotificationsState extends State<Notifications> {
       body: SingleChildScrollView(
         child: Container(
           width: width,
-          height: Responsive.isDesktop(context) ? height * 1.18 : height,
+          height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? height * 1.18
+              : height,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-                top: Responsive.isDesktop(context)
+                top: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
                     ? height * 0.02
                     : height * 0.1),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Visibility(
-                  visible: Responsive.isDesktop(context),
+                  visible: Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context),
                   child: Navbar(
                     width: width,
                     height: height,
@@ -181,7 +185,8 @@ class _NotificationsState extends State<Notifications> {
                   ),
                 ),
                 Visibility(
-                  visible: Responsive.isDesktop(context),
+                  visible: Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context),
                   child: Stack(
                     children: [
                       Opacity(opacity: 0.2, child: WebBg()),
@@ -392,7 +397,8 @@ class _NotificationsState extends State<Notifications> {
                   ),
                 ),
                 SizedBox(
-                  height: Responsive.isDesktop(context)
+                  height: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
                       ? height * 0.06
                       : height * 0.02,
                 ),
@@ -401,8 +407,10 @@ class _NotificationsState extends State<Notifications> {
                   child: Center(
                     child: Container(
                       height: height * 0.6,
-                      width:
-                          Responsive.isDesktop(context) ? width * 0.5 : width,
+                      width: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
+                          ? width * 0.5
+                          : width,
                       child: StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection("pushNotifications")

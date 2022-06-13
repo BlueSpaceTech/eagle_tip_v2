@@ -55,22 +55,26 @@ class _MyProfileState extends State<MyProfile> {
     // print(user.sites);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Responsive.isDesktop(context)
-          ? MenuButton(isTapped: false, width: width)
-          : SizedBox(),
+      floatingActionButton:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? MenuButton(isTapped: false, width: width)
+              : SizedBox(),
       body: Container(
-          height: Responsive.isDesktop(context) ? height * 1.15 : height,
+          height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? height * 1.15
+              : height,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-                top: Responsive.isDesktop(context)
+                top: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
                     ? height * 0.0
                     : height * 0.03,
                 left: width * 0.04,
                 right: width * 0.05),
             child: Column(
               children: [
-                Responsive.isDesktop(context)
+                Responsive.isDesktop(context) || Responsive.isTablet(context)
                     ? Navbar(
                         width: width,
                         height: height,
@@ -87,7 +91,8 @@ class _MyProfileState extends State<MyProfile> {
                         ),
                       ),
                 SizedBox(
-                  height: Responsive.isDesktop(context)
+                  height: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
                       ? height * 0.03
                       : height * 0.05,
                 ),
@@ -97,7 +102,8 @@ class _MyProfileState extends State<MyProfile> {
                       flex: 2,
                       child: Column(
                         children: [
-                          Responsive.isDesktop(context)
+                          Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? Row(
                                   children: [
                                     user!.dpurl != ""
@@ -226,7 +232,8 @@ class _MyProfileState extends State<MyProfile> {
                             height: height * 0.04,
                           ),
                           Visibility(
-                            visible: Responsive.isDesktop(context),
+                            visible: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context),
                             child: Column(
                               children: [
                                 Divider(
@@ -244,35 +251,43 @@ class _MyProfileState extends State<MyProfile> {
                           ContactInfo(
                               email: user.email,
                               phonenumber: user.Phonenumber,
-                              height: Responsive.isDesktop(context)
+                              height: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? height * 1.06
                                   : height,
                               width: width),
                           SizedBox(
-                            height: Responsive.isDesktop(context)
+                            height: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? height * 0.025
                                 : height * 0.02,
                           ),
                           Divider(
-                            color: Responsive.isDesktop(context)
+                            color: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? Colors.black
                                 : Color(0xFF2E3840),
-                            thickness:
-                                Responsive.isDesktop(context) ? 1.0 : 3.0,
+                            thickness: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
+                                ? 1.0
+                                : 3.0,
                             indent: 1,
                             endIndent: 100,
                           ),
                           SizedBox(
-                            height: Responsive.isDesktop(context)
+                            height: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? height * 0.04
                                 : height * 0.02,
                           ),
                           Padding(
                             padding: EdgeInsets.only(
-                                left: Responsive.isDesktop(context)
+                                left: Responsive.isDesktop(context) ||
+                                        Responsive.isTablet(context)
                                     ? 0.0
                                     : width * 0.08,
-                                right: Responsive.isDesktop(context)
+                                right: Responsive.isDesktop(context) ||
+                                        Responsive.isTablet(context)
                                     ? 0.0
                                     : width * 0.04),
                             child: SitesData(
@@ -281,7 +296,7 @@ class _MyProfileState extends State<MyProfile> {
                                 Sites: user.sites),
                           ),
                           Visibility(
-                            visible: !Responsive.isDesktop(context),
+                            visible: Responsive.isMobile(context),
                             child: Padding(
                               padding: EdgeInsets.only(top: 40),
                               child:
@@ -289,7 +304,8 @@ class _MyProfileState extends State<MyProfile> {
                             ),
                           ),
                           Visibility(
-                            visible: Responsive.isDesktop(context),
+                            visible: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context),
                             child: SizedBox(
                               height: height * 0.04,
                             ),
@@ -298,7 +314,8 @@ class _MyProfileState extends State<MyProfile> {
                       ),
                     ),
                     Visibility(
-                      visible: Responsive.isDesktop(context),
+                      visible: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context),
                       child: Expanded(
                         flex: 1,
                         child: Container(

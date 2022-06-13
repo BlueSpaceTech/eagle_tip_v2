@@ -95,7 +95,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
     model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-    return Responsive.isDesktop(context)
+    return Responsive.isDesktop(context) || Responsive.isTablet(context)
         ? Scaffold(
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.startFloat,
@@ -743,7 +743,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
       children: [
         Container(
           width: widget.width * 1.1,
-          height: Responsive.isDesktop(context)
+          height: Responsive.isDesktop(context) || Responsive.isTablet(context)
               ? widget.height * 0.3
               : widget.height * 0.35,
           child: Column(
@@ -804,7 +804,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                     'Confirmation',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: Responsive.isDesktop(context)
+                      fontSize: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? widget.width * 0.05
                           : 23.0,
                       fontWeight: FontWeight.bold,
@@ -813,7 +814,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                     ),
                   ),
                   content: Container(
-                    height: Responsive.isDesktop(context)
+                    height: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
                         ? widget.height * 0.33
                         : widget.height * 0.405,
                     child: Column(
@@ -830,7 +832,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                               fontFamily: "Poppins"),
                         ),
                         SizedBox(
-                          height: Responsive.isDesktop(context)
+                          height: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? widget.height * 0.02
                               : widget.height * 0.05,
                         ),
@@ -842,7 +845,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                               fontFamily: "Poppins"),
                         ),
                         SizedBox(
-                          height: Responsive.isDesktop(context)
+                          height: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? widget.height * 0.02
                               : widget.height * 0.05,
                         ),
@@ -890,7 +894,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                             ],
                           ),
                         SizedBox(
-                          height: Responsive.isDesktop(context)
+                          height: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? widget.height * 0.006
                               : 8.0,
                         ),
@@ -909,7 +914,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                   Navigator.pop(context);
                                 },
                                 child: Container(
-                                  width: Responsive.isDesktop(context)
+                                  width: Responsive.isDesktop(context) ||
+                                          Responsive.isTablet(context)
                                       ? widget.width * 0.45
                                       : widget.width * 0.32,
                                   height: widget.height * 0.055,
@@ -1006,9 +1012,11 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            Responsive
-                                                                    .isDesktop(
-                                                                        context)
+                                                            Responsive.isDesktop(
+                                                                        context) ||
+                                                                    Responsive
+                                                                        .isTablet(
+                                                                            context)
                                                                 ? HomeScreen(
                                                                     showdialog:
                                                                         false,
@@ -1046,7 +1054,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                   );
                                 },
                                 child: Container(
-                                  width: Responsive.isDesktop(context)
+                                  width: Responsive.isDesktop(context) ||
+                                          Responsive.isTablet(context)
                                       ? widget.width * 0.45
                                       : widget.width * 0.32,
                                   height: widget.height * 0.055,
@@ -1078,12 +1087,15 @@ class _FuelReqColumnState extends State<FuelReqColumn>
           },
           child: Padding(
             padding: EdgeInsets.only(
-                right:
-                    Responsive.isDesktop(context) ? 0.0 : widget.width * 0.1),
+                right: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? 0.0
+                    : widget.width * 0.1),
             child: Container(
-              height: Responsive.isDesktop(context)
-                  ? widget.height * 0.06
-                  : widget.height * 0.075,
+              height:
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? widget.height * 0.06
+                      : widget.height * 0.075,
               width: widget.width * 0.75,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16.0),
