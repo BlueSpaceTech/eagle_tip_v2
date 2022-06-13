@@ -311,7 +311,8 @@ class _NewFaq2State extends State<NewFaq2> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        width: Responsive.isDesktop(context)
+                        width: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? width * 0.13
                             : width * 0.42,
                         height: height * 0.064,
@@ -433,7 +434,8 @@ class _NewFaq2State extends State<NewFaq2> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        width: Responsive.isDesktop(context)
+                        width: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? width * 0.13
                             : width * 0.42,
                         height: height * 0.064,
@@ -492,7 +494,8 @@ class _NewFaq2State extends State<NewFaq2> {
                           children: [
                             Container(
                               margin: EdgeInsets.only(bottom: 5),
-                              width: Responsive.isDesktop(context)
+                              width: Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
                                   ? width * 0.42
                                   : width * 0.6,
                               padding: EdgeInsets.only(
@@ -554,7 +557,8 @@ class _NewFaq2State extends State<NewFaq2> {
                                 },
                                 child: Container(
                                   alignment: Alignment.center,
-                                  width: Responsive.isDesktop(context)
+                                  width: Responsive.isDesktop(context) ||
+                                          Responsive.isTablet(context)
                                       ? width * 0.13
                                       : width * 0.3,
                                   height: height * 0.064,
@@ -877,7 +881,8 @@ class _NewFaq2State extends State<NewFaq2> {
                       },
                       child: Container(
                         alignment: Alignment.center,
-                        width: Responsive.isDesktop(context)
+                        width: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? width * 0.24
                             : width * 0.42,
                         height: height * 0.064,
@@ -951,7 +956,7 @@ class _TextWidgetState extends State<TextWidget> {
     return Row(
       children: [
         Container(
-          width: Responsive.isDesktop(context)
+          width: Responsive.isDesktop(context) || Responsive.isTablet(context)
               ? widget.width * 0.42
               : widget.width * 0.6,
           padding: EdgeInsets.only(
@@ -987,7 +992,7 @@ class _TextWidgetState extends State<TextWidget> {
           },
           child: Container(
             alignment: Alignment.center,
-            width: Responsive.isDesktop(context)
+            width: Responsive.isDesktop(context) || Responsive.isTablet(context)
                 ? widget.width * 0.13
                 : widget.width * 0.3,
             height: widget.height * 0.064,

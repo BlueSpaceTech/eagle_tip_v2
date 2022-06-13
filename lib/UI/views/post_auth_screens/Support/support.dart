@@ -100,17 +100,22 @@ class _SupportScreenState extends State<SupportScreen> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      floatingActionButton: Responsive.isDesktop(context)
-          ? MenuButton(isTapped: false, width: width)
-          : SizedBox(),
+      floatingActionButton:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? MenuButton(isTapped: false, width: width)
+              : SizedBox(),
       body: SingleChildScrollView(
         child: Container(
-          height: Responsive.isDesktop(context) ? height * 1.13 : height * 1.05,
+          height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? height * 1.13
+              : height * 1.05,
           width: width,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(
-              top: Responsive.isDesktop(context) ? height * 0.0 : height * 0.1,
+              top: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                  ? height * 0.0
+                  : height * 0.1,
               // left: Responsive.isDesktop(context) ? width * 0.01 : 0.0,
               // right: Responsive.isDesktop(context) ? width * 0.01 : 0.0),
             ),
@@ -129,11 +134,13 @@ class _SupportScreenState extends State<SupportScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Responsive.isDesktop(context)
+                        Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
                             ? Container()
                             : TopRow(width: width),
                         SizedBox(
-                          height: Responsive.isDesktop(context)
+                          height: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
                               ? height * 0.013
                               : height * 0.05,
                         ),
@@ -217,10 +224,11 @@ class _SupportScreenState extends State<SupportScreen> {
                                       child: Text(
                                         "Send",
                                         style: TextStyle(
-                                            fontSize:
-                                                Responsive.isDesktop(context)
-                                                    ? width * 0.009
-                                                    : width * 0.04,
+                                            fontSize: Responsive.isDesktop(
+                                                        context) ||
+                                                    Responsive.isTablet(context)
+                                                ? width * 0.009
+                                                : width * 0.04,
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600,
                                             fontFamily: "Poppins"),
@@ -230,7 +238,8 @@ class _SupportScreenState extends State<SupportScreen> {
                                 )
                               ],
                             ),
-                            width: Responsive.isDesktop(context)
+                            width: Responsive.isDesktop(context) ||
+                                    Responsive.isTablet(context)
                                 ? width
                                 : width * 0.9,
                             topPad: 0.0,
@@ -375,7 +384,9 @@ class _SupportTextFieldState extends State<SupportTextField> {
           labelText: widget.labelText,
           labelStyle: TextStyle(
               fontSize:
-                  Responsive.isDesktop(context) ? widget.width * 0.009 : 17.0,
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? widget.width * 0.009
+                      : 17.0,
               color:
                   myFocusNode.hasFocus ? Color(0xFF5E8BE0) : Color(0xffAEB0C3),
               fontFamily: "Poppins",
@@ -461,7 +472,9 @@ class _MessageTextFieldState extends State<MessageTextField> {
           labelText: widget.labelText,
           labelStyle: TextStyle(
               fontSize:
-                  Responsive.isDesktop(context) ? widget.width * 0.009 : 17.0,
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? widget.width * 0.009
+                      : 17.0,
               color:
                   myFocusNode.hasFocus ? Color(0xFF5E8BE0) : Color(0xffAEB0C3),
               fontFamily: "Poppins",

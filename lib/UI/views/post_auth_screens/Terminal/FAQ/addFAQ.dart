@@ -294,7 +294,9 @@ class _AddFAQTextFieldState extends State<AddFAQTextField> {
     double width = MediaQuery.of(context).size.width;
     TextEditingController controller = TextEditingController();
     return Container(
-      width: Responsive.isDesktop(context) ? width * 0.42 : width * 0.1,
+      width: Responsive.isDesktop(context) || Responsive.isTablet(context)
+          ? width * 0.42
+          : width * 0.1,
       padding: EdgeInsets.only(left: width * 0.01, right: width * 0.06),
       height: height * 0.08,
       decoration: BoxDecoration(

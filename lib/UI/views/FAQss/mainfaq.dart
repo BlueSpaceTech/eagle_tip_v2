@@ -28,7 +28,7 @@ class MainFaq extends StatelessWidget {
     return Scaffold(
       body: Responsive(
           mobile: MobileFaqs(userrOLE: user.userRole),
-          tablet: MobileFaqs(
+          tablet: DesktopFAQs(
             userrOLE: user.userRole,
           ),
           desktop: DesktopFAQs(

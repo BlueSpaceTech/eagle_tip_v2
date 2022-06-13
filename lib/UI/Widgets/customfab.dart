@@ -16,7 +16,9 @@ class customfab extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      width: Responsive.isDesktop(context) ? width * 0.13 : width * 0.42,
+      width: Responsive.isDesktop(context) || Responsive.isTablet(context)
+          ? width * 0.13
+          : width * 0.42,
       height: height * 0.064,
       decoration: BoxDecoration(
         color: Color(0xff5081DB),

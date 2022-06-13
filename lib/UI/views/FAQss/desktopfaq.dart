@@ -290,15 +290,21 @@ class _GeneralfAQState extends State<GeneralfAQ> {
               //   ),
               // ),
               SizedBox(
-                height:
-                    Responsive.isDesktop(context) ? widget.height * 0.06 : 10,
+                height: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? widget.height * 0.06
+                    : 10,
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  left:
-                      Responsive.isDesktop(context) ? widget.width * 0.04 : 0.0,
-                  right:
-                      Responsive.isDesktop(context) ? widget.width * 0.04 : 0.0,
+                  left: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? widget.width * 0.04
+                      : 0.0,
+                  right: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? widget.width * 0.04
+                      : 0.0,
                 ),
                 child: Column(
                   children: [
@@ -323,24 +329,30 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                     //     //   )
                     //     : SizedBox(),
                     SizedBox(
-                      height: Responsive.isDesktop(context)
+                      height: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
                           ? widget.height * 0.05
                           : widget.height * 0.01,
                     ),
-                    Responsive.isDesktop(context)
+                    Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
                         ? Text(
                             "FAQ",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500,
-                                fontSize: Responsive.isDesktop(context)
+                                fontSize: Responsive.isDesktop(context) ||
+                                        Responsive.isTablet(context)
                                     ? widget.width * 0.01
                                     : widget.width * 0.023,
                                 fontFamily: "Poppins"),
                           )
                         : Container(),
                     SizedBox(
-                      height: Responsive.isDesktop(context) ? 10 : 0,
+                      height: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
+                          ? 10
+                          : 0,
                     ),
                     Text(
                       "Have a question? Look here.",

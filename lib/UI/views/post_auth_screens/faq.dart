@@ -198,8 +198,8 @@ class DesktopFAQ extends StatelessWidget {
                   height: height * 0.9,
                   child: Padding(
                     padding: EdgeInsets.only(
-                      left: Responsive.isDesktop(context) ? width * 0.04 : 0.0,
-                      right: Responsive.isDesktop(context) ? width * 0.04 : 0.0,
+                      left: Responsive.isDesktop(context) || Responsive.isTablet(context) ? width * 0.04 : 0.0,
+                      right: Responsive.isDesktop(context) || Responsive.isTablet(context) ? width * 0.04 : 0.0,
                     ),
                     child: Column(
                       children: [
@@ -227,13 +227,13 @@ class DesktopFAQ extends StatelessWidget {
                         SizedBox(
                           height: height * 0.05,
                         ),
-                        Responsive.isDesktop(context)
-                            ? Text(
+                        Responsive.isDesktop(context) || Responsive.isTablet(context)
+                            ? Text( 
                                 "FAQ",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w500,
-                                    fontSize: Responsive.isDesktop(context)
+                                    fontSize: Responsive.isDesktop(context) || Responsive.isTablet(context)
                                         ? width * 0.01
                                         : width * 0.023,
                                     fontFamily: "Poppins"),
@@ -253,7 +253,7 @@ class DesktopFAQ extends StatelessWidget {
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: Responsive.isDesktop(context)
+                                        fontSize: Responsive.isDesktop(context) || Responsive.isTablet(context)
                                             ? width * 0.01
                                             : width * 0.023,
                                         fontFamily: "Poppins"),
@@ -362,7 +362,7 @@ class _FAQState extends State<FAQ> {
                 Text(
                   widget.FAQName,
                   style: TextStyle(
-                      fontSize: Responsive.isDesktop(context)
+                      fontSize: Responsive.isDesktop(context) || Responsive.isTablet(context)
                           ? widget.widht * 0.01
                           : widget.widht * 0.034,
                       color: Colors.white,
@@ -441,7 +441,7 @@ class _FAQState extends State<FAQ> {
                                   widget.userrOLE == "TerminalUser",
                               child: Image.asset(
                                 Common.assetImages + "trash.png",
-                                width: Responsive.isDesktop(context)
+                                width: Responsive.isDesktop(context) || Responsive.isTablet(context)
                                     ? widget.widht * 0.012
                                     : 15.0,
                               ),
