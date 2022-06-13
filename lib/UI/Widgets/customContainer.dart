@@ -30,14 +30,19 @@ class CustomContainer extends StatelessWidget {
           Opacity(opacity: opacity, child: WebBg()),
           Padding(
             padding: EdgeInsets.only(
-                left:
-                    Responsive.isDesktop(context) ? width * 0.08 : width * 0.0),
+                left: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
+                    ? width * 0.08
+                    : width * 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  width: Responsive.isDesktop(context) ? width * 0.02 : 0.0,
+                  width: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? width * 0.02
+                      : 0.0,
                 ),
                 Align(
                   alignment: Alignment.center,
@@ -49,12 +54,16 @@ class CustomContainer extends StatelessWidget {
                       height: height * 0.85,
                       decoration: BoxDecoration(
                           color: Colors.black.withOpacity(
-                              Responsive.isDesktop(context) ? 0.6 : 0),
+                              Responsive.isDesktop(context) ||
+                                      Responsive.isTablet(context)
+                                  ? 0.6
+                                  : 0),
                           borderRadius: BorderRadius.all(Radius.circular(15))),
                       child: child),
                 ),
                 SizedBox(
-                  width: Responsive.isDesktop(context)
+                  width: Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
                       ? width * 0.14
                       : width * 0.0,
                 ),

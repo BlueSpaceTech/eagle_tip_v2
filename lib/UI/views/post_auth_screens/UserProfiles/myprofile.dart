@@ -78,8 +78,6 @@ class _MyProfileState extends State<MyProfile> {
                     ? Navbar(
                         width: width,
                         height: height,
-                        text1: "Home",
-                        text2: "Sites",
                       )
                     : Padding(
                         padding: EdgeInsets.only(top: height * 0.04),

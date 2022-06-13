@@ -23,15 +23,10 @@ class Navbar extends StatefulWidget {
     Key? key,
     required this.width,
     required this.height,
-    required this.text1,
-    required this.text2,
   }) : super(key: key);
 
   final double width;
   final double height;
-  final String text1;
-  final String text2;
-
   @override
   State<Navbar> createState() => _NavbarState();
 }

@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/site_call.dart';
@@ -91,6 +92,16 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([key1]);
+    });
+  }
+
+  final key1 = GlobalKey();
+
+  @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
@@ -111,8 +122,6 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                     Navbar(
                       width: width,
                       height: height,
-                      text1: "Home",
-                      text2: "Sites",
                     ),
                     SizedBox(
                       height: height * 0.05,
@@ -169,26 +178,58 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(top: height * 0.1),
-                          child: IntrinsicHeight(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Tanks",
-                                      style: TextStyle(
-                                          fontSize: width * 0.012,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                    user?.userRole == "SiteUser"
-                                        ? Center(
-                                            child: FuelRequestPart(
+                        Showcase(
+                          key: key1,
+                          disposeOnTap: true,
+                          onTargetClick: () {
+                            Navigator.pop(context);
+                          },
+                          title: "Order Fuel",
+                          description:
+                              "You can order fuel by tapping on the tank box",
+                          titleTextStyle: TextStyle(
+                            fontSize: 17.0,
+                            color: Colors.white,
+                          ),
+                          descTextStyle: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                          shapeBorder: RoundedRectangleBorder(),
+                          overlayPadding: EdgeInsets.all(8.0),
+                          showcaseBackgroundColor: Color(0xFF5081DB),
+                          contentPadding: EdgeInsets.all(8.0),
+                          child: Padding(
+                            padding: EdgeInsets.only(top: height * 0.1),
+                            child: IntrinsicHeight(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(
+                                        "Tanks",
+                                        style: TextStyle(
+                                            fontSize: width * 0.012,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                      user?.userRole == "SiteUser"
+                                          ? Center(
+                                              child: FuelRequestPart(
+                                                sitedetail: widget.sitedetail,
+                                                valueChanged: (val) {
+                                                  setState(() {
+                                                    reqSent = val;
+                                                  });
+                                                },
+                                                width: width * 0.23,
+                                                height: height,
+                                              ),
+                                            )
+                                          : FuelRequestPart(
                                               sitedetail: widget.sitedetail,
                                               valueChanged: (val) {
                                                 setState(() {
@@ -198,61 +239,51 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                               width: width * 0.23,
                                               height: height,
                                             ),
-                                          )
-                                        : FuelRequestPart(
-                                            sitedetail: widget.sitedetail,
-                                            valueChanged: (val) {
-                                              setState(() {
-                                                reqSent = val;
-                                              });
-                                            },
-                                            width: width * 0.23,
-                                            height: height,
-                                          ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: width * 0.05,
-                                ),
-                                Visibility(
-                                  visible: user?.userRole != "SiteUser",
-                                  child: VerticalDivider(
-                                    color: Colors.white,
-                                    thickness: 1.0,
-                                    endIndent: 100,
-                                    indent: 1,
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: user?.userRole != "SiteUser",
-                                  child: SizedBox(
-                                    width: width * 0.05,
-                                  ),
-                                ),
-                                Visibility(
-                                  visible: user?.userRole != "SiteUser",
-                                  child: Column(
-                                    children: [
-                                      Text(
-                                        "History",
-                                        style: TextStyle(
-                                            fontSize: width * 0.012,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.white,
-                                            fontFamily: "Poppins"),
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.047,
-                                      ),
-                                      RequestHistoryPart(
-                                        currentSite: widget.currentsite,
-                                        width: width * 0.65,
-                                        height: height * 0.9,
-                                      ),
                                     ],
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    width: width * 0.05,
+                                  ),
+                                  Visibility(
+                                    visible: user?.userRole != "SiteUser",
+                                    child: VerticalDivider(
+                                      color: Colors.white,
+                                      thickness: 1.0,
+                                      endIndent: 100,
+                                      indent: 1,
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: user?.userRole != "SiteUser",
+                                    child: SizedBox(
+                                      width: width * 0.05,
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: user?.userRole != "SiteUser",
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "History",
+                                          style: TextStyle(
+                                              fontSize: width * 0.012,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.047,
+                                        ),
+                                        RequestHistoryPart(
+                                          currentSite: widget.currentsite,
+                                          width: width * 0.65,
+                                          height: height * 0.9,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -483,6 +514,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     sorttt(sortedvals);
     sftpdatasort(sortedvals, widget.sitedetail.products);
     sorttanks();
+    // tour();
   }
 
   // sendsitedetails(String currentsite) {
@@ -503,6 +535,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   }
 
   String? fuelVal = "0";
+  final key1 = GlobalKey();
 
   List vals = [];
   List values = [];
@@ -642,9 +675,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
         }
       }
     }
-    print(cons);
-    print(prdnos);
-    print(tankqlr);
+    //   print(tankqlr);
   }
 
   List sftpdata(int len) {
@@ -678,6 +709,10 @@ class _FuelReqColumnState extends State<FuelReqColumn>
   //       selectedtime = picked_s;
   //     });
   //   }
+  // }
+
+  // void tour(){
+  //   tanks[0]= Showcase(key: key1, child: tanks[0], description: "testing");
   // }
 
   List backenddata(int len) {
@@ -742,7 +777,9 @@ class _FuelReqColumnState extends State<FuelReqColumn>
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: widget.width * 1.1,
+          width: Responsive.isDesktop(context) || Responsive.isMobile(context)
+              ? widget.width * 1.12
+              : widget.width * 1.2,
           height: Responsive.isDesktop(context) || Responsive.isTablet(context)
               ? widget.height * 0.3
               : widget.height * 0.35,

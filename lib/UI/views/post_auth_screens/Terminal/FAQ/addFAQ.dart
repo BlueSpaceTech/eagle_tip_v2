@@ -68,8 +68,6 @@ class _AddFAQState extends State<AddFAQ> {
               Navbar(
                 width: width,
                 height: height,
-                text1: "Home",
-                text2: "Sites",
               ),
               SizedBox(
                 height: height * 0.06,

@@ -46,8 +46,6 @@ class _TerminalHomeState extends State<TerminalHome> {
                 Navbar(
                   width: width,
                   height: height,
-                  text1: "Home",
-                  text2: "Sites",
                 ),
                 Row(
                   children: [

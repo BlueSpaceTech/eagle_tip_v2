@@ -49,8 +49,7 @@ class _OpenCSVState extends State<OpenCSV> {
         backgroundColor: Color(0xff2B343B),
         body: Column(
           children: [
-            Navbar(
-                width: width, height: height, text1: "text1", text2: "text2"),
+            Navbar(width: width, height: height),
             Expanded(
               child: Stack(clipBehavior: Clip.none, children: [
                 //  WebBg(),

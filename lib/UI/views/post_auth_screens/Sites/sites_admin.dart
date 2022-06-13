@@ -97,8 +97,6 @@ class _SitesAdminState extends State<SitesAdmin> {
                           Navbar(
                             width: width,
                             height: height,
-                            text1: "Home",
-                            text2: "Sites",
                           ),
                           SizedBox(
                             height: height * 0.05,

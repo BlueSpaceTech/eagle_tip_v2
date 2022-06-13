@@ -108,8 +108,6 @@ class _NotificationsState extends State<Notifications> {
                   child: Navbar(
                     width: width,
                     height: height,
-                    text1: "Home",
-                    text2: "Chat",
                     /*
                     widget3: Row(
                       children: [

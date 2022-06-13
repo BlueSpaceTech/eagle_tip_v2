@@ -130,8 +130,6 @@ class _DesktopSettingState extends State<DesktopSetting> {
               Navbar(
                 width: width,
                 height: height,
-                text1: "Home",
-                text2: "Chat",
               ),
               SizedBox(
                 height: height,

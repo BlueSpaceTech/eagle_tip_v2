@@ -56,12 +56,16 @@ class MenuButton extends StatelessWidget {
           ? Image.asset(
               Common.assetImages + "Group 287.png",
               width:
-                  Responsive.isDesktop(context) ? width * 0.03 : width * 0.075,
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? width * 0.03
+                      : width * 0.075,
             )
           : Image.asset(
               Common.assetImages + "Group 288.png",
               width:
-                  Responsive.isDesktop(context) ? width * 0.03 : width * 0.082,
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? width * 0.03
+                      : width * 0.082,
             ),
       itemBuilder: (context) => [
         PopupMenuItem(

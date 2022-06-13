@@ -230,7 +230,9 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
           child: Column(
             children: [
               Navbar(
-                  width: width, height: height, text1: "text1", text2: "text2"),
+                width: width,
+                height: height,
+              ),
               Container(
                 height: height * 1.4,
                 color: backGround_color,
@@ -349,7 +351,10 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                     onTap: () {
                                       Navigator.pop(context);
                                     },
-                                    child: Icon(Icons.arrow_back,color: Colors.white,)),
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                    )),
                                 Logo(width: width),
                                 MenuButton(isTapped: isTapped, width: width),
                               ],

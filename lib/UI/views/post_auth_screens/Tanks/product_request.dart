@@ -81,8 +81,6 @@ class _ProductRequestState extends State<ProductRequest> {
                     ? Navbar(
                         width: width,
                         height: height,
-                        text1: "Home",
-                        text2: "Sites",
                       )
                     : Row(
                         children: [

@@ -2,35 +2,23 @@
 
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:dcache/dcache.dart';
-import 'package:async/async.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/Services/otp_provider.dart';
-import 'package:testttttt/Services/storagemethods.dart';
-import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
-import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customfaqbottom.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/password_textfield.dart';
-import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
-import 'package:testttttt/UI/views/post_auth_screens/Terminal/terminalhome.dart';
-import 'package:testttttt/UI/views/pre_auth_screens/employer_code.dart';
-import 'package:testttttt/UI/views/pre_auth_screens/loading.dart';
-import 'package:testttttt/UI/views/pre_auth_screens/phone_verification.dart';
-import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/UI/views/post_auth_screens/tour.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
@@ -424,10 +412,7 @@ class _LoginScreenState extends State<LoginScreen> {
               MaterialPageRoute(
                   builder: (context) => Responsive.isDesktop(context) ||
                           Responsive.isTablet(context)
-                      ? HomeScreen(
-                          showdialog: true,
-                          sites: sites,
-                        )
+                      ? Tourr()
                       : BottomNav()));
         } else {
           AuthFunctions.signOut;
@@ -563,7 +548,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context)
+                  builder: (context) => Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
                       ? HomeScreen(
                           showdialog: true,
                           sites: sites,

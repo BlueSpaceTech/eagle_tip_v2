@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Tanks/product_request.dart';
@@ -43,25 +44,39 @@ class Tank extends StatefulWidget {
 }
 
 class _TankState extends State<Tank> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   final TextEditingController _controller = TextEditingController();
   bool? isTapped = false;
   @override
   Widget build(BuildContext context) {
     return Row(
+      // mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Expanded(
+        Container(
+          width: 80.0,
           child: Row(
             children: [
               Text(
                 widget.productname,
                 style: TextStyle(
-                    fontSize: 13.0,
+                    fontSize: Responsive.isDesktop(context)
+                        ? 13
+                        : Responsive.isTablet(context)
+                            ? widget.width * 0.06
+                            : widget.width * 0.026,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
                     fontFamily: "Poppins"),
               ),
             ],
           ),
+        ),
+        SizedBox(
+          width: 10.0,
         ),
         InkWell(
           onTap: () {

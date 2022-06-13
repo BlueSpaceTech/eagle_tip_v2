@@ -50,8 +50,6 @@ class TerminalFAQ extends StatelessWidget {
               child: Column(
                 children: [
                   Navbar(
-                    text2: "Site",
-                    text1: "Home",
                     width: width,
                     height: height,
                   ),

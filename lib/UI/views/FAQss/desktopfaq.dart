@@ -87,8 +87,6 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
             Navbar(
               width: width,
               height: height,
-              text1: "Home",
-              text2: "Chat",
             ),
             SizedBox(
               height: height,

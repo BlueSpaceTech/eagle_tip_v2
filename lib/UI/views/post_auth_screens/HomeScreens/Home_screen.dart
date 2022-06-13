@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:csv/csv.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -68,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   getData() async {
     sitedetails = await SiteCall().getSites() ?? [];
   }
+
+  final _key1 = GlobalKey();
 
   @override
   String? get restorationId => widget.restorationId;
@@ -193,17 +196,17 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
 
   @override
   void initState() {
-    //addData();
-    // TODO: implement initState
     super.initState();
-
-    // });
     getData();
     addData();
     checkupdateTC();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1, key2]);
+    });
   }
 
   List? check;
+  final key2 = GlobalKey();
 
   getsiteID(String currentsite) {
     String siteID = "";
@@ -390,6 +393,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
     print(Uri.base);
   }
 
+  final _key2 = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -400,7 +405,10 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton:
           Responsive.isDesktop(context) || Responsive.isTablet(context)
-              ? MenuButton(isTapped: false, width: width)
+              ? Showcase(
+                  key: _key2,
+                  description: "test",
+                  child: MenuButton(isTapped: false, width: width))
               : SizedBox(),
       body: user == null
           ? Container(
@@ -427,8 +435,6 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                               Navbar(
                                 width: width,
                                 height: height,
-                                text1: "Home",
-                                text2: "Chat",
                               ),
                               SizedBox(
                                 height: height * 0.05,
@@ -479,42 +485,88 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                               SizedBox(
                                 height: height * 0.05,
                               ),
-                              Visibility(
-                                visible: user.userRole == "SiteOwner" ||
-                                    user.userRole == "SiteManager" ||
-                                    user.userRole == "SiteUser",
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => SiteDetails(
-                                            currentSite: user.currentsite,
-                                            sitedetail: sendsitedetails(
-                                                user.currentsite),
-                                          ),
-                                        ));
-                                  },
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      Image.asset(
-                                        Common.assetImages + "Ellipse 49.png",
-                                        width: width * 0.16,
-                                      ),
-                                      SizedBox(
-                                        width: width * 0.08,
-                                        child: Text(
-                                          "Submit Inventory",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: width * 0.0135,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.white,
-                                              fontFamily: "Poppins"),
+                              Showcase(
+                                key: _key1,
+                                disposeOnTap: true,
+                                onTargetClick: () {
+                                  user.userRole == "SiteUser"
+                                      ? Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowCaseWidget(
+                                              builder: Builder(
+                                                  builder: (context) =>
+                                                      SiteDetails(
+                                                          sitedetail:
+                                                              sendsitedetails(user
+                                                                  .currentsite),
+                                                          currentSite: user
+                                                              .currentsite)),
+                                            ),
+                                          ))
+                                      : Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ShowCaseWidget(
+                                              builder: Builder(
+                                                  builder: (context) =>
+                                                      SiteDetails(
+                                                          sitedetail:
+                                                              sendsitedetails(user
+                                                                  .currentsite),
+                                                          currentSite: user
+                                                              .currentsite)),
+                                            ),
+                                          )).then((_) {
+                                          setState(() {
+                                            ShowCaseWidget.of(context)!
+                                                .startShowCase([key2, _key2]);
+                                          });
+                                        });
+                                },
+                                title: "Submit Inventory",
+                                description: "Tap on this button to order",
+                                titleTextStyle: TextStyle(
+                                  fontSize: 17.0,
+                                  color: Colors.white,
+                                ),
+                                descTextStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                                shapeBorder: CircleBorder(),
+                                overlayPadding: EdgeInsets.all(8.0),
+                                showcaseBackgroundColor: Color(0xFF5081DB),
+                                contentPadding: EdgeInsets.all(8.0),
+                                child: Visibility(
+                                  visible: user.userRole == "SiteOwner" ||
+                                      user.userRole == "SiteManager" ||
+                                      user.userRole == "SiteUser",
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        Image.asset(
+                                          Common.assetImages + "Ellipse 49.png",
+                                          width: width * 0.16,
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          width: width * 0.08,
+                                          child: Text(
+                                            "Submit Inventory",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: width * 0.0135,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
@@ -525,17 +577,21 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                 visible: user.userRole != "SiteUser",
                                 child: InkWell(
                                     onTap: () {
-                                      user.userRole == "AppAdmin" ||
-                                              user.userRole == "SuperAdmin"
-                                          ? Navigator.pushNamed(context,
-                                              AppRoutes.sitescreenadmin)
-                                          : Navigator.pushNamed(
-                                              context, AppRoutes.siteScreen);
+                                      // user.userRole == "AppAdmin" ||
+                                      //         user.userRole == "SuperAdmin"
+                                      //     ? Navigator.pushNamed(context,
+                                      //         AppRoutes.sitescreenadmin)
+                                      //     : Navigator.pushNamed(
+                                      //         context, AppRoutes.siteScreen);
                                     },
-                                    child: SiteContainer(
-                                        width: width,
-                                        text: "Sites",
-                                        height: height)),
+                                    child: Showcase(
+                                      key: key2,
+                                      description: "test1",
+                                      child: SiteContainer(
+                                          width: width,
+                                          text: "Sites",
+                                          height: height),
+                                    )),
                               ),
                               SizedBox(
                                 height: height * 0.02,

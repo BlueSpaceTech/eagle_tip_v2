@@ -355,7 +355,9 @@ class _SentToState extends State<SentTo> {
         body: Column(
           children: [
             Navbar(
-                width: width, height: height, text1: "text1", text2: "text2"),
+              width: width,
+              height: height,
+            ),
             Expanded(
               child: Stack(clipBehavior: Clip.none, children: [
                 //  WebBg(),

@@ -76,20 +76,26 @@ class _SitesState extends State<Sites> {
               color: backGround_color,
               child: Padding(
                 padding: EdgeInsets.only(
-                    top: Responsive.isDesktop(context)|| Responsive.isTablet(context)
+                    top: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
                         ? height * 0.04
                         : height * 0.1,
-                    left: Responsive.isDesktop(context) || Responsive.isTablet(context)? 0.0 : width * 0.05,
-                    right: Responsive.isDesktop(context)|| Responsive.isTablet(context) ? 0.0 : width * 0.05),
-                child: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                    left: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
+                        ? 0.0
+                        : width * 0.05,
+                    right: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
+                        ? 0.0
+                        : width * 0.05),
+                child: Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context)
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Navbar(
                             width: width,
                             height: height,
-                            text1: "Home",
-                            text2: "Sites",
                           ),
                           SizedBox(
                             height: height * 0.05,
@@ -108,18 +114,22 @@ class _SitesState extends State<Sites> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 18.0,
-                                      fontWeight: Responsive.isDesktop(context) || Responsive.isTablet(context)
-                                          ? FontWeight.w500
-                                          : FontWeight.bold,
+                                      fontWeight:
+                                          Responsive.isDesktop(context) ||
+                                                  Responsive.isTablet(context)
+                                              ? FontWeight.w500
+                                              : FontWeight.bold,
                                       fontFamily: "Poppins"),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
-                                      top: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                                      top: Responsive.isDesktop(context) ||
+                                              Responsive.isTablet(context)
                                           ? height * 0.03
                                           : 0.0),
                                   child: Container(
-                                    height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                                    height: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
                                         ? height * 0.6
                                         : height * 0.5,
                                     child: ListView.builder(

@@ -50,8 +50,6 @@ class ParticularRequest extends StatelessWidget {
                     ? Navbar(
                         width: width,
                         height: height,
-                        text1: "Home",
-                        text2: "Sites",
                       )
                     : CustomHeader2(),
                 SizedBox(

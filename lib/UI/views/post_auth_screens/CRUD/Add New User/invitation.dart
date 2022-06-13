@@ -78,8 +78,6 @@ class _InvitationState extends State<Invitation> {
               Navbar(
                 width: width,
                 height: height,
-                text1: "Home",
-                text2: "Sites",
               ),
               Container(
                 height: height,

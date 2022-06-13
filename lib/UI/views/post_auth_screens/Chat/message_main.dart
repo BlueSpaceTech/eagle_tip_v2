@@ -217,8 +217,6 @@ class _MessageMainState extends State<MessageMain> {
             Navbar(
               width: width,
               height: height,
-              text1: "Home",
-              text2: "Sites",
             ),
             Expanded(
               child: Row(
@@ -621,8 +619,6 @@ class _MessageMainState extends State<MessageMain> {
             Navbar(
               width: width,
               height: height,
-              text1: "Home",
-              text2: "Sites",
             ),
             Expanded(
               child: Row(
@@ -1040,8 +1036,6 @@ class _NewChatMainState extends State<NewChatMain> {
             Navbar(
               width: width,
               height: height,
-              text1: "Home",
-              text2: "Sites",
             ),
             Expanded(
               child: Stack(children: [
@@ -1069,8 +1063,6 @@ class _NewChatMainState extends State<NewChatMain> {
             Navbar(
               width: width,
               height: height,
-              text1: "Home",
-              text2: "Sites",
             ),
             Expanded(
               child: Stack(children: [

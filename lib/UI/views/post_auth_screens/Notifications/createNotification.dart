@@ -185,16 +185,20 @@ class _CreateNotificationState extends State<CreateNotification> {
           child: Padding(
             padding: EdgeInsets.only(
               top: height * 0.02,
-              left: Responsive.isDesktop(context) || Responsive.isTablet(context)? 0.0 : width * 0.03,
-              right: Responsive.isDesktop(context) || Responsive.isTablet(context) ? 0.0 : width * 0.02,
+              left:
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? 0.0
+                      : width * 0.03,
+              right:
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? 0.0
+                      : width * 0.02,
             ),
             child: Column(
               children: [
                 Navbar(
                   width: width,
                   height: height,
-                  text1: "Home",
-                  text2: "Sites",
                 ),
                 SizedBox(
                   height: height * 0.03,
@@ -209,7 +213,9 @@ class _CreateNotificationState extends State<CreateNotification> {
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: !Responsive.isTablet(context)
+                              ? MainAxisAlignment.spaceBetween
+                              : MainAxisAlignment.center,
                           children: [
                             CreateNotifyTextField(
                               valueChanged: ((value) {
@@ -219,6 +225,9 @@ class _CreateNotificationState extends State<CreateNotification> {
                               }),
                               labelText: "Title",
                               isactive: true,
+                            ),
+                            SizedBox(
+                              width: Responsive.isTablet(context) ? 10.0 : 0.0,
                             ),
                             CreateNotifyTextField(
                               valueChanged: ((value) {
@@ -376,6 +385,9 @@ class _CreateNotificationState extends State<CreateNotification> {
                           height: height * 0.03,
                         ),
                         Row(
+                          mainAxisAlignment: Responsive.isTablet(context)
+                              ? MainAxisAlignment.center
+                              : MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -498,7 +510,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     "Cancel",
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: width * 0.008,
+                                        fontSize: 10.0,
                                         fontWeight: FontWeight.w600,
                                         fontFamily: "Poppins"),
                                   ),
@@ -567,7 +579,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     "Send",
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: width * 0.008,
+                                        fontSize: 10.0,
                                         fontWeight: FontWeight.w600,
                                         fontFamily: "Poppins"),
                                   ),
@@ -579,7 +591,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                       ],
                     ),
                   ),
-                  width: width,
+                  width: Responsive.isTablet(context) ? width * 0.8 : width,
                   topPad: 10.0,
                   height: height * 1.1,
                 ),
@@ -757,7 +769,9 @@ class _DaysRowState extends State<DaysRow> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widget.width * 0.15,
+      width: Responsive.isTablet(context)
+          ? widget.width * 0.28
+          : widget.width * 0.15,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

@@ -73,8 +73,6 @@ class _TicketDetailState extends State<TicketDetail> {
                       ? Navbar(
                           width: width,
                           height: height,
-                          text1: "Home",
-                          text2: "Sites",
                         )
                       : CustomHeader2(),
                   SizedBox(

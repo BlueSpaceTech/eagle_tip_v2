@@ -148,8 +148,6 @@ class _UserProfileState extends State<UserProfile> {
                         ? Navbar(
                             width: width,
                             height: height,
-                            text1: "Home",
-                            text2: "Sites",
                           )
                         : Padding(
                             padding: EdgeInsets.only(
@@ -429,14 +427,18 @@ class UserNameandDet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: Responsive.isDesktop(context) || Responsive.isTablet(context)
-          ? CrossAxisAlignment.start
-          : CrossAxisAlignment.center,
+      crossAxisAlignment:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? CrossAxisAlignment.start
+              : CrossAxisAlignment.center,
       children: [
         Text(
           name,
           style: TextStyle(
-              fontSize: Responsive.isDesktop(context)  || Responsive.isTablet(context)? width * 0.011 : 18.0,
+              fontSize:
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? width * 0.011
+                      : 18.0,
               fontWeight: FontWeight.w600,
               color: Colors.white,
               fontFamily: 'Poppins'),
@@ -447,7 +449,10 @@ class UserNameandDet extends StatelessWidget {
         Text(
           userRole,
           style: TextStyle(
-              fontSize: Responsive.isDesktop(context) || Responsive.isTablet(context)? width * 0.01 : 14.0,
+              fontSize:
+                  Responsive.isDesktop(context) || Responsive.isTablet(context)
+                      ? width * 0.01
+                      : 14.0,
               color: Color(0xFFD9DBE9),
               fontWeight: FontWeight.w500,
               fontFamily: 'Poppins'),

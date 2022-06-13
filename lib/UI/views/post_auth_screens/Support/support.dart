@@ -124,8 +124,6 @@ class _SupportScreenState extends State<SupportScreen> {
                 Navbar(
                   width: width,
                   height: height,
-                  text1: "Home",
-                  text2: "Chat",
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
