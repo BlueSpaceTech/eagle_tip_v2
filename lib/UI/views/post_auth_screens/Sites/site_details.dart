@@ -703,9 +703,9 @@ class _FuelReqColumnState extends State<FuelReqColumn>
             valueChanged2: (val) {
               // vals.insert(j, val);
               vals[j] = val;
-              values[j] = ({
-                val.toString(): widget.sitedetail.products[i]["TANK_PRD_DESC"]
-              });
+              // values[j] = ({
+              //   val.toString(): widget.sitedetail.products[i]["TANK_PRD_DESC"]
+              // });
               print(values);
             },
             tankNumber: int.parse(widget.sitedetail.products[i]["PRDNO"]),
@@ -884,7 +884,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                 ),
                               ),
                               Text(
-                                values[i][vals[i].toString()],
+                                sortedvals[i],
                                 style: TextStyle(
                                   fontSize: 17.0,
                                   fontWeight: FontWeight.bold,
