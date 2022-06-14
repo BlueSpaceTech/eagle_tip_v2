@@ -270,8 +270,8 @@ class Tankss extends StatelessWidget {
           },
           itemBuilder: (context, index) {
             return TankDet(
-              tankDet: "Tank ${tanksdata[index]["tanknumber"]}",
-              productID: "${tanksdata[index]["tankid"]}",
+              tankDet: "Tank ${index + 1}",
+              productID: "${tanksdata[index]["productName"]}",
               requestedAmount: "${tanksdata[index]["amount"]}",
             );
           }),

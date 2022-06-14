@@ -3,9 +3,11 @@
 import 'dart:async';
 import 'dart:convert';
 // import 'dart:convert';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 import 'dart:typed_data';
+import 'package:badges/badges.dart';
 import 'package:csv/csv.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -18,6 +20,10 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Notifications/createNotification.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
@@ -143,11 +149,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       final bytes = utf8.encode(csv);
       final text = utf8.decode(bytes);
       // final blob = Blob([text]);
-      final blob = html.Blob([text]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      html.AnchorElement(href: url)
-        ..setAttribute("download", "file.csv")
-        ..click();
+      // final blob = html.Blob([text]);
+      // final url = html.Url.createObjectUrlFromBlob(blob);
+      // html.AnchorElement(href: url)
+      // ..setAttribute("download", "file.csv")
+      // ..click();
       csvdata.clear();
     }
   }
@@ -201,7 +207,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
     addData();
     checkupdateTC();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context)!.startShowCase([_key1, key2]);
+      ShowCaseWidget.of(context)!
+          .startShowCase([_key1, _key2, _key3, _key4, _key5]);
     });
   }
 
@@ -394,6 +401,9 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   }
 
   final _key2 = GlobalKey();
+  final _key3 = GlobalKey();
+  final _key4 = GlobalKey();
+  final _key5 = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -405,10 +415,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton:
           Responsive.isDesktop(context) || Responsive.isTablet(context)
-              ? Showcase(
-                  key: _key2,
-                  description: "test",
-                  child: MenuButton(isTapped: false, width: width))
+              ? MenuButton(isTapped: false, width: width)
               : SizedBox(),
       body: user == null
           ? Container(
@@ -423,26 +430,1077 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                     ? height
                     : height * 1.5,
                 color: backGround_color,
-                child: Responsive.isDesktop(context) ||
-                        Responsive.isTablet(context)
-                    ? Stack(
-                        children: [
-                          Opacity(opacity: 0.2, child: WebBg()),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                child:
+                    Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context)
+                        ? Stack(
                             children: [
-                              // TermConditions(width, height, showdilog),
-                              Navbar(
-                                width: width,
-                                height: height,
+                              Opacity(opacity: 0.2, child: WebBg()),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // TermConditions(width, height, showdilog),
+                                  Visibility(
+                                    visible: Responsive.isDesktop(context) ||
+                                        Responsive.isTablet(context),
+                                    child: Container(
+                                      color: Color(0xFF2B343B),
+                                      width: width,
+                                      height: height * 0.1,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.42
+                                                : width * 0.6,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                SizedBox(
+                                                  width: width * 0.03,
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            HomeScreen(
+                                                                showdialog:
+                                                                    false,
+                                                                sites: user
+                                                                    .sites)),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: SvgPicture.asset(
+                                                    "assets/newLogo.svg",
+                                                    width: width * 0.15,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      top: height * 0.024),
+                                                  child: Container(
+                                                    width: Responsive.isDesktop(
+                                                            context)
+                                                        ? width * 0.15
+                                                        : width * 0.27,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        InkWell(
+                                                          onTap: () {
+                                                            Navigator
+                                                                .pushReplacement(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder: ((context) =>
+                                                                    HomeScreen(
+                                                                        showdialog:
+                                                                            true,
+                                                                        sites: user
+                                                                            .sites)),
+                                                              ),
+                                                            );
+                                                            setState(() {
+                                                              index = 0;
+                                                            });
+                                                          },
+                                                          child: Navtext(
+                                                            color: index == 0
+                                                                ? Colors.white
+                                                                : Color(
+                                                                    0xFFA0A3BD),
+                                                            width: width,
+                                                            text: "Home",
+                                                          ),
+                                                        ),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            Navigator
+                                                                .pushReplacementNamed(
+                                                                    context,
+                                                                    AppRoutes
+                                                                        .messagemain);
+                                                            setState(() {
+                                                              index = 1;
+                                                            });
+                                                          },
+                                                          child: StreamBuilder(
+                                                            stream: FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "chats")
+                                                                .where(
+                                                                    "between",
+                                                                    arrayContainsAny: [
+                                                                  user.uid
+                                                                ]).snapshots(),
+                                                            builder: (context,
+                                                                AsyncSnapshot<
+                                                                        QuerySnapshot>
+                                                                    snapshot) {
+                                                              if (snapshot
+                                                                  .hasData) {
+                                                                List docsss =
+                                                                    snapshot
+                                                                        .data!
+                                                                        .docs;
+                                                                List docs2 = [];
+                                                                for (var ele
+                                                                    in docsss) {
+                                                                  if (ele["isNew"] !=
+                                                                          user
+                                                                              .uid &&
+                                                                      ele["isNew"] !=
+                                                                          "constant") {
+                                                                    docs2.add(
+                                                                        ele);
+                                                                  }
+                                                                }
+
+                                                                return Showcase(
+                                                                  disposeOnTap:
+                                                                      true,
+                                                                  onTargetClick:
+                                                                      () {
+                                                                    Navigator
+                                                                        .push(
+                                                                      context,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                ShowCaseWidget(
+                                                                          builder:
+                                                                              Builder(
+                                                                            builder: (context) =>
+                                                                                MessageMain(
+                                                                              Chatscreen: ChatScreenn(
+                                                                                photourlfriend: "",
+                                                                                photourluser: "",
+                                                                                currentusername: "",
+                                                                                index: 0,
+                                                                                friendname: "Start chat by clicking on user",
+                                                                                frienduid: "",
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  titleTextStyle:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        17.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                  descTextStyle:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16.0,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                  shapeBorder:
+                                                                      CircleBorder(),
+                                                                  overlayPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  showcaseBackgroundColor:
+                                                                      Color(
+                                                                          0xFF5081DB),
+                                                                  contentPadding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              8.0),
+                                                                  description:
+                                                                      "Tap this button to go to chat screen",
+                                                                  key: user.userRole ==
+                                                                          "SiteUser"
+                                                                      ? _key2
+                                                                      : user.userRole == "SiteManager" ||
+                                                                              user.userRole == "SiteOwner"
+                                                                          ? _key5
+                                                                          : _key5,
+                                                                  child: Badge(
+                                                                    showBadge: docs2
+                                                                        .isNotEmpty,
+                                                                    badgeContent:
+                                                                        Text(
+                                                                      docs2
+                                                                          .length
+                                                                          .toString(),
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.white),
+                                                                    ),
+                                                                    child:
+                                                                        Navtext(
+                                                                      color: index == 1
+                                                                          ? Colors
+                                                                              .white
+                                                                          : Color(
+                                                                              0xFFA0A3BD),
+                                                                      text:
+                                                                          "Chat",
+                                                                      width:
+                                                                          width,
+                                                                    ),
+                                                                    // );
+                                                                    // },
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                //   return
+                                                                return Text(
+                                                                    "Chat",
+                                                                    style: TextStyle(
+                                                                        color: index == 2 ? Colors.white : Color(0xFFA0A3BD),
+                                                                        // fontSize: Responsive.isDesktop(context) ? width * 0.01 : width * 0.02,
+                                                                        fontSize: width * 0.01,
+                                                                        fontWeight: FontWeight.w500,
+                                                                        fontFamily: "Poppins"));
+                                                              }
+                                                            },
+                                                          ),
+                                                        ),
+                                                        // ),
+                                                        MouseRegion(
+                                                          cursor:
+                                                              SystemMouseCursors
+                                                                  .click,
+                                                          child: InkWell(
+                                                              onTap: () {
+                                                                Navigator.pushReplacementNamed(
+                                                                    context,
+                                                                    AppRoutes
+                                                                        .notifications);
+                                                                setState(() {
+                                                                  index = 2;
+                                                                });
+                                                              },
+                                                              child:
+                                                                  StreamBuilder(
+                                                                      stream: FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              "pushNotifications")
+                                                                          .where(
+                                                                              "visibleto",
+                                                                              arrayContainsAny: [
+                                                                            user.userRole
+                                                                          ])
+                                                                          // .where("isNew", ar: true)
+                                                                          .snapshots(),
+                                                                      builder: (context,
+                                                                          AsyncSnapshot<QuerySnapshot>
+                                                                              snapshot) {
+                                                                        if (snapshot.connectionState ==
+                                                                            ConnectionState.waiting) {
+                                                                          return Navtext(
+                                                                            color: index == 2
+                                                                                ? Colors.white
+                                                                                : Color(0xFFA0A3BD),
+                                                                            text:
+                                                                                "Notifications",
+                                                                            width:
+                                                                                width,
+                                                                          );
+                                                                        }
+
+                                                                        if (snapshot
+                                                                            .hasData) {
+                                                                          final documents =
+                                                                              [];
+                                                                          final docs = snapshot
+                                                                              .data!
+                                                                              .docs;
+                                                                          if (docs
+                                                                              .isNotEmpty) {
+                                                                            for (var element
+                                                                                in docs) {
+                                                                              List notify = element["isNew"];
+                                                                              List siites = element["sites"];
+                                                                              istrue() {
+                                                                                for (int i = 0; i < user.sites.length; i++) {
+                                                                                  for (int j = 0; j < siites.length; j++) {
+                                                                                    if (user.sites[i] == siites[j]) {
+                                                                                      return true;
+                                                                                    }
+                                                                                  }
+                                                                                }
+                                                                                return false;
+                                                                              }
+
+                                                                              // print(siites);
+                                                                              // if(){}
+                                                                              if (!notify.contains(FirebaseAuth.instance.currentUser!.uid) && istrue()) {
+                                                                                documents.add(element);
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                          return Badge(
+                                                                            showBadge:
+                                                                                documents.isNotEmpty,
+                                                                            badgeContent:
+                                                                                Text(
+                                                                              documents.length.toString(),
+                                                                              // "0",
+                                                                              style: TextStyle(color: Colors.white),
+                                                                            ),
+                                                                            child:
+                                                                                Navtext(
+                                                                              color: index == 2 ? Colors.white : Color(0xFFA0A3BD),
+                                                                              text: "Notifications",
+                                                                              width: width,
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                        return Navtext(
+                                                                          color: index == 2
+                                                                              ? Colors.white
+                                                                              : Color(0xFFA0A3BD),
+                                                                          text:
+                                                                              "Notifications",
+                                                                          width:
+                                                                              width,
+                                                                        );
+                                                                      })),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                                right: width * 0.07),
+                                            child: Container(
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(""),
+                                                  SizedBox(
+                                                    width: width * 0.02,
+                                                  ),
+                                                  PopupMenuButton(
+                                                    padding: EdgeInsets.only(
+                                                        bottom: 500.0),
+                                                    onSelected: (value) {
+                                                      print(value);
+                                                      Navigator.pushNamed(
+                                                          context,
+                                                          ScreeRoutes[value]);
+                                                      // print("hi");
+                                                      // print(user.uid);
+                                                      // print("hello");
+                                                    },
+                                                    color: Color(0xFF3f4850),
+                                                    child: user.dpurl != ""
+                                                        ? CircleAvatar(
+                                                            radius: 22,
+                                                            backgroundColor:
+                                                                backGround_color,
+                                                            backgroundImage:
+                                                                NetworkImage(
+                                                                    user.dpurl),
+                                                          )
+                                                        : ClipRRect(
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color:
+                                                                    backGround_color,
+                                                                shape: BoxShape
+                                                                    .circle,
+                                                              ),
+                                                              child: Icon(
+                                                                Icons.person,
+                                                                size: 35,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                    itemBuilder: (context) => [
+                                                      PopupMenuItem(
+                                                        child: Text(
+                                                          "My Profile",
+                                                          style: TextStyle(
+                                                              fontSize: 13.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  "Poppins"),
+                                                        ),
+                                                        value: 1,
+                                                      ),
+                                                      PopupMenuItem(
+                                                        child: Text(
+                                                          "Settings",
+                                                          style: TextStyle(
+                                                              fontSize: 13.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.white,
+                                                              fontFamily:
+                                                                  "Poppins"),
+                                                        ),
+                                                        value: 2,
+                                                      ),
+                                                      PopupMenuItem(
+                                                        child: TextButton(
+                                                          onPressed: () {
+                                                            showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext
+                                                                      context) =>
+                                                                  AlertDialog(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20.0)),
+                                                                title: Text(
+                                                                  'Request Confirmation',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: Responsive.isDesktop(
+                                                                            context)
+                                                                        ? 23.0
+                                                                        : 23.0,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontFamily:
+                                                                        "Poppins",
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                                content:
+                                                                    Container(
+                                                                  height: Responsive.isDesktop(
+                                                                              context) ||
+                                                                          Responsive.isTablet(
+                                                                              context)
+                                                                      ? height *
+                                                                          0.18
+                                                                      : height *
+                                                                          0.23,
+                                                                  child: Column(
+                                                                    children: [
+                                                                      Text(
+                                                                        "Are you sure you want to Logout ?",
+                                                                        style: TextStyle(
+                                                                            fontSize:
+                                                                                18.0,
+                                                                            fontWeight:
+                                                                                FontWeight.w400,
+                                                                            fontFamily: "Poppins"),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                                                                            ? height *
+                                                                                0.02
+                                                                            : height *
+                                                                                0.05,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                                                                            ? height *
+                                                                                0.006
+                                                                            : 8.0,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        height: height *
+                                                                            0.02,
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Navigator.pop(context);
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              width: Responsive.isDesktop(context) || Responsive.isTablet(context) ? width * 0.1 : width * 0.32,
+                                                                              height: height * 0.055,
+                                                                              decoration: BoxDecoration(
+                                                                                color: Color(0Xffed5c62),
+                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                              ),
+                                                                              child: Center(
+                                                                                child: Text(
+                                                                                  "Cancel",
+                                                                                  style: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w600, fontFamily: "Poppins"),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                          SizedBox(
+                                                                            width: Responsive.isDesktop(context) || Responsive.isTablet(context)
+                                                                                ? 15.0
+                                                                                : 12.0,
+                                                                          ),
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () async {
+                                                                              AuthFunctions.signOut();
+                                                                              Navigator.pushNamed(context, AppRoutes.loginscreen);
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              width: Responsive.isDesktop(context) || Responsive.isTablet(context) ? width * 0.1 : width * 0.32,
+                                                                              height: height * 0.055,
+                                                                              decoration: BoxDecoration(
+                                                                                color: Color(0Xff5081db),
+                                                                                borderRadius: BorderRadius.circular(10.0),
+                                                                              ),
+                                                                              child: Center(
+                                                                                child: Text(
+                                                                                  "Logout",
+                                                                                  style: TextStyle(color: Colors.white, fontSize: 13.0, fontWeight: FontWeight.w600, fontFamily: "Poppins"),
+                                                                                ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          },
+                                                          child: Container(
+                                                            width: 100,
+                                                            child: Text(
+                                                              "Logout",
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      13.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontFamily:
+                                                                      "Poppins"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        // value: 3,
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.05,
+                                  ),
+                                  Visibility(
+                                    visible: user.userRole != "AppAdmin" &&
+                                        user.userRole != "SuperAdmin",
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Text(
+                                                user.currentsite,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17.0,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: "Poppins"),
+                                              ),
+                                            ),
+                                            Text(
+                                              getsiteloc(user.currentsite) ??
+                                                  "",
+                                              style: TextStyle(
+                                                  color: Color(0xFF6E7191),
+                                                  fontSize: 13.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontFamily: "Poppins"),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          width: 30.0,
+                                        ),
+                                        Text(
+                                          getsiteID(user.currentsite) ?? "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 17.0,
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "Poppins"),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.05,
+                                  ),
+                                  Visibility(
+                                    visible: user.userRole == "SiteOwner" ||
+                                        user.userRole == "SiteManager" ||
+                                        user.userRole == "SiteUser",
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => SiteDetails(
+                                                  sitedetail: sendsitedetails(
+                                                      user.currentsite),
+                                                  currentSite:
+                                                      user.currentsite)),
+                                        );
+                                      },
+                                      child: Showcase(
+                                        key: _key1,
+                                        disposeOnTap: true,
+                                        onTargetClick: () {
+                                          user.userRole == "SiteUser"
+                                              ? Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ShowCaseWidget(
+                                                      builder: Builder(
+                                                          builder: (context) => SiteDetails(
+                                                              sitedetail:
+                                                                  sendsitedetails(user
+                                                                      .currentsite),
+                                                              currentSite: user
+                                                                  .currentsite)),
+                                                    ),
+                                                  ))
+                                              : Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ShowCaseWidget(
+                                                      builder: Builder(
+                                                          builder: (context) => SiteDetails(
+                                                              sitedetail:
+                                                                  sendsitedetails(user
+                                                                      .currentsite),
+                                                              currentSite: user
+                                                                  .currentsite)),
+                                                    ),
+                                                  )).then((_) {
+                                                  setState(() {
+                                                    ShowCaseWidget.of(context)!
+                                                        .startShowCase([
+                                                      _key2,
+                                                      _key3,
+                                                      _key4,
+                                                      _key5,
+                                                    ]);
+                                                  });
+                                                });
+                                        },
+                                        title: "Submit Inventory",
+                                        description:
+                                            "Tap on this button to order",
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.white,
+                                        ),
+                                        descTextStyle: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                        ),
+                                        shapeBorder: CircleBorder(),
+                                        overlayPadding: EdgeInsets.all(8.0),
+                                        showcaseBackgroundColor:
+                                            Color(0xFF5081DB),
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        child: Stack(
+                                          alignment: Alignment.center,
+                                          children: [
+                                            Image.asset(
+                                              Common.assetImages +
+                                                  "Ellipse 49.png",
+                                              width: width * 0.16,
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.08,
+                                              child: Text(
+                                                "Submit Inventory",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: width * 0.0135,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins"),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.07,
+                                  ),
+                                  Visibility(
+                                    visible: user.userRole != "SiteUser",
+                                    child: InkWell(
+                                      onTap: () {
+                                        user.userRole == "AppAdmin" ||
+                                                user.userRole == "SuperAdmin"
+                                            ? Navigator.pushNamed(context,
+                                                AppRoutes.sitescreenadmin)
+                                            : Navigator.pushNamed(
+                                                context, AppRoutes.siteScreen);
+                                      },
+                                      child: Showcase(
+                                        key: user.userRole == "SiteManager" ||
+                                                user.userRole == "SiteOwner"
+                                            ? _key2
+                                            : _key1,
+                                        disposeOnTap: true,
+                                        description:
+                                            "You can view all your assigned sites here",
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.white,
+                                        ),
+                                        descTextStyle: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                        ),
+                                        shapeBorder: RoundedRectangleBorder(),
+                                        overlayPadding: EdgeInsets.all(8.0),
+                                        showcaseBackgroundColor:
+                                            Color(0xFF5081DB),
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        onTargetClick: () {
+                                          user.userRole == "AppAdmin" ||
+                                                  user.userRole == "SuperAdmin"
+                                              ? Navigator.pushNamed(context,
+                                                      AppRoutes.sitescreenadmin)
+                                                  .then((value) {
+                                                  setState(() {
+                                                    user.userRole ==
+                                                                "SiteManager" ||
+                                                            user.userRole ==
+                                                                "SiteOwner"
+                                                        ? ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ])
+                                                        : ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key2,
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ]);
+                                                  });
+                                                })
+                                              : Navigator.pushNamed(context,
+                                                      AppRoutes.siteScreen)
+                                                  .then((_) {
+                                                  setState(() {
+                                                    user.userRole ==
+                                                                "SiteManager" ||
+                                                            user.userRole ==
+                                                                "SiteOwner"
+                                                        ? ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ])
+                                                        : ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key2,
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ]);
+                                                  });
+                                                });
+                                        },
+                                        child: SiteContainer(
+                                            width: width,
+                                            text: "Sites",
+                                            height: height),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Visibility(
+                                    visible: user.userRole != "SiteUser",
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, AppRoutes.crudscreen);
+                                      },
+                                      child: Showcase(
+                                        key: user.userRole == "SiteManager" ||
+                                                user.userRole == "SiteOwner"
+                                            ? _key3
+                                            : _key2,
+                                        description:
+                                            "Click this button to go to Users Screen",
+                                        disposeOnTap: true,
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.white,
+                                        ),
+                                        descTextStyle: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                        ),
+                                        shapeBorder: RoundedRectangleBorder(),
+                                        overlayPadding: EdgeInsets.all(8.0),
+                                        showcaseBackgroundColor:
+                                            Color(0xFF5081DB),
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        onTargetClick: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ShowCaseWidget(
+                                                  builder: Builder(
+                                                      builder: (context) =>
+                                                          CrudScreen()),
+                                                ),
+                                              )).then((_) {
+                                            setState(() {
+                                              user.userRole == "SiteManager" ||
+                                                      user.userRole ==
+                                                          "SiteOwner"
+                                                  ? ShowCaseWidget.of(context)!
+                                                      .startShowCase(
+                                                          [_key4, _key5])
+                                                  : ShowCaseWidget.of(context)!
+                                                      .startShowCase([
+                                                      _key3,
+                                                      _key4,
+                                                      _key5
+                                                    ]);
+                                            });
+                                          });
+                                        },
+                                        child: SiteContainer(
+                                            width: width,
+                                            text: "Edit Employees",
+                                            height: height),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Visibility(
+                                    visible: user.userRole != "SiteUser",
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(context,
+                                            AppRoutes.createNotification);
+                                      },
+                                      child: Showcase(
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.white,
+                                        ),
+                                        descTextStyle: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                        ),
+                                        shapeBorder: RoundedRectangleBorder(),
+                                        overlayPadding: EdgeInsets.all(8.0),
+                                        showcaseBackgroundColor:
+                                            Color(0xFF5081DB),
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        disposeOnTap: true,
+                                        onTargetClick: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ShowCaseWidget(
+                                                  builder: Builder(
+                                                      builder: (context) =>
+                                                          CreateNotification()),
+                                                ),
+                                              )).then((_) {
+                                            setState(() {
+                                              user.userRole == "SiteManager" ||
+                                                      user.userRole ==
+                                                          "SiteOwner"
+                                                  ? ShowCaseWidget.of(context)!
+                                                      .startShowCase([_key5])
+                                                  : ShowCaseWidget.of(context)!
+                                                      .startShowCase(
+                                                          [_key4, _key5]);
+                                            });
+                                          });
+                                        },
+                                        key: user.userRole == "SiteManager" ||
+                                                user.userRole == "SiteOwner"
+                                            ? _key4
+                                            : _key3,
+                                        description:
+                                            "Tap here to go to Create Notifications Screen",
+                                        child: SiteContainer(
+                                            width: width,
+                                            text: "Create Notifications",
+                                            height: height),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: height * 0.02,
+                                  ),
+                                  Visibility(
+                                    visible: user.userRole == "SuperAdmin" ||
+                                        user.userRole == "AppAdmin" ||
+                                        user.userRole == "TerminalManager" ||
+                                        user.userRole == "TerminalUser",
+                                    child: InkWell(
+                                      onTap: () {
+                                        _restorableDateRangePickerRouteFuture
+                                            .present();
+                                      },
+                                      child: Showcase(
+                                        key: user.userRole == "SiteManager" ||
+                                                user.userRole == "SiteOwner"
+                                            ? _key5
+                                            : _key4,
+                                        description:
+                                            "You can download the Inventory Report by pressing this button",
+                                        disposeOnTap: true,
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.white,
+                                        ),
+                                        descTextStyle: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                        ),
+                                        shapeBorder: RoundedRectangleBorder(),
+                                        overlayPadding: EdgeInsets.all(8.0),
+                                        showcaseBackgroundColor:
+                                            Color(0xFF5081DB),
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        onTargetClick: () {
+                                          setState(() {
+                                            ShowCaseWidget.of(context)!
+                                                .startShowCase([_key5]);
+                                          });
+                                        },
+                                        child: SiteContainer(
+                                            width: width,
+                                            text: "Create Report",
+                                            height: height),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                height: height * 0.05,
-                              ),
-                              Visibility(
-                                visible: user.userRole != "AppAdmin" &&
-                                    user.userRole != "SuperAdmin",
-                                child: Row(
+                              /*
+                    Positioned(
+                      bottom: height * 0.02,
+                      right: width * 0.03,
+                      child:
+                          MenuButton(isTapped: !isTapped!, width: width * 0.34),
+                    ),
+                    */
+                            ],
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(top: height * 0.1),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: width * 0.08),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(""),
+                                      Logo(width: width),
+                                      Showcase(
+                                          key: user.userRole == "SiteManager" ||
+                                                  user.userRole == "SiteOwner"
+                                              ? _key4
+                                              : _key3,
+                                          titleTextStyle: TextStyle(
+                                            fontSize: 17.0,
+                                            color: Colors.white,
+                                          ),
+                                          descTextStyle: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                          shapeBorder: CircleBorder(),
+                                          overlayPadding: EdgeInsets.all(8.0),
+                                          showcaseBackgroundColor:
+                                              Color(0xFF5081DB),
+                                          contentPadding: EdgeInsets.all(8.0),
+                                          description:
+                                              "You can re-watch the tour here",
+                                          child: MenuButton(
+                                              isTapped: isTapped,
+                                              width: width)),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.05,
+                                ),
+                                Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Column(
@@ -468,9 +1526,6 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
-                                      width: 30.0,
-                                    ),
                                     Text(
                                       getsiteID(user.currentsite) ?? "",
                                       style: TextStyle(
@@ -481,338 +1536,308 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                     ),
                                   ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: height * 0.05,
-                              ),
-                              Showcase(
-                                key: _key1,
-                                disposeOnTap: true,
-                                onTargetClick: () {
-                                  user.userRole == "SiteUser"
-                                      ? Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShowCaseWidget(
-                                              builder: Builder(
-                                                  builder: (context) =>
-                                                      SiteDetails(
-                                                          sitedetail:
-                                                              sendsitedetails(user
-                                                                  .currentsite),
-                                                          currentSite: user
-                                                              .currentsite)),
-                                            ),
-                                          ))
-                                      : Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                ShowCaseWidget(
-                                              builder: Builder(
-                                                  builder: (context) =>
-                                                      SiteDetails(
-                                                          sitedetail:
-                                                              sendsitedetails(user
-                                                                  .currentsite),
-                                                          currentSite: user
-                                                              .currentsite)),
-                                            ),
-                                          )).then((_) {
-                                          setState(() {
-                                            ShowCaseWidget.of(context)!
-                                                .startShowCase([key2, _key2]);
-                                          });
-                                        });
-                                },
-                                title: "Submit Inventory",
-                                description: "Tap on this button to order",
-                                titleTextStyle: TextStyle(
-                                  fontSize: 17.0,
-                                  color: Colors.white,
+                                SizedBox(
+                                  height: height * 0.05,
                                 ),
-                                descTextStyle: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.white,
-                                ),
-                                shapeBorder: CircleBorder(),
-                                overlayPadding: EdgeInsets.all(8.0),
-                                showcaseBackgroundColor: Color(0xFF5081DB),
-                                contentPadding: EdgeInsets.all(8.0),
-                                child: Visibility(
+                                Visibility(
                                   visible: user.userRole == "SiteOwner" ||
                                       user.userRole == "SiteManager" ||
                                       user.userRole == "SiteUser",
                                   child: InkWell(
-                                    onTap: () {},
-                                    child: Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Image.asset(
-                                          Common.assetImages + "Ellipse 49.png",
-                                          width: width * 0.16,
-                                        ),
-                                        SizedBox(
-                                          width: width * 0.08,
-                                          child: Text(
-                                            "Submit Inventory",
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: width * 0.0135,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.white,
-                                                fontFamily: "Poppins"),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => SiteDetails(
+                                              currentSite: user.currentsite,
+                                              sitedetail: sendsitedetails(
+                                                  user.currentsite),
+                                            ),
+                                          ));
+                                    },
+                                    child: Showcase(
+                                      key: _key1,
+                                      disposeOnTap: true,
+                                      onTargetClick: () {
+                                        user.userRole == "SiteUser"
+                                            ? Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ShowCaseWidget(
+                                                    builder: Builder(
+                                                        builder: (context) => SiteDetails(
+                                                            sitedetail:
+                                                                sendsitedetails(user
+                                                                    .currentsite),
+                                                            currentSite: user
+                                                                .currentsite)),
+                                                  ),
+                                                ))
+                                            : Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ShowCaseWidget(
+                                                    builder: Builder(
+                                                        builder: (context) => SiteDetails(
+                                                            sitedetail:
+                                                                sendsitedetails(user
+                                                                    .currentsite),
+                                                            currentSite: user
+                                                                .currentsite)),
+                                                  ),
+                                                )).then((_) {
+                                                setState(() {
+                                                  ShowCaseWidget.of(context)!
+                                                      .startShowCase([
+                                                    _key2,
+                                                    _key3,
+                                                    _key4,
+                                                    _key5,
+                                                  ]);
+                                                });
+                                              });
+                                      },
+                                      title: "Submit Inventory",
+                                      description:
+                                          "Tap on this button to order",
+                                      titleTextStyle: TextStyle(
+                                        fontSize: 17.0,
+                                        color: Colors.white,
+                                      ),
+                                      descTextStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                      shapeBorder: CircleBorder(),
+                                      overlayPadding: EdgeInsets.all(8.0),
+                                      showcaseBackgroundColor:
+                                          Color(0xFF5081DB),
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      child: Stack(
+                                        alignment: Alignment.center,
+                                        children: [
+                                          Image.asset(
+                                            Common.assetImages +
+                                                "Ellipse 49.png",
+                                            width: width * 0.7,
                                           ),
-                                        ),
-                                      ],
+                                          SizedBox(
+                                            width: width * 0.4,
+                                            child: Text(
+                                              "Submit Inventory",
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 34.0,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.white,
+                                                  fontFamily: "Poppins"),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                height: height * 0.07,
-                              ),
-                              Visibility(
-                                visible: user.userRole != "SiteUser",
-                                child: InkWell(
+                                SizedBox(
+                                  height: height * 0.07,
+                                ),
+                                Visibility(
+                                  visible: user.userRole != "SiteUser",
+                                  child: InkWell(
+                                      onTap: () {
+                                        user.userRole == "AppAdmin" ||
+                                                user.userRole == "SuperAdmin"
+                                            ? Navigator.pushNamed(context,
+                                                AppRoutes.sitescreenadmin)
+                                            : Navigator.pushNamed(
+                                                context, AppRoutes.siteScreen);
+                                      },
+                                      child: Showcase(
+                                        key: user.userRole == "SiteManager" ||
+                                                user.userRole == "SiteOwner"
+                                            ? _key2
+                                            : _key1,
+                                        disposeOnTap: true,
+                                        description:
+                                            "You can view all your assigned sites here",
+                                        titleTextStyle: TextStyle(
+                                          fontSize: 17.0,
+                                          color: Colors.white,
+                                        ),
+                                        descTextStyle: TextStyle(
+                                          fontSize: 16.0,
+                                          color: Colors.white,
+                                        ),
+                                        shapeBorder: RoundedRectangleBorder(),
+                                        overlayPadding: EdgeInsets.all(8.0),
+                                        showcaseBackgroundColor:
+                                            Color(0xFF5081DB),
+                                        contentPadding: EdgeInsets.all(8.0),
+                                        onTargetClick: () {
+                                          user.userRole == "AppAdmin" ||
+                                                  user.userRole == "SuperAdmin"
+                                              ? Navigator.pushNamed(context,
+                                                      AppRoutes.sitescreenadmin)
+                                                  .then((_) {
+                                                  setState(() {
+                                                    user.userRole ==
+                                                                "SiteManager" ||
+                                                            user.userRole ==
+                                                                "SiteOwner"
+                                                        ? ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ])
+                                                        : ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key2,
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ]);
+                                                  });
+                                                })
+                                              : Navigator.pushNamed(context,
+                                                      AppRoutes.siteScreen)
+                                                  .then((_) {
+                                                  setState(() {
+                                                    user.userRole ==
+                                                                "SiteManager" ||
+                                                            user.userRole ==
+                                                                "SiteOwner"
+                                                        ? ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ])
+                                                        : ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase([
+                                                            _key2,
+                                                            _key3,
+                                                            _key4,
+                                                            _key5
+                                                          ]);
+                                                  });
+                                                });
+                                        },
+                                        child: SiteContainer(
+                                            width: width,
+                                            text: "Sites",
+                                            height: height),
+                                      )),
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                Visibility(
+                                  visible: user.userRole != "SiteUser",
+                                  child: InkWell(
                                     onTap: () {
-                                      // user.userRole == "AppAdmin" ||
-                                      //         user.userRole == "SuperAdmin"
-                                      //     ? Navigator.pushNamed(context,
-                                      //         AppRoutes.sitescreenadmin)
-                                      //     : Navigator.pushNamed(
-                                      //         context, AppRoutes.siteScreen);
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.crudscreen);
                                     },
                                     child: Showcase(
-                                      key: key2,
-                                      description: "test1",
+                                      key: user.userRole == "SiteManager" ||
+                                              user.userRole == "SiteOwner"
+                                          ? _key3
+                                          : _key2,
+                                      description:
+                                          "Click this button to go to Users Screen",
+                                      disposeOnTap: true,
+                                      titleTextStyle: TextStyle(
+                                        fontSize: 17.0,
+                                        color: Colors.white,
+                                      ),
+                                      descTextStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                      shapeBorder: RoundedRectangleBorder(),
+                                      overlayPadding: EdgeInsets.all(8.0),
+                                      showcaseBackgroundColor:
+                                          Color(0xFF5081DB),
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      onTargetClick: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ShowCaseWidget(
+                                                builder: Builder(
+                                                    builder: (context) =>
+                                                        CrudScreen()),
+                                              ),
+                                            )).then((_) {
+                                          setState(() {
+                                            user.userRole == "SiteManager" ||
+                                                    user.userRole == "SiteOwner"
+                                                ? ShowCaseWidget.of(context)!
+                                                    .startShowCase(
+                                                        [_key4, _key5])
+                                                : ShowCaseWidget.of(context)!
+                                                    .startShowCase(
+                                                        [_key3, _key4, _key5]);
+                                          });
+                                        });
+                                      },
                                       child: SiteContainer(
                                           width: width,
-                                          text: "Sites",
+                                          text: "Edit Employees",
                                           height: height),
-                                    )),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Visibility(
-                                visible: user.userRole != "SiteUser",
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.crudscreen);
-                                  },
-                                  child: SiteContainer(
-                                      width: width,
-                                      text: "Edit Employees",
-                                      height: height),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Visibility(
-                                visible: user.userRole != "SiteUser",
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.pushNamed(
-                                        context, AppRoutes.createNotification);
-                                  },
-                                  child: SiteContainer(
-                                      width: width,
-                                      text: "Create Notifications",
-                                      height: height),
-                                ),
-                              ),
-                              SizedBox(
-                                height: height * 0.02,
-                              ),
-                              Visibility(
-                                visible: user.userRole == "SuperAdmin" ||
-                                    user.userRole == "AppAdmin" ||
-                                    user.userRole == "TerminalManager" ||
-                                    user.userRole == "TerminalUser",
-                                child: InkWell(
-                                  onTap: () {
-                                    _restorableDateRangePickerRouteFuture
-                                        .present();
-                                  },
-                                  child: SiteContainer(
-                                      width: width,
-                                      text: "Create Report",
-                                      height: height),
-                                ),
-                              ),
-                            ],
-                          ),
-                          /*
-                    Positioned(
-                      bottom: height * 0.02,
-                      right: width * 0.03,
-                      child:
-                          MenuButton(isTapped: !isTapped!, width: width * 0.34),
-                    ),
-                    */
-                        ],
-                      )
-                    : Padding(
-                        padding: EdgeInsets.only(top: height * 0.1),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CustomAppheader(width: width),
-                            SizedBox(
-                              height: height * 0.05,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {},
-                                      child: Text(
-                                        user.currentsite,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 17.0,
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "Poppins"),
-                                      ),
                                     ),
-                                    Text(
-                                      getsiteloc(user.currentsite) ?? "",
-                                      style: TextStyle(
-                                          color: Color(0xFF6E7191),
-                                          fontSize: 13.0,
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                                Text(
-                                  getsiteID(user.currentsite) ?? "",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 17.0,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Poppins"),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                Visibility(
+                                  visible: (user.userRole == "SuperAdmin" ||
+                                          user.userRole == "AppAdmin" ||
+                                          user.userRole == "TerminalManager" ||
+                                          user.userRole == "TerminalUser") &&
+                                      (Responsive.isDesktop(context) ||
+                                          Responsive.isTablet(context)),
+                                  child: InkWell(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, AppRoutes.notifications);
+                                    },
+                                    child: SiteContainer(
+                                        width: width,
+                                        text: "Create Notifications",
+                                        height: height),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: height * 0.02,
+                                ),
+                                Visibility(
+                                  visible: (user.userRole == "SuperAdmin" ||
+                                          user.userRole == "AppAdmin" ||
+                                          user.userRole == "TerminalManager" ||
+                                          user.userRole == "TerminalUser") &&
+                                      (Responsive.isDesktop(context) ||
+                                          Responsive.isTablet(context)),
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: SiteContainer(
+                                        width: width,
+                                        text: "Create Report",
+                                        height: height),
+                                  ),
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: height * 0.05,
-                            ),
-                            Visibility(
-                              visible: user.userRole == "SiteOwner" ||
-                                  user.userRole == "SiteManager" ||
-                                  user.userRole == "SiteUser",
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => SiteDetails(
-                                          currentSite: user.currentsite,
-                                          sitedetail:
-                                              sendsitedetails(user.currentsite),
-                                        ),
-                                      ));
-                                },
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Image.asset(
-                                      Common.assetImages + "Ellipse 49.png",
-                                      width: width * 0.7,
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.4,
-                                      child: Text(
-                                        "Submit   Inventories",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 34.0,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white,
-                                            fontFamily: "Poppins"),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.07,
-                            ),
-                            Visibility(
-                              visible: user.userRole != "SiteUser",
-                              child: InkWell(
-                                  onTap: () {
-                                    user.userRole == "AppAdmin" ||
-                                            user.userRole == "SuperAdmin"
-                                        ? Navigator.pushNamed(
-                                            context, AppRoutes.sitescreenadmin)
-                                        : Navigator.pushNamed(
-                                            context, AppRoutes.siteScreen);
-                                  },
-                                  child: SiteContainer(
-                                      width: width,
-                                      text: "Sites",
-                                      height: height)),
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Visibility(
-                              visible: user.userRole != "SiteUser",
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.crudscreen);
-                                },
-                                child: SiteContainer(
-                                    width: width,
-                                    text: "Edit Employees",
-                                    height: height),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Visibility(
-                              visible: user.userRole != "SiteUser",
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, AppRoutes.notifications);
-                                },
-                                child: SiteContainer(
-                                    width: width,
-                                    text: "Create Notifications",
-                                    height: height),
-                              ),
-                            ),
-                            SizedBox(
-                              height: height * 0.02,
-                            ),
-                            Visibility(
-                              visible: (user.userRole == "SuperAdmin" ||
-                                  user.userRole == "AppAdmin" ||
-                                  user.userRole == "TerminalManager" ||
-                                  user.userRole == "TerminalUser"),
-                              child: InkWell(
-                                onTap: () {},
-                                child: SiteContainer(
-                                    width: width,
-                                    text: "Create Report",
-                                    height: height),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                          ),
               ),
             ),
     );

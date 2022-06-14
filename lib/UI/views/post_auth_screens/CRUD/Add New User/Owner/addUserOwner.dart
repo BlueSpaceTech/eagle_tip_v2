@@ -10,6 +10,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 // import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
@@ -178,15 +179,23 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
   }
 
   late Future<ListResult> file;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fToast = FToast();
     fToast!.init(context);
     file = FirebaseStorage.instance.ref('/Templates').list();
     getData();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1, _key2, _key3, _key4]);
+    });
   }
+
+  final _key2 = GlobalKey();
+  final _key1 = GlobalKey();
+  final _key3 = GlobalKey();
+  final _key4 = GlobalKey();
 
   List inviteData = [];
   @override
@@ -290,10 +299,27 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                   }));
                                 }
                               },
-                              child: customfab(
-                                  width: width,
-                                  text: "Import CSV",
-                                  height: height),
+                              child: Showcase(
+                                key: _key3,
+                                description:
+                                    "You can also import the CSV file with users details and Invite will be sent to them automatically",
+                                titleTextStyle: TextStyle(
+                                  fontSize: 17.0,
+                                  color: Colors.white,
+                                ),
+                                descTextStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                                shapeBorder: RoundedRectangleBorder(),
+                                overlayPadding: EdgeInsets.all(8.0),
+                                showcaseBackgroundColor: Color(0xFF5081DB),
+                                contentPadding: EdgeInsets.all(8.0),
+                                child: customfab(
+                                    width: width,
+                                    text: "Import CSV",
+                                    height: height),
+                              ),
                             ),
                             InkWell(
                                 onTap: () async {
@@ -311,29 +337,47 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                   // anchorElement.download = downloadURL;
                                   // anchorElement.click();
                                 },
-                                child: Container(
-                                  // alignment: Alignment.center,
-                                  width: Responsive.isDesktop(context)
-                                      ? width * 0.13
-                                      : width * 0.42,
-                                  height: height * 0.064,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff5081DB),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
+                                child: Showcase(
+                                  key: _key4,
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 17.0,
+                                    color: Colors.white,
                                   ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Download CSV Template",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            color: Colors.white,
-                                            fontFamily: "Poppins",
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
+                                  descTextStyle: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                  shapeBorder: RoundedRectangleBorder(),
+                                  overlayPadding: EdgeInsets.all(8.0),
+                                  showcaseBackgroundColor: Color(0xFF5081DB),
+                                  contentPadding: EdgeInsets.all(8.0),
+                                  description:
+                                      "Tap to download the CSV Template for IMPORT CSV",
+                                  child: Container(
+                                    // alignment: Alignment.center,
+                                    width: Responsive.isDesktop(context)
+                                        ? width * 0.13
+                                        : width * 0.42,
+                                    height: height * 0.064,
+                                    decoration: BoxDecoration(
+                                      color: Color(0xff5081DB),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Download CSV Template",
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.white,
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 )),
                           ],
@@ -455,13 +499,31 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       SizedBox(
                         height: height * 0.04,
                       ),
-                      Text(
-                        "Site",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
+                      Showcase(
+                        key: _key1,
+                        description:
+                            "You can select the site and the role for the user you want to send an invitation to",
+                        // disposeOnTap: true,
+                        titleTextStyle: TextStyle(
+                          fontSize: 17.0,
                           color: Colors.white,
-                          fontFamily: "Poppins",
+                        ),
+                        descTextStyle: TextStyle(
+                          fontSize: 16.0,
+                          color: Colors.white,
+                        ),
+                        shapeBorder: RoundedRectangleBorder(),
+                        overlayPadding: EdgeInsets.all(8.0),
+                        showcaseBackgroundColor: Color(0xFF5081DB),
+                        contentPadding: EdgeInsets.all(8.0),
+                        child: Text(
+                          "Site",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -607,19 +669,56 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                     ));
                               }
                             },
-                            child: Card(
-                              elevation: 5.0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
+                            child: Showcase(
+                              key: _key2,
+                              description:
+                                  "Tap to enter the details of the user",
+                              disposeOnTap: true,
+                              onTargetClick: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ShowCaseWidget(builder: Builder(
+                                              builder: (context) {
+                                                return Invitation(
+                                                  sites: selectedsites,
+                                                  role: selectedrOLE,
+                                                );
+                                              },
+                                            )))).then((_) {
+                                  setState(() {
+                                    ShowCaseWidget.of(context)!
+                                        .startShowCase([_key3, _key4]);
+                                  });
+                                });
+                              },
+                              titleTextStyle: TextStyle(
+                                fontSize: 17.0,
+                                color: Colors.white,
                               ),
-                              child: Responsive.isDesktop(context)
-                                  ? customfab(
-                                      width: width,
-                                      text: "Next",
-                                      height: height,
-                                    )
-                                  : CustomSubmitButton(
-                                      width: width, title: "Next"),
+                              descTextStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                              shapeBorder: RoundedRectangleBorder(),
+                              overlayPadding: EdgeInsets.all(8.0),
+                              showcaseBackgroundColor: Color(0xFF5081DB),
+                              contentPadding: EdgeInsets.all(8.0),
+                              child: Card(
+                                elevation: 5.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                child: Responsive.isDesktop(context)
+                                    ? customfab(
+                                        width: width,
+                                        text: "Next",
+                                        height: height,
+                                      )
+                                    : CustomSubmitButton(
+                                        width: width, title: "Next"),
+                              ),
                             ),
                           ),
                         ],

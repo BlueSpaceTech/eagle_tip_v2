@@ -4,6 +4,7 @@ import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/allchats.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
@@ -54,9 +55,13 @@ class _BottomNavState extends State<BottomNav> {
     double height = MediaQuery.of(context).size.height;
     List<Widget> _widgetOptions = <Widget>[
       MyProfile(),
-      HomeScreen(
-        showdialog: true,
-        sites: user?.sites ?? [],
+      ShowCaseWidget(
+        builder: Builder(builder: (context) {
+          return HomeScreen(
+            showdialog: true,
+            sites: user?.sites ?? [],
+          );
+        }),
       ),
       Notifications(),
       //  MessageMain(

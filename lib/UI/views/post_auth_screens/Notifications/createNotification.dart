@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -112,6 +113,10 @@ class _CreateNotificationState extends State<CreateNotification> {
     fToast = FToast();
     getData();
     fToast!.init(context);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!
+          .startShowCase([_key1, _key2, _key3, _key4, _key5, _key6, _key7]);
+    });
   }
 
   List<SitesDetails>? sitedetails;
@@ -124,6 +129,14 @@ class _CreateNotificationState extends State<CreateNotification> {
       allsitename.add(document.sitename);
     }
   }
+
+  final _key1 = GlobalKey();
+  final _key2 = GlobalKey();
+  final _key3 = GlobalKey();
+  final _key4 = GlobalKey();
+  final _key5 = GlobalKey();
+  final _key6 = GlobalKey();
+  final _key7 = GlobalKey();
 
   String? title;
   String? link;
@@ -217,14 +230,31 @@ class _CreateNotificationState extends State<CreateNotification> {
                               ? MainAxisAlignment.spaceBetween
                               : MainAxisAlignment.center,
                           children: [
-                            CreateNotifyTextField(
-                              valueChanged: ((value) {
-                                setState(() {
-                                  title = value;
-                                });
-                              }),
-                              labelText: "Title",
-                              isactive: true,
+                            Showcase(
+                              key: _key1,
+                              description:
+                                  "Enter the title of the notification and the link(Optional)",
+                              titleTextStyle: TextStyle(
+                                fontSize: 17.0,
+                                color: Colors.white,
+                              ),
+                              descTextStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                              shapeBorder: RoundedRectangleBorder(),
+                              overlayPadding: EdgeInsets.all(8.0),
+                              showcaseBackgroundColor: Color(0xFF5081DB),
+                              contentPadding: EdgeInsets.all(8.0),
+                              child: CreateNotifyTextField(
+                                valueChanged: ((value) {
+                                  setState(() {
+                                    title = value;
+                                  });
+                                }),
+                                labelText: "Title",
+                                isactive: true,
+                              ),
                             ),
                             SizedBox(
                               width: Responsive.isTablet(context) ? 10.0 : 0.0,
@@ -243,141 +273,193 @@ class _CreateNotificationState extends State<CreateNotification> {
                         SizedBox(
                           height: height * 0.03,
                         ),
-                        Container(
-                          width: width * 0.42,
-                          padding: EdgeInsets.only(
-                              top: 10.0,
-                              left: width * 0.01,
-                              right: width * 0.02),
-                          height: height * 0.09,
-                          decoration: BoxDecoration(
+                        Showcase(
+                          key: _key2,
+                          description:
+                              "Select which role you want to send this notification to",
+                          titleTextStyle: TextStyle(
+                            fontSize: 17.0,
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Audience",
-                                style: TextStyle(
-                                    color: Color(0xff6e7191),
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    TextButton(
-                                      child: Text(
-                                        'Select Your Audience',
-                                        style: TextStyle(
-                                          color: Color(0xFF6E7191),
-                                        ),
-                                      ),
-                                      onPressed: _showMultiSelect,
-                                    ),
-                                    Row(
-                                      children: [
-                                        for (var name in _selectedItems)
-                                          Text(
-                                            name + " ",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: "Poppins",
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                      ],
-                                    ),
-                                  ],
+                          descTextStyle: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                          shapeBorder: RoundedRectangleBorder(),
+                          overlayPadding: EdgeInsets.all(8.0),
+                          showcaseBackgroundColor: Color(0xFF5081DB),
+                          contentPadding: EdgeInsets.all(8.0),
+                          child: Container(
+                            width: width * 0.42,
+                            padding: EdgeInsets.only(
+                                top: 10.0,
+                                left: width * 0.01,
+                                right: width * 0.02),
+                            height: height * 0.09,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Audience",
+                                  style: TextStyle(
+                                      color: Color(0xff6e7191),
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      TextButton(
+                                        child: Text(
+                                          'Select Your Audience',
+                                          style: TextStyle(
+                                            color: Color(0xFF6E7191),
+                                          ),
+                                        ),
+                                        onPressed: _showMultiSelect,
+                                      ),
+                                      Row(
+                                        children: [
+                                          for (var name in _selectedItems)
+                                            Text(
+                                              name + " ",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        Container(
-                          width: width * 0.42,
-                          padding: EdgeInsets.only(
-                              top: 10.0,
-                              left: width * 0.01,
-                              right: width * 0.02),
-                          height: height * 0.09,
-                          decoration: BoxDecoration(
+                        Showcase(
+                          key: _key3,
+                          description: "Select the sites for the roles",
+                          titleTextStyle: TextStyle(
+                            fontSize: 17.0,
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Sites",
-                                style: TextStyle(
-                                    color: Color(0xff6e7191),
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    TextButton(
-                                      child: Text(
-                                        'Select Sites',
-                                        style: TextStyle(
-                                          color: Color(0xFF6E7191),
-                                        ),
-                                      ),
-                                      onPressed: _showSiteSelect,
-                                    ),
-                                    Row(
-                                      children: [
-                                        for (var name in _selectedItems2)
-                                          Text(
-                                            name + " ",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontFamily: "Poppins",
-                                                fontWeight: FontWeight.w500),
-                                          )
-                                      ],
-                                    ),
-                                  ],
+                          descTextStyle: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                          shapeBorder: RoundedRectangleBorder(),
+                          overlayPadding: EdgeInsets.all(8.0),
+                          showcaseBackgroundColor: Color(0xFF5081DB),
+                          contentPadding: EdgeInsets.all(8.0),
+                          child: Container(
+                            width: width * 0.42,
+                            padding: EdgeInsets.only(
+                                top: 10.0,
+                                left: width * 0.01,
+                                right: width * 0.02),
+                            height: height * 0.09,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Sites",
+                                  style: TextStyle(
+                                      color: Color(0xff6e7191),
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500),
                                 ),
-                              ),
-                            ],
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      TextButton(
+                                        child: Text(
+                                          'Select Sites',
+                                          style: TextStyle(
+                                            color: Color(0xFF6E7191),
+                                          ),
+                                        ),
+                                        onPressed: _showSiteSelect,
+                                      ),
+                                      Row(
+                                        children: [
+                                          for (var name in _selectedItems2)
+                                            Text(
+                                              name + " ",
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        Container(
-                          width: width * 0.42,
-                          padding: EdgeInsets.only(
-                              left: width * 0.01, right: width * 0.06),
-                          height: height * 0.35,
-                          decoration: BoxDecoration(
+                        Showcase(
+                          key: _key4,
+                          description: "Enter the description here",
+                          titleTextStyle: TextStyle(
+                            fontSize: 17.0,
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
-                          child: TextFormField(
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            onChanged: ((value) {
-                              setState(() {
-                                description = value;
-                              });
-                            }),
-                            textAlign: TextAlign.left,
-                            style: TextStyle(fontFamily: "Poppins"),
-                            cursorColor: Colors.black12,
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "Message",
-                              labelStyle: TextStyle(
-                                  color: Color(0xff6e7191),
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w500),
+                          descTextStyle: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                          shapeBorder: RoundedRectangleBorder(),
+                          overlayPadding: EdgeInsets.all(8.0),
+                          showcaseBackgroundColor: Color(0xFF5081DB),
+                          contentPadding: EdgeInsets.all(8.0),
+                          child: Container(
+                            width: width * 0.42,
+                            padding: EdgeInsets.only(
+                                left: width * 0.01, right: width * 0.06),
+                            height: height * 0.35,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                            child: TextFormField(
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
+                              onChanged: ((value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              }),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(fontFamily: "Poppins"),
+                              cursorColor: Colors.black12,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                labelText: "Message",
+                                labelStyle: TextStyle(
+                                    color: Color(0xff6e7191),
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w500),
+                              ),
                             ),
                           ),
                         ),
@@ -420,40 +502,57 @@ class _CreateNotificationState extends State<CreateNotification> {
                                         currentTime: DateTime.now(),
                                         locale: LocaleType.en);
                                   },
-                                  child: Container(
-                                    width: width * 0.13,
-                                    height: height * 0.08,
-                                    padding: EdgeInsets.only(
-                                        top: height * 0.01,
-                                        left: width * 0.02,
-                                        right: width * 0.04),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Hour",
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 16.0,
-                                            color: Color(0xFF6E7191),
-                                          ),
-                                        ),
-                                        Text(
-                                          DateFormat("dd-MM-yyyy")
-                                              .format(scheduledDate),
-                                          style: TextStyle(
-                                              fontSize: width * 0.01,
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Poppins"),
-                                        ),
-                                      ],
-                                    ),
-                                    decoration: BoxDecoration(
+                                  child: Showcase(
+                                    key: _key5,
+                                    description:
+                                        "Select the time to schedule the notification",
+                                    titleTextStyle: TextStyle(
+                                      fontSize: 17.0,
                                       color: Colors.white,
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
+                                    ),
+                                    descTextStyle: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.white,
+                                    ),
+                                    shapeBorder: RoundedRectangleBorder(),
+                                    overlayPadding: EdgeInsets.all(8.0),
+                                    showcaseBackgroundColor: Color(0xFF5081DB),
+                                    contentPadding: EdgeInsets.all(8.0),
+                                    child: Container(
+                                      width: width * 0.13,
+                                      height: height * 0.08,
+                                      padding: EdgeInsets.only(
+                                          top: height * 0.01,
+                                          left: width * 0.02,
+                                          right: width * 0.04),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Hour",
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16.0,
+                                              color: Color(0xFF6E7191),
+                                            ),
+                                          ),
+                                          Text(
+                                            DateFormat("dd-MM-yyyy")
+                                                .format(scheduledDate),
+                                            style: TextStyle(
+                                                fontSize: width * 0.01,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                        ],
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -462,29 +561,47 @@ class _CreateNotificationState extends State<CreateNotification> {
                             SizedBox(
                               width: width * 0.05,
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Days",
-                                  style: TextStyle(
-                                      fontSize: width * 0.01,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                      fontFamily: "Poppins"),
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                DaysRow(
-                                    valueChanged: (val) {
-                                      setState(() {
-                                        print(val);
-                                        dates = val;
-                                      });
-                                    },
-                                    width: width),
-                              ],
+                            Showcase(
+                              key: _key6,
+                              description:
+                                  "You can also schedule the notifications for repetition  "
+                                  "             ",
+                              titleTextStyle: TextStyle(
+                                fontSize: 17.0,
+                                color: Colors.white,
+                              ),
+                              descTextStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                              shapeBorder: RoundedRectangleBorder(),
+                              overlayPadding: EdgeInsets.all(8.0),
+                              showcaseBackgroundColor: Color(0xFF5081DB),
+                              contentPadding: EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Days",
+                                    style: TextStyle(
+                                        fontSize: width * 0.01,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  DaysRow(
+                                      valueChanged: (val) {
+                                        setState(() {
+                                          print(val);
+                                          dates = val;
+                                        });
+                                      },
+                                      width: width),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -567,21 +684,38 @@ class _CreateNotificationState extends State<CreateNotification> {
                                   );
                                 }
                               },
-                              child: Container(
-                                width: width * 0.08,
-                                height: height * 0.058,
-                                decoration: BoxDecoration(
-                                  color: Color(0Xff5081db),
-                                  borderRadius: BorderRadius.circular(8.0),
+                              child: Showcase(
+                                key: _key7,
+                                description:
+                                    "Click on Send to schedule the notification",
+                                titleTextStyle: TextStyle(
+                                  fontSize: 17.0,
+                                  color: Colors.white,
                                 ),
-                                child: Center(
-                                  child: Text(
-                                    "Send",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10.0,
-                                        fontWeight: FontWeight.w600,
-                                        fontFamily: "Poppins"),
+                                descTextStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                                shapeBorder: RoundedRectangleBorder(),
+                                overlayPadding: EdgeInsets.all(8.0),
+                                showcaseBackgroundColor: Color(0xFF5081DB),
+                                contentPadding: EdgeInsets.all(8.0),
+                                child: Container(
+                                  width: width * 0.08,
+                                  height: height * 0.058,
+                                  decoration: BoxDecoration(
+                                    color: Color(0Xff5081db),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Send",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 10.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Poppins"),
+                                    ),
                                   ),
                                 ),
                               ),

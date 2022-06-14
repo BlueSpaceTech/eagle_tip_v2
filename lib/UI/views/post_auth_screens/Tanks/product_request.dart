@@ -26,7 +26,7 @@ class ProductRequest extends StatefulWidget {
       required this.maxVal,
       required this.divisionNum})
       : super(key: key);
-  final int tankNumber;
+  final String tankNumber;
   final int maxVal;
   final int divisionNum;
   @override
@@ -131,7 +131,7 @@ class _ProductRequestState extends State<ProductRequest> {
                       child: Column(
                         children: [
                           Text(
-                            "Tank " + widget.tankNumber.toString(),
+                            widget.tankNumber.toString(),
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17.0,

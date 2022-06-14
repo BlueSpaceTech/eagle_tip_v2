@@ -340,12 +340,35 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                           child: TabBar(
                             tabs: [
                               Tab(
-                                child: Text(
-                                  "Tanks",
-                                  style: TextStyle(
-                                      fontSize: 13.0,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: "Poppins"),
+                                child: Showcase(
+                                  key: key1,
+                                  showArrow: false,
+                                  disposeOnTap: true,
+                                  onTargetClick: () {
+                                    Navigator.pop(context);
+                                  },
+                                  title: "Order Fuel",
+                                  description:
+                                      "You can order fuel by tapping on the tank box",
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 17.0,
+                                    color: Colors.white,
+                                  ),
+                                  descTextStyle: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                  shapeBorder: RoundedRectangleBorder(),
+                                  overlayPadding: EdgeInsets.all(8.0),
+                                  showcaseBackgroundColor: Color(0xFF5081DB),
+                                  contentPadding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Tanks",
+                                    style: TextStyle(
+                                        fontSize: 13.0,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Poppins"),
+                                  ),
                                 ),
                               ),
                               Tab(
@@ -720,8 +743,8 @@ class _FuelReqColumnState extends State<FuelReqColumn>
     for (int i = 0; i < len; i++) {
       data.add({
         "amount": vals[i],
-        "tanknumber": widget.sitedetail.products[i]["TNKQLR"],
-        "tankid": widget.sitedetail.products[i]["PRDNO"],
+        "tanknumber": tankqlr[i],
+        "productName": sortedvals[i],
       });
     }
     return data;

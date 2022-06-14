@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, deprecated_member_use
 
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
@@ -20,7 +20,7 @@ class SpecificNotification extends StatelessWidget {
       required this.hyperlink})
       : super(key: key);
   final String notifyName;
-  final String hyperlink;
+  final String? hyperlink;
   final String notifyContent;
   @override
   Widget build(BuildContext context) {
@@ -85,11 +85,13 @@ class SpecificNotification extends StatelessWidget {
                                     ),
                                     InkWell(
                                       onTap: (() {
-                                        launch(hyperlink);
-                                        print(hyperlink);
+                                        if (hyperlink != null) {
+                                          launch(hyperlink!);
+                                        }
+                                        // print(hyperlink);
                                       }),
                                       child: Text(
-                                        hyperlink,
+                                        hyperlink ?? "",
                                         style: TextStyle(
                                             fontSize: 12.0,
                                             color: Colors.white,
@@ -146,16 +148,36 @@ class SpecificNotification extends StatelessWidget {
                           SizedBox(
                             height: height * 0.06,
                           ),
-                          Container(
-                            width: width * 0.9,
-                            height: height * 0.55,
-                            child: Text(
-                              notifyContent,
-                              style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "Poppins"),
+                          SizedBox(
+                            width: width * 0.4,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  notifyContent,
+                                  style: TextStyle(
+                                      fontSize: 12.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Poppins"),
+                                ),
+                                InkWell(
+                                  onTap: (() {
+                                    if (hyperlink != null) {
+                                      launch(hyperlink!);
+                                    }
+                                    // print(hyperlink);
+                                  }),
+                                  child: Text(
+                                    hyperlink ?? "",
+                                    style: TextStyle(
+                                        fontSize: 12.0,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(

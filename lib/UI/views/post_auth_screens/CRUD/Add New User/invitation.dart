@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:csv/csv.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
@@ -34,15 +35,17 @@ class _InvitationState extends State<Invitation> {
   bool? isTapped = false;
 
   FToast? fToast;
-  TextEditingController _name = new TextEditingController();
-  TextEditingController _email = new TextEditingController();
-  TextEditingController _phone = new TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _phone = TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     fToast = FToast();
     fToast!.init(context);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1]);
+    });
   }
 
   @override
@@ -54,6 +57,7 @@ class _InvitationState extends State<Invitation> {
     _phone.dispose();
   }
 
+  final _key1 = GlobalKey();
   sitesgenerator(List<dynamic> sites) {
     String site = "";
     for (int i = 0; i < sites.length; i++) {
@@ -110,12 +114,30 @@ class _InvitationState extends State<Invitation> {
                                 ),
                               ],
                             ),
-                            Text(
-                              "Add new User",
-                              style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Colors.white,
-                                  fontSize: 20),
+                            Showcase(
+                              key: _key1,
+                              showArrow: false,
+                              description:
+                                  "Enter the Name, Email and Phone Number and click send to Send an Invite",
+                              titleTextStyle: TextStyle(
+                                fontSize: 17.0,
+                                color: Colors.white,
+                              ),
+                              descTextStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                              shapeBorder: RoundedRectangleBorder(),
+                              overlayPadding: EdgeInsets.all(8.0),
+                              showcaseBackgroundColor: Color(0xFF5081DB),
+                              contentPadding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Add new User",
+                                style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    color: Colors.white,
+                                    fontSize: 20),
+                              ),
                             ),
                             Text("                       "),
                           ],
@@ -154,13 +176,31 @@ class _InvitationState extends State<Invitation> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              "Add new user",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
+                            Showcase(
+                              key: _key1,
+                              showArrow: false,
+                              description:
+                                  "Enter the Name, Email and Phone Number and click send to Send an Invite",
+                              titleTextStyle: TextStyle(
+                                fontSize: 17.0,
                                 color: Colors.white,
-                                fontFamily: "Poppins",
+                              ),
+                              descTextStyle: TextStyle(
+                                fontSize: 16.0,
+                                color: Colors.white,
+                              ),
+                              shapeBorder: RoundedRectangleBorder(),
+                              overlayPadding: EdgeInsets.all(8.0),
+                              showcaseBackgroundColor: Color(0xFF5081DB),
+                              contentPadding: EdgeInsets.all(8.0),
+                              child: Text(
+                                "Add new user",
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                ),
                               ),
                             ),
                           ],

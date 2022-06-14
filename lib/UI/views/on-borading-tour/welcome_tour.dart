@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
+import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
+
+import '../post_auth_screens/tour.dart';
 
 class WelcomeTour extends StatelessWidget {
   const WelcomeTour({Key? key}) : super(key: key);
@@ -74,12 +79,26 @@ class WelcomeTour extends StatelessWidget {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    (user.userRole == "TerminalManager") ||
-                                            (user.userRole == "TerminalUser")
-                                        ? Navigator.pushNamed(
-                                            context, AppRoutes.tour4)
-                                        : Navigator.pushNamed(
-                                            context, AppRoutes.tour1);
+                                    // (user.userRole == "TerminalManager") ||
+                                    //         (user.userRole == "TerminalUser")
+                                    //     ? Navigator.pushNamed(
+                                    //         context, AppRoutes.tour4)
+                                    //     : Navigator.pushNamed(
+                                    //         context, AppRoutes.tour1);
+                                    // user.userRole==""
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                !Responsive.isMobile(context)
+                                                    ? Tourr()
+                                                    : ShowCaseWidget(
+                                                        builder: Builder(
+                                                            builder:
+                                                                ((context) {
+                                                          return BottomNav();
+                                                        })),
+                                                      )));
                                   },
                                   child: Container(
                                     height: height * 0.06,
@@ -108,11 +127,25 @@ class WelcomeTour extends StatelessWidget {
                                   children: [
                                     InkWell(
                                       onTap: () {
-                                        Responsive.isDesktop(context)
-                                            ? Navigator.pushNamed(
-                                                context, AppRoutes.webfinaltour)
-                                            : Navigator.pushNamed(
-                                                context, AppRoutes.finaltour);
+                                        // Responsive.isDesktop(context)
+                                        //     ? Navigator.pushNamed(
+                                        //         context, AppRoutes.webfinaltour)
+                                        //     : Navigator.pushNamed(
+                                        //         context, AppRoutes.finaltour);
+                                        Responsive.isDesktop(context) ||
+                                                Responsive.isMobile(context)
+                                            ? Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        HomeScreen(
+                                                            showdialog: false,
+                                                            sites: user.sites)))
+                                            : Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        BottomNav()));
                                       },
                                       child: Text(
                                         "I’ll explore on my own",

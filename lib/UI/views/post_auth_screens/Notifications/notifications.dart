@@ -5,6 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -74,7 +75,13 @@ class _NotificationsState extends State<Notifications> {
     getData();
     super.initState();
     print(Uri.base);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1, _key2]);
+    });
   }
+
+  final _key1 = GlobalKey();
+  final _key2 = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +91,22 @@ class _NotificationsState extends State<Notifications> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
-          ? MenuButton(isTapped: false, width: width)
+          ? Showcase(
+              titleTextStyle: TextStyle(
+                fontSize: 17.0,
+                color: Colors.white,
+              ),
+              descTextStyle: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+              ),
+              shapeBorder: CircleBorder(),
+              overlayPadding: EdgeInsets.all(8.0),
+              showcaseBackgroundColor: Color(0xFF5081DB),
+              contentPadding: EdgeInsets.all(8.0),
+              description: "You can rewatch the tour here",
+              key: _key2,
+              child: MenuButton(isTapped: false, width: width))
           : SizedBox(),
       body: SingleChildScrollView(
         child: Container(
@@ -205,15 +227,37 @@ class _NotificationsState extends State<Notifications> {
                                   children: [
                                     Column(
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Text(
-                                            user!.currentsite,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 19.0,
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "Poppins"),
+                                        Showcase(
+                                          titleTextStyle: TextStyle(
+                                            fontSize: 17.0,
+                                            color: Colors.white,
+                                          ),
+                                          descTextStyle: TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.white,
+                                          ),
+                                          // shapeBorder:
+                                          //     CircleBorder(),
+                                          overlayPadding: EdgeInsets.all(8.0),
+                                          showcaseBackgroundColor:
+                                              Color(0xFF5081DB),
+                                          contentPadding: EdgeInsets.all(8.0),
+                                          showArrow: false,
+                                          // disposeOnTap: true,
+                                          description:
+                                              "You can view all notifications here  according to site and your role",
+                                          shapeBorder: RoundedRectangleBorder(),
+                                          key: _key1,
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: Text(
+                                              user!.currentsite,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 19.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Poppins"),
+                                            ),
                                           ),
                                         ),
                                         // Text(

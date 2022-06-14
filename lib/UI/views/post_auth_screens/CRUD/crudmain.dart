@@ -5,6 +5,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -16,6 +17,8 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/sent_to.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/web_chatting.dart';
@@ -30,7 +33,7 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:firestore_search/firestore_search.dart';
-import 'package:universal_html/html.dart';
+// import 'package:universal_html/html.dart';
 
 class CrudScreen extends StatefulWidget {
   const CrudScreen({Key? key}) : super(key: key);
@@ -196,6 +199,9 @@ class _CrudScreenState extends State<CrudScreen> {
     _letters = _controllers!.addAndGet();
     _numbers = _controllers!.addAndGet();
     _search.addListener(_onsearchange);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1, _key2, _key3]);
+    });
   }
 
   @override
@@ -359,19 +365,15 @@ class _CrudScreenState extends State<CrudScreen> {
     }
   }
 
+  final _key1 = GlobalKey();
+  final _key2 = GlobalKey();
+  final _key3 = GlobalKey();
   @override
   Widget build(BuildContext context) {
     bool? isTapped = false;
     model.User? user = Provider.of<UserProvider>(context).getUser;
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-    List Site = [
-      "All",
-      "Acers Marathon",
-      "Bridge Marathon",
-      "Clarks Marathon",
-      "Huntington Marathon"
-    ];
 
     return Scaffold(
         floatingActionButton: Visibility(
@@ -380,10 +382,41 @@ class _CrudScreenState extends State<CrudScreen> {
             onTap: () {
               Navigator.pushNamed(context, AppRoutes.addUserOwner);
             },
-            child: customfab(
-              width: width,
-              text: "Add new user",
-              height: height,
+            child: Showcase(
+              description: "Tap to go to Invitation screen",
+              key: _key2,
+              disposeOnTap: true,
+              titleTextStyle: TextStyle(
+                fontSize: 17.0,
+                color: Colors.white,
+              ),
+              descTextStyle: TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+              ),
+              shapeBorder: RoundedRectangleBorder(),
+              overlayPadding: EdgeInsets.all(8.0),
+              showcaseBackgroundColor: Color(0xFF5081DB),
+              contentPadding: EdgeInsets.all(8.0),
+              onTargetClick: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ShowCaseWidget(
+                        builder:
+                            Builder(builder: (context) => AddNewUserByOwner()),
+                      ),
+                    )).then((_) {
+                  setState(() {
+                    ShowCaseWidget.of(context)!.startShowCase([_key3]);
+                  });
+                });
+              },
+              child: customfab(
+                width: width,
+                text: "Add new user",
+                height: height,
+              ),
             ),
           ),
         ),
@@ -529,10 +562,50 @@ class _CrudScreenState extends State<CrudScreen> {
                                               Navigator.pushNamed(context,
                                                   AppRoutes.addUserOwner);
                                             },
-                                            child: customfab(
-                                              height: height,
-                                              width: width,
-                                              text: "Add new user",
+                                            child: Showcase(
+                                              key: _key2,
+                                              description:
+                                                  "Tap to go to Invitation screen",
+                                              disposeOnTap: true,
+                                              titleTextStyle: TextStyle(
+                                                fontSize: 17.0,
+                                                color: Colors.white,
+                                              ),
+                                              descTextStyle: TextStyle(
+                                                fontSize: 16.0,
+                                                color: Colors.white,
+                                              ),
+                                              shapeBorder:
+                                                  RoundedRectangleBorder(),
+                                              overlayPadding:
+                                                  EdgeInsets.all(8.0),
+                                              showcaseBackgroundColor:
+                                                  Color(0xFF5081DB),
+                                              contentPadding:
+                                                  EdgeInsets.all(8.0),
+                                              onTargetClick: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ShowCaseWidget(
+                                                        builder: Builder(
+                                                            builder: (context) {
+                                                          return AddNewUserByOwner();
+                                                        }),
+                                                      ),
+                                                    )).then((_) {
+                                                  setState(() {
+                                                    ShowCaseWidget.of(context)!
+                                                        .startShowCase([_key3]);
+                                                  });
+                                                });
+                                              },
+                                              child: customfab(
+                                                height: height,
+                                                width: width,
+                                                text: "Add new user",
+                                              ),
                                             )),
                                       ),
                                     ],
@@ -562,34 +635,63 @@ class _CrudScreenState extends State<CrudScreen> {
                                             Navigator.pushNamed(
                                                 context, AppRoutes.sentto);
                                           },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            width: Responsive.isDesktop(context)
-                                                ? width * 0.13
-                                                : width * 0.42,
-                                            height: height * 0.064,
-                                            decoration: BoxDecoration(
-                                              color: Color(0xff5081DB),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
+                                          child: Showcase(
+                                            key: _key3,
+                                            description:
+                                                "Tap to view Invitations sent by you",
+                                            disposeOnTap: true,
+                                            titleTextStyle: TextStyle(
+                                              fontSize: 17.0,
+                                              color: Colors.white,
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Sent Invitations",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.white,
-                                                      fontFamily: "Poppins",
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                SizedBox(
-                                                  width: width * 0.012,
-                                                ),
-                                              ],
+                                            descTextStyle: TextStyle(
+                                              fontSize: 16.0,
+                                              color: Colors.white,
+                                            ),
+                                            shapeBorder:
+                                                RoundedRectangleBorder(),
+                                            overlayPadding: EdgeInsets.all(8.0),
+                                            showcaseBackgroundColor:
+                                                Color(0xFF5081DB),
+                                            contentPadding: EdgeInsets.all(8.0),
+                                            onTargetClick: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        (SentTo()),
+                                                  ));
+                                            },
+                                            child: Container(
+                                              alignment: Alignment.center,
+                                              width:
+                                                  Responsive.isDesktop(context)
+                                                      ? width * 0.13
+                                                      : width * 0.42,
+                                              height: height * 0.064,
+                                              decoration: BoxDecoration(
+                                                color: Color(0xff5081DB),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                    "Sent Invitations",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.white,
+                                                        fontFamily: "Poppins",
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  SizedBox(
+                                                    width: width * 0.012,
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -597,12 +699,32 @@ class _CrudScreenState extends State<CrudScreen> {
                                     ],
                                   ),
                                   SizedBox(height: height * 0.02),
-                                  Text(
-                                    "Site",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "Poppins",
-                                        fontSize: 15),
+                                  Showcase(
+                                    key: _key1,
+                                    // disposeOnTap: true,
+                                    showArrow: false,
+                                    titleTextStyle: TextStyle(
+                                      fontSize: 17.0,
+                                      color: Colors.white,
+                                    ),
+                                    descTextStyle: TextStyle(
+                                      fontSize: 16.0,
+                                      color: Colors.white,
+                                    ),
+                                    shapeBorder: RoundedRectangleBorder(),
+                                    overlayPadding: EdgeInsets.all(8.0),
+                                    showcaseBackgroundColor: Color(0xFF5081DB),
+                                    contentPadding: EdgeInsets.all(8.0),
+
+                                    description:
+                                        "You can search users according to their sites and roles by selecting site and role",
+                                    child: Text(
+                                      "Site",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Poppins",
+                                          fontSize: 15),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: height * 0.02,

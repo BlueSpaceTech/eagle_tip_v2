@@ -208,7 +208,7 @@ class _TankState extends State<Tank> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ProductRequest(
-                          tankNumber: widget.tankNumber,
+                          tankNumber: widget.productname,
                           maxVal: widget.max,
                           divisionNum: ((widget.max) / 20).toInt(),
                         )));

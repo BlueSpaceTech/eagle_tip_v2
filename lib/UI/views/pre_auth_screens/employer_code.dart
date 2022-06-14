@@ -38,7 +38,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:universal_html/html.dart';
+// import 'package:universal_html/html.dart';
 
 class EmployerCode extends StatefulWidget {
   const EmployerCode({Key? key}) : super(key: key);
