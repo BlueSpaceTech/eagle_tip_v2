@@ -612,6 +612,8 @@ PODS:
     - Firebase/Functions (= 8.15.0)
     - firebase_core
     - Flutter
+  - device_info (0.0.1):
+    - Flutter
   - DKImagePickerController/Core (4.3.3):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -822,6 +824,8 @@ PODS:
     - Flutter
   - permission_handler_apple (9.0.4):
     - Flutter
+  - platform_device_id (0.0.1):
+    - Flutter
   - PromisesObjC (2.1.0)
   - SDWebImage (5.12.5):
     - SDWebImage/Core (= 5.12.5)
@@ -839,6 +843,7 @@ DEPENDENCIES:
   - audioplayers (from `.symlinks/plugins/audioplayers/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_functions (from `.symlinks/plugins/cloud_functions/ios`)
+  - device_info (from `.symlinks/plugins/device_info/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -850,6 +855,7 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - platform_device_id (from `.symlinks/plugins/platform_device_id/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
@@ -889,6 +895,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_functions:
     :path: ".symlinks/plugins/cloud_functions/ios"
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   firebase_auth:
@@ -911,6 +919,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/path_provider_ios/ios"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
+  platform_device_id:
+    :path: ".symlinks/plugins/platform_device_id/ios"
   shared_preferences_ios:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
   url_launcher_ios:
@@ -924,6 +934,7 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: 936969669b510f2affd43583582d7b117c5f08d1
   cloud_functions: b3e6679f6dab1720599622c9e5b4719690074330
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   DKImagePickerController: 72fd378f244cef3d27288e0aebf217a4467e4012
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 817ab1d8cd2da9d2da412a417162deee3500fc95
@@ -954,6 +965,7 @@ SPEC CHECKSUMS:
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  platform_device_id: 81b3e2993881f87d0c82ef151dc274df4869aef5
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   shared_preferences_ios: 548a61f8053b9b8a49ac19c1ffbc8b92c50d68ad
@@ -962,6 +974,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
 
-PODFILE CHECKSUM: 4ca924d66e873cdd27953c2c2ae97e536a0160d3
+PODFILE CHECKSUM: 1ae71bfe96ac4d3c0974e0743b44dba2643f48a9
 
 COCOAPODS: 1.11.3

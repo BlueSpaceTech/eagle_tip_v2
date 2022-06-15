@@ -1,0 +1,15 @@
+<?xml version=”1.0" encoding=”UTF-8"?>
+ <!DOCTYPE plist PUBLIC “-//Apple//DTD PLIST 1.0//EN” “http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+ <plist version=”1.0">
+ <dict>
+ <key>development</key>
+ <string>development</string>
+ <key>teamID</key>
+ <string>RFUZ8DWT6F</string>
+ <key>provisioningProfiles</key>
+ <dict>
+ <key>com.eagletip.app</key>
+ <string>Ad Hoc</string>
+ </dict>
+ </dict>
+ </plist>

@@ -9,16 +9,21 @@ class SitesDetails {
   final String siteid;
   final String sitelocation;
   final List products;
-  SitesDetails({
-    required this.sitename,
-    required this.siteid,
-    required this.sitelocation,
-    required this.products,
-  });
+  final String terminalID;
+  final String terminalName;
+  SitesDetails(
+      {required this.sitename,
+      required this.siteid,
+      required this.sitelocation,
+      required this.products,
+      required this.terminalID,
+      required this.terminalName});
   factory SitesDetails.fromJson(Map<String, dynamic> json) => SitesDetails(
         sitename: json["CONNAM"] ?? "",
-        siteid: json["CONSNO"]?? "",
-        sitelocation: json["CONCIT"]?? "",
-        products: json["PRODUCTS"]?? "",
+        siteid: json["CONSNO"] ?? "",
+        sitelocation: json["CONCIT"] ?? "",
+        products: json["PRODUCTS"] ?? "",
+        terminalID: json["DISP_TERM_ID"] ?? "",
+        terminalName: json["DISP_TERM_NAME"] ?? "",
       );
 }

@@ -43,9 +43,19 @@ class _InvitationState extends State<Invitation> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
+     trimsites();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ShowCaseWidget.of(context)!.startShowCase([_key1]);
     });
+  }
+  
+
+  List trimedsites = [];
+  trimsites() {
+    for (int i = 0; i < widget.sites.length; i++) {
+      trimedsites.add(widget.sites[i].toString().substring(8));
+    }
+    print(trimedsites);
   }
 
   @override
@@ -415,8 +425,8 @@ class _InvitationState extends State<Invitation> {
                                 phonenumber: _phone.text,
                                 userRole: widget.role,
                                 phoneisverified: false,
-                                sites: widget.sites,
-                                currentSite: widget.sites[0],
+                                sites: trimedsites,
+                                currentSite: trimedsites[0],
                                 visibleto: visibleto);
                             if (res == "Invite Sent Successfully") {
                               fToast!.showToast(

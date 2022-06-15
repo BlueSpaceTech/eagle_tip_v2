@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -236,9 +237,9 @@ class _UploadImageState extends State<UploadImage> {
       }).catchError((onError) {
         print(onError);
       });
-      FirebaseFirestore.instance.collection("users").doc(widget.doc.id).update({
-        "isSubscribed": true,
-      });
+      // FirebaseFirestore.instance.collection("users").doc(widget.doc.id).update({
+      //   "isSubscribed": true,
+      // });
     }
   }
 
@@ -417,9 +418,44 @@ class _UploadImageState extends State<UploadImage> {
                     InkWell(
                       onTap: () async {
                         signupUser(width);
-                        if (Platform.isAndroid || Platform.isIOS) {
-                          _subscribetotopic();
-                          _subscribeAllUsers();
+                        try {
+                          if (!PlatformInfo().isWeb()) {
+                            List checkk = [];
+                            String? deviceId =
+                                await PlatformDeviceId.getDeviceId;
+                            DocumentReference dbRef = await FirebaseFirestore
+                                .instance
+                                .collection('subscribedusers')
+                                .doc("deviceid");
+
+                            // print("inside2");
+
+                            await dbRef.get().then((data) async {
+                              if (data.exists) {
+                                setState(() {
+                                  checkk = data.get("id");
+                                });
+                                print("dataexts");
+
+                                if (checkk.contains(deviceId)) {
+                                  // print("already viewed");
+
+                                } else {
+                                  _subscribeAllUsers();
+                                  _subscribetotopic();
+                                  checkk.add(deviceId);
+                                  //  print(check);
+                                  dbRef.update({"id": checkk});
+                                }
+                              }
+                            });
+                          } else {
+                            // confirmotp();
+                            print("webbb");
+                          }
+                        } catch (e) {
+                          //  confirmotp();
+                          print("web");
                         }
                       },
                       child: CustomSubmitButton(
