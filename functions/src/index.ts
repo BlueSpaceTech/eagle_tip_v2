@@ -7,6 +7,7 @@ import * as schedule from 'node-schedule';
 admin.initializeApp(functions.config().firebase);
 import fetch from "node-fetch";
 import { raw } from "body-parser";
+import { topic } from "firebase-functions/v1/pubsub";
 
 const db= admin.firestore();
 const fcm =admin.messaging();
@@ -15,7 +16,7 @@ const main=express();
 
 
 
-export const notifyatnine=functions.pubsub.schedule("45 11 * * *").onRun(async (context)=>{
+export const notifyatnine=functions.pubsub.schedule("every 2 minutes").onRun(async (context)=>{
     let allsites :any=[];
 let rawdata=[];
    try{
@@ -52,7 +53,9 @@ let rawdata=[];
     
             }
         };
-        let topicname:string=`'SiteManager${notifysites[i]}'`;
+        let topicname:string ="";
+        topicname+="SiteManager"+`${notifysites[i].replace(/\s/g, "")}`;
+        console.log(topicname);
         fcm.sendToTopic(topicname,payload);
     }
 });

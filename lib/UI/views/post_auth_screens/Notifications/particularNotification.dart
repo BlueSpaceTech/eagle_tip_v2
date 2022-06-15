@@ -135,6 +135,7 @@ class SpecificNotification extends StatelessWidget {
                         topPad: 10.0,
                         height: height * 0.9)
                     : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
@@ -150,38 +151,36 @@ class SpecificNotification extends StatelessWidget {
                           ),
                           SizedBox(
                             width: width * 0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  notifyContent,
-                                  style: TextStyle(
-                                      fontSize: 12.0,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "Poppins"),
-                                ),
-                                InkWell(
-                                  onTap: (() {
-                                    if (hyperlink != null) {
-                                      launch(hyperlink!);
-                                    }
-                                    // print(hyperlink);
-                                  }),
-                                  child: Text(
-                                    hyperlink ?? "",
-                                    style: TextStyle(
-                                        fontSize: 12.0,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ),
-                              ],
+                            child: Text(
+                              notifyContent,
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Poppins"),
                             ),
                           ),
                           SizedBox(
-                            height: height * 0.08,
+                            height: height * 0.4,
+                          ),
+                          InkWell(
+                            onTap: (() {
+                              if (hyperlink != null) {
+                                launch(hyperlink!);
+                              }
+                              // print(hyperlink);
+                            }),
+                            child: Text(
+                              hyperlink ?? "",
+                              style: TextStyle(
+                                  fontSize: 12.0,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Poppins"),
+                            ),
+                          ),
+                          SizedBox(
+                            height: height * 0.02,
                           ),
                           InkWell(
                             onTap: () {

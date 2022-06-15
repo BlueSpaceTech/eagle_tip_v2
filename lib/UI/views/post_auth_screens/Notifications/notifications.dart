@@ -357,7 +357,8 @@ class _NotificationsState extends State<Notifications> {
                                                               document["isNew"],
                                                           docid: document.id,
                                                           hyperlinkk: document[
-                                                              "hyperLink"],
+                                                                  "hyperLink"] ??
+                                                              " ",
                                                           userid: FirebaseAuth
                                                               .instance
                                                               .currentUser!
@@ -442,60 +443,71 @@ class _NotificationsState extends State<Notifications> {
                   height: Responsive.isDesktop(context) ||
                           Responsive.isTablet(context)
                       ? height * 0.06
-                      : height * 0.02,
+                      : height * 0.0,
                 ),
                 Visibility(
                   visible: Responsive.isMobile(context),
                   child: Center(
-                    child: Container(
-                      height: height * 0.6,
-                      width: Responsive.isDesktop(context) ||
-                              Responsive.isTablet(context)
-                          ? width * 0.5
-                          : width,
-                      child: StreamBuilder(
-                          stream: FirebaseFirestore.instance
-                              .collection("pushNotifications")
-                              .where("visibleto", arrayContainsAny: [
-                            user.userRole
-                          ]).snapshots(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<QuerySnapshot> snapshot) {
-                            if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
-                            }
-                            return ListView.builder(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: snapshot.data?.docs.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final document = snapshot.data?.docs[index];
-                                  // List notifs = document!["isNew"];
+                    child: SingleChildScrollView(
+                      child: SizedBox(
+                        height: height * 0.7,
+                        width: Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context)
+                            ? width * 0.5
+                            : width,
+                        child: StreamBuilder(
+                            stream: FirebaseFirestore.instance
+                                .collection("pushNotifications")
+                                .where("visibleto", arrayContainsAny: [
+                              user.userRole
+                            ]).snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+                              return SizedBox(
+                                height: height * 0.7,
+                                child: ListView.builder(
+                                    // physics: NeverScrollableScrollPhysics(),
+                                    itemCount: snapshot.data?.docs.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final document =
+                                          snapshot.data?.docs[index];
+                                      // List notifs = document!["isNew"];
 
-                                  return snapshot.data?.docs.length.toInt() == 0
-                                      ? Center(
-                                          child: Text(
-                                          "No Notifications to display",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 13.0),
-                                        ))
-                                      : Notify(
-                                          width: width,
-                                          // isnew: document!["isNew"],
-                                          newNotify: document!["isNew"],
-                                          hyperlinkk: document["hyperLink"],
-                                          docid: document.id,
-                                          userid: FirebaseAuth
-                                              .instance.currentUser!.uid
-                                              .toString(),
-                                          notifyContent:
-                                              document["description"],
-                                          // index: index,
-                                          height: height,
-                                          notifyName: document["title"],
-                                          notifyDate: document["description"]);
-                                });
-                          }),
+                                      return snapshot.data?.docs.length
+                                                  .toInt() ==
+                                              0
+                                          ? Center(
+                                              child: Text(
+                                              "No Notifications to display",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 13.0),
+                                            ))
+                                          : Notify(
+                                              width: width,
+                                              // isnew: document!["isNew"],
+                                              newNotify: document!["isNew"],
+                                              hyperlinkk:
+                                                  document["hyperLink"] ?? " ",
+                                              docid: document.id,
+                                              userid: FirebaseAuth
+                                                  .instance.currentUser!.uid
+                                                  .toString(),
+                                              notifyContent:
+                                                  document["description"],
+                                              // index: index,
+                                              height: height,
+                                              notifyName: document["title"],
+                                              notifyDate:
+                                                  document["description"]);
+                                    }),
+                              );
+                            }),
+                      ),
                     ),
                   ),
                 ),
@@ -569,7 +581,10 @@ class _NotifyState extends State<Notify> {
         );
       },
       child: Padding(
-        padding: EdgeInsets.only(bottom: 10.0, right: widget.width * 0.06),
+        padding: EdgeInsets.only(
+            bottom: 10.0,
+            right: widget.width * 0.06,
+            left: widget.width * 0.06),
         child: SizedBox(
           height: widget.height * 0.06,
           child: Row(

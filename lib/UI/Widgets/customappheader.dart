@@ -51,7 +51,7 @@ class MenuButton extends StatelessWidget {
     return PopupMenuButton(
       padding: EdgeInsets.only(bottom: 500.0),
       onSelected: (value) {
-        Navigator.pushReplacement(context,
+        Navigator.push(context,
             MaterialPageRoute(builder: (context) => ScreeRoutes[value]));
       },
       color: Color(0xFF3f4850),
