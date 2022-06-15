@@ -16,7 +16,7 @@ const main=express();
 
 
 
-export const notifyatnine=functions.pubsub.schedule("every 2 minutes").onRun(async (context)=>{
+export const notifyatnine=functions.pubsub.schedule("every 360 minutes").timeZone('America/New_York').onRun(async (context)=>{
     let allsites :any=[];
 let rawdata=[];
    try{
