@@ -15,7 +15,7 @@ const main=express();
 
 
 
-export const notifyatnine=functions.pubsub.schedule("0 9 * * *").onRun(async (context)=>{
+export const notifyatnine=functions.pubsub.schedule("45 11 * * *").onRun(async (context)=>{
     let allsites :any=[];
 let rawdata=[];
    try{
