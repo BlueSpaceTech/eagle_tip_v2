@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 DateTime scheduledDate = DateTime.now();
+DateTime scheduledDate2 = DateTime.now();
 
 class CreateNotification extends StatefulWidget {
   CreateNotification({Key? key}) : super(key: key);
@@ -82,13 +83,6 @@ class _CreateNotificationState extends State<CreateNotification> {
       return [];
     }
 
-    final List<String> _items = [
-      'Managers',
-      'Site Users',
-      'Site Owners',
-      'Item 5',
-    ];
-
     final List<String>? results = await showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -143,6 +137,23 @@ class _CreateNotificationState extends State<CreateNotification> {
   String? description;
   TimeOfDay selectedTime = TimeOfDay.now();
   List dates = [];
+
+  List days = [];
+  // var scheduledtime;
+  List newdates = [];
+  List daysname = [];
+  newnotifys(List daysofweek, List dates) {
+    for (int i = 0; i < dates.length; i++) {
+      print(DateFormat('EEEE').format(dates[i]));
+      for (int j = 0; j < daysofweek.length; j++) {
+        if (DateFormat('EEEE').format(dates[i]) == daysofweek[j]) {
+          newdates.add(dates[i]);
+        }
+      }
+    }
+    print(newdates);
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -182,6 +193,14 @@ class _CreateNotificationState extends State<CreateNotification> {
           selectedTime = timeOfDay;
         });
       }
+    }
+
+    List getDaysInBeteween(DateTime startDate, DateTime endDate) {
+      List days = [];
+      for (int i = 0; i <= endDate.difference(startDate).inDays; i++) {
+        days.add(startDate.add(Duration(days: i)));
+      }
+      return days;
     }
 
     double height = MediaQuery.of(context).size.height;
@@ -467,15 +486,13 @@ class _CreateNotificationState extends State<CreateNotification> {
                           height: height * 0.03,
                         ),
                         Row(
-                          mainAxisAlignment: Responsive.isTablet(context)
-                              ? MainAxisAlignment.center
-                              : MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Schedule",
+                                  "Schedule 1",
                                   style: TextStyle(
                                       fontSize: width * 0.01,
                                       fontWeight: FontWeight.w500,
@@ -498,6 +515,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                       setState(() {
                                         scheduledDate = date;
                                       });
+                                      // print(scheduledDate);
                                     },
                                         currentTime: DateTime.now(),
                                         locale: LocaleType.en);
@@ -519,8 +537,8 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     showcaseBackgroundColor: Color(0xFF5081DB),
                                     contentPadding: EdgeInsets.all(8.0),
                                     child: Container(
-                                      width: width * 0.13,
-                                      height: height * 0.08,
+                                      width: width * 0.1,
+                                      height: height * 0.07,
                                       padding: EdgeInsets.only(
                                           top: height * 0.01,
                                           left: width * 0.02,
@@ -534,15 +552,18 @@ class _CreateNotificationState extends State<CreateNotification> {
                                             style: TextStyle(
                                               fontFamily: "Poppins",
                                               fontWeight: FontWeight.w500,
-                                              fontSize: 16.0,
+                                              fontSize: 13.0,
                                               color: Color(0xFF6E7191),
                                             ),
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
                                           ),
                                           Text(
                                             DateFormat("dd-MM-yyyy")
                                                 .format(scheduledDate),
                                             style: TextStyle(
-                                                fontSize: width * 0.01,
+                                                fontSize: 12.0,
                                                 fontWeight: FontWeight.w400,
                                                 fontFamily: "Poppins"),
                                           ),
@@ -559,12 +580,93 @@ class _CreateNotificationState extends State<CreateNotification> {
                               ],
                             ),
                             SizedBox(
-                              width: width * 0.05,
+                              width: 10.0,
+                            ),
+                            Container(
+                              width: width * 0.15,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Schedule 2",
+                                    style: TextStyle(
+                                        fontSize: width * 0.01,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  SizedBox(
+                                    height: 10.0,
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      // _selectTime(context);
+                                      DatePicker.showDateTimePicker(context,
+                                          showTitleActions: true,
+                                          minTime: DateTime(2018, 3, 5),
+                                          maxTime: DateTime(2019, 6, 7),
+                                          onChanged: (date) {
+                                        // print('change $date');
+                                      }, onConfirm: (date) {
+                                        setState(() {
+                                          scheduledDate2 = date;
+                                        });
+                                        // print(scheduledDate2);
+                                        // print(getDaysInBeteween(
+                                        //     scheduledDate, scheduledDate2));
+                                        days = getDaysInBeteween(
+                                            scheduledDate, scheduledDate2);
+                                      },
+                                          currentTime: DateTime.now(),
+                                          locale: LocaleType.en);
+                                    },
+                                    child: Container(
+                                      width: width * 0.1,
+                                      height: height * 0.07,
+                                      padding: EdgeInsets.only(
+                                          top: height * 0.01,
+                                          left: width * 0.02,
+                                          right: width * 0.04),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Hour",
+                                            style: TextStyle(
+                                              fontFamily: "Poppins",
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 13.0,
+                                              color: Color(0xFF6E7191),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Text(
+                                            DateFormat("dd-MM-yyyy")
+                                                .format(scheduledDate),
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "Poppins"),
+                                          ),
+                                        ],
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                             Showcase(
                               key: _key6,
                               description:
-                                  "You can also schedule the notifications for repetition  "
+                                  "You can also schedule the notifications for repetition and press send button to schedule the notification. Tap to continue"
                                   "             ",
                               titleTextStyle: TextStyle(
                                 fontSize: 17.0,
@@ -576,6 +678,10 @@ class _CreateNotificationState extends State<CreateNotification> {
                               ),
                               shapeBorder: RoundedRectangleBorder(),
                               overlayPadding: EdgeInsets.all(8.0),
+                              disposeOnTap: true,
+                              onTargetClick: () {
+                                Navigator.pop(context);
+                              },
                               showcaseBackgroundColor: Color(0xFF5081DB),
                               contentPadding: EdgeInsets.all(8.0),
                               child: Column(
@@ -595,8 +701,12 @@ class _CreateNotificationState extends State<CreateNotification> {
                                   DaysRow(
                                       valueChanged: (val) {
                                         setState(() {
-                                          print(val);
                                           dates = val;
+                                        });
+                                      },
+                                      valueChanged2: (val) {
+                                        setState(() {
+                                          daysname = val;
                                         });
                                       },
                                       width: width),
@@ -653,19 +763,37 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     "scheduledTime": scheduledDate,
                                     "isNew": [],
                                   });
-                                  print(dates);
-                                  if (dates.isNotEmpty) {
-                                    for (var date in dates) {
-                                      notifys.doc().set({
-                                        "description": description,
-                                        "title": title,
-                                        "createdBy": user.uid,
-                                        "hyperLink": link,
-                                        "sites": _selectedItems2,
-                                        "visibleto": _selectedItems,
-                                        "scheduledTime": date,
-                                        "isNew": [],
-                                      });
+                                  // print(dates);
+                                  if (scheduledDate2 == null) {
+                                    if (dates.isNotEmpty) {
+                                      for (var date in dates) {
+                                        notifys.doc().set({
+                                          "description": description,
+                                          "title": title,
+                                          "createdBy": user.uid,
+                                          "hyperLink": link,
+                                          "sites": _selectedItems2,
+                                          "visibleto": _selectedItems,
+                                          "scheduledTime": date,
+                                          "isNew": [],
+                                        });
+                                      }
+                                    }
+                                  } else {
+                                    newnotifys(daysname, days);
+                                    if (newdates.isNotEmpty) {
+                                      for (var date in newdates) {
+                                        notifys.doc().set({
+                                          "description": description,
+                                          "title": title,
+                                          "createdBy": user.uid,
+                                          "hyperLink": link,
+                                          "sites": _selectedItems2,
+                                          "visibleto": _selectedItems,
+                                          "scheduledTime": date,
+                                          "isNew": [],
+                                        });
+                                      }
                                     }
                                   }
                                   fToast!.showToast(
@@ -683,39 +811,27 @@ class _CreateNotificationState extends State<CreateNotification> {
                                     toastDuration: Duration(seconds: 3),
                                   );
                                 }
+                                // if ((daysname.isNotEmpty && days.isNotEmpty)) {
+
+                                // }
+                                // print(daysname);
+                                // print(dates);
                               },
-                              child: Showcase(
-                                key: _key7,
-                                description:
-                                    "Click on Send to schedule the notification",
-                                titleTextStyle: TextStyle(
-                                  fontSize: 17.0,
-                                  color: Colors.white,
+                              child: Container(
+                                width: width * 0.08,
+                                height: height * 0.058,
+                                decoration: BoxDecoration(
+                                  color: Color(0xff5081DB),
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
-                                descTextStyle: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.white,
-                                ),
-                                shapeBorder: RoundedRectangleBorder(),
-                                overlayPadding: EdgeInsets.all(8.0),
-                                showcaseBackgroundColor: Color(0xFF5081DB),
-                                contentPadding: EdgeInsets.all(8.0),
-                                child: Container(
-                                  width: width * 0.08,
-                                  height: height * 0.058,
-                                  decoration: BoxDecoration(
-                                    color: Color(0Xff5081db),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Send",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 10.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: "Poppins"),
-                                    ),
+                                child: Center(
+                                  child: Text(
+                                    "Send",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10.0,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "Poppins"),
                                   ),
                                 ),
                               ),
@@ -756,6 +872,8 @@ class _MultiSelectState extends State<MultiSelect> {
     'SiteManager': 'SiteManager',
     'SiteUser': 'SiteUser',
     'SiteOwner': 'SiteOwner',
+    'TerminalManager': 'TerminalManager',
+    'TerminalUser': 'TerminalUser',
   };
   void _itemChange(String itemValue, bool isSelected) {
     setState(() {
@@ -886,10 +1004,12 @@ class DaysRow extends StatefulWidget {
     Key? key,
     required this.valueChanged,
     required this.width,
+    required this.valueChanged2,
   }) : super(key: key);
 
   final double width;
   final ValueChanged valueChanged;
+  final ValueChanged valueChanged2;
 
   @override
   State<DaysRow> createState() => _DaysRowState();
@@ -899,7 +1019,7 @@ class _DaysRowState extends State<DaysRow> {
   List days = ["M", "T", "W", "TH", "F", "S", "SU"];
 
   // List dates = [];
-
+  // List daysss = [];
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -916,6 +1036,12 @@ class _DaysRowState extends State<DaysRow> {
                     widget.valueChanged(val);
                   });
                 },
+                valueChanged2: (val) {
+                  setState(() {
+                    widget.valueChanged2(val);
+                    // print(val);
+                  });
+                },
                 width: widget.width,
                 dayname: day)
         ],
@@ -925,6 +1051,7 @@ class _DaysRowState extends State<DaysRow> {
 }
 
 List scheduledDates = [];
+List daysss = [];
 
 class Day extends StatefulWidget {
   Day({
@@ -932,11 +1059,13 @@ class Day extends StatefulWidget {
     required this.width,
     required this.dayname,
     required this.valueChanged,
+    required this.valueChanged2,
   }) : super(key: key);
 
   final double width;
   final String dayname;
   final ValueChanged valueChanged;
+  final ValueChanged valueChanged2;
 
   @override
   State<Day> createState() => _DayState();
@@ -955,6 +1084,14 @@ class _DayState extends State<Day> {
     }
   }
 
+  // List dayss = [];
+  // adddays(){
+  //    for (int i = 0; i < days.length; i++) {
+  //     dayss.add(DateFormat('EEEE')
+  //         .format(currentTime.add(Duration(days: i + 1))));
+  //   }
+  // }
+
   Map weekDay = {
     "M": "Monday",
     "T": "Tuesday",
@@ -968,7 +1105,7 @@ class _DayState extends State<Day> {
   @override
   void initState() {
     addnextTime();
-    print(nextTime);
+    // print(nextTime);
   }
 
   @override
@@ -996,14 +1133,18 @@ class _DayState extends State<Day> {
 
                   if (val!) {
                     scheduledDates.add(nextTime["${weekDay[widget.dayname]}"]);
-                    print(scheduledDates);
+                    // print(scheduledDates);
+                    daysss.add(weekDay[widget.dayname]);
+                    // print(daysss);
                   } else {
                     scheduledDates
                         .remove(nextTime["${weekDay[widget.dayname]}"]);
+                    daysss.remove(weekDay[widget.dayname]);
                     // print(scheduledDates);
                   }
                   // print(scheduledDates);
                   widget.valueChanged(scheduledDates);
+                  widget.valueChanged2(daysss);
                 });
               }),
         )

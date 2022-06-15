@@ -347,12 +347,16 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                     fontSize: 16.0,
                                     color: Colors.white,
                                   ),
+                                  onTargetClick: () {
+                                    Navigator.pop(context);
+                                  },
+                                  disposeOnTap: true,
                                   shapeBorder: RoundedRectangleBorder(),
                                   overlayPadding: EdgeInsets.all(8.0),
                                   showcaseBackgroundColor: Color(0xFF5081DB),
                                   contentPadding: EdgeInsets.all(8.0),
                                   description:
-                                      "Tap to download the CSV Template for IMPORT CSV",
+                                      "Tap to download the CSV Template for IMPORT CSV. Tap button to continue",
                                   child: Container(
                                     // alignment: Alignment.center,
                                     width: Responsive.isDesktop(context)

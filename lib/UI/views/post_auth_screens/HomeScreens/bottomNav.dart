@@ -55,14 +55,11 @@ class _BottomNavState extends State<BottomNav> {
     double height = MediaQuery.of(context).size.height;
     List<Widget> _widgetOptions = <Widget>[
       MyProfile(),
-      ShowCaseWidget(
-        builder: Builder(builder: (context) {
-          return HomeScreen(
-            showdialog: true,
-            sites: user?.sites ?? [],
-          );
-        }),
+      HomeScreen(
+        showdialog: true,
+        sites: user?.sites ?? [],
       ),
+
       Notifications(),
       //  MessageMain(
       // photourlfriend: "",

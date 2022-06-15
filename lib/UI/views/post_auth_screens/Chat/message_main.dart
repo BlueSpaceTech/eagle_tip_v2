@@ -389,28 +389,18 @@ class _MessageMainState extends State<MessageMain> {
                                                                   8.0),
                                                           disposeOnTap: true,
                                                           onTargetClick: () {
-                                                            Responsive.isDesktop(
-                                                                        context) ||
-                                                                    Responsive
-                                                                        .isTablet(
-                                                                            context)
-                                                                ? Navigator
-                                                                    .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                ShowCaseWidget(
-                                                                                  builder: Builder(builder: (_) {
-                                                                                    return NewChatMain(
-                                                                                      index: 0,
-                                                                                    );
-                                                                                  }),
-                                                                                )))
-                                                                : Navigator
-                                                                    .pushNamed(
-                                                                        context,
-                                                                        AppRoutes
-                                                                            .newchat);
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ShowCaseWidget(
+                                                                              builder: Builder(builder: (_) {
+                                                                                return NewChatMain(
+                                                                                  index: 0,
+                                                                                );
+                                                                              }),
+                                                                            )));
                                                           },
                                                           child: Container(
                                                             alignment: Alignment
@@ -834,28 +824,18 @@ class _MessageMainState extends State<MessageMain> {
                                                           disposeOnTap: true,
                                                           key: _key1,
                                                           onTargetClick: () {
-                                                            Responsive.isDesktop(
-                                                                        context) ||
-                                                                    Responsive
-                                                                        .isTablet(
-                                                                            context)
-                                                                ? Navigator
-                                                                    .push(
-                                                                        context,
-                                                                        MaterialPageRoute(
-                                                                            builder: (context) =>
-                                                                                ShowCaseWidget(
-                                                                                  builder: Builder(builder: (_) {
-                                                                                    return NewChatMain(
-                                                                                      index: 0,
-                                                                                    );
-                                                                                  }),
-                                                                                )))
-                                                                : Navigator
-                                                                    .pushNamed(
-                                                                        context,
-                                                                        AppRoutes
-                                                                            .newchat);
+                                                            Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ShowCaseWidget(
+                                                                              builder: Builder(builder: (_) {
+                                                                                return NewChatMain(
+                                                                                  index: 0,
+                                                                                );
+                                                                              }),
+                                                                            )));
                                                           },
                                                           child: Container(
                                                             alignment: Alignment
@@ -1300,17 +1280,6 @@ class _NewChatMainState extends State<NewChatMain> {
                                             builder: (context,
                                                 AsyncSnapshot<QuerySnapshot>
                                                     snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Navtext(
-                                                  color: index == 2
-                                                      ? Colors.white
-                                                      : Color(0xFFA0A3BD),
-                                                  text: "Notifications",
-                                                  width: width,
-                                                );
-                                              }
-
                                               if (snapshot.hasData) {
                                                 final documents = [];
                                                 final docs =
@@ -1349,41 +1318,7 @@ class _NewChatMainState extends State<NewChatMain> {
                                                     }
                                                   }
                                                 }
-                                                return Showcase(
-                                                  disposeOnTap: true,
-                                                  titleTextStyle: TextStyle(
-                                                    fontSize: 17.0,
-                                                    color: Colors.white,
-                                                  ),
-                                                  descTextStyle: TextStyle(
-                                                    fontSize: 16.0,
-                                                    color: Colors.white,
-                                                  ),
-                                                  shapeBorder: CircleBorder(),
-                                                  overlayPadding:
-                                                      EdgeInsets.all(8.0),
-                                                  showcaseBackgroundColor:
-                                                      Color(0xFF5081DB),
-                                                  contentPadding:
-                                                      EdgeInsets.all(8.0),
-                                                  onTargetClick: () {
-                                                    Navigator.pushReplacement(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ShowCaseWidget(
-                                                          builder: Builder(
-                                                            builder: (context) =>
-                                                                Notifications(),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                  description:
-                                                      "Click to go to notifications Page",
-                                                  key: _key1,
-                                                  child: Badge(
+                                                return Badge(
                                                     showBadge:
                                                         documents.isNotEmpty,
                                                     badgeContent: Text(
@@ -1393,15 +1328,63 @@ class _NewChatMainState extends State<NewChatMain> {
                                                       style: TextStyle(
                                                           color: Colors.white),
                                                     ),
-                                                    child: Navtext(
-                                                      color: index == 2
-                                                          ? Colors.white
-                                                          : Color(0xFFA0A3BD),
-                                                      text: "Notifications",
-                                                      width: width,
-                                                    ),
-                                                  ),
-                                                );
+                                                    child: Showcase(
+                                                      disposeOnTap: true,
+                                                      onTargetClick: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ShowCaseWidget(
+                                                              builder: Builder(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Notifications(),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      titleTextStyle: TextStyle(
+                                                        fontSize: 17.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                      descTextStyle: TextStyle(
+                                                        fontSize: 16.0,
+                                                        color: Colors.white,
+                                                      ),
+                                                      shapeBorder:
+                                                          RoundedRectangleBorder(),
+                                                      overlayPadding:
+                                                          EdgeInsets.all(8.0),
+                                                      showcaseBackgroundColor:
+                                                          Color(0xFF5081DB),
+                                                      contentPadding:
+                                                          EdgeInsets.all(8.0),
+                                                      description:
+                                                          "Click to go to notifications page",
+                                                      key: _key1,
+                                                      child: Badge(
+                                                        showBadge: documents
+                                                            .isNotEmpty,
+                                                        badgeContent: Text(
+                                                          documents.length
+                                                              .toString(),
+                                                          // "0",
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                        child: Navtext(
+                                                          color: index == 2
+                                                              ? Colors.white
+                                                              : Color(
+                                                                  0xFFA0A3BD),
+                                                          text: "Notifications",
+                                                          width: width,
+                                                        ),
+                                                      ),
+                                                    ));
                                               }
                                               return Navtext(
                                                 color: index == 2
@@ -1838,17 +1821,6 @@ class _NewChatMainState extends State<NewChatMain> {
                                             builder: (context,
                                                 AsyncSnapshot<QuerySnapshot>
                                                     snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.waiting) {
-                                                return Navtext(
-                                                  color: index == 2
-                                                      ? Colors.white
-                                                      : Color(0xFFA0A3BD),
-                                                  text: "Notifications",
-                                                  width: width,
-                                                );
-                                              }
-
                                               if (snapshot.hasData) {
                                                 final documents = [];
                                                 final docs =
@@ -1890,7 +1862,7 @@ class _NewChatMainState extends State<NewChatMain> {
                                                 return Showcase(
                                                   disposeOnTap: true,
                                                   onTargetClick: () {
-                                                    Navigator.pushReplacement(
+                                                    Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
                                                         builder: (context) =>

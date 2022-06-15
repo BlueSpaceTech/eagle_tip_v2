@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -24,13 +25,6 @@ class Sites extends StatefulWidget {
 }
 
 class _SitesState extends State<Sites> {
-  List siteImg = ["site1", "site2"];
-
-  List siteImgDesk = ["site11", "site21"];
-
-  List siteName = ["Acres Marathon", "Akron Marathon"];
-
-  List sitelocation = ["Tampa,FL", "Leesburg,FL"];
   List<SitesDetails>? sitedetails;
 
   getData() async {
@@ -54,8 +48,13 @@ class _SitesState extends State<Sites> {
     // TODO: implement initState
     getData();
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1]);
+    });
   }
 
+  final _key1 = GlobalKey();
+  final ScrollController _firstController = ScrollController();
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -109,17 +108,38 @@ class _SitesState extends State<Sites> {
                                 SizedBox(
                                   height: height * 0.05,
                                 ),
-                                Text(
-                                  "Sites",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight:
-                                          Responsive.isDesktop(context) ||
-                                                  Responsive.isTablet(context)
-                                              ? FontWeight.w500
-                                              : FontWeight.bold,
-                                      fontFamily: "Poppins"),
+                                Showcase(
+                                  key: _key1,
+                                  disposeOnTap: true,
+                                  onTargetClick: () {
+                                    Navigator.pop(context);
+                                  },
+                                  description:
+                                      "You can view all your assigned sites here. Tap to Continue",
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 17.0,
+                                    color: Colors.white,
+                                  ),
+                                  descTextStyle: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                  shapeBorder: RoundedRectangleBorder(),
+                                  overlayPadding: EdgeInsets.all(8.0),
+                                  showcaseBackgroundColor: Color(0xFF5081DB),
+                                  contentPadding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "Sites",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight:
+                                            Responsive.isDesktop(context) ||
+                                                    Responsive.isTablet(context)
+                                                ? FontWeight.w500
+                                                : FontWeight.bold,
+                                        fontFamily: "Poppins"),
+                                  ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
@@ -132,43 +152,54 @@ class _SitesState extends State<Sites> {
                                             Responsive.isTablet(context)
                                         ? height * 0.6
                                         : height * 0.5,
-                                    child: ListView.builder(
-                                      // physics:
-                                      //     NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      SiteDetails(
-                                                    currentSite: getsitesdescrp(
-                                                            user?.sites ??
-                                                                [])[index]
-                                                        .sitename,
-                                                    sitedetail: getsitesdescrp(
+                                    child: Scrollbar(
+                                      trackVisibility: true,
+                                      showTrackOnHover: true,
+                                      isAlwaysShown: true,
+                                      controller: _firstController,
+                                      child: ListView.builder(
+                                        controller: _firstController,
+                                        // physics:
+                                        //     NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SiteDetails(
+                                                      currentSite:
+                                                          getsitesdescrp(
+                                                                  user?.sites ??
+                                                                      [])[index]
+                                                              .sitename,
+                                                      sitedetail:
+                                                          getsitesdescrp(
+                                                              user?.sites ??
+                                                                  [])[index],
+                                                    ),
+                                                  ));
+                                            },
+                                            child: SiteDet(
+                                                width: width,
+                                                height: height,
+                                                index: index,
+                                                siteName: getsitesdescrp(
                                                         user?.sites ??
-                                                            [])[index],
-                                                  ),
-                                                ));
-                                          },
-                                          child: SiteDet(
-                                              width: width,
-                                              height: height,
-                                              index: index,
-                                              siteName: getsitesdescrp(
-                                                      user?.sites ?? [])[index]
-                                                  .sitename,
-                                              sitelocation: getsitesdescrp(
-                                                      user?.sites ?? [])[index]
-                                                  .sitelocation),
-                                        );
-                                      },
-                                      itemCount:
-                                          getsitesdescrp(user?.sites ?? [])
-                                              .length,
+                                                            [])[index]
+                                                    .sitename,
+                                                sitelocation: getsitesdescrp(
+                                                        user?.sites ??
+                                                            [])[index]
+                                                    .sitelocation),
+                                          );
+                                        },
+                                        itemCount:
+                                            getsitesdescrp(user?.sites ?? [])
+                                                .length,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -184,13 +215,35 @@ class _SitesState extends State<Sites> {
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          Text(
-                            "Sites",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins"),
+                          Showcase(
+                            key: _key1,
+                            disposeOnTap: true,
+                            showArrow: false,
+                            onTargetClick: () {
+                              Navigator.pop(context);
+                            },
+                            description:
+                                "You can view all your assigned sites here. Tap to Continue",
+                            titleTextStyle: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.white,
+                            ),
+                            descTextStyle: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                            shapeBorder: RoundedRectangleBorder(),
+                            overlayPadding: EdgeInsets.all(8.0),
+                            showcaseBackgroundColor: Color(0xFF5081DB),
+                            contentPadding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "Sites",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Poppins"),
+                            ),
                           ),
                           Padding(
                             padding: EdgeInsets.only(
@@ -201,37 +254,47 @@ class _SitesState extends State<Sites> {
                               height: Responsive.isDesktop(context)
                                   ? height * 0.6
                                   : height * 0.5,
-                              child: ListView.builder(
-                                // physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => SiteDetails(
-                                              currentSite: getsitesdescrp(
-                                                      user?.sites ?? [])[index]
-                                                  .sitename,
-                                              sitedetail: getsitesdescrp(
-                                                  user?.sites ?? [])[index],
-                                            ),
-                                          ));
-                                    },
-                                    child: SiteDet(
-                                        width: width,
-                                        height: height,
-                                        index: index,
-                                        siteName: getsitesdescrp(
-                                                user?.sites ?? [])[index]
-                                            .sitename,
-                                        sitelocation: getsitesdescrp(
-                                                user?.sites ?? [])[index]
-                                            .sitelocation),
-                                  );
-                                },
-                                itemCount:
-                                    getsitesdescrp(user?.sites ?? []).length,
+                              child: Scrollbar(
+                                showTrackOnHover: true,
+                                isAlwaysShown: true,
+                                trackVisibility: true,
+                                controller: _firstController,
+                                child: ListView.builder(
+                                  controller: _firstController,
+
+                                  // physics: NeverScrollableScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => SiteDetails(
+                                                currentSite: getsitesdescrp(
+                                                        user?.sites ??
+                                                            [])[index]
+                                                    .sitename,
+                                                sitedetail: getsitesdescrp(
+                                                    user?.sites ?? [])[index],
+                                              ),
+                                            ));
+                                      },
+                                      child: SiteDet(
+                                          width: width,
+                                          height: height,
+                                          index: index,
+                                          siteName: getsitesdescrp(
+                                                  user?.sites ?? [])[index]
+                                              .sitename,
+                                          sitelocation: getsitesdescrp(
+                                                  user?.sites ?? [])[index]
+                                              .sitelocation),
+                                    );
+                                  },
+                                  itemCount:
+                                      getsitesdescrp(user?.sites ?? []).length,
+                                ),
                               ),
                             ),
                           ),

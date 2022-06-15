@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:convert';
 // import 'dart:html';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'dart:math';
@@ -36,6 +37,9 @@ import 'package:testttttt/Models/user.dart' as model;
 import '../../../../Providers/user_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+
+CollectionReference notifys =
+    FirebaseFirestore.instance.collection("9pmNotifys");
 
 class SiteDetails extends StatelessWidget {
   SiteDetails({Key? key, required this.sitedetail, required this.currentSite})
@@ -1112,6 +1116,10 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                       ),
                                     ),
                                   );
+                                  await notifys.doc("notifs").update({
+                                    'sites': FieldValue.arrayUnion(
+                                        [user?.currentsite])
+                                  });
                                 },
                                 child: Container(
                                   width: Responsive.isDesktop(context) ||

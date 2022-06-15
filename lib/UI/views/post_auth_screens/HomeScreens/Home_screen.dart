@@ -25,6 +25,8 @@ import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/createNotification.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Sites/site_details.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
+import 'package:testttttt/UI/views/post_auth_screens/Sites/sites_admin.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -136,24 +138,22 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
         row.add(element.get("site"));
         row.add(element.get("id"));
         row.add(element.get("date").toDate());
-        row.add(data[0]);
-        row.add(data[1]);
-        row.add(data[2]);
-        row.add(data[3]);
+        for (int i = 0; i < data.length; i++) {
+          row.add(data[i]);
+        }
         csvdata.add(row);
         // print(csvdata.length);
       }
       // print(csvdata);
       // print(csvdata.length);
       String csv = ListToCsvConverter().convert(csvdata);
-      final bytes = utf8.encode(csv);
-      final text = utf8.decode(bytes);
-      // final blob = Blob([text]);
+      // final bytes = utf8.encode(csv);
+      // final text = utf8.decode(bytes);
       // final blob = html.Blob([text]);
       // final url = html.Url.createObjectUrlFromBlob(blob);
       // html.AnchorElement(href: url)
-      // ..setAttribute("download", "file.csv")
-      // ..click();
+      //   ..setAttribute("download", "file.csv")
+      //   ..click();
       csvdata.clear();
     }
   }
@@ -1109,7 +1109,17 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                               currentSite: user
                                                                   .currentsite)),
                                                     ),
-                                                  ))
+                                                  )).then((_) {
+                                                  setState(() {
+                                                    ShowCaseWidget.of(context)!
+                                                        .startShowCase([
+                                                      _key2,
+                                                      _key3,
+                                                      _key4,
+                                                      _key5,
+                                                    ]);
+                                                  });
+                                                })
                                               : Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -1214,9 +1224,16 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                         onTargetClick: () {
                                           user.userRole == "AppAdmin" ||
                                                   user.userRole == "SuperAdmin"
-                                              ? Navigator.pushNamed(context,
-                                                      AppRoutes.sitescreenadmin)
-                                                  .then((value) {
+                                              ? Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: ((context) =>
+                                                          ShowCaseWidget(
+                                                            builder: Builder(
+                                                                builder:
+                                                                    (context) =>
+                                                                        SitesAdmin()),
+                                                          )))).then((value) {
                                                   setState(() {
                                                     user.userRole ==
                                                                 "SiteManager" ||
@@ -1239,9 +1256,16 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                           ]);
                                                   });
                                                 })
-                                              : Navigator.pushNamed(context,
-                                                      AppRoutes.siteScreen)
-                                                  .then((_) {
+                                              : Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: ((context) =>
+                                                          ShowCaseWidget(
+                                                            builder: Builder(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Sites()),
+                                                          )))).then((_) {
                                                   setState(() {
                                                     user.userRole ==
                                                                 "SiteManager" ||
@@ -1573,7 +1597,17 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                             currentSite: user
                                                                 .currentsite)),
                                                   ),
-                                                ))
+                                                )).then((_) {
+                                                setState(() {
+                                                  ShowCaseWidget.of(context)!
+                                                      .startShowCase([
+                                                    _key2,
+                                                    _key3,
+                                                    _key4,
+                                                    _key5,
+                                                  ]);
+                                                });
+                                              })
                                             : Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -1678,9 +1712,16 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                         onTargetClick: () {
                                           user.userRole == "AppAdmin" ||
                                                   user.userRole == "SuperAdmin"
-                                              ? Navigator.pushNamed(context,
-                                                      AppRoutes.sitescreenadmin)
-                                                  .then((_) {
+                                              ? Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: ((context) =>
+                                                          ShowCaseWidget(
+                                                            builder: Builder(
+                                                                builder:
+                                                                    (context) =>
+                                                                        SitesAdmin()),
+                                                          )))).then((_) {
                                                   setState(() {
                                                     user.userRole ==
                                                                 "SiteManager" ||
@@ -1703,9 +1744,16 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                           ]);
                                                   });
                                                 })
-                                              : Navigator.pushNamed(context,
-                                                      AppRoutes.siteScreen)
-                                                  .then((_) {
+                                              : Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: ((context) =>
+                                                          ShowCaseWidget(
+                                                            builder: Builder(
+                                                                builder:
+                                                                    (context) =>
+                                                                        Sites()),
+                                                          )))).then((_) {
                                                   setState(() {
                                                     user.userRole ==
                                                                 "SiteManager" ||

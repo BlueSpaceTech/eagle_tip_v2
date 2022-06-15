@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -33,6 +34,7 @@ class _SitesAdminState extends State<SitesAdmin> {
   // List sitelocation = ["Tampa,FL", "Leesburg,FL"];
   List<SitesDetails>? allsites;
   List<SitesDetails>? sitedetails;
+  final _key1 = GlobalKey();
 
   getData() async {
     sitedetails = await SiteCall().getSites();
@@ -54,8 +56,12 @@ class _SitesAdminState extends State<SitesAdmin> {
     // TODO: implement initState
     getData();
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ShowCaseWidget.of(context)!.startShowCase([_key1]);
+    });
   }
 
+  final ScrollController _firstController = ScrollController();
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -110,17 +116,39 @@ class _SitesAdminState extends State<SitesAdmin> {
                                 SizedBox(
                                   height: height * 0.05,
                                 ),
-                                Text(
-                                  "All Sites Admin",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight:
-                                          Responsive.isDesktop(context) ||
-                                                  Responsive.isTablet(context)
-                                              ? FontWeight.w500
-                                              : FontWeight.bold,
-                                      fontFamily: "Poppins"),
+                                Showcase(
+                                  key: _key1,
+                                  disposeOnTap: true,
+                                  showArrow: false,
+                                  onTargetClick: () {
+                                    Navigator.pop(context);
+                                  },
+                                  description:
+                                      "You can view all your assigned sites here. Tap to Continue",
+                                  titleTextStyle: TextStyle(
+                                    fontSize: 17.0,
+                                    color: Colors.white,
+                                  ),
+                                  descTextStyle: TextStyle(
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                  ),
+                                  shapeBorder: RoundedRectangleBorder(),
+                                  overlayPadding: EdgeInsets.all(8.0),
+                                  showcaseBackgroundColor: Color(0xFF5081DB),
+                                  contentPadding: EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "All Sites Admin",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight:
+                                            Responsive.isDesktop(context) ||
+                                                    Responsive.isTablet(context)
+                                                ? FontWeight.w500
+                                                : FontWeight.bold,
+                                        fontFamily: "Poppins"),
+                                  ),
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
@@ -133,37 +161,45 @@ class _SitesAdminState extends State<SitesAdmin> {
                                             Responsive.isTablet(context)
                                         ? height * 0.6
                                         : height * 0.5,
-                                    child: ListView.builder(
-                                      // physics:
-                                      //     NeverScrollableScrollPhysics(),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                            onTap: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SiteDetails(
-                                                      currentSite:
-                                                          sitedetails![index]
-                                                              .sitename,
-                                                      sitedetail:
-                                                          sitedetails![index],
-                                                    ),
-                                                  ));
-                                            },
-                                            child: SiteDet(
-                                              width: width,
-                                              height: height,
-                                              index: index,
-                                              siteName:
-                                                  sitedetails![index].sitename,
-                                              sitelocation: sitedetails![index]
-                                                  .sitelocation,
-                                            ));
-                                      },
-                                      itemCount: sitedetails!.length,
+                                    child: Scrollbar(
+                                      showTrackOnHover: true,
+                                      trackVisibility: true,
+                                      isAlwaysShown: true,
+                                      controller: _firstController,
+                                      child: ListView.builder(
+                                        controller: _firstController,
+                                        // physics:
+                                        //     NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SiteDetails(
+                                                        currentSite:
+                                                            sitedetails![index]
+                                                                .sitename,
+                                                        sitedetail:
+                                                            sitedetails![index],
+                                                      ),
+                                                    ));
+                                              },
+                                              child: SiteDet(
+                                                width: width,
+                                                height: height,
+                                                index: index,
+                                                siteName: sitedetails![index]
+                                                    .sitename,
+                                                sitelocation:
+                                                    sitedetails![index]
+                                                        .sitelocation,
+                                              ));
+                                        },
+                                        itemCount: sitedetails!.length,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -179,13 +215,35 @@ class _SitesAdminState extends State<SitesAdmin> {
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          Text(
-                            "Sites",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: "Poppins"),
+                          Showcase(
+                            key: _key1,
+                            disposeOnTap: true,
+                            showArrow: false,
+                            onTargetClick: () {
+                              Navigator.pop(context);
+                            },
+                            description:
+                                "You can view all your assigned sites here. Tap to Continue",
+                            titleTextStyle: TextStyle(
+                              fontSize: 17.0,
+                              color: Colors.white,
+                            ),
+                            descTextStyle: TextStyle(
+                              fontSize: 16.0,
+                              color: Colors.white,
+                            ),
+                            shapeBorder: RoundedRectangleBorder(),
+                            overlayPadding: EdgeInsets.all(8.0),
+                            showcaseBackgroundColor: Color(0xFF5081DB),
+                            contentPadding: EdgeInsets.all(8.0),
+                            child: Text(
+                              "Sites",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Poppins"),
+                            ),
                           ),
                           SizedBox(
                             height: height * 0.05,
@@ -199,32 +257,44 @@ class _SitesAdminState extends State<SitesAdmin> {
                               height: Responsive.isDesktop(context)
                                   ? height * 0.6
                                   : height * 0.5,
-                              child: ListView.builder(
-                                // physics:
-                                // NeverScrollableScrollPhysics(),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => SiteDetails(
-                                                currentSite: sitedetails![index]
-                                                    .sitename,
-                                                sitedetail: sitedetails![index],
-                                              ),
-                                            ));
-                                      },
-                                      child: SiteDet(
-                                        width: width,
-                                        height: height,
-                                        index: index,
-                                        siteName: sitedetails![index].sitename,
-                                        sitelocation:
-                                            sitedetails![index].sitelocation,
-                                      ));
-                                },
-                                itemCount: sitedetails!.length,
+                              child: Scrollbar(
+                                showTrackOnHover: true,
+                                trackVisibility: true,
+                                isAlwaysShown: true,
+                                controller: _firstController,
+                                child: ListView.builder(
+                                  controller: _firstController,
+                                  // physics:
+                                  // NeverScrollableScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SiteDetails(
+                                                  currentSite:
+                                                      sitedetails![index]
+                                                          .sitename,
+                                                  sitedetail:
+                                                      sitedetails![index],
+                                                ),
+                                              ));
+                                        },
+                                        child: SiteDet(
+                                          width: width,
+                                          height: height,
+                                          index: index,
+                                          siteName:
+                                              sitedetails![index].sitename,
+                                          sitelocation:
+                                              sitedetails![index].sitelocation,
+                                        ));
+                                  },
+                                  itemCount: sitedetails!.length,
+                                ),
                               ),
                             ),
                           ),

@@ -5,46 +5,58 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as schedule from 'node-schedule';
 admin.initializeApp(functions.config().firebase);
+import fetch from "node-fetch";
+import { raw } from "body-parser";
 
 const db= admin.firestore();
 const fcm =admin.messaging();
-
-// export const heeloworld = functions.https.onRequest((request,response)=>{
-//     functions.logger.info("Hello log!",{structuraldata:true});
-//     response.send("Rakshit kamboj!");
-// });
 const app=express();
 const main=express();
 
 
 
-// const requestsCollection= 'requesthistory';
-// main.use('/api/v1',app);
-// main.use(bodyParser.json());
-// main.use(bodyParser.urlencoded({
-//     extended:false
-// }));
+export const notifyatnine=functions.pubsub.schedule("0 9 * * *").onRun(async (context)=>{
+    let allsites :any=[];
+let rawdata=[];
+   try{
+    rawdata= await fetch("https://rhjjm90yii.execute-api.us-east-1.amazonaws.com/default/web_inventory_station_data",{
+        headers:{
+            'x-api-key':'TWGR2Kt4eb2LlsY1Y0VO474zOQnwz04o3sFnn4q5',
+        }
+    }).then(response => response.json()) as any;
+    for(let i=0;i<rawdata.length;i++){
+        allsites.push(rawdata[i]["CONNAM"]);
+    }
+    // console.log(sites);
+    
+   }catch(error){
+    console.log("Error fetching data from API Call: "+error);
+   }
+   const doc = await db.collection("9pmNotifys").doc("notifs").get();
+   let sitesrequested : any= doc.data();
+   sitesrequested= doc.get("sites");
+   let notifysites : any=[];
+    for(let i=0;i<allsites.length;i++){
+        if(!sitesrequested.includes(allsites[i])){
+            notifysites.push(allsites[i]);
+        }
+    }
 
-// export const webApi=functions.https.onRequest(main);
-// console.log(main.path);
-// app.post('/requesthistory/', async (req, res) => {
-//     try {
-//         const request = {
-//             firstName: req.body['date'],
-//             // lastName: req.body['lastName'],
-//             // email: req.body['email']
-//         }
-// const newDoc = await firebaseHelper.firestoreHelper
-//             .createNewDocument(db, requestsCollection, request);
-//         res.status(201).send(`Created a new contact: ${newDoc.id}`);
-//     } catch (error) {
-//         res.status(400).send(`Contact should only contains firstName, lastName and email!!!`)
-//     }        
-// })
-// app.get('/requesthistory/',(req,res)=>{
-//     firebaseHelper.firestoreHelper.backup("/requesthistory/").then(data=>res.status(200).send(data)).catch(error=>res.status(400).send("Cannot get request data",));
-//     console.log(firebaseHelper.firestoreHelper.backup("/requesthistory").then(data=>data));
-// });
+
+
+    for(let i=0;i<notifysites.length;i++){
+    const payload: admin.messaging.MessagingPayload={
+        notification:{
+            title: "Eagle TIP Reminder: ",
+            body:`Remember to submit your inventory request for: ${notifysites[i]}`
+    
+            }
+        };
+        let topicname:string=`'SiteManager${notifysites[i]}'`;
+        fcm.sendToTopic(topicname,payload);
+    }
+});
+
 
 export const schedfunc=functions.pubsub.schedule("every 1 minutes").onRun(async (context)=>{
     const query =await db.collection("notifications").where('scheduledTime','<=',admin.firestore.Timestamp.now()).get();
@@ -99,7 +111,7 @@ export const sendToCondition =functions.firestore.document('/pushNotifications/{
         }
        
             return fcm.sendToCondition(returnTopic(),payload);
-      
+                
       
         // return fcm.sendToTopic
     });

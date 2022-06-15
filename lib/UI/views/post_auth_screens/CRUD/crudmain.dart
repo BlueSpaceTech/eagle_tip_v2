@@ -638,7 +638,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                           child: Showcase(
                                             key: _key3,
                                             description:
-                                                "Tap to view Invitations sent by you",
+                                                "You can view Invitations sent by you here. Tap to go back",
                                             disposeOnTap: true,
                                             titleTextStyle: TextStyle(
                                               fontSize: 17.0,
@@ -655,12 +655,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                                 Color(0xFF5081DB),
                                             contentPadding: EdgeInsets.all(8.0),
                                             onTargetClick: () {
-                                              Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        (SentTo()),
-                                                  ));
+                                              Navigator.pop(context);
                                             },
                                             child: Container(
                                               alignment: Alignment.center,

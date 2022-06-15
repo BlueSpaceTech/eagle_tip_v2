@@ -696,7 +696,7 @@ packages:
     source: hosted
     version: "1.0.0"
   platform_device_id_web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: platform_device_id_web
       url: "https://pub.dartlang.org"

@@ -146,6 +146,7 @@ class _TankState extends State<Tank> {
                                   : widget.height * 0.03,
                               width: widget.width * 0.52,
                               child: TextField(
+                                keyboardType: TextInputType.number,
                                 autofocus: true,
                                 style: TextStyle(
                                   fontSize: Responsive.isDesktop(context) ||

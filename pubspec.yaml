@@ -80,6 +80,7 @@ dependencies:
   instant: ^0.4.1
   showcaseview: ^1.1.5
   platform_device_id: ^1.0.1
+  platform_device_id_web: ^1.0.0
   # ext_storage: ^1.0.3
 
 dev_dependencies:

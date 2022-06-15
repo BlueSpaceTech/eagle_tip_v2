@@ -126,9 +126,9 @@ class _InvitationState extends State<Invitation> {
                             ),
                             Showcase(
                               key: _key1,
-                              showArrow: false,
+                              showArrow: true,
                               description:
-                                  "Enter the Name, Email and Phone Number and click send to Send an Invite",
+                                  "Enter the Name, Email and Phone Number and click send to Send an Invite. Tap to go back",
                               titleTextStyle: TextStyle(
                                 fontSize: 17.0,
                                 color: Colors.white,
@@ -139,6 +139,10 @@ class _InvitationState extends State<Invitation> {
                               ),
                               shapeBorder: RoundedRectangleBorder(),
                               overlayPadding: EdgeInsets.all(8.0),
+                              onTargetClick: () {
+                                Navigator.pop(context);
+                              },
+                              disposeOnTap: true,
                               showcaseBackgroundColor: Color(0xFF5081DB),
                               contentPadding: EdgeInsets.all(8.0),
                               child: Text(
