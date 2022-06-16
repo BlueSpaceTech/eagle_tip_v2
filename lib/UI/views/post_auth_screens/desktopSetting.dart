@@ -9,6 +9,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
@@ -20,6 +21,7 @@ import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:testttttt/Models/user.dart' as model;
 
@@ -292,7 +294,16 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                               ),
                                               InkWell(
                                                 onTap: () async {
+                                                  if (PlatformInfo().isWeb()) {
+                                                    SharedPreferences
+                                                            .getInstance()
+                                                        .then((prefs) {
+                                                      prefs.setBool(
+                                                          "remember_me", false);
+                                                    });
+                                                  }
                                                   AuthFunctions.signOut();
+
                                                   Navigator.pushNamed(context,
                                                       AppRoutes.loginscreen);
                                                 },

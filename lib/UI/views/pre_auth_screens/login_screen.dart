@@ -264,6 +264,19 @@ class _LoginScreenState extends State<LoginScreen> {
         });
         _email.text = _email1;
         _password.text = _password1;
+        if (PlatformInfo().isWeb()) {
+          AuthFunctions()
+              .loginuser(
+            email: _email.text,
+            password: _password.text,
+          )
+              .whenComplete(() {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) {
+              return HomeScreen(showdialog: false, sites: sites);
+            }));
+          });
+        }
       }
     } catch (e) {
       print(e);

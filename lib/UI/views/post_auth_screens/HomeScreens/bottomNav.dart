@@ -73,6 +73,7 @@ class _BottomNavState extends State<BottomNav> {
     ];
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),

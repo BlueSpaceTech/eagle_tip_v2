@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
@@ -11,6 +12,7 @@ import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
@@ -436,6 +438,14 @@ class _NavbarState extends State<Navbar> {
                                             ),
                                             InkWell(
                                               onTap: () async {
+                                                if (PlatformInfo().isWeb()) {
+                                                  SharedPreferences
+                                                          .getInstance()
+                                                      .then((prefs) {
+                                                    prefs.setBool(
+                                                        "remember_me", false);
+                                                  });
+                                                }
                                                 AuthFunctions.signOut();
                                                 Navigator.pushNamed(context,
                                                     AppRoutes.loginscreen);

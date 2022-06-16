@@ -64,6 +64,8 @@ class _AllChatScreenState extends State<AllChatScreen> {
     super.dispose();
   }
 
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
   final TextEditingController _search = new TextEditingController();
 
 /*
@@ -173,6 +175,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
     final height = MediaQuery.of(context).size.height;
     // model.User? user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButton: GestureDetector(
         onTap: () {
           Responsive.isDesktop(context)
@@ -214,7 +217,6 @@ class _AllChatScreenState extends State<AllChatScreen> {
       ),
       backgroundColor: Color(0xff2B343B),
       body: SafeArea(
-
         child: Column(
           children: [
             Center(
@@ -275,10 +277,10 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                       ),
                                     );
                                   }
-      
+
                                   var document = snapshot.data?.docs;
                                   // var docid = document!.single.id;
-      
+
                                   return SingleChildScrollView(
                                     child: Padding(
                                       padding: EdgeInsets.only(
@@ -311,13 +313,13 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                                   // physics:
                                                   //     NeverScrollableScrollPhysics(),
                                                   shrinkWrap: true,
-                                                  itemCount:
-                                                      snapshot.data?.docs.length,
+                                                  itemCount: snapshot
+                                                      .data?.docs.length,
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int index) {
                                                     // var document = _allChats[index];
-      
+
                                                     return InkWell(
                                                       onTap: () {
                                                         // document![index]
@@ -327,14 +329,15 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                                         //     .update({
                                                         //   "isNew": false,
                                                         // });
-                                                        FirebaseFirestore.instance
+                                                        FirebaseFirestore
+                                                            .instance
                                                             .collection("chats")
                                                             .doc(document[index]
                                                                 .id)
                                                             .update({
                                                           "isNew": "constant",
                                                         });
-      
+
                                                         callChatScreen(
                                                             document[index][
                                                                         'uid1'] ==
@@ -356,7 +359,8 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                                                     user.dpurl
                                                                 ? document[index]
                                                                     ["photo2"]
-                                                                : document[index]
+                                                                : document[
+                                                                        index]
                                                                     ["photo1"],
                                                             user.dpurl);
                                                       },
@@ -395,6 +399,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                     height: height * 0.012,
                                   ),
                                   SupportTextField(
+                                      controller1: _controller1,
                                       valueChanged: (value) {
                                         setState(() {
                                           Subject = value;
@@ -407,6 +412,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                     height: height * 0.012,
                                   ),
                                   MessageTextField(
+                                      controller2: _controller2,
                                       valueChanged: (value) {
                                         setState(() {
                                           Message = value;
@@ -448,7 +454,8 @@ class _AllChatScreenState extends State<AllChatScreen> {
                                               : width * 0.9,
                                       height: height * 0.065,
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(13.0),
+                                        borderRadius:
+                                            BorderRadius.circular(13.0),
                                         color: Color(0xFF5081DB),
                                       ),
                                       child: Center(

@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -23,6 +24,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Chat/web_chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/notifications.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
@@ -90,6 +92,8 @@ class _MessageMainState extends State<MessageMain> {
   @override
   void initState() {
     addData();
+    fToast = FToast();
+    fToast!.init(context);
     // TODO: implement initState
     setState(() {
       ChatSCREEN = widget.Chatscreen;
@@ -180,6 +184,8 @@ class _MessageMainState extends State<MessageMain> {
   }
 
   final _key1 = GlobalKey();
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // ChatSCREEN = widget.Chatscreen;
@@ -215,6 +221,7 @@ class _MessageMainState extends State<MessageMain> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
       floatingActionButton: Responsive.isDesktop(context)
           ? MenuButton(isTapped: false, width: width)
@@ -557,6 +564,7 @@ class _MessageMainState extends State<MessageMain> {
                                           height: height * 0.012,
                                         ),
                                         SupportTextField(
+                                            controller1: _controller1,
                                             valueChanged: (value) {
                                               setState(() {
                                                 Subject = value;
@@ -569,6 +577,7 @@ class _MessageMainState extends State<MessageMain> {
                                           height: height * 0.012,
                                         ),
                                         MessageTextField(
+                                            controller2: _controller2,
                                             valueChanged: (value) {
                                               setState(() {
                                                 Message = value;
@@ -594,7 +603,10 @@ class _MessageMainState extends State<MessageMain> {
                                                 toastDuration:
                                                     Duration(seconds: 3),
                                               );
-                                              Navigator.pop(context);
+                                              setState(() {
+                                                _controller1.text = "";
+                                                _controller2.text = "";
+                                              });
                                             } else {
                                               fToast!.showToast(
                                                 child: ToastMessage().show(
@@ -991,6 +1003,7 @@ class _MessageMainState extends State<MessageMain> {
                                           height: height * 0.012,
                                         ),
                                         SupportTextField(
+                                            controller1: _controller1,
                                             valueChanged: (value) {
                                               setState(() {
                                                 Subject = value;
@@ -1003,6 +1016,7 @@ class _MessageMainState extends State<MessageMain> {
                                           height: height * 0.012,
                                         ),
                                         MessageTextField(
+                                            controller2: _controller2,
                                             valueChanged: (value) {
                                               setState(() {
                                                 Message = value;
@@ -1016,6 +1030,7 @@ class _MessageMainState extends State<MessageMain> {
                                         ),
                                         InkWell(
                                           onTap: () {
+                                            print("Working");
                                             if (Message != null ||
                                                 Subject != null) {
                                               addTicket(context);
@@ -1028,7 +1043,10 @@ class _MessageMainState extends State<MessageMain> {
                                                 toastDuration:
                                                     Duration(seconds: 3),
                                               );
-                                              Navigator.pop(context);
+                                              setState(() {
+                                                _controller1.text = "";
+                                                _controller2.text = "";
+                                              });
                                             } else {
                                               fToast!.showToast(
                                                 child: ToastMessage().show(
@@ -1576,6 +1594,16 @@ class _NewChatMainState extends State<NewChatMain> {
                                                     ),
                                                     InkWell(
                                                       onTap: () async {
+                                                        if (PlatformInfo()
+                                                            .isWeb()) {
+                                                          SharedPreferences
+                                                                  .getInstance()
+                                                              .then((prefs) {
+                                                            prefs.setBool(
+                                                                "remember_me",
+                                                                false);
+                                                          });
+                                                        }
                                                         AuthFunctions.signOut();
                                                         Navigator.pushNamed(
                                                             context,
@@ -2104,6 +2132,16 @@ class _NewChatMainState extends State<NewChatMain> {
                                                     ),
                                                     InkWell(
                                                       onTap: () async {
+                                                        if (PlatformInfo()
+                                                            .isWeb()) {
+                                                          SharedPreferences
+                                                                  .getInstance()
+                                                              .then((prefs) {
+                                                            prefs.setBool(
+                                                                "remember_me",
+                                                                false);
+                                                          });
+                                                        }
                                                         AuthFunctions.signOut();
                                                         Navigator.pushNamed(
                                                             context,

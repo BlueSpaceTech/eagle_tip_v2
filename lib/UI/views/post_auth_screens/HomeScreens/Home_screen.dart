@@ -8,6 +8,7 @@ import 'dart:typed_data';
 import 'package:badges/badges.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -30,6 +31,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Sites/sites_admin.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:firebase_messaging_platform_interface/firebase_messaging_platform_interface.dart';
@@ -968,6 +970,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                                           InkWell(
                                                                             onTap:
                                                                                 () async {
+                                                                              if (PlatformInfo().isWeb()) {
+                                                                                SharedPreferences.getInstance().then((prefs) {
+                                                                                  prefs.setBool("remember_me", false);
+                                                                                });
+                                                                              }
                                                                               AuthFunctions.signOut();
                                                                               Navigator.pushNamed(context, AppRoutes.loginscreen);
                                                                             },

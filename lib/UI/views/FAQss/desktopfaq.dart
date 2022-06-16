@@ -1,4 +1,5 @@
-import 'dart:io';
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,30 +7,19 @@ import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Providers/user_provider.dart';
-import 'package:testttttt/Routes/approutes.dart';
-import 'package:testttttt/Services/utils.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
-import 'package:testttttt/UI/views/FAQss/addvideo.dart';
 import 'package:testttttt/UI/views/FAQss/displayfaqs.dart';
-import 'package:testttttt/UI/views/FAQss/new_faq.dart';
 import 'package:testttttt/UI/views/FAQss/newfaq2.dart';
-import 'package:testttttt/UI/views/FAQss/player_screen.dart';
-import 'package:testttttt/UI/views/post_auth_screens/Terminal/FAQ/addFAQ.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
-import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'package:testttttt/Models/user.dart' as model;
 
 class DesktopFAQs extends StatefulWidget {
@@ -476,6 +466,9 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                print(snapshot.error);
+                              }
                               if (!snapshot.hasData) {
                                 return Center(
                                     child: CircularProgressIndicator());
@@ -1020,6 +1013,9 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                 .snapshots(),
                             builder: (BuildContext context,
                                 AsyncSnapshot<QuerySnapshot> snapshot) {
+                              if (snapshot.hasError) {
+                                print(snapshot.error);
+                              }
                               if (snapshot.hasData) {
                                 return ListView.builder(
                                     physics: PlatformInfo().isWeb()

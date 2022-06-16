@@ -19,6 +19,7 @@ class TicketHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return DefaultTabController(
@@ -57,7 +58,7 @@ class TicketHistory extends StatelessWidget {
                     height: height * 0.01,
                   ),
                   Text(
-                    "Ahmad Elizando",
+                    user!.name,
                     style: TextStyle(
                         fontSize: 13.0,
                         color: Color(0xFF6E7191),
@@ -142,10 +143,11 @@ class _OpenTicketsState extends State<OpenTickets> {
             .collection("tickets")
             .where("sites", arrayContainsAny: user!.sites)
             .where("isopen", isEqualTo: true)
+            .orderBy("timestamp")
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text("Something Went wrong");
+            print(snapshot.error);
           }
 
           // if (snapshot.connectionState == ConnectionState.waiting) {
@@ -290,6 +292,7 @@ class _ClosedTicketsState extends State<ClosedTickets> {
             .collection("tickets")
             .where("sites", arrayContainsAny: user!.sites)
             .where("isopen", isEqualTo: false)
+            .orderBy("timestamp")
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {

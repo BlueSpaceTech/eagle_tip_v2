@@ -44,7 +44,8 @@ class _SupportScreenState extends State<SupportScreen> {
 
   CollectionReference tickets =
       FirebaseFirestore.instance.collection("tickets");
-
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -162,6 +163,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                   height: height * 0.012,
                                 ),
                                 SupportTextField(
+                                    controller1: _controller1,
                                     valueChanged: (value) {
                                       setState(() {
                                         Subject = value;
@@ -174,6 +176,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                   height: height * 0.012,
                                 ),
                                 MessageTextField(
+                                    controller2: _controller2,
                                     valueChanged: (value) {
                                       setState(() {
                                         Message = value;
@@ -312,12 +315,14 @@ class SupportTextField extends StatefulWidget {
     required this.valueChanged,
     required this.height,
     required this.labelText,
+    required this.controller1,
   }) : super(key: key);
 
   final double width;
   final double height;
   final String labelText;
   final ValueChanged valueChanged;
+  final TextEditingController controller1;
 
   @override
   State<SupportTextField> createState() => _SupportTextFieldState();
@@ -340,7 +345,7 @@ class _SupportTextFieldState extends State<SupportTextField> {
     myFocusNode.dispose();
   }
 
-  TextEditingController _controller = TextEditingController();
+  // TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -368,7 +373,7 @@ class _SupportTextFieldState extends State<SupportTextField> {
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: TextField(
-        controller: _controller,
+        controller: widget.controller1,
         focusNode: myFocusNode,
         onChanged: (value) {
           setState(() {
@@ -401,6 +406,7 @@ class MessageTextField extends StatefulWidget {
     required this.width,
     required this.height,
     required this.valueChanged,
+    required this.controller2,
     required this.labelText,
   }) : super(key: key);
 
@@ -408,6 +414,7 @@ class MessageTextField extends StatefulWidget {
   final double height;
   final String labelText;
   final ValueChanged valueChanged;
+  final TextEditingController controller2;
 
   @override
   _MessageTextFieldState createState() => _MessageTextFieldState();
@@ -456,6 +463,7 @@ class _MessageTextFieldState extends State<MessageTextField> {
       ),
       child: TextField(
         maxLines: null,
+        controller: widget.controller2,
         keyboardType: TextInputType.multiline,
         onChanged: (val) {
           setState(() {

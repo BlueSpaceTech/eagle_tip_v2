@@ -89,31 +89,24 @@ export const sendToCondition =functions.firestore.document('/pushNotifications/{
             }
         };
 
-        function returnTopic(){
-            let topicname:string="";
+      
             for(let i=0;i<notify.visibleto.length;i++){
-                if(notify.sites.length==0){
-                    if(notify.visibleto[i]==notify.visibleto[notify.visibleto.length-1]){
-                        topicname+="'"+`${notify.visibleto[i]}`+"'"+" in topics";
-                    }else{
-                        topicname+="'"+`${notify.visibleto[i]}`+"'"+" in topics || ";
-                    }
-    
-    
-                }else{
+               
+                    
                     for(let j=0;j<notify.sites.length;j++){
-                        if((i==notify.visibleto.length-1)&&(j==notify.sites.length-1)){
-                            topicname+="'"+`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics";
-                        }else{
-                            topicname+="'"+`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`+"'"+" in topics || ";
-                        }
+                        let topicname="";
+                            topicname+=`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`;
+                            fcm.sendToTopic(topicname,payload);
+                        
                     }
-                }
+                
+                
+
             }
-            return topicname;
-        }
+            // return topicname;
+        
        
-            return fcm.sendToCondition(returnTopic(),payload);
+            // return fcm.sendToCondition(returnTopic(),payload);
                 
       
         // return fcm.sendToTopic
@@ -127,5 +120,12 @@ exports.emptyArr=
         });
         
     })
+
+exports.emptysitesArr=
+functions.pubsub.schedule("0 0 * * *").timeZone("America/New_York").onRun(async (context)=>{
+    return db.collection("9pmNotifys").doc("notifs").update({
+        "sites":[]
+    });
+})
 
 
