@@ -737,8 +737,8 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       ),
                       SizedBox(
                         height: Responsive.isDesktop(context)
-                            ? height * 0.22
-                            : height * 0.2,
+                            ? height * 0.08
+                            : height * 0.08,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

@@ -6,6 +6,7 @@ import 'package:dcache/dcache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
@@ -419,6 +420,69 @@ class _LoginScreenState extends State<LoginScreen> {
           AuthFunctions.signOut;
           registerUser(phone, context);
           addData();
+          try {
+            if (!PlatformInfo().isWeb()) {
+              List checkk = [];
+              String? deviceId = await PlatformDeviceId.getDeviceId;
+              DocumentReference dbRef = await FirebaseFirestore.instance
+                  .collection('subscribedusers')
+                  .doc("deviceid");
+
+              final doc = await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(uid)
+                  .get()
+                  .then((value) => value);
+
+              // print("inside2");
+
+              await dbRef.get().then((data) async {
+                if (data.exists) {
+                  setState(() {
+                    checkk = data.get("id");
+                  });
+                  print("dataexts");
+                }
+              });
+              if (checkk.contains(deviceId) && doc["isSubscribed"]) {
+                // print("already viewed");
+
+              } else if (!checkk.contains(deviceId) && !doc["isSubscribed"]) {
+                _subscribeAllUsers();
+                _subscribetotopic();
+                checkk.add(deviceId);
+                //  print(check);
+                dbRef.update({"id": checkk});
+                FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .update({
+                  "isSubscribed": true,
+                });
+              } else if (!doc["isSubscribed"]) {
+                _subscribeAllUsers();
+                _subscribetotopic();
+                FirebaseFirestore.instance
+                    .collection("users")
+                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                    .update({
+                  "isSubscribed": true,
+                });
+              } else if (!checkk.contains(deviceId)) {
+                _subscribeAllUsers();
+                _subscribetotopic();
+                checkk.add(deviceId);
+                //  print(check);
+                dbRef.update({"id": checkk});
+              }
+            } else {
+              // confirmotp();
+              print("webbb");
+            }
+          } catch (e) {
+            //  confirmotp();
+            print("web");
+          }
           // Navigator.pushReplacement(
           //     context,
           //     MaterialPageRoute(
