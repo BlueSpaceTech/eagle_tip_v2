@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
@@ -428,6 +429,12 @@ class _UploadImageState extends State<UploadImage> {
                                 .collection('subscribedusers')
                                 .doc("deviceid");
 
+                            final doc = await FirebaseFirestore.instance
+                                .collection("users")
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .get()
+                                .then((value) => value);
+
                             // print("inside2");
 
                             await dbRef.get().then((data) async {
@@ -436,19 +443,41 @@ class _UploadImageState extends State<UploadImage> {
                                   checkk = data.get("id");
                                 });
                                 print("dataexts");
-
-                                if (checkk.contains(deviceId)) {
-                                  // print("already viewed");
-
-                                } else {
-                                  _subscribeAllUsers();
-                                  _subscribetotopic();
-                                  checkk.add(deviceId);
-                                  //  print(check);
-                                  dbRef.update({"id": checkk});
-                                }
                               }
                             });
+                            if (checkk.contains(deviceId) &&
+                                doc["isSubscribed"]) {
+                              // print("already viewed");
+
+                            } else if (!checkk.contains(deviceId) &&
+                                !doc["isSubscribed"]) {
+                              _subscribeAllUsers();
+                              _subscribetotopic();
+                              checkk.add(deviceId);
+                              //  print(check);
+                              dbRef.update({"id": checkk});
+                              FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .update({
+                                "isSubscribed": true,
+                              });
+                            } else if (!doc["isSubscribed"]) {
+                              _subscribeAllUsers();
+                              _subscribetotopic();
+                              FirebaseFirestore.instance
+                                  .collection("users")
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .update({
+                                "isSubscribed": true,
+                              });
+                            } else if (!checkk.contains(deviceId)) {
+                              _subscribeAllUsers();
+                              _subscribetotopic();
+                              checkk.add(deviceId);
+                              //  print(check);
+                              dbRef.update({"id": checkk});
+                            }
                           } else {
                             // confirmotp();
                             print("webbb");
