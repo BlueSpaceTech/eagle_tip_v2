@@ -51,19 +51,60 @@ class _SitesAdminState extends State<SitesAdmin> {
     return sitedesc;
   }
 
+  List<SitesDetails> siteelements = [];
+  getsiteelement(String terminalinfo) {
+    for (var document in sitedetails!) {
+      if (document.terminalID + " ${document.terminalName}" == terminalinfo) {
+        siteelements.add(document);
+      }
+    }
+  }
+
+  getsiteelementdrop(String terminalinfo) {
+    siteelements.clear();
+    for (var document in sitedetails!) {
+      if (document.terminalID + " ${document.terminalName}" == terminalinfo) {
+        siteelements.add(document);
+      }
+    }
+  }
+
+  getTerminalData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      if (terminal
+          .contains(document.terminalID + " ${document.terminalName}")) {
+      } else {
+        terminal.insert(0, document.terminalID + " ${document.terminalName}");
+        dropdownValue = terminal[0];
+      }
+    }
+    getsiteelement(terminal[0]);
+
+    //  print(terminal);
+  }
+
+  List<String> terminal = [""];
+  String dropdownValue = "";
   @override
   void initState() {
     // TODO: implement initState
     getData();
     super.initState();
+    getTerminalData();
+
+    // getsiteelement(terminal[0]);
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ShowCaseWidget.of(context)!.startShowCase([_key1]);
     });
   }
 
   final ScrollController _firstController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
+    // String dropdownValue = terminal[0];
     model.User? user = Provider.of<UserProvider>(context).getUser;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -116,39 +157,88 @@ class _SitesAdminState extends State<SitesAdmin> {
                                 SizedBox(
                                   height: height * 0.05,
                                 ),
-                                Showcase(
-                                  key: _key1,
-                                  disposeOnTap: true,
-                                  showArrow: false,
-                                  onTargetClick: () {
-                                    Navigator.pop(context);
-                                  },
-                                  description:
-                                      "You can view all your assigned sites here. Tap to Continue",
-                                  titleTextStyle: TextStyle(
-                                    fontSize: 17.0,
-                                    color: Colors.white,
-                                  ),
-                                  descTextStyle: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.white,
-                                  ),
-                                  shapeBorder: RoundedRectangleBorder(),
-                                  overlayPadding: EdgeInsets.all(8.0),
-                                  showcaseBackgroundColor: Color(0xFF5081DB),
-                                  contentPadding: EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "All Sites Admin",
-                                    style: TextStyle(
+                                Row(
+                                  children: [
+                                    Showcase(
+                                      key: _key1,
+                                      disposeOnTap: true,
+                                      showArrow: false,
+                                      onTargetClick: () {
+                                        Navigator.pop(context);
+                                      },
+                                      description:
+                                          "You can view all your assigned sites here. Tap to Continue",
+                                      titleTextStyle: TextStyle(
+                                        fontSize: 17.0,
                                         color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight:
-                                            Responsive.isDesktop(context) ||
+                                      ),
+                                      descTextStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        color: Colors.white,
+                                      ),
+                                      shapeBorder: RoundedRectangleBorder(),
+                                      overlayPadding: EdgeInsets.all(8.0),
+                                      showcaseBackgroundColor:
+                                          Color(0xFF5081DB),
+                                      contentPadding: EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "All Sites Admin",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: Responsive.isDesktop(
+                                                        context) ||
                                                     Responsive.isTablet(context)
                                                 ? FontWeight.w500
                                                 : FontWeight.bold,
-                                        fontFamily: "Poppins"),
-                                  ),
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    DropdownButton<String>(
+                                      value: dropdownValue,
+                                      icon: const Icon(
+                                          Icons.keyboard_arrow_down_outlined),
+                                      iconEnabledColor: Colors.white,
+                                      iconSize: 24,
+                                      dropdownColor: Colors.black,
+                                      elevation: 16,
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                      // underline: Container(
+                                      //   height: 2,
+                                      //   color: Colors.deepPurpleAccent,
+                                      // ),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          dropdownValue = newValue!;
+                                        });
+                                        getsiteelementdrop(newValue!);
+                                      },
+                                      // items: List.generate(user.sites.length, (index) {
+                                      //   return DropdownMenuItem<String>(
+                                      //     child: Text(
+                                      //       user.sites[index]["sitename"],
+                                      //       style: TextStyle(color: Colors.white),
+                                      //     ),
+                                      //   );
+                                      // })
+
+                                      items: terminal
+                                          .map<DropdownMenuItem<String>>(
+                                              (String value) {
+                                        return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ));
+                                      }).toList(),
+                                    )
+                                  ],
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(
@@ -159,8 +249,8 @@ class _SitesAdminState extends State<SitesAdmin> {
                                   child: Container(
                                     height: Responsive.isDesktop(context) ||
                                             Responsive.isTablet(context)
-                                        ? height * 0.6
-                                        : height * 0.5,
+                                        ? height * 0.7
+                                        : height * 0.8,
                                     child: Scrollbar(
                                       showTrackOnHover: true,
                                       trackVisibility: true,
@@ -168,6 +258,7 @@ class _SitesAdminState extends State<SitesAdmin> {
                                       controller: _firstController,
                                       child: ListView.builder(
                                         controller: _firstController,
+
                                         // physics:
                                         //     NeverScrollableScrollPhysics(),
                                         itemBuilder:
@@ -180,10 +271,10 @@ class _SitesAdminState extends State<SitesAdmin> {
                                                       builder: (context) =>
                                                           SiteDetails(
                                                         currentSite:
-                                                            sitedetails![index]
+                                                            siteelements[index]
                                                                 .sitename,
                                                         sitedetail:
-                                                            sitedetails![index],
+                                                            siteelements[index],
                                                       ),
                                                     ));
                                               },
@@ -191,14 +282,14 @@ class _SitesAdminState extends State<SitesAdmin> {
                                                 width: width,
                                                 height: height,
                                                 index: index,
-                                                siteName: sitedetails![index]
+                                                siteName: siteelements[index]
                                                     .sitename,
                                                 sitelocation:
-                                                    sitedetails![index]
+                                                    siteelements[index]
                                                         .sitelocation,
                                               ));
                                         },
-                                        itemCount: sitedetails!.length,
+                                        itemCount: siteelements.length,
                                       ),
                                     ),
                                   ),
@@ -215,35 +306,80 @@ class _SitesAdminState extends State<SitesAdmin> {
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          Showcase(
-                            key: _key1,
-                            disposeOnTap: true,
-                            showArrow: false,
-                            onTargetClick: () {
-                              Navigator.pop(context);
-                            },
-                            description:
-                                "You can view all your assigned sites here. Tap to Continue",
-                            titleTextStyle: TextStyle(
-                              fontSize: 17.0,
-                              color: Colors.white,
-                            ),
-                            descTextStyle: TextStyle(
-                              fontSize: 16.0,
-                              color: Colors.white,
-                            ),
-                            shapeBorder: RoundedRectangleBorder(),
-                            overlayPadding: EdgeInsets.all(8.0),
-                            showcaseBackgroundColor: Color(0xFF5081DB),
-                            contentPadding: EdgeInsets.all(8.0),
-                            child: Text(
-                              "Sites",
-                              style: TextStyle(
+                          Row(
+                            children: [
+                              Showcase(
+                                key: _key1,
+                                disposeOnTap: true,
+                                showArrow: false,
+                                onTargetClick: () {
+                                  Navigator.pop(context);
+                                },
+                                description:
+                                    "You can view all your assigned sites here. Tap to Continue",
+                                titleTextStyle: TextStyle(
+                                  fontSize: 17.0,
                                   color: Colors.white,
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Poppins"),
-                            ),
+                                ),
+                                descTextStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  color: Colors.white,
+                                ),
+                                shapeBorder: RoundedRectangleBorder(),
+                                overlayPadding: EdgeInsets.all(8.0),
+                                showcaseBackgroundColor: Color(0xFF5081DB),
+                                contentPadding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Sites Admin",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Poppins"),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              DropdownButton<String>(
+                                value: dropdownValue,
+                                icon: const Icon(
+                                    Icons.keyboard_arrow_down_outlined),
+                                iconEnabledColor: Colors.white,
+                                iconSize: 24,
+                                dropdownColor: Colors.black,
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.white),
+                                // underline: Container(
+                                //   height: 2,
+                                //   color: Colors.deepPurpleAccent,
+                                // ),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue!;
+                                  });
+                                  getsiteelementdrop(newValue!);
+                                },
+                                // items: List.generate(user.sites.length, (index) {
+                                //   return DropdownMenuItem<String>(
+                                //     child: Text(
+                                //       user.sites[index]["sitename"],
+                                //       style: TextStyle(color: Colors.white),
+                                //     ),
+                                //   );
+                                // })
+
+                                items: terminal.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                  return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(
+                                        value,
+                                        style: TextStyle(color: Colors.white),
+                                      ));
+                                }).toList(),
+                              )
+                            ],
                           ),
                           SizedBox(
                             height: height * 0.05,
@@ -255,8 +391,8 @@ class _SitesAdminState extends State<SitesAdmin> {
                                     : 0.0),
                             child: SizedBox(
                               height: Responsive.isDesktop(context)
-                                  ? height * 0.6
-                                  : height * 0.5,
+                                  ? height * 0.7
+                                  : height * 0.8,
                               child: Scrollbar(
                                 showTrackOnHover: true,
                                 trackVisibility: true,

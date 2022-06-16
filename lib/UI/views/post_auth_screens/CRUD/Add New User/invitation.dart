@@ -43,19 +43,18 @@ class _InvitationState extends State<Invitation> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
-     trimsites();
+    trimsites();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ShowCaseWidget.of(context)!.startShowCase([_key1]);
     });
   }
-  
 
   List trimedsites = [];
   trimsites() {
     for (int i = 0; i < widget.sites.length; i++) {
       trimedsites.add(widget.sites[i].toString().substring(8));
     }
-    print(trimedsites);
+    //  print(trimedsites);
   }
 
   @override

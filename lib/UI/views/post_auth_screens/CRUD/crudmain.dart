@@ -23,6 +23,7 @@ import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/web_chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/createNotification.dart';
+import 'package:testttttt/UI/views/post_auth_screens/TicketHistory/ticketHistoryDetail.dart';
 
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
@@ -186,6 +187,89 @@ class _CrudScreenState extends State<CrudScreen> {
     return choicess;
   }
 
+  List selectedsites2 = [];
+  List selectedroles2 = [];
+  List terminal = [];
+  getTerminalData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      if (terminal
+          .contains(document.terminalID + " ${document.terminalName}")) {
+      } else {
+        terminal.add(document.terminalID + " ${document.terminalName}");
+      }
+    }
+
+    print(terminal);
+  }
+
+  void _showSiteSelect(List allsitename) async {
+    final List _items = allsitename;
+
+    for (var element in _items) {
+      element = element.toString().replaceAll(" ", "");
+    }
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SiteSelectCrud(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        selectedsites2 = results;
+      });
+    }
+  }
+
+  void _showroleSelect(List allsitename) async {
+    final List _items = allsitename;
+
+    for (var element in _items) {
+      element = element.toString().replaceAll(" ", "");
+    }
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SiteSelectCrud(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        selectedroles2 = results;
+      });
+    }
+  }
+
+  searchSites(String terminalname) {
+    List siteslist = [];
+    for (var doc in sitedetails!) {
+      if (doc.terminalID + " ${doc.terminalName}" == terminalname) {
+        siteslist.add(doc.siteid + " ${doc.sitename}");
+      }
+    }
+    return siteslist;
+  }
+
+  getsitesdescrp(List sites) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var site in sites) {
+        if (element.sitename == site) {
+          sitedesc.add(element.siteid + " ${element.sitename}");
+        }
+      }
+    }
+    return sitedesc;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -194,6 +278,7 @@ class _CrudScreenState extends State<CrudScreen> {
     }
 
     getData();
+    getTerminalData();
 
     _controllers = LinkedScrollControllerGroup();
     _letters = _controllers!.addAndGet();
@@ -249,20 +334,21 @@ class _CrudScreenState extends State<CrudScreen> {
   List _resultList = [];
   TextEditingController _search = TextEditingController();
 
-  getUserdetails(List sites, String uid, model.User user) async {
+  getUserdetails(List sites, String uid) async {
     var data;
-    userRole == "AppAdmin" || userRole == "SuperAdmin"
-        ? data = await FirebaseFirestore.instance
-            .collection("users")
-            .where("uid", isNotEqualTo: uid)
-            .where("userRole", whereIn: CrudFunction().visibleRole(user))
-            .get()
-        : data = await FirebaseFirestore.instance
-            .collection("users")
-            .where("sites", arrayContainsAny: sites)
-            .where("uid", isNotEqualTo: uid)
-            // .where("userRole", whereIn: CrudFunction().visibleRole(user))
-            .get();
+    // userRole == "AppAdmin" || userRole == "SuperAdmin"
+    //     ? data = await FirebaseFirestore.instance
+    //         .collection("users")
+    //         .where("uid", isNotEqualTo: uid)
+    //         .where("userRole", whereIn: CrudFunction().visibleRole(user))
+    //         .get()
+    //     :
+    data = await FirebaseFirestore.instance
+        .collection("users")
+        .where("sites", arrayContainsAny: sites)
+        .where("uid", isNotEqualTo: uid)
+        // .where("userRole", whereIn: CrudFunction().visibleRole(user))
+        .get();
     if (mounted) {
       setState(() {
         _allResults = data.docs;
@@ -301,7 +387,7 @@ class _CrudScreenState extends State<CrudScreen> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     model.User? user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user!.sites, user.uid, user);
+    // resultsloaded = getUserdetails(user!.sites, user.uid, user);
     super.didChangeDependencies();
   }
 
@@ -328,32 +414,36 @@ class _CrudScreenState extends State<CrudScreen> {
         */
 
       }
-    } else if (selectedrOLE != "") {
-      for (var usersnap in _resultList) {
-        var userRole = model.User.fromSnap(usersnap).userRole;
-        if (userRole.contains(selectedrOLE)) {
-          showResults.add(usersnap);
-        }
-      }
-    } else if (selectedsites.isNotEmpty) {
-      for (var usersnap in _resultList) {
-        var sites = model.User.fromSnap(usersnap).sites;
-        if (selectedsites.every((item) => sites.contains(item))) {
-          showResults.add(usersnap);
-        }
-      }
-    } else {
+    }
+    // else if (selectedrOLE != "") {
+    //   for (var usersnap in _resultList) {
+    //     var userRole = model.User.fromSnap(usersnap).userRole;
+    //     if (userRole.contains(selectedrOLE)) {
+    //       showResults.add(usersnap);
+    //     }
+    //   }
+    // }
+    //  else if (selectedsites.isNotEmpty) {
+    //   for (var usersnap in _resultList) {
+    //     var sites = model.User.fromSnap(usersnap).sites;
+    //     if (selectedsites.every((item) => sites.contains(item))) {
+    //       showResults.add(usersnap);
+    //     }
+    //   }
+    // }
+    else {
       for (var usersnap in _allResults) {
-        var role = model.User.fromSnap(usersnap).userRole;
-        var user = model.User.fromSnap(usersnap);
-        List visiblefor = CrudFunction().visibleRole2(userRole);
-        // List visiblefor = ["SiteManager", "SiteUser"];
-        if (visiblefor.contains(usersnap["userRole"])) {
-          showResults.add(usersnap);
-        } else {
-          // _allResults.remove(user);
+        showResults.add(usersnap);
+        // var role = model.User.fromSnap(usersnap).userRole;
+        // var user = model.User.fromSnap(usersnap);
+        // List visiblefor = CrudFunction().visibleRole2(userRole);
+        // // List visiblefor = ["SiteManager", "SiteUser"];
+        // if (visiblefor.contains(usersnap["userRole"])) {
+        //   showResults.add(usersnap);
+        // } else {
+        //   // _allResults.remove(user);
 
-        }
+        // }
       }
 
       // showResults = List.from(_allResults);
@@ -363,6 +453,14 @@ class _CrudScreenState extends State<CrudScreen> {
         _resultList = showResults;
       });
     }
+  }
+
+  trimsites(List sites) {
+    List trimedsites = [];
+    for (int i = 0; i < sites.length; i++) {
+      trimedsites.add(sites[i].toString().substring(8));
+    }
+    return trimedsites;
   }
 
   final _key1 = GlobalKey();
@@ -714,7 +812,7 @@ class _CrudScreenState extends State<CrudScreen> {
                                     description:
                                         "You can search users according to their sites and roles by selecting site and role",
                                     child: Text(
-                                      "Site",
+                                      "Sites",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontFamily: "Poppins",
@@ -722,70 +820,247 @@ class _CrudScreenState extends State<CrudScreen> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: height * 0.02,
+                                    height: 20,
                                   ),
-                                  Wrap(
-                                    children: [
-                                      Wrap(
-                                        children: [
-                                          user?.userRole == "AppAdmin" ||
-                                                  user?.userRole == "SuperAdmin"
-                                              //     ||
-                                              // user.userRole ==
-                                              //     "TerminalManager" ||
-                                              // user.userRole ==
-                                              //     "TerminalUser"
-                                              ? Wrap(
-                                                  runSpacing: 10,
-                                                  children:
-                                                      _buildall(allsitename),
-                                                )
-                                              : Wrap(
-                                                  children:
-                                                      _buildall(user!.sites),
-                                                ),
-                                          user?.userRole == "AppAdmin" ||
-                                                  user?.userRole == "SuperAdmin"
-                                              //      ||
-                                              // user.userRole ==
-                                              //     "TerminalManager" ||
-                                              // user.userRole ==
-                                              //     "TerminalUser"
-                                              ? Wrap(
-                                                  runSpacing: 10,
-                                                  children: _buildsiteschip(
-                                                      allsitename),
-                                                )
-                                              : Wrap(
-                                                  children: _buildsiteschip(
-                                                      user!.sites),
-                                                ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.04,
-                                  ),
-                                  Text(
-                                    "Role",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "Poppins",
-                                        fontSize: 15),
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.02,
-                                  ),
-                                  Wrap(
-                                    children: _buildRolechip(
-                                        CrudFunction().visibleRole(user!)),
-                                  ),
+                                  // Wrap(
+                                  //   children: [
+                                  //     Wrap(
+                                  //       children: [
+                                  //         user?.userRole == "AppAdmin" ||
+                                  //                 user?.userRole == "SuperAdmin"
+                                  //             //     ||
+                                  //             // user.userRole ==
+                                  //             //     "TerminalManager" ||
+                                  //             // user.userRole ==
+                                  //             //     "TerminalUser"
+                                  //             ? Wrap(
+                                  //                 runSpacing: 10,
+                                  //                 children:
+                                  //                     _buildall(allsitename),
+                                  //               )
+                                  //             : Wrap(
+                                  //                 children:
+                                  //                     _buildall(user!.sites),
+                                  //               ),
+                                  //         user?.userRole == "AppAdmin" ||
+                                  //                 user?.userRole == "SuperAdmin"
+                                  //             //      ||
+                                  //             // user.userRole ==
+                                  //             //     "TerminalManager" ||
+                                  //             // user.userRole ==
+                                  //             //     "TerminalUser"
+                                  //             ? Wrap(
+                                  //                 runSpacing: 10,
+                                  //                 children: _buildsiteschip(
+                                  //                     allsitename),
+                                  //               )
+                                  //             : Wrap(
+                                  //                 children: _buildsiteschip(
+                                  //                     user!.sites),
+                                  //               ),
+                                  //       ],
+                                  //     ),
+                                  //   ],
+                                  // ),
+                                  // SizedBox(
+                                  //   height: height * 0.04,
+                                  // ),
+                                  // Text(
+                                  //   "Role",
+                                  //   style: TextStyle(
+                                  //       color: Colors.white,
+                                  //       fontFamily: "Poppins",
+                                  //       fontSize: 15),
+                                  // ),
+                                  // SizedBox(
+                                  //   height: height * 0.02,
+                                  // ),
+                                  // Wrap(
+                                  //   children: _buildRolechip(
+                                  //       CrudFunction().visibleRole(user!)),
+                                  // ),
                                 ])),
 
+                        // SizedBox(
+                        //   height: 25,
+                        // ),
+                        user!.userRole == "AppAdmin" ||
+                                user.userRole == "SuperAdmin"
+                            ? SizedBox(
+                                height: 60,
+                                width: width * 0.5,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: terminal.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          _showSiteSelect(
+                                              searchSites(terminal[index]));
+                                        },
+                                        child: Container(
+                                          width: 180,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade300,
+                                              border: Border.all(),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  terminal[index],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Icon(Icons
+                                                    .keyboard_arrow_down_outlined),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  _showSiteSelect(getsitesdescrp(user.sites));
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Select sites",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Icon(Icons.keyboard_arrow_down_outlined),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
                         SizedBox(
-                          height: 25,
+                          height: 20,
                         ),
+                        Wrap(
+                          children: [
+                            for (var name in selectedsites2)
+                              Container(
+                                //color: Color(0xFF5081db),
+                                padding: EdgeInsets.all(3.0),
+                                child: ChoiceChip(
+                                  label: Text(
+                                    name + " ",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  selectedColor: Color(0xFF5081db),
+                                  // disabledColor: Color(0xFF535c65),
+                                  // backgroundColor: Color(0xFF535c65),
+                                  selected: true,
+                                ),
+                              )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Role",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                              fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _showroleSelect(CrudFunction().visibleRole(user));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 180,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                border: Border.all(),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Select Role",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Icon(Icons.keyboard_arrow_down_outlined),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Wrap(
+                          children: [
+                            for (var name in selectedroles2)
+                              Container(
+                                //color: Color(0xFF5081db),
+                                padding: EdgeInsets.all(3.0),
+                                child: ChoiceChip(
+                                  label: Text(
+                                    name + " ",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  selectedColor: Color(0xFF5081db),
+                                  // disabledColor: Color(0xFF535c65),
+                                  // backgroundColor: Color(0xFF535c65),
+                                  selected: true,
+                                ),
+                              )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              getUserdetails(
+                                  trimsites(selectedsites2), user.uid);
+                            },
+                            child: CustomButton(
+                                width: width,
+                                buttonText: "Search",
+                                height: height)),
+                        SizedBox(
+                          height: 20,
+                        ),
+
                         SingleChildScrollView(
                           controller: _letters,
                           scrollDirection: Axis.horizontal,
@@ -932,38 +1207,54 @@ class _CrudScreenState extends State<CrudScreen> {
                         //     );
                         //   },
                         // ),
-                        ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.only(top: 0),
-                            shrinkWrap: true,
-                            itemCount: _resultList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final document = _resultList[index];
-                              List site = document!["sites"];
-                              // double hh = 0;
+                        _resultList.isEmpty
+                            ? Center(
+                                child: Text(
+                                  "No User to display",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              )
+                            : ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                padding: EdgeInsets.only(top: 0),
+                                shrinkWrap: true,
+                                itemCount: _resultList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  final document = _resultList[index];
+                                  List site = document!["sites"];
+                                  // double hh = 0;
 
-                              return CRUDtile(
-                                  numbers: _numbers,
-                                  width: width,
-                                  document: document,
-                                  site: site,
-                                  index: index,
-                                  allsitename: allsitename,
-                                  height: height,
-                                  opendelete: () {
-                                    // deletUserDialog(height, width,
-                                    //     document["name"], document["uid"]);
-                                  },
-                                  openchat: () {
-                                    // callChatScreen(
-                                    //   document.id,
-                                    //   document["name"],
-                                    //   user.name,
-                                    //   document["dpUrl"],
-                                    //   user.dpurl,
-                                    // );
-                                  });
-                            }),
+                                  if (selectedroles2
+                                      .contains(document["userRole"])) {
+                                    return CRUDtile(
+                                        numbers: _numbers,
+                                        width: width,
+                                        document: document,
+                                        site: site,
+                                        index: index,
+                                        allsitename: allsitename,
+                                        height: height,
+                                        opendelete: () {
+                                          // deletUserDialog(height, width,
+                                          //     document["name"], document["uid"]);
+                                        },
+                                        openchat: () {
+                                          // callChatScreen(
+                                          //   document.id,
+                                          //   document["name"],
+                                          //   user.name,
+                                          //   document["dpUrl"],
+                                          //   user.dpurl,
+                                          // );
+                                        });
+                                  } else {
+                                    return Container();
+                                  }
+                                }),
                         SizedBox(
                           height: height * 0.1,
                         ),

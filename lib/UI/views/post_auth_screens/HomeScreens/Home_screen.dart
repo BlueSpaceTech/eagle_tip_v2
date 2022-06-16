@@ -1524,41 +1524,45 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                 SizedBox(
                                   height: height * 0.05,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Text(
-                                            user.currentsite,
+                                Visibility(
+                                  visible: user.userRole != "AppAdmin" &&
+                                      user.userRole != "SuperAdmin",
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Column(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Text(
+                                              user.currentsite,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 17.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Poppins"),
+                                            ),
+                                          ),
+                                          Text(
+                                            getsiteloc(user.currentsite) ?? "",
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 17.0,
-                                                fontWeight: FontWeight.w400,
+                                                color: Color(0xFF6E7191),
+                                                fontSize: 13.0,
+                                                fontWeight: FontWeight.w500,
                                                 fontFamily: "Poppins"),
                                           ),
-                                        ),
-                                        Text(
-                                          getsiteloc(user.currentsite) ?? "",
-                                          style: TextStyle(
-                                              color: Color(0xFF6E7191),
-                                              fontSize: 13.0,
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Poppins"),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      getsiteID(user.currentsite) ?? "",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 17.0,
-                                          fontWeight: FontWeight.w400,
-                                          fontFamily: "Poppins"),
-                                    ),
-                                  ],
+                                        ],
+                                      ),
+                                      Text(
+                                        getsiteID(user.currentsite) ?? "",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 17.0,
+                                            fontWeight: FontWeight.w400,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(
                                   height: height * 0.05,

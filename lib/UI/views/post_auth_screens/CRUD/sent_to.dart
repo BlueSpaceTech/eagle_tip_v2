@@ -3,14 +3,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
+import 'package:testttttt/UI/views/post_auth_screens/TicketHistory/ticketHistoryDetail.dart';
 
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/userProfile.dart';
@@ -195,6 +199,7 @@ class _SentToState extends State<SentTo> {
   void initState() {
     super.initState();
     getCurrentUserRole();
+    getTerminalData();
     _controllers = LinkedScrollControllerGroup();
     _letters = _controllers!.addAndGet();
     _numbers = _controllers!.addAndGet();
@@ -216,20 +221,13 @@ class _SentToState extends State<SentTo> {
   List _resultList = [];
   TextEditingController _search = TextEditingController();
 
-  getUserdetails(List sites, String uid, model.User user) async {
-    var data = user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
-        ? await FirebaseFirestore.instance
-            .collection("invitations")
-            .where("visibleto", arrayContains: user.userRole)
-            // .where("sites", arrayContains: user.sites)
-            // .where("userRole", whereIn: CrudFunction().visibleRole(user))
-            .get()
-        : await FirebaseFirestore.instance
-            .collection("invitations")
-            // .where("visibleto", arrayContains: user.userRole)
-            .where("sites", arrayContainsAny: user.sites)
-            // .where("userRole", whereIn: CrudFunction().visibleRole(user))
-            .get();
+  getUserdetails(List sites, String uid) async {
+    var data = await FirebaseFirestore.instance
+        .collection("invitations")
+        .where("sites", arrayContainsAny: sites)
+        // .where("uid", isNotEqualTo: uid)
+        // .where("userRole", whereIn: CrudFunction().visibleRole(user))
+        .get();
 
     setState(() {
       _allResults = data.docs;
@@ -262,12 +260,97 @@ class _SentToState extends State<SentTo> {
     return "done";
   }
 
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+  List selectedsites2 = [];
+  List selectedroles2 = [];
+  List terminal = [];
+  getTerminalData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      if (terminal
+          .contains(document.terminalID + " ${document.terminalName}")) {
+      } else {
+        terminal.add(document.terminalID + " ${document.terminalName}");
+      }
+    }
+
+    print(terminal);
+  }
+
+  void _showSiteSelect(List allsitename) async {
+    final List _items = allsitename;
+
+    for (var element in _items) {
+      element = element.toString().replaceAll(" ", "");
+    }
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SiteSelectCrud(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        selectedsites2 = results;
+      });
+    }
+  }
+
+  void _showroleSelect(List allsitename) async {
+    final List _items = allsitename;
+
+    for (var element in _items) {
+      element = element.toString().replaceAll(" ", "");
+    }
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SiteSelectCrud(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        selectedroles2 = results;
+      });
+    }
+  }
+
+  searchSites(String terminalname) {
+    List siteslist = [];
+    for (var doc in sitedetails!) {
+      if (doc.terminalID + " ${doc.terminalName}" == terminalname) {
+        siteslist.add(doc.siteid + " ${doc.sitename}");
+      }
+    }
+    return siteslist;
+  }
+
+  getsitesdescrp(List sites) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var site in sites) {
+        if (element.sitename == site) {
+          sitedesc.add(element.siteid + " ${element.sitename}");
+        }
+      }
+    }
+    return sitedesc;
+  }
+
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     model.User? user = Provider.of<UserProvider>(context).getUser;
-    resultsloaded = getUserdetails(user!.sites, user.uid, user);
+    //resultsloaded = getUserdetails(user!.sites, user.uid, user);
   }
 
   _onsearchange() {
@@ -279,11 +362,12 @@ class _SentToState extends State<SentTo> {
     var showResults = [];
     if (_search.text != "") {
       //we have a search parameter
-      for (var usersnap in _resultList) {
-        var name = model.User.fromSnap(usersnap).name.toLowerCase();
+      for (var user in _resultList) {
+        // var name = model.User.fromSnap(usersnap).name.toLowerCase();
 
-        if (name.contains(_search.text.toLowerCase())) {
-          showResults.add(usersnap);
+        if (user["name"].toString().toLowerCase() ==
+            _search.text.toLowerCase()) {
+          showResults.add(user);
         }
 
         /*
@@ -293,41 +377,53 @@ class _SentToState extends State<SentTo> {
         */
 
       }
-    } else if (selectedrOLE != "") {
-      for (var usersnap in _resultList) {
-        var userRole = model.User.fromSnap(usersnap).userRole;
-        if (userRole.contains(selectedrOLE)) {
-          showResults.add(usersnap);
-        }
-      }
-    } else if (selectedsites.isNotEmpty) {
-      for (var usersnap in _resultList) {
-        var sites = model.User.fromSnap(usersnap).sites;
-        if (selectedsites.every((item) => sites.contains(item))) {
-          showResults.add(usersnap);
-        }
-      }
-    } else {
-      // for (var usersnap in _allResults) {
-      //   //   var role = model.User.fromSnap(usersnap).userRole;
-      //   //   var user = model.User.fromSnap(usersnap);
-      //   //   List visiblefor = CrudFunction().visibleRole2(userRole);
-      //   //   // List visiblefor = ["SiteManager", "SiteUser"];
-      //   //   if (visiblefor.contains(usersnap["userRole"])) {
-      //   //     print("contains");
-      //   //     showResults.add(usersnap);
-      //   //   } else {
-      //   //     // _allResults.remove(user);
-      //   //     print("removed");
-      //   //   }
-      //   // }
-      // }
-
-      showResults = List.from(_allResults);
     }
-    setState(() {
-      _resultList = showResults;
-    });
+    // else if (selectedrOLE != "") {
+    //   for (var usersnap in _resultList) {
+    //     var userRole = model.User.fromSnap(usersnap).userRole;
+    //     if (userRole.contains(selectedrOLE)) {
+    //       showResults.add(usersnap);
+    //     }
+    //   }
+    // }
+    //  else if (selectedsites.isNotEmpty) {
+    //   for (var usersnap in _resultList) {
+    //     var sites = model.User.fromSnap(usersnap).sites;
+    //     if (selectedsites.every((item) => sites.contains(item))) {
+    //       showResults.add(usersnap);
+    //     }
+    //   }
+    // }
+    else {
+      for (var usersnap in _allResults) {
+        showResults.add(usersnap);
+        // var role = model.User.fromSnap(usersnap).userRole;
+        // var user = model.User.fromSnap(usersnap);
+        // List visiblefor = CrudFunction().visibleRole2(userRole);
+        // // List visiblefor = ["SiteManager", "SiteUser"];
+        // if (visiblefor.contains(usersnap["userRole"])) {
+        //   showResults.add(usersnap);
+        // } else {
+        //   // _allResults.remove(user);
+
+        // }
+      }
+
+      // showResults = List.from(_allResults);
+    }
+    if (mounted) {
+      setState(() {
+        _resultList = showResults;
+      });
+    }
+  }
+
+  trimsites(List sites) {
+    List trimedsites = [];
+    for (int i = 0; i < sites.length; i++) {
+      trimedsites.add(sites[i].toString().substring(8));
+    }
+    return trimedsites;
   }
 
   @override
@@ -486,6 +582,7 @@ class _SentToState extends State<SentTo> {
                                   SizedBox(
                                     width: 10,
                                   ),
+
                                   // Visibility(
                                   //   visible: Responsive.isDesktop(context),
                                   //   child: InkWell(
@@ -541,6 +638,195 @@ class _SentToState extends State<SentTo> {
                               // ),
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Sites",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                              fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        user!.userRole == "AppAdmin" ||
+                                user.userRole == "SuperAdmin"
+                            ? SizedBox(
+                                height: 60,
+                                width: width * 0.5,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: terminal.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return InkWell(
+                                        onTap: () {
+                                          _showSiteSelect(
+                                              searchSites(terminal[index]));
+                                        },
+                                        child: Container(
+                                          width: 180,
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                              color: Colors.grey.shade300,
+                                              border: Border.all(),
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                          child: Center(
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  terminal[index],
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                                Icon(Icons
+                                                    .keyboard_arrow_down_outlined),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            : InkWell(
+                                onTap: () {
+                                  _showSiteSelect(getsitesdescrp(user.sites));
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 180,
+                                  height: 60,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Select sites",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Icon(Icons.keyboard_arrow_down_outlined),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Wrap(
+                          children: [
+                            for (var name in selectedsites2)
+                              Container(
+                                //color: Color(0xFF5081db),
+                                padding: EdgeInsets.all(3.0),
+                                child: ChoiceChip(
+                                  label: Text(
+                                    name + " ",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  selectedColor: Color(0xFF5081db),
+                                  // disabledColor: Color(0xFF535c65),
+                                  // backgroundColor: Color(0xFF535c65),
+                                  selected: true,
+                                ),
+                              )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Role",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: "Poppins",
+                              fontSize: 15),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            _showroleSelect(CrudFunction().visibleRole(user));
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            width: 180,
+                            height: 60,
+                            decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                border: Border.all(),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Select Role",
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
+                                Icon(Icons.keyboard_arrow_down_outlined),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Wrap(
+                          children: [
+                            for (var name in selectedroles2)
+                              Container(
+                                //color: Color(0xFF5081db),
+                                padding: EdgeInsets.all(3.0),
+                                child: ChoiceChip(
+                                  label: Text(
+                                    name + " ",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                  ),
+                                  selectedColor: Color(0xFF5081db),
+                                  // disabledColor: Color(0xFF535c65),
+                                  // backgroundColor: Color(0xFF535c65),
+                                  selected: true,
+                                ),
+                              )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              getUserdetails(
+                                  trimsites(selectedsites2), user.uid);
+                            },
+                            child: CustomButton(
+                                width: width,
+                                buttonText: "Search",
+                                height: height)),
+                        SizedBox(
+                          height: 20,
                         ),
                         SizedBox(
                           height: 25,
@@ -710,85 +996,91 @@ class _SentToState extends State<SentTo> {
                                 itemBuilder: (BuildContext context, int index) {
                                   final document = _resultList[index];
                                   List site = document!["sites"];
-
-                                  return SingleChildScrollView(
-                                    physics: Responsive.isDesktop(context)
-                                        ? NeverScrollableScrollPhysics()
-                                        : BouncingScrollPhysics(),
-                                    controller: _numbers,
-                                    scrollDirection: Axis.horizontal,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: index % 2 == 0
-                                            ? Color(0xff2B343B)
-                                            : Color(0xff24292E),
-                                      ),
-                                      height: 60,
-                                      child: Row(
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              deletUserDialog(
-                                                  height,
-                                                  width,
-                                                  document["name"],
-                                                  document["employercode"]);
-                                            },
-                                            child: Container(
+                                  if (selectedroles2
+                                      .contains(document["userRole"])) {
+                                    return SingleChildScrollView(
+                                      physics: Responsive.isDesktop(context)
+                                          ? NeverScrollableScrollPhysics()
+                                          : BouncingScrollPhysics(),
+                                      controller: _numbers,
+                                      scrollDirection: Axis.horizontal,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: index % 2 == 0
+                                              ? Color(0xff2B343B)
+                                              : Color(0xff24292E),
+                                        ),
+                                        height: 60,
+                                        child: Row(
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                deletUserDialog(
+                                                    height,
+                                                    width,
+                                                    document["name"],
+                                                    document["employercode"]);
+                                              },
+                                              child: Container(
+                                                  width: Responsive.isDesktop(
+                                                          context)
+                                                      ? width * 0.08
+                                                      : width * 0.16,
+                                                  child: Image.asset(
+                                                      "assets/delete.png")),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                callUserInfoScreen(
+                                                    document["name"],
+                                                    document["email"],
+                                                    userRole,
+                                                    document["sites"],
+                                                    document["phonenumber"]);
+                                              },
+                                              child: Container(
                                                 width: Responsive.isDesktop(
                                                         context)
-                                                    ? width * 0.08
-                                                    : width * 0.16,
-                                                child: Image.asset(
-                                                    "assets/delete.png")),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              callUserInfoScreen(
-                                                  document["name"],
-                                                  document["email"],
-                                                  userRole,
-                                                  document["sites"],
-                                                  document["phonenumber"]);
-                                            },
-                                            child: Container(
-                                              width:
-                                                  Responsive.isDesktop(context)
-                                                      ? width * 0.22
-                                                      : width * 0.4,
-                                              child: Text(
-                                                '${index + 1}. ${document["name"]}',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Poppins"),
+                                                    ? width * 0.22
+                                                    : width * 0.4,
+                                                child: Text(
+                                                  '${index + 1}. ${document["name"]}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: "Poppins"),
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          Container(
-                                            width: Responsive.isDesktop(context)
-                                                ? width * 0.12
-                                                : width * 0.24,
-                                            child: Text(document["userRole"],
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Poppins")),
-                                          ),
-                                          Container(
-                                            width: Responsive.isDesktop(context)
-                                                ? width * 0.32
-                                                : width * 0.52,
-                                            child: Text(site.join(", "),
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Poppins")),
-                                          ),
-                                          SizedBox(
-                                            width: width * 0.04,
-                                          ),
-                                        ],
+                                            Container(
+                                              width:
+                                                  Responsive.isDesktop(context)
+                                                      ? width * 0.12
+                                                      : width * 0.24,
+                                              child: Text(document["userRole"],
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: "Poppins")),
+                                            ),
+                                            Container(
+                                              width:
+                                                  Responsive.isDesktop(context)
+                                                      ? width * 0.32
+                                                      : width * 0.52,
+                                              child: Text(site.join(", "),
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: "Poppins")),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.04,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
                                 }),
                         SizedBox(
                           height: height * 0.1,

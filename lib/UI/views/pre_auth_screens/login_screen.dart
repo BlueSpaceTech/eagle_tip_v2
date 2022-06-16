@@ -723,6 +723,21 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Expanded(
                             child: TextField(
+                              onSubmitted: (value) {
+                                // print("rrr");
+                                try {
+                                  if (Platform.isAndroid || Platform.isIOS) {
+                                    signIn(_otpcode.text, width);
+                                  } else {
+                                    confirmotp(width);
+                                    // print("webbb");
+                                  }
+                                } catch (e) {
+                                  confirmotp(width);
+                                  print("web");
+                                }
+                                // print("submitted");
+                              },
                               keyboardType: TextInputType.number,
                               enabled: true,
                               controller: _otpcode,
