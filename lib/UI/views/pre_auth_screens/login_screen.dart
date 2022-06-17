@@ -393,42 +393,42 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          print("isweb");
+          // print("isweb");
 
-          AuthFunctions.signOut;
-          // print(phone);
-          // print(userRole);
-          ConfirmationResult result =
-              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          if (result == null) {
-            fToast!.showToast(
-                child: ToastMessage()
-                    .show(200, context, "Please try some time later"),
-                gravity: ToastGravity.BOTTOM,
-                toastDuration: Duration(seconds: 3));
-          } else {
-            fToast!.showToast(
-                child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-                gravity: ToastGravity.BOTTOM,
-                toastDuration: Duration(seconds: 3));
+          // AuthFunctions.signOut;
+          // // print(phone);
+          // // print(userRole);
+          // ConfirmationResult result =
+          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          // if (result == null) {
+          //   fToast!.showToast(
+          //       child: ToastMessage()
+          //           .show(200, context, "Please try some time later"),
+          //       gravity: ToastGravity.BOTTOM,
+          //       toastDuration: Duration(seconds: 3));
+          // } else {
+          //   fToast!.showToast(
+          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+          //       gravity: ToastGravity.BOTTOM,
+          //       toastDuration: Duration(seconds: 3));
 
-            setState(() {
-              ress = result;
-            });
-            setState(() {
-              _loading = false;
-            });
-            addData();
+          //   setState(() {
+          //     ress = result;
+          //   });
+          //   setState(() {
+          //     _loading = false;
+          //   });
+          //   addData();
 
-            print(ress);
-          }
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => Responsive.isDesktop(context) ||
-          //                 Responsive.isTablet(context)
-          //             ? HomeScreen(showdialog: false, sites: sites)
-          //             : BottomNav()));
+          //   print(ress);
+          // }
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context)
+                      ? HomeScreen(showdialog: false, sites: sites)
+                      : BottomNav()));
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);
@@ -496,15 +496,15 @@ class _LoginScreenState extends State<LoginScreen> {
             //  confirmotp();
             print("web");
           }
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => Responsive.isDesktop(context)
-          //             ? HomeScreen(
-          //                 showdialog: true,
-          //                 sites: sites,
-          //               )
-          //             : BottomNav()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Responsive.isDesktop(context)
+                      ? HomeScreen(
+                          showdialog: true,
+                          sites: sites,
+                        )
+                      : BottomNav()));
         }
 
         try {
@@ -735,6 +735,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             : 0),
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Image.asset("assets/Logo 2 1.png"),
                     SvgPicture.asset(
@@ -748,12 +749,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.06,
                     ),
                     Text(
-                      "Enter your Credentials",
+                      "1) Type your Email and Password",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w400),
+                    ),
+
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Text(
+                      "2) Click on ‘Get 2FA Code’ You will receive a text message with your 2FA Code",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
                       height: height * 0.02,
@@ -846,26 +860,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.015,
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: width * 0.1),
-                        child: Theme(
-                          data: ThemeData(
-                            unselectedWidgetColor: Colors.white,
+                    Row(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: width * 0.1),
+                          child: Theme(
+                            data: ThemeData(
+                              unselectedWidgetColor: Colors.white,
+                            ),
+                            child: Checkbox(
+                                activeColor: Color(0xff5081DB),
+                                value: ischecked,
+                                onChanged: _handleRemeberme),
                           ),
-                          child: Checkbox(
-                              activeColor: Color(0xff5081DB),
-                              value: ischecked,
-                              onChanged: _handleRemeberme),
                         ),
-                      ),
-                      SizedBox(width: 10.0),
-                      Text("Trust this device",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontFamily: 'Rubic'))
-                    ]),
+                        SizedBox(width: 10.0),
+                        Text("Trust this device",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Rubic'))
+                      ],
+                    ),
                     SizedBox(
                       height: height * 0.06,
                     ),

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
@@ -81,7 +83,9 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset(
+                      "assets/newLogo.svg",
+                    ),
                     SizedBox(
                       height: height * 0.08,
                     ),

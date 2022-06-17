@@ -170,7 +170,7 @@ class _VerificationMobScreenState extends State<VerificationMobScreen> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset("assets/newLogo.svg"),
                     SizedBox(
                       height: height * 0.08,
                     ),

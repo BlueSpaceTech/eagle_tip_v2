@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
@@ -56,7 +58,7 @@ class EmailSent extends StatelessWidget {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset("assets/newLogo.svg"),
                     SizedBox(
                       height: height * 0.08,
                     ),
@@ -86,6 +88,33 @@ class EmailSent extends StatelessWidget {
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w400),
                         textAlign: TextAlign.center,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.06,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.loginscreen);
+                      },
+                      child: Container(
+                        width:
+                            Responsive.isDesktop(context) ? 300 : width * 0.3,
+                        height: 55,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Color(0xff5081DB),
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                        ),
+                        child: Text(
+                          "Back to Login",
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ],

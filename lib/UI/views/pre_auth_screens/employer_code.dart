@@ -90,7 +90,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                         Responsive.isTablet(context)
                     ? width * 0.6
                     : width * 1,
-                // height: height * 0.8,
+                height: height * 0.8,
                 decoration: BoxDecoration(
                     color: Colors.black.withOpacity(
                         Responsive.isDesktop(context) ||
@@ -103,7 +103,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                     Row(
                       children: [
                         Visibility(
-                          visible: true,
+                          visible: !Responsive.isDesktop(context),
                           child: InkWell(
                             onTap: () {
                               Navigator.pop(context);
@@ -119,12 +119,14 @@ class _EmployerCodeState extends State<EmployerCode> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset(
+                      "assets/newLogo.svg",
+                    ),
                     SizedBox(
                       height: height * 0.1,
                     ),
                     Text(
-                      "Enter New User Code",
+                      "Enter New User 6-Digits Code",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -190,11 +192,11 @@ class _EmployerCodeState extends State<EmployerCode> {
                       height: height * 0.04,
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           " Input here the code in your invitation email.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
@@ -204,7 +206,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                         ),
                         Text(
                           " If you can't find your invitation email, please look into your spam folder.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
@@ -214,7 +216,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                         ),
                         Text(
                           " If you can't find your invitation email, contact your supervisor.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
@@ -224,7 +226,7 @@ class _EmployerCodeState extends State<EmployerCode> {
                         ),
                         Text(
                           " For more information visit our FAQ section below.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
