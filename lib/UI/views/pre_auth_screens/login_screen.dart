@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_new
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_new, avoid_print
 
 import 'dart:async';
 import 'dart:io';
@@ -393,42 +393,42 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          // print("isweb");
+          print("isweb");
 
-          // AuthFunctions.signOut;
-          // // print(phone);
-          // // print(userRole);
-          // ConfirmationResult result =
-          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          // if (result == null) {
-          //   fToast!.showToast(
-          //       child: ToastMessage()
-          //           .show(200, context, "Please try some time later"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
-          // } else {
-          //   fToast!.showToast(
-          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
+          AuthFunctions.signOut;
+          // print(phone);
+          // print(userRole);
+          ConfirmationResult result =
+              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          if (result == null) {
+            fToast!.showToast(
+                child: ToastMessage()
+                    .show(200, context, "Please try some time later"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
+          } else {
+            fToast!.showToast(
+                child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
 
-          //   setState(() {
-          //     ress = result;
-          //   });
-          //   setState(() {
-          //     _loading = false;
-          //   });
-          //   addData();
+            setState(() {
+              ress = result;
+            });
+            setState(() {
+              _loading = false;
+            });
+            addData();
 
-          //   print(ress);
-          // }
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context) ||
-                          Responsive.isTablet(context)
-                      ? HomeScreen(showdialog: false, sites: sites)
-                      : BottomNav()));
+            print(ress);
+          }
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Responsive.isDesktop(context) ||
+          //                 Responsive.isTablet(context)
+          //             ? HomeScreen(showdialog: false, sites: sites)
+          //             : BottomNav()));
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);
@@ -565,11 +565,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _subscribeAllUsers() async {
-    await _fcm.subscribeToTopic("AllUsers").then((value) {
-      print("succesfully subscribed");
-    }).catchError((onError) {
-      print(onError);
-    });
+    for (int i = 0; i < sites.length; i++) {
+      await _fcm
+          .subscribeToTopic(
+              "AllUsers" + sites[i].toString().replaceAll(" ", ""))
+          .then((value) {
+        print("succesfully subscribed");
+      }).catchError((onError) {
+        print(onError);
+      });
+    }
   }
 
   confirmotp(double width) async {

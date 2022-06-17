@@ -90,19 +90,20 @@ export const sendToCondition =functions.firestore.document('/pushNotifications/{
         };
 
       
-            for(let i=0;i<notify.visibleto.length;i++){
+          
+        for(let i=0;i<notify.visibleto.length;i++){
                
                     
-                    for(let j=0;j<notify.sites.length;j++){
-                        let topicname="";
-                            topicname+=`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`;
-                            fcm.sendToTopic(topicname,payload);
-                        
-                    }
+            for(let j=0;j<notify.sites.length;j++){
+                let topicname="";
+                    topicname+=`${notify.visibleto[i]+notify.sites[j].replace(/\s/g, "")}`;
+                    fcm.sendToTopic(topicname,payload);
                 
-                
-
             }
+        
+        
+
+    }
             // return topicname;
         
        
