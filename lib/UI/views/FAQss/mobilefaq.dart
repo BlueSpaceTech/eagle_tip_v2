@@ -123,7 +123,7 @@ class _MobileFaqsState extends State<MobileFaqs> {
                         width: width * 0.8,
                         alignment: Alignment.center,
                         child: Text(
-                          "If you cannot find an answer to your question in FAQ, you can take help of our support team.",
+                          "If you cannot find an answer to your question in FAQ, you can contact our Support Team.",
                           style: TextStyle(
                               color: Colors.grey,
                               fontWeight: FontWeight.w500,
@@ -146,13 +146,13 @@ class _MobileFaqsState extends State<MobileFaqs> {
                         },
                         child: Container(
                           alignment: Alignment.center,
-                          width: width * 0.2,
+                          padding: EdgeInsets.all(8),
                           height: 35,
                           decoration: BoxDecoration(
                               color: Color(0xff5081DB),
                               borderRadius: BorderRadius.circular(15)),
                           child: Text(
-                            "Support",
+                            "Contact Support",
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

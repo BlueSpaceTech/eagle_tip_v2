@@ -492,7 +492,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Schedule 1",
+                                  "Start Date",
                                   style: TextStyle(
                                       fontSize: width * 0.01,
                                       fontWeight: FontWeight.w500,
@@ -588,7 +588,7 @@ class _CreateNotificationState extends State<CreateNotification> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Schedule 2",
+                                    "End Date",
                                     style: TextStyle(
                                         fontSize: width * 0.01,
                                         fontWeight: FontWeight.w500,

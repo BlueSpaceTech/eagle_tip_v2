@@ -91,7 +91,7 @@ class _MessageMainState extends State<MessageMain> {
   Widget? ChatSCREEN;
   @override
   void initState() {
-    addData();
+    //addData();
     fToast = FToast();
     fToast!.init(context);
     // TODO: implement initState

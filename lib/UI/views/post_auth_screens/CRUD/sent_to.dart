@@ -362,11 +362,13 @@ class _SentToState extends State<SentTo> {
     var showResults = [];
     if (_search.text != "") {
       //we have a search parameter
-      for (var user in _resultList) {
+      for (var user in _allResults) {
         // var name = model.User.fromSnap(usersnap).name.toLowerCase();
 
-        if (user["name"].toString().toLowerCase() ==
-            _search.text.toLowerCase()) {
+        if (user["name"]
+            .toString()
+            .toLowerCase()
+            .contains(_search.text.toLowerCase())) {
           showResults.add(user);
         }
 
