@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/otp_provider.dart';
@@ -145,7 +147,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Visibility(
-                      visible: true,
+                      visible: !Responsive.isDesktop(context),
                       child: Row(
                         children: [
                           InkWell(
@@ -163,7 +165,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset("assets/newLogo.svg"),
                     SizedBox(
                       height: height * 0.08,
                     ),

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/otp_provider.dart';
@@ -229,7 +231,7 @@ class _CreateAccountState extends State<CreateAccount> {
                             Navigator.pop(context);
                           },
                           child: Visibility(
-                            visible: true,
+                            visible: !Responsive.isDesktop(context),
                             child: Icon(
                               Icons.arrow_back,
                               color: Colors.white,
@@ -241,7 +243,9 @@ class _CreateAccountState extends State<CreateAccount> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset(
+                      "assets/newLogo.svg",
+                    ),
                     SizedBox(
                       height: height * 0.1,
                     ),

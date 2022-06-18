@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -793,8 +794,8 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                         SizedBox(
                                           width: width * 0.03,
                                         ),
-                                        Image.asset(
-                                          Common.assetImages + "Layer 1.png",
+                                        SvgPicture.asset(
+                                          "assets/newLogo.svg",
                                           width: width * 0.2,
                                         ),
                                       ],

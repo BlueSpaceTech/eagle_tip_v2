@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_new
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unnecessary_new, avoid_print
 
 import 'dart:async';
 import 'dart:io';
@@ -497,15 +497,15 @@ class _LoginScreenState extends State<LoginScreen> {
             //  confirmotp();
             print("web");
           }
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context) => Responsive.isDesktop(context)
-          //             ? HomeScreen(
-          //                 showdialog: true,
-          //                 sites: sites,
-          //               )
-          //             : BottomNav()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Responsive.isDesktop(context)
+                      ? HomeScreen(
+                          showdialog: true,
+                          sites: sites,
+                        )
+                      : BottomNav()));
         }
 
         try {
@@ -566,11 +566,16 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _subscribeAllUsers() async {
-    await _fcm.subscribeToTopic("AllUsers").then((value) {
-      print("succesfully subscribed");
-    }).catchError((onError) {
-      print(onError);
-    });
+    for (int i = 0; i < sites.length; i++) {
+      await _fcm
+          .subscribeToTopic(
+              "AllUsers" + sites[i].toString().replaceAll(" ", ""))
+          .then((value) {
+        print("succesfully subscribed");
+      }).catchError((onError) {
+        print(onError);
+      });
+    }
   }
 
   confirmotp(double width) async {
@@ -731,6 +736,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             : 0),
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Image.asset("assets/Logo 2 1.png"),
                     SvgPicture.asset(
@@ -744,12 +750,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.06,
                     ),
                     Text(
-                      "Enter your Credentials",
+                      "1) Type your Email and Password",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500),
+                          fontWeight: FontWeight.w400),
+                    ),
+
+                    SizedBox(
+                      height: height * 0.01,
+                    ),
+                    Text(
+                      "2) Click on ‘Get 2FA Code’ You will receive a text message with your 2FA Code",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w400),
                     ),
                     SizedBox(
                       height: height * 0.02,
