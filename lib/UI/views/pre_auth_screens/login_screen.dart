@@ -6,6 +6,7 @@ import 'package:dcache/dcache.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/rendering.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
@@ -425,42 +426,42 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          // print("isweb");
+          print("isweb");
 
-          // AuthFunctions.signOut;
-          // // print(phone);
-          // // print(userRole);
-          // ConfirmationResult result =
-          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          // if (result == null) {
-          //   fToast!.showToast(
-          //       child: ToastMessage()
-          //           .show(200, context, "Please try some time later"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
-          // } else {
-          //   fToast!.showToast(
-          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
+          AuthFunctions.signOut;
+          // print(phone);
+          // print(userRole);
+          ConfirmationResult result =
+              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          if (result == null) {
+            fToast!.showToast(
+                child: ToastMessage()
+                    .show(200, context, "Please try some time later"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
+          } else {
+            fToast!.showToast(
+                child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
 
-          //   setState(() {
-          //     ress = result;
-          //   });
-          //   setState(() {
-          //     _loading = false;
-          //   });
-          //   addData();
+            setState(() {
+              ress = result;
+            });
+            setState(() {
+              _loading = false;
+            });
+            addData();
 
-          //   print(ress);
-          // }
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context) ||
-                          Responsive.isTablet(context)
-                      ? HomeScreen(showdialog: false, sites: sites)
-                      : BottomNav()));
+            print(ress);
+          }
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Responsive.isDesktop(context) ||
+          //                 Responsive.isTablet(context)
+          //             ? HomeScreen(showdialog: false, sites: sites)
+          //             : BottomNav()));
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);
@@ -892,27 +893,35 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.015,
                     ),
-                    Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: width * 0.1),
-                          child: Theme(
-                            data: ThemeData(
-                              unselectedWidgetColor: Colors.white,
+                    Container(
+                      width: Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context)
+                          ? 600
+                          : width * 0.8,
+                      padding: EdgeInsets.symmetric(
+                          horizontal: Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context)
+                              ? width * 0.02
+                              : width * 0.06),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Theme(
+                              data: ThemeData(
+                                unselectedWidgetColor: Colors.white,
+                              ),
+                              child: Checkbox(
+                                  activeColor: Color(0xff5081DB),
+                                  value: ischecked,
+                                  onChanged: _handleRemeberme),
                             ),
-                            child: Checkbox(
-                                activeColor: Color(0xff5081DB),
-                                value: ischecked,
-                                onChanged: _handleRemeberme),
-                          ),
-                        ),
-                        SizedBox(width: 10.0),
-                        Text("Trust this device",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontFamily: 'Rubic'))
-                      ],
+                            SizedBox(width: 10.0),
+                            Text("Trust this device",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontFamily: 'Rubic'))
+                          ]),
                     ),
                     SizedBox(
                       height: height * 0.06,

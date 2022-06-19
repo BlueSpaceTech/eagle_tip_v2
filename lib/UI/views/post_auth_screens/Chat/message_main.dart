@@ -94,7 +94,7 @@ class _MessageMainState extends State<MessageMain> {
   late SharedPreferences _prefs;
   @override
   void initState() {
-    addData();
+    //addData();
     fToast = FToast();
     fToast!.init(context);
     // TODO: implement initState
