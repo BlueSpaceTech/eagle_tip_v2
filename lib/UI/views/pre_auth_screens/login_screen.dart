@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // print(c.get("email"));
     fToast!.init(context);
     _loadUserEmailPassword();
+    _setUserDetails();
     _email.addListener(getColor);
     _password.addListener(getColor);
   }
@@ -234,7 +235,37 @@ class _LoginScreenState extends State<LoginScreen> {
   //   UserProvider _userProvider = await Provider.of(context, listen: false);
   //   await _userProvider.refreshUser();
   // }
-  void _handleRemeberme(bool? value) {
+
+  void _setUserDetails() async {
+    DocumentReference dbRef = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    await dbRef.get().then((data) {
+      if (data.exists) {
+        if (mounted) {
+          setState(() {
+            SharedPreferences.getInstance().then((value) {
+              value.setString("name", data.get("name"));
+              value.setString("email", data.get("email"));
+              value.setString("phonenumber", data.get("phonenumber"));
+              value.setString("employerCode", data.get("employerCode"));
+              value.setBool("isverified", data.get("isverified"));
+              value.setStringList("sites", data.get("sites"));
+              value.setBool("isSubscribed", data.get("isSubscribed"));
+              value.setString("userRole", data.get("userRole"));
+              value.setString("uid", data.get("uid"));
+              value.setString("dpUrl", data.get("dpUrl"));
+              value.setString("currentsite", data.get("currentsite"));
+            });
+          });
+        }
+      }
+    });
+  }
+
+  void _handleRemeberme(
+    bool? value,
+  ) async {
     ischecked = value!;
     // if (ischecked) {
     SharedPreferences.getInstance().then(
@@ -242,6 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
         prefs.setBool("remember_me", value);
         prefs.setString('email', _email.text);
         prefs.setString('password', _password.text);
+        // prefs.setString("name", userRole)
       },
     );
 

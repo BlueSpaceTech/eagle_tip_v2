@@ -1,14 +1,16 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 import 'package:badges/badges.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'dart:html' as html;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:testttttt/Models/user1.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
@@ -89,6 +91,7 @@ class _MessageMainState extends State<MessageMain> {
   }
 
   Widget? ChatSCREEN;
+  late SharedPreferences _prefs;
   @override
   void initState() {
     addData();
@@ -98,10 +101,15 @@ class _MessageMainState extends State<MessageMain> {
     setState(() {
       ChatSCREEN = widget.Chatscreen;
     });
+    callsharedpref();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ShowCaseWidget.of(context)!.startShowCase([_key1]);
     });
     super.initState();
+  }
+
+  callsharedpref() async {
+    _prefs = await SharedPreferences.getInstance();
   }
 
   addData() async {
@@ -190,6 +198,18 @@ class _MessageMainState extends State<MessageMain> {
   Widget build(BuildContext context) {
     // ChatSCREEN = widget.Chatscreen;
     model.User? user = Provider.of<UserProvider>(context).getUser;
+    // model.User? user = model.User(
+    //     name: _prefs.getString("email") ?? "",
+    //     email: _prefs.getString("email") ?? "",
+    //     userRole: _prefs.getString("email") ?? "",
+    //     Phonenumber: _prefs.getString("email") ?? "",
+    //     employerCode: _prefs.getString("email") ?? "",
+    //     isSubscribed: _prefs.getBool("isSubscribed") ?? false,
+    //     dpurl: _prefs.getString("email") ?? "",
+    //     phoneisverified: _prefs.getBool("email") ?? false,
+    //     sites: _prefs.getStringList("email") ?? [],
+    //     uid: _prefs.getString("email") ?? "",
+    //     currentsite: _prefs.getString("email") ?? "");
     Future<void> addTicket(context) {
       return tickets.add({
         "beforelogin": false,

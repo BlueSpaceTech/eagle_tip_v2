@@ -250,7 +250,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       height: height * 0.1,
                     ),
                     Text(
-                      "Get Otp on this mobile number",
+                      "Get 2FA code on this mobile number",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -349,8 +349,19 @@ class _CreateAccountState extends State<CreateAccount> {
 
                       child: CustomSubmitButton(
                         width: width,
-                        title: "Send OTP",
+                        title: "Send 2FA",
                       ),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      "You will receive a text message with your 2FA code",
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500),
                     ),
                   ],
                 ),
