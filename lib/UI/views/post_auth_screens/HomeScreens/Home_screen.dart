@@ -11,7 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
-import 'package:testttttt/Models/user.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:intl/intl.dart';
@@ -411,8 +410,6 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
-    // ??
-    //     User1().returnuser() as model.User?;
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;

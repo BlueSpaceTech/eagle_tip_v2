@@ -447,12 +447,17 @@ class _NavbarState extends State<Navbar> {
                                                         "remember_me", false);
                                                   });
                                                 }
-                                                AuthFunctions.signOut().then((value) =>
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                LoginScreen())));
+                                                AuthFunctions.signOut().then(
+                                                    (value) => Navigator.of(
+                                                            context)
+                                                        .pushNamedAndRemoveUntil(
+                                                            "/login_screen",
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false)
+                                                        .whenComplete(() =>
+                                                            print(
+                                                                "Logged Out")));
                                               },
                                               child: Container(
                                                 width: Responsive.isDesktop(

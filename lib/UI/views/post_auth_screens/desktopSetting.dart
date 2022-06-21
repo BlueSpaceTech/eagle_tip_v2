@@ -305,8 +305,14 @@ class _DesktopSettingState extends State<DesktopSetting> {
                                                   }
                                                   AuthFunctions.signOut();
 
-                                                  Navigator.pushNamed(context,
-                                                      AppRoutes.loginscreen);
+                                                  Navigator.of(context)
+                                                      .pushNamedAndRemoveUntil(
+                                                          "/login_screen",
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false)
+                                                      .whenComplete(() =>
+                                                          print("Logged Out"));
                                                 },
                                                 child: Container(
                                                   width: Responsive.isDesktop(

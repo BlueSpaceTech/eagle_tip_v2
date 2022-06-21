@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
 
 // import 'dart:html';
 
@@ -21,8 +21,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class SupportScreen extends StatefulWidget {
-  const SupportScreen({Key? key}) : super(key: key);
-
+  const SupportScreen({Key? key, required this.isNavVisible}) : super(key: key);
+  final bool isNavVisible;
   @override
   State<SupportScreen> createState() => _SupportScreenState();
 }
@@ -122,9 +122,12 @@ class _SupportScreenState extends State<SupportScreen> {
             ),
             child: Column(
               children: [
-                Navbar(
-                  width: width,
-                  height: height,
+                Visibility(
+                  visible: widget.isNavVisible,
+                  child: Navbar(
+                    width: width,
+                    height: height,
+                  ),
                 ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,

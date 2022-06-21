@@ -426,7 +426,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //                 : BottomNav()));
 
         if (PlatformInfo().isWeb()) {
-          print("isweb");
+          // print("isweb");
 
           // AuthFunctions.signOut;
           // // print(phone);
@@ -913,7 +913,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Checkbox(
                                   activeColor: Color(0xff5081DB),
                                   value: ischecked,
-                                  onChanged: _handleRemeberme),
+                                  onChanged: (val) {
+                                    setState(() {
+                                      ischecked = val!;
+                                    });
+                                  }),
                             ),
                             SizedBox(width: 10.0),
                             Text("Trust this device",
@@ -939,6 +943,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           confirmotp(width);
                           print("web");
                         }
+
+                        _handleRemeberme(ischecked);
+
                         // if (PlatformInfo().isWeb()) {
 
                         //   print("web");

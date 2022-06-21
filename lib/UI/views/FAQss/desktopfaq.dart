@@ -25,7 +25,10 @@ import 'package:testttttt/Models/user.dart' as model;
 
 class DesktopFAQs extends StatefulWidget {
   final String userrOLE;
-  const DesktopFAQs({Key? key, required this.userrOLE}) : super(key: key);
+  final bool isNavVisible;
+  const DesktopFAQs(
+      {Key? key, required this.userrOLE, required this.isNavVisible})
+      : super(key: key);
 
   @override
   _DesktopFAQsState createState() => _DesktopFAQsState();
@@ -75,9 +78,12 @@ class _DesktopFAQsState extends State<DesktopFAQs> {
         width: width,
         child: Column(
           children: [
-            Navbar(
-              width: width,
-              height: height,
+            Visibility(
+              visible: widget.isNavVisible,
+              child: Navbar(
+                width: width,
+                height: height,
+              ),
             ),
             SizedBox(
               height: height,
@@ -239,7 +245,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
 
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+    // model.User? user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -371,8 +377,8 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: user!.userRole == "AppAdmin" ||
-                                      user.userRole == "SuperAdmin",
+                                  visible: widget.userrole == "AppAdmin" ||
+                                      widget.userrole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(
@@ -799,7 +805,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
 
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser;
+    // model.User? user = Provider.of<UserProvider>(context).getUser;
     return SingleChildScrollView(
       child: Container(
         height: widget.height * 1,
@@ -919,8 +925,8 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                             Row(
                               children: [
                                 Visibility(
-                                  visible: user!.userRole == "AppAdmin" ||
-                                      user.userRole == "SuperAdmin",
+                                  visible: widget.userRole == "AppAdmin" ||
+                                      widget.userRole == "SuperAdmin",
                                   child: InkWell(
                                       onTap: () {
                                         Navigator.push(

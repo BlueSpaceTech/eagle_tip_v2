@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
@@ -11,6 +12,7 @@ import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/bottomNav.dart'
 import 'package:testttttt/UI/views/post_auth_screens/UserProfiles/myprofile.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
+import 'package:testttttt/Utils/detectPlatform.dart';
 import 'package:testttttt/Utils/responsive.dart';
 
 class MobileSetting extends StatefulWidget {
@@ -183,9 +185,20 @@ class _MobileSettingState extends State<MobileSetting> {
                                   ),
                                   InkWell(
                                     onTap: () async {
-                                      AuthFunctions.signOut();
-                                      Navigator.pushNamed(
-                                          context, AppRoutes.loginscreen);
+                                      if (PlatformInfo().isWeb()) {
+                                        SharedPreferences.getInstance()
+                                            .then((prefs) {
+                                          prefs.setBool("remember_me", false);
+                                        });
+                                      }
+                                      AuthFunctions.signOut().then((value) =>
+                                          Navigator.of(context)
+                                              .pushNamedAndRemoveUntil(
+                                                  "/login_screen",
+                                                  (Route<dynamic> route) =>
+                                                      false)
+                                              .whenComplete(
+                                                  () => print("Logged Out")));
                                     },
                                     child: Container(
                                       width: Responsive.isDesktop(context)

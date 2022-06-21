@@ -61,9 +61,7 @@ class _ProductRequestState extends State<ProductRequest> {
               : SizedBox(),
       body: SingleChildScrollView(
         child: Container(
-          height: Responsive.isDesktop(context) || Responsive.isTablet(context)
-              ? height * 1.17
-              : height,
+          height: height * 1.17,
           color: backGround_color,
           child: Padding(
             padding: EdgeInsets.only(

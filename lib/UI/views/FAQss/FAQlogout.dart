@@ -1,3 +1,4 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
@@ -88,12 +89,12 @@ class _FAQLogoutState extends State<FAQLogout> {
                     SizedBox(
                       height: height * 0.06,
                     ),
-                    Image.asset("assets/Logo 2 1.png"),
+                    SvgPicture.asset("assets/newLogo.svg"),
                     SizedBox(
                       height: height * 0.1,
                     ),
                     Text(
-                      "Enter New User Code",
+                      "Enter New User 6-Digits Code",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
@@ -113,13 +114,15 @@ class _FAQLogoutState extends State<FAQLogout> {
                       height: height * 0.015,
                     ),
                     InkWell(
-                      onTap: ()async {
+                      onTap: () async {
                         // TermConditions(width, height);
                         String res = "Data Fetched";
                         DocumentReference dbRef = FirebaseFirestore.instance
                             .collection('invitations')
                             .doc(_emoloyercode.text);
-                        var role= await dbRef.get().then((value) => value["userRole"]);
+                        var role = await dbRef
+                            .get()
+                            .then((value) => value["userRole"]);
 
                         dbRef.get().then((data) {
                           if (data.exists) {
@@ -131,8 +134,12 @@ class _FAQLogoutState extends State<FAQLogout> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Responsive.isDesktop(context)?DesktopFAQs(userrOLE: role):MobileFaqs(userrOLE: role)
-                                ));
+                                    builder: (context) =>
+                                        Responsive.isDesktop(context)
+                                            ? DesktopFAQs(
+                                                isNavVisible: false,
+                                                userrOLE: role)
+                                            : MobileFaqs(userrOLE: role)));
                             fToast!.showToast(
                               child: ToastMessage().show(
                                   width, context, "Data fetched Successfully"),
@@ -158,11 +165,11 @@ class _FAQLogoutState extends State<FAQLogout> {
                       height: height * 0.04,
                     ),
                     Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           " Input here the code in your invitation email.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
@@ -172,7 +179,7 @@ class _FAQLogoutState extends State<FAQLogout> {
                         ),
                         Text(
                           " If you can't find your invitation email, please look into your spam folder.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
@@ -182,7 +189,7 @@ class _FAQLogoutState extends State<FAQLogout> {
                         ),
                         Text(
                           " If you can't find your invitation email, contact your supervisor.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,
@@ -192,7 +199,7 @@ class _FAQLogoutState extends State<FAQLogout> {
                         ),
                         Text(
                           " For more information visit our FAQ section below.",
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18.0,
                             color: Colors.white,

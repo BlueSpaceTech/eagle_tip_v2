@@ -132,7 +132,9 @@ class MyApp extends StatelessWidget {
           AppRoutes.mainFaq: (context) => MainFaq(),
           AppRoutes.about: (context) => AboutMobile(),
           AppRoutes.aboutCompany: (context) => AboutCompany(),
-          AppRoutes.support: (context) => SupportScreen(),
+          AppRoutes.support: (context) => SupportScreen(
+                isNavVisible: true,
+              ),
           AppRoutes.faqLogout: (context) => FAQLogout(),
           // AppRoutes.faq: (context) => FAQScreen(),
           AppRoutes.loginscreen: (context) => LoginScreen(),

@@ -140,7 +140,9 @@ class _MobileFaqsState extends State<MobileFaqs> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: ((context) {
-                              return SupportScreen();
+                              return SupportScreen(
+                                isNavVisible: false,
+                              );
                             })),
                           );
                         },

@@ -29,9 +29,11 @@ class MainFaq extends StatelessWidget {
       body: Responsive(
           mobile: MobileFaqs(userrOLE: user.userRole),
           tablet: DesktopFAQs(
+            isNavVisible: true,
             userrOLE: user.userRole,
           ),
           desktop: DesktopFAQs(
+            isNavVisible: true,
             userrOLE: user.userRole,
           )),
     );

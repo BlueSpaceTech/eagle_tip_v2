@@ -45,7 +45,13 @@ class MenuButton extends StatelessWidget {
   final bool? isTapped;
   final double width;
 
-  Map ScreeRoutes = {1: MainFaq(), 2: SupportScreen(), 3: WelcomeTour()};
+  Map ScreeRoutes = {
+    1: MainFaq(),
+    2: SupportScreen(
+      isNavVisible: true,
+    ),
+    3: WelcomeTour()
+  };
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
