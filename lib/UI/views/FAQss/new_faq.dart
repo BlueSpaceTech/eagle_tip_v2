@@ -71,18 +71,18 @@ class _NewFaqState extends State<NewFaq> {
   @override
   void initState() {
     // TODO: implement initState
-    allwidgets.add(Padding(
-      padding: EdgeInsets.only(top: 20, bottom: 20),
-      child: AddFAQTextField(
-        labelText: "Title",
-        valueChanged: (val) {
-          setState(() {
-            title = val;
-          });
-        },
-        isactive: true,
-      ),
-    ));
+    // allwidgets.add(Padding(
+    //   padding: EdgeInsets.only(top: 20, bottom: 20),
+    //   child: AddFAQTextField(
+    //     labelText: "Title",
+    //     valueChanged: (val) {
+    //       setState(() {
+    //         title = val;
+    //       });
+    //     },
+    //     isactive: true,
+    //   ),
+    // ));
     fToast = FToast();
     fToast!.init(context);
     super.initState();

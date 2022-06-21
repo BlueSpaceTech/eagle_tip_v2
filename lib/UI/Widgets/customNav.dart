@@ -10,6 +10,7 @@ import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/authentication_helper.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/HomeScreens/Home_screen.dart';
+import 'package:testttttt/UI/views/pre_auth_screens/login_screen.dart';
 import 'package:testttttt/Utils/common.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/detectPlatform.dart';
@@ -446,9 +447,12 @@ class _NavbarState extends State<Navbar> {
                                                         "remember_me", false);
                                                   });
                                                 }
-                                                AuthFunctions.signOut();
-                                                Navigator.pushNamed(context,
-                                                    AppRoutes.loginscreen);
+                                                AuthFunctions.signOut().then((value) =>
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                LoginScreen())));
                                               },
                                               child: Container(
                                                 width: Responsive.isDesktop(

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
 import 'package:video_player/video_player.dart';
@@ -128,8 +129,165 @@ class _DisplayFaqState extends State<DisplayFaq> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        backgroundColor: backGround_color,
-        body: SingleChildScrollView(
+      backgroundColor: backGround_color,
+      body: Responsive(
+        desktop: Column(
+          children: [
+            Navbar(width: width, height: height),
+            Expanded(
+                child: Row(
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Color(0xff20272C),
+                    )),
+                Expanded(
+                    flex: 5,
+                    child: Container(
+                      color: Color(0xFF2E3840),
+                      child: SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.05,
+                              vertical: height * 0.02),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text(
+                                      widget.title,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Poppins",
+                                          fontSize:
+                                              Responsive.isDesktop(context)
+                                                  ? 24
+                                                  : 21,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(""),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: widgetsss,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Color(0xff20272C),
+                    )),
+              ],
+            )),
+          ],
+        ),
+        tablet: Column(
+          children: [
+            Navbar(width: width, height: height),
+            Expanded(
+                child: Row(
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Color(0xff20272C),
+                    )),
+                Expanded(
+                    flex: 5,
+                    child: Container(
+                      color: Color(0xff2B343B),
+                      child: SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: width * 0.05,
+                              vertical: height * 0.02),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Icon(
+                                      Icons.arrow_back,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text(
+                                      widget.title,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: "Poppins",
+                                          fontSize:
+                                              Responsive.isDesktop(context)
+                                                  ? 24
+                                                  : 21,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Text(""),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 40,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: widgetsss,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      color: Color(0xff20272C),
+                    )),
+              ],
+            )),
+          ],
+        ),
+        mobile: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.symmetric(
                 horizontal: width * 0.05, vertical: height * 0.02),
@@ -175,7 +333,9 @@ class _DisplayFaqState extends State<DisplayFaq> {
               ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

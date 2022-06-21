@@ -470,18 +470,18 @@ class _NewFaq2State extends State<NewFaq2> {
                 SizedBox(
                   height: 20,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 20, bottom: 20),
-                  child: AddFAQTextField(
-                    labelText: "Title",
-                    valueChanged: (val) {
-                      setState(() {
-                        title = val;
-                      });
-                    },
-                    isactive: true,
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 20, bottom: 20),
+                //   child: AddFAQTextField(
+                //     labelText: "Title",
+                //     valueChanged: (val) {
+                //       setState(() {
+                //         title = val;
+                //       });
+                //     },
+                //     isactive: true,
+                //   ),
+                // ),
                 SizedBox(
                   height: 20,
                 ),
@@ -590,6 +590,7 @@ class _NewFaq2State extends State<NewFaq2> {
                               visible: allwidgets[index].isreadonly,
                               child: InkWell(
                                   onTap: () {
+                                    
                                     allwidgets[index].isreadonly = false;
                                     // allwidgets.removeAt(
                                     //     allwidgets.indexOf(Text("f")));

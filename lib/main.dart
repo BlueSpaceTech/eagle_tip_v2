@@ -10,6 +10,7 @@ import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/views/FAQss/FAQLogout.dart';
 import 'package:testttttt/UI/views/FAQss/desktopfaq.dart';
 import 'package:testttttt/UI/views/FAQss/mainfaq.dart';
+import 'package:testttttt/UI/views/FAQss/new_add_faq.dart';
 import 'package:testttttt/UI/views/auth_handling.dart';
 
 import 'package:testttttt/UI/views/on-borading-tour/final_tour.dart';

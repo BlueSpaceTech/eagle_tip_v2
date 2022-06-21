@@ -11,7 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
-import 'package:testttttt/Models/user1.dart';
+import 'package:testttttt/Models/user.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:intl/intl.dart';
@@ -407,20 +407,64 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   final _key3 = GlobalKey();
   final _key4 = GlobalKey();
   final _key5 = GlobalKey();
-
+  bool isvisible = true;
   @override
   Widget build(BuildContext context) {
-    model.User? user = Provider.of<UserProvider>(context).getUser ??
-        User1().returnuser() as model.User?;
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    // ??
+    //     User1().returnuser() as model.User?;
 
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton:
-          Responsive.isDesktop(context) || Responsive.isTablet(context)
-              ? MenuButton(isTapped: false, width: width)
-              : SizedBox(),
+      floatingActionButton: Responsive.isDesktop(context) ||
+              Responsive.isTablet(context)
+          ? Stack(
+              children: [
+                Positioned.fill(
+                    child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: MenuButton(isTapped: false, width: width))),
+                Visibility(
+                  visible: isvisible,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 50, bottom: 25),
+                    child: Container(
+                      width: 300,
+                      height: 180,
+                      decoration: BoxDecoration(
+                        color: Color(0xff20272C),
+                        borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(20.0),
+                            bottomRight: Radius.circular(20.0),
+                            topLeft: Radius.circular(20.0)),
+                      ),
+                      child: Container(
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        isvisible = false;
+                                      });
+                                    },
+                                    child:
+                                        Icon(Icons.remove, color: Colors.white))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          : SizedBox(),
       body: user == null
           ? Container(
               height: height,

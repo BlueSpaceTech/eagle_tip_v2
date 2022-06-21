@@ -434,6 +434,7 @@ class AuthFunctions with ChangeNotifier {
   //SIGN OUT METHOD
   static Future signOut() async {
     await _auth.signOut();
+
     print('signout');
   }
 

@@ -14,6 +14,7 @@ import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/views/FAQss/displayfaqs.dart';
+import 'package:testttttt/UI/views/FAQss/new_add_faq.dart';
 import 'package:testttttt/UI/views/FAQss/newfaq2.dart';
 import 'package:testttttt/UI/views/post_auth_screens/faq.dart';
 import 'package:testttttt/Utils/constants.dart';
@@ -377,8 +378,7 @@ class _GeneralfAQState extends State<GeneralfAQ> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) =>
-                                                  NewFaq2(userRole: "general"),
+                                              builder: (context) => NewADDfaq(),
                                             ));
                                       },
                                       child: customfab(
@@ -926,8 +926,7 @@ class _UserRolefAQState extends State<UserRolefAQ> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                              builder: (context) => NewFaq2(
-                                                  userRole: widget.userRole),
+                                              builder: (context) => NewADDfaq(),
                                             ));
                                       },
                                       child: customfab(

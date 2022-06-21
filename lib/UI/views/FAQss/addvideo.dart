@@ -215,15 +215,15 @@ class _AddVideoState extends State<AddVideo> {
             SizedBox(
               height: 20,
             ),
-            AddFAQTextField(
-              labelText: "Add title",
-              valueChanged: (val) {
-                setState(() {
-                  title = val;
-                });
-              },
-              isactive: true,
-            ),
+            // AddFAQTextField(
+            //   labelText: "Add title",
+            //   valueChanged: (val) {
+            //     setState(() {
+            //       title = val;
+            //     });
+            //   },
+            //   isactive: true,
+            // ),
             SizedBox(
               height: 20,
             ),

@@ -107,15 +107,15 @@ class _AddFAQState extends State<AddFAQ> {
                                   right: width * 0.02),
                               child: Column(
                                 children: [
-                                  AddFAQTextField(
-                                    labelText: "Question",
-                                    valueChanged: (val) {
-                                      setState(() {
-                                        question = val;
-                                      });
-                                    },
-                                    isactive: true,
-                                  ),
+                                  // AddFAQTextField(
+                                  //   labelText: "Question",
+                                  //   valueChanged: (val) {
+                                  //     setState(() {
+                                  //       question = val;
+                                  //     });
+                                  //   },
+                                  //   isactive: true,
+                                  // ),
                                   SizedBox(
                                     height: height * 0.018,
                                   ),
@@ -275,11 +275,13 @@ class AddFAQTextField extends StatefulWidget {
       {Key? key,
       required this.isactive,
       required this.labelText,
-      required this.valueChanged})
+      required this.valueChanged,
+      required this.text})
       : super(key: key);
   final bool? isactive;
   final ValueChanged valueChanged;
   final String labelText;
+  final TextEditingController text;
 
   @override
   State<AddFAQTextField> createState() => _AddFAQTextFieldState();
@@ -304,6 +306,7 @@ class _AddFAQTextFieldState extends State<AddFAQTextField> {
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
       child: TextFormField(
+        controller: widget.text,
         textAlign: TextAlign.left,
         enabled: widget.isactive,
         style: TextStyle(fontFamily: "Poppins"),
