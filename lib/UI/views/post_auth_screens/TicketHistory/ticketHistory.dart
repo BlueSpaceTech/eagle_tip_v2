@@ -3,6 +3,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/UI/Widgets/customHeader2.dart';
@@ -14,8 +15,28 @@ import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:provider/provider.dart';
 
-class TicketHistory extends StatelessWidget {
+import '../../../../Services/site_call.dart';
+
+class TicketHistory extends StatefulWidget {
   TicketHistory({Key? key}) : super(key: key);
+
+  @override
+  State<TicketHistory> createState() => _TicketHistoryState();
+}
+
+class _TicketHistoryState extends State<TicketHistory> {
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,16 +156,53 @@ class OpenTickets extends StatefulWidget {
 }
 
 class _OpenTicketsState extends State<OpenTickets> {
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+  }
+
+  getterminalsites(List terminals) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var terminal in terminals) {
+        if (element.terminalID + " ${element.terminalName}" == terminal) {
+          sitedesc.add(element.sitename);
+        }
+      }
+    }
+    return sitedesc;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
+
+    List sites =
+        user!.userRole == "TerminalManager" || user.userRole == "TerminalUser"
+            ? getterminalsites(user.sites)
+            : user.sites;
     return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("tickets")
-            .where("sites", arrayContainsAny: user!.sites)
-            .where("isopen", isEqualTo: true)
-            .orderBy("timestamp")
-            .snapshots(),
+        stream: user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+            ? FirebaseFirestore.instance
+                .collection("tickets")
+                .where("isopen", isEqualTo: true)
+                .orderBy("timestamp")
+                .snapshots()
+            : FirebaseFirestore.instance
+                .collection("tickets")
+                .where("sites", arrayContainsAny: sites)
+                .where("isopen", isEqualTo: true)
+                .orderBy("timestamp")
+                .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
@@ -284,16 +342,53 @@ class ClosedTickets extends StatefulWidget {
 }
 
 class _ClosedTicketsState extends State<ClosedTickets> {
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+  }
+
+  getterminalsites(List terminals) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var terminal in terminals) {
+        if (element.terminalID + " ${element.terminalName}" == terminal) {
+          sitedesc.add(element.sitename);
+        }
+      }
+    }
+    return sitedesc;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
+
+    List sites =
+        user!.userRole == "TerminalManager" || user.userRole == "TerminalUser"
+            ? getterminalsites(user.sites)
+            : user.sites;
     return StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection("tickets")
-            .where("sites", arrayContainsAny: user!.sites)
-            .where("isopen", isEqualTo: false)
-            .orderBy("timestamp")
-            .snapshots(),
+        stream: user.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+            ? FirebaseFirestore.instance
+                .collection("tickets")
+                .where("isopen", isEqualTo: false)
+                .orderBy("timestamp")
+                .snapshots()
+            : FirebaseFirestore.instance
+                .collection("tickets")
+                .where("sites", arrayContainsAny: sites)
+                .where("isopen", isEqualTo: false)
+                .orderBy("timestamp")
+                .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Text("Something Went wrong");

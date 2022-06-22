@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
@@ -65,6 +64,17 @@ class _SitesAdminState extends State<SitesAdmin> {
     for (var document in sitedetails!) {
       if (document.terminalID + " ${document.terminalName}" == terminalinfo) {
         siteelements.add(document);
+        siteelementter.add(document);
+      }
+    }
+  }
+
+  List<SitesDetails> siteelementter = [];
+  getsiteelementter(String terminalinfo) async {
+    sitedetails = await SiteCall().getSites();
+    for (var document in sitedetails!) {
+      if (document.terminalID + " ${document.terminalName}" == terminalinfo) {
+        siteelementter.add(document);
       }
     }
   }
@@ -100,12 +110,43 @@ class _SitesAdminState extends State<SitesAdmin> {
     });
   }
 
+  getforterminal(model.User user) {
+    for (var site in user.sites) {
+      if (forterminal.contains(site)) {
+      } else {
+        forterminal.insert(0, site);
+        dropdownValue1 = forterminal[0];
+      }
+    }
+    getsiteelementter(terminal[0]);
+  }
+
+  List<String> forterminal = [""];
   final ScrollController _firstController = ScrollController();
+  String dropdownValue1 = "";
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    model.User? user = Provider.of<UserProvider>(context).getUser;
+    for (var site in user!.sites) {
+      if (forterminal.contains(site)) {
+        print(site);
+      } else {
+        print(site);
+        forterminal.insert(0, site);
+        dropdownValue1 = forterminal[0];
+      }
+    }
+    // getsiteelementter(forterminal[0]);
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     // String dropdownValue = terminal[0];
     model.User? user = Provider.of<UserProvider>(context).getUser;
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -114,7 +155,7 @@ class _SitesAdminState extends State<SitesAdmin> {
           Responsive.isDesktop(context) || Responsive.isTablet(context)
               ? MenuButton(isTapped: false, width: width)
               : SizedBox(),
-      body: sitedetails == null
+      body: sitedetails == null || siteelementter == null
           ? Container(
               height: height,
               color: backGround_color,
@@ -182,7 +223,7 @@ class _SitesAdminState extends State<SitesAdmin> {
                                           Color(0xFF5081DB),
                                       contentPadding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        "All Sites Admin",
+                                        "All Sites",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 18.0,
@@ -197,103 +238,216 @@ class _SitesAdminState extends State<SitesAdmin> {
                                     SizedBox(
                                       width: 30,
                                     ),
-                                    DropdownButton<String>(
-                                      value: dropdownValue,
-                                      icon: const Icon(
-                                          Icons.keyboard_arrow_down_outlined),
-                                      iconEnabledColor: Colors.white,
-                                      iconSize: 24,
-                                      dropdownColor: Colors.black,
-                                      elevation: 16,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                      // underline: Container(
-                                      //   height: 2,
-                                      //   color: Colors.deepPurpleAccent,
-                                      // ),
-                                      onChanged: (String? newValue) {
-                                        setState(() {
-                                          dropdownValue = newValue!;
-                                        });
-                                        getsiteelementdrop(newValue!);
-                                      },
-                                      // items: List.generate(user.sites.length, (index) {
-                                      //   return DropdownMenuItem<String>(
-                                      //     child: Text(
-                                      //       user.sites[index]["sitename"],
-                                      //       style: TextStyle(color: Colors.white),
-                                      //     ),
-                                      //   );
-                                      // })
+                                    user!.userRole == "TerminalManager" ||
+                                            user.userRole == "TerminalUser"
+                                        ? DropdownButton<String>(
+                                            value: dropdownValue1,
+                                            icon: const Icon(Icons
+                                                .keyboard_arrow_down_outlined),
+                                            iconEnabledColor: Colors.white,
+                                            iconSize: 24,
+                                            dropdownColor: Colors.black,
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                            // underline: Container(
+                                            //   height: 2,
+                                            //   color: Colors.deepPurpleAccent,
+                                            // ),
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                dropdownValue1 = newValue!;
+                                              });
+                                              getsiteelementdrop(newValue!);
+                                            },
+                                            // items: List.generate(user.sites.length, (index) {
+                                            //   return DropdownMenuItem<String>(
+                                            //     child: Text(
+                                            //       user.sites[index]["sitename"],
+                                            //       style: TextStyle(color: Colors.white),
+                                            //     ),
+                                            //   );
+                                            // })
 
-                                      items: terminal
-                                          .map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                        return DropdownMenuItem<String>(
-                                            value: value,
-                                            child: Text(
-                                              value,
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ));
-                                      }).toList(),
-                                    )
+                                            items: forterminal
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value,
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ));
+                                            }).toList(),
+                                          )
+                                        : DropdownButton<String>(
+                                            value: dropdownValue,
+                                            icon: const Icon(Icons
+                                                .keyboard_arrow_down_outlined),
+                                            iconEnabledColor: Colors.white,
+                                            iconSize: 24,
+                                            dropdownColor: Colors.black,
+                                            elevation: 16,
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                            // underline: Container(
+                                            //   height: 2,
+                                            //   color: Colors.deepPurpleAccent,
+                                            // ),
+                                            onChanged: (String? newValue) {
+                                              setState(() {
+                                                dropdownValue = newValue!;
+                                              });
+                                              getsiteelementdrop(newValue!);
+                                            },
+                                            // items: List.generate(user.sites.length, (index) {
+                                            //   return DropdownMenuItem<String>(
+                                            //     child: Text(
+                                            //       user.sites[index]["sitename"],
+                                            //       style: TextStyle(color: Colors.white),
+                                            //     ),
+                                            //   );
+                                            // })
+
+                                            items: terminal
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(
+                                                    value,
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ));
+                                            }).toList(),
+                                          )
                                   ],
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      top: Responsive.isDesktop(context) ||
-                                              Responsive.isTablet(context)
-                                          ? height * 0.03
-                                          : 0.0),
-                                  child: Container(
-                                    height: Responsive.isDesktop(context) ||
-                                            Responsive.isTablet(context)
-                                        ? height * 0.6
-                                        : height * 0.7,
-                                    child: Scrollbar(
-                                      showTrackOnHover: true,
-                                      trackVisibility: true,
-                                      isAlwaysShown: true,
-                                      controller: _firstController,
-                                      child: ListView.builder(
-                                        controller: _firstController,
+                                user.userRole == "TerminalManager" ||
+                                        user.userRole == "TerminalUser"
+                                    ? Padding(
+                                        padding: EdgeInsets.only(
+                                            top: Responsive.isDesktop(
+                                                        context) ||
+                                                    Responsive.isTablet(context)
+                                                ? height * 0.03
+                                                : 0.0),
+                                        child: Container(
+                                          height: Responsive.isDesktop(
+                                                      context) ||
+                                                  Responsive.isTablet(context)
+                                              ? height * 0.7
+                                              : height * 0.8,
+                                          child: Scrollbar(
+                                            showTrackOnHover: true,
+                                            trackVisibility: true,
+                                            isAlwaysShown: true,
+                                            controller: _firstController,
+                                            child: ListView.builder(
+                                              controller: _firstController,
 
-                                        // physics:
-                                        //     NeverScrollableScrollPhysics(),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          SiteDetails(
-                                                        currentSite:
-                                                            siteelements[index]
-                                                                .sitename,
-                                                        sitedetail:
-                                                            siteelements[index],
-                                                      ),
+                                              // physics:
+                                              //     NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    SiteDetails(
+                                                              currentSite:
+                                                                  siteelementter[
+                                                                          index]
+                                                                      .sitename,
+                                                              sitedetail:
+                                                                  siteelementter[
+                                                                      index],
+                                                            ),
+                                                          ));
+                                                    },
+                                                    child: SiteDet(
+                                                      width: width,
+                                                      height: height,
+                                                      index: index,
+                                                      siteName:
+                                                          siteelementter[index]
+                                                              .sitename,
+                                                      sitelocation:
+                                                          siteelementter[index]
+                                                              .sitelocation,
                                                     ));
                                               },
-                                              child: SiteDet(
-                                                width: width,
-                                                height: height,
-                                                index: index,
-                                                siteName: siteelements[index]
-                                                    .sitename,
-                                                sitelocation:
-                                                    siteelements[index]
-                                                        .sitelocation,
-                                              ));
-                                        },
-                                        itemCount: siteelements.length,
+                                              itemCount: siteelementter.length,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Padding(
+                                        padding: EdgeInsets.only(
+                                            top: Responsive.isDesktop(
+                                                        context) ||
+                                                    Responsive.isTablet(context)
+                                                ? height * 0.03
+                                                : 0.0),
+                                        child: Container(
+                                          height: Responsive.isDesktop(
+                                                      context) ||
+                                                  Responsive.isTablet(context)
+                                              ? height * 0.7
+                                              : height * 0.8,
+                                          child: Scrollbar(
+                                            showTrackOnHover: true,
+                                            trackVisibility: true,
+                                            isAlwaysShown: true,
+                                            controller: _firstController,
+                                            child: ListView.builder(
+                                              controller: _firstController,
+
+                                              // physics:
+                                              //     NeverScrollableScrollPhysics(),
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return InkWell(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    SiteDetails(
+                                                              currentSite:
+                                                                  siteelements[
+                                                                          index]
+                                                                      .sitename,
+                                                              sitedetail:
+                                                                  siteelements[
+                                                                      index],
+                                                            ),
+                                                          ));
+                                                    },
+                                                    child: SiteDet(
+                                                      width: width,
+                                                      height: height,
+                                                      index: index,
+                                                      siteName:
+                                                          siteelements[index]
+                                                              .sitename,
+                                                      sitelocation:
+                                                          siteelements[index]
+                                                              .sitelocation,
+                                                    ));
+                                              },
+                                              itemCount: siteelements.length,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
@@ -391,8 +545,8 @@ class _SitesAdminState extends State<SitesAdmin> {
                                     : 0.0),
                             child: SizedBox(
                               height: Responsive.isDesktop(context)
-                                  ? height * 0.6
-                                  : height * 0.6,
+                                  ? height * 0.7
+                                  : height * 0.8,
                               child: Scrollbar(
                                 showTrackOnHover: true,
                                 trackVisibility: true,

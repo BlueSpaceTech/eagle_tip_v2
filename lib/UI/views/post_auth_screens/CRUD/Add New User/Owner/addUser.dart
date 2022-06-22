@@ -510,12 +510,25 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       //     ),
                       //   ],
                       // ),
+                      // Text(
+                      //   "Assign Terminals (Only for terminal User)",
+                      //   style: TextStyle(
+                      //     fontSize: 15.0,
+                      //     fontWeight: FontWeight.w400,
+                      //     color: Colors.white,
+                      //     fontFamily: "Poppins",
+                      //   ),
+                      // ),
 
+                      // SizedBox(
+                      //   height: height * 0.04,
+                      // ),
+                      // Wrap(children: _buildRolechip(terminal)),
                       SizedBox(
                         height: height * 0.04,
                       ),
                       Text(
-                        "Sites",
+                        "Assign Sites",
                         style: TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w400,
@@ -528,7 +541,9 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                         height: 10.0,
                       ),
                       user.userRole == "AppAdmin" ||
-                              user.userRole == "SuperAdmin"
+                              user.userRole == "SuperAdmin" ||
+                              user.userRole == "TerminalManager" ||
+                              user.userRole == "TerminalUser"
                           ? SizedBox(
                               height: 50,
                               width: width * 0.5,
@@ -540,8 +555,12 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                       (BuildContext context, int index) {
                                     return InkWell(
                                       onTap: () {
-                                        _showSiteSelect(
-                                            searchSites(terminal[index]));
+                                        user.userRole == "AppAdmin" ||
+                                                user.userRole == "SuperAdmin"
+                                            ? _showSiteSelect(
+                                                searchSites(terminal[index]))
+                                            : _showSiteSelect(
+                                                searchSites(user.sites[index]));
                                       },
                                       child: Container(
                                         width: 150,
@@ -556,12 +575,19 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                terminal[index],
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              ),
+                                              user.userRole == "AppAdmin" ||
+                                                      user.userRole ==
+                                                          "SuperAdmin"
+                                                  ? Text(terminal[index],
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600))
+                                                  : Text(
+                                                      user.sites[index],
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
                                               Icon(Icons
                                                   .keyboard_arrow_down_outlined),
                                             ],

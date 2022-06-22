@@ -1352,7 +1352,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                     child: InkWell(
                                       onTap: () {
                                         user.userRole == "AppAdmin" ||
-                                                user.userRole == "SuperAdmin"
+                                                user.userRole == "SuperAdmin" ||
+                                                user.userRole ==
+                                                    "TerminalUser" ||
+                                                user.userRole ==
+                                                    "TerminalManager"
                                             ? Navigator.pushNamed(context,
                                                 AppRoutes.sitescreenadmin)
                                             : Navigator.pushNamed(
@@ -1844,7 +1848,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                   child: InkWell(
                                       onTap: () {
                                         user.userRole == "AppAdmin" ||
-                                                user.userRole == "SuperAdmin"
+                                                user.userRole == "SuperAdmin" ||
+                                                user.userRole ==
+                                                    "TerminalUser" ||
+                                                user.userRole ==
+                                                    "TerminalManager"
                                             ? Navigator.pushNamed(context,
                                                 AppRoutes.sitescreenadmin)
                                             : Navigator.pushNamed(
@@ -1873,7 +1881,12 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                         contentPadding: EdgeInsets.all(8.0),
                                         onTargetClick: () {
                                           user.userRole == "AppAdmin" ||
-                                                  user.userRole == "SuperAdmin"
+                                                  user.userRole ==
+                                                      "SuperAdmin" ||
+                                                  user.userRole ==
+                                                      "TerminalUser" ||
+                                                  user.userRole ==
+                                                      "TerminalManager"
                                               ? Navigator.push(
                                                   context,
                                                   MaterialPageRoute(

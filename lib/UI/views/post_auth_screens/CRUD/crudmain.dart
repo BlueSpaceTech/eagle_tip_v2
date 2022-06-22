@@ -17,7 +17,8 @@ import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
-import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUser.dart';
+//import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/sent_to.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/chatting.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_main.dart';
@@ -34,6 +35,7 @@ import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:firestore_search/firestore_search.dart';
+import 'package:universal_html/html.dart';
 // import 'package:universal_html/html.dart';
 
 class CrudScreen extends StatefulWidget {
@@ -463,6 +465,12 @@ class _CrudScreenState extends State<CrudScreen> {
     return trimedsites;
   }
 
+  Map ScreeRoutes = {
+    1: AppRoutes.addterminaluser,
+    2: AppRoutes.addSiteUser,
+    // 3: FirebaseAuth.instance.signOut()
+  };
+
   final _key1 = GlobalKey();
   final _key2 = GlobalKey();
   final _key3 = GlobalKey();
@@ -478,7 +486,7 @@ class _CrudScreenState extends State<CrudScreen> {
           visible: !Responsive.isDesktop(context),
           child: GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, AppRoutes.addUserOwner);
+              Navigator.pushNamed(context, AppRoutes.addSiteUser);
             },
             child: Showcase(
               description: "Tap to go to Invitation screen",
@@ -653,59 +661,158 @@ class _CrudScreenState extends State<CrudScreen> {
                                       SizedBox(
                                         width: 10,
                                       ),
-                                      Visibility(
-                                        visible: Responsive.isDesktop(context),
-                                        child: InkWell(
-                                            onTap: () {
-                                              Navigator.pushNamed(context,
-                                                  AppRoutes.addUserOwner);
-                                            },
-                                            child: Showcase(
-                                              key: _key2,
-                                              description:
-                                                  "Tap to go to Invitation screen",
-                                              disposeOnTap: true,
-                                              titleTextStyle: TextStyle(
-                                                fontSize: 17.0,
-                                                color: Colors.white,
+                                      user!.userRole == "AppAdmin" ||
+                                              user.userRole == "SuperAdmin"
+                                          ? Visibility(
+                                              visible:
+                                                  Responsive.isDesktop(context),
+                                              child: PopupMenuButton(
+                                                padding: EdgeInsets.only(
+                                                    bottom: 500.0),
+                                                onSelected: (value) {
+                                                  print(value);
+                                                  Navigator.pushNamed(context,
+                                                      ScreeRoutes[value]);
+                                                  // print("hi");
+                                                  // print(user.uid);
+                                                  // print("hello");
+                                                },
+                                                color: Color(0xFF3f4850),
+                                                itemBuilder: (context) => [
+                                                  PopupMenuItem(
+                                                    child: Text(
+                                                      "Add Terminal User",
+                                                      style: TextStyle(
+                                                          fontSize: 13.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.white,
+                                                          fontFamily:
+                                                              "Poppins"),
+                                                    ),
+                                                    value: 1,
+                                                  ),
+                                                  PopupMenuItem(
+                                                    child: Text(
+                                                      "Add Site User",
+                                                      style: TextStyle(
+                                                          fontSize: 13.0,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: Colors.white,
+                                                          fontFamily:
+                                                              "Poppins"),
+                                                    ),
+                                                    value: 2,
+                                                  ),
+                                                ],
+                                                child: Showcase(
+                                                  key: _key2,
+                                                  description:
+                                                      "Tap to go to Invitation screen",
+                                                  disposeOnTap: true,
+                                                  titleTextStyle: TextStyle(
+                                                    fontSize: 17.0,
+                                                    color: Colors.white,
+                                                  ),
+                                                  descTextStyle: TextStyle(
+                                                    fontSize: 16.0,
+                                                    color: Colors.white,
+                                                  ),
+                                                  shapeBorder:
+                                                      RoundedRectangleBorder(),
+                                                  overlayPadding:
+                                                      EdgeInsets.all(8.0),
+                                                  showcaseBackgroundColor:
+                                                      Color(0xFF5081DB),
+                                                  contentPadding:
+                                                      EdgeInsets.all(8.0),
+                                                  onTargetClick: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ShowCaseWidget(
+                                                            builder: Builder(
+                                                                builder:
+                                                                    (context) {
+                                                              return AddNewUserByOwner();
+                                                            }),
+                                                          ),
+                                                        )).then((_) {
+                                                      setState(() {
+                                                        ShowCaseWidget.of(
+                                                                context)!
+                                                            .startShowCase(
+                                                                [_key3]);
+                                                      });
+                                                    });
+                                                  },
+                                                  child: customfab(
+                                                    height: height,
+                                                    width: width,
+                                                    text: "Add new user",
+                                                  ),
+                                                ),
                                               ),
-                                              descTextStyle: TextStyle(
-                                                fontSize: 16.0,
-                                                color: Colors.white,
-                                              ),
-                                              shapeBorder:
-                                                  RoundedRectangleBorder(),
-                                              overlayPadding:
-                                                  EdgeInsets.all(8.0),
-                                              showcaseBackgroundColor:
-                                                  Color(0xFF5081DB),
-                                              contentPadding:
-                                                  EdgeInsets.all(8.0),
-                                              onTargetClick: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          ShowCaseWidget(
-                                                        builder: Builder(
-                                                            builder: (context) {
-                                                          return AddNewUserByOwner();
-                                                        }),
-                                                      ),
-                                                    )).then((_) {
-                                                  setState(() {
-                                                    ShowCaseWidget.of(context)!
-                                                        .startShowCase([_key3]);
-                                                  });
-                                                });
-                                              },
-                                              child: customfab(
-                                                height: height,
-                                                width: width,
-                                                text: "Add new user",
-                                              ),
-                                            )),
-                                      ),
+                                            )
+                                          : Visibility(
+                                              visible:
+                                                  Responsive.isDesktop(context),
+                                              child: InkWell(
+                                                  onTap: () {
+                                                    Navigator.pushNamed(context,
+                                                        AppRoutes.addSiteUser);
+                                                  },
+                                                  child: Showcase(
+                                                    key: _key2,
+                                                    description:
+                                                        "Tap to go to Invitation screen",
+                                                    disposeOnTap: true,
+                                                    titleTextStyle: TextStyle(
+                                                      fontSize: 17.0,
+                                                      color: Colors.white,
+                                                    ),
+                                                    descTextStyle: TextStyle(
+                                                      fontSize: 16.0,
+                                                      color: Colors.white,
+                                                    ),
+                                                    shapeBorder:
+                                                        RoundedRectangleBorder(),
+                                                    overlayPadding:
+                                                        EdgeInsets.all(8.0),
+                                                    showcaseBackgroundColor:
+                                                        Color(0xFF5081DB),
+                                                    contentPadding:
+                                                        EdgeInsets.all(8.0),
+                                                    onTargetClick: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                ShowCaseWidget(
+                                                              builder: Builder(
+                                                                  builder:
+                                                                      (context) {
+                                                                return AddNewUserByOwner();
+                                                              }),
+                                                            ),
+                                                          )).then((_) {
+                                                        setState(() {
+                                                          ShowCaseWidget.of(
+                                                                  context)!
+                                                              .startShowCase(
+                                                                  [_key3]);
+                                                        });
+                                                      });
+                                                    },
+                                                    child: customfab(
+                                                      height: height,
+                                                      width: width,
+                                                      text: "Add new user",
+                                                    ),
+                                                  )),
+                                            )
                                     ],
                                   ),
                                   SizedBox(
@@ -884,8 +991,10 @@ class _CrudScreenState extends State<CrudScreen> {
                         // SizedBox(
                         //   height: 25,
                         // ),
-                        user!.userRole == "AppAdmin" ||
-                                user.userRole == "SuperAdmin"
+                        user.userRole == "AppAdmin" ||
+                                user.userRole == "SuperAdmin" ||
+                                user.userRole == "TerminalManager" ||
+                                user.userRole == "TerminalUser"
                             ? SizedBox(
                                 height: 60,
                                 width: width * 0.5,
@@ -897,8 +1006,12 @@ class _CrudScreenState extends State<CrudScreen> {
                                         (BuildContext context, int index) {
                                       return InkWell(
                                         onTap: () {
-                                          _showSiteSelect(
-                                              searchSites(terminal[index]));
+                                          user.userRole == "AppAdmin" ||
+                                                  user.userRole == "SuperAdmin"
+                                              ? _showSiteSelect(
+                                                  searchSites(terminal[index]))
+                                              : _showSiteSelect(searchSites(
+                                                  user.sites[index]));
                                         },
                                         child: Container(
                                           width: 180,
@@ -913,12 +1026,21 @@ class _CrudScreenState extends State<CrudScreen> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text(
-                                                  terminal[index],
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
+                                                user.userRole == "AppAdmin" ||
+                                                        user.userRole ==
+                                                            "SuperAdmin"
+                                                    ? Text(terminal[index],
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600))
+                                                    : Text(
+                                                        user.sites[index],
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
+                                                      ),
                                                 Icon(Icons
                                                     .keyboard_arrow_down_outlined),
                                               ],
@@ -1231,26 +1353,31 @@ class _CrudScreenState extends State<CrudScreen> {
                                   if (selectedroles2
                                       .contains(document["userRole"])) {
                                     return CRUDtile(
-                                        numbers: _numbers,
-                                        width: width,
-                                        document: document,
-                                        site: site,
-                                        index: index,
-                                        allsitename: allsitename,
-                                        height: height,
-                                        opendelete: () {
-                                          // deletUserDialog(height, width,
-                                          //     document["name"], document["uid"]);
-                                        },
-                                        openchat: () {
-                                          // callChatScreen(
-                                          //   document.id,
-                                          //   document["name"],
-                                          //   user.name,
-                                          //   document["dpUrl"],
-                                          //   user.dpurl,
-                                          // );
-                                        });
+                                      numbers: _numbers,
+                                      width: width,
+                                      document: document,
+                                      site: site,
+                                      index: index,
+                                      allsitename: allsitename,
+                                      height: height,
+                                      opendelete: () {
+                                        // deletUserDialog(height, width,
+                                        //     document["name"], document["uid"]);
+                                      },
+                                      openchat: () =>
+                                          print("opneeeeeeeeeeeeeeee"),
+
+                                      // callChatScreen(
+                                      //   document.id,
+                                      //   document["name"],
+                                      //   user.name,
+                                      //   document["dpUrl"],
+                                      //   user.dpurl,
+                                      // );
+
+                                      sitedetiails: sitedetails!,
+                                      resultlist: _resultList,
+                                    );
                                   } else {
                                     return Container();
                                   }
@@ -1281,7 +1408,7 @@ class _CrudScreenState extends State<CrudScreen> {
 }
 
 class CRUDtile extends StatefulWidget {
-  const CRUDtile({
+  CRUDtile({
     Key? key,
     required ScrollController? numbers,
     required this.width,
@@ -1292,6 +1419,8 @@ class CRUDtile extends StatefulWidget {
     required this.height,
     required this.opendelete,
     required this.openchat,
+    required this.sitedetiails,
+    required this.resultlist,
   })  : _numbers = numbers,
         super(key: key);
 
@@ -1304,6 +1433,8 @@ class CRUDtile extends StatefulWidget {
   final double height;
   final Function opendelete;
   final Function openchat;
+  final List<SitesDetails> sitedetiails;
+  final List resultlist;
 
   @override
   State<CRUDtile> createState() => _CRUDtileState();
@@ -1517,6 +1648,7 @@ class _CRUDtileState extends State<CRUDtile> {
                           .collection("users")
                           .doc(uid)
                           .delete();
+
                       // del("message");
                     },
                     child: Container(
@@ -1549,6 +1681,18 @@ class _CRUDtileState extends State<CRUDtile> {
     );
   }
 
+  getterminalsites(List terminals) {
+    List sitedesc = [];
+    for (var element in widget.sitedetiails) {
+      for (var terminal in terminals) {
+        if (element.terminalID + " ${element.terminalName}" == terminal) {
+          sitedesc.add(element.sitename);
+        }
+      }
+    }
+    return sitedesc;
+  }
+
   double hh = 0;
   bool isvisibleRole = false;
   bool isvisibleSite = false;
@@ -1556,6 +1700,31 @@ class _CRUDtileState extends State<CRUDtile> {
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
+    void _showSiteSelect2(List allsitename) async {
+      final List _items = allsitename;
+
+      for (var element in _items) {
+        element = element.toString();
+      }
+
+      final List<String>? results = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return SiteSelectCrud(items: _items);
+        },
+      );
+
+      // Update UI
+      if (results != null) {
+        setState(() {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(widget.document.id)
+              .update({'sites': results});
+        });
+      }
+    }
+
     _showSiteSelect() async {
       final List _items =
           user!.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
@@ -1574,10 +1743,12 @@ class _CRUDtileState extends State<CRUDtile> {
 
       // Update UI
       if (results != null) {
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(widget.document.id)
-            .update({'sites': results});
+        setState(() {
+          FirebaseFirestore.instance
+              .collection('users')
+              .doc(widget.document.id)
+              .update({'sites': results});
+        });
       }
     }
 
@@ -1710,7 +1881,13 @@ class _CRUDtileState extends State<CRUDtile> {
                                 width: 5,
                               ),
                               InkWell(
-                                  onTap: _showSiteSelect,
+                                  onTap: () {
+                                    user!.userRole == "TerminalManager" ||
+                                            user.userRole == "TerminalUser"
+                                        ? _showSiteSelect2(
+                                            getterminalsites(user.sites))
+                                        : _showSiteSelect();
+                                  },
                                   child: Icon(
                                     Icons.edit,
                                     size: 20,
@@ -1828,22 +2005,31 @@ class _CRUDtileState extends State<CRUDtile> {
                                                 Navigator.pop(context);
                                               },
                                             ),
-                                            ElevatedButton(
-                                              child: const Text('Ok'),
-                                              style: ElevatedButton.styleFrom(
-                                                primary: Color(0Xff5081db),
+                                            InkWell(
+                                              onTap: () => widget.openchat,
+                                              child: ElevatedButton(
+                                                child: const Text('Ok'),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0Xff5081db),
+                                                ),
+                                                onPressed: () {
+                                                  if (_phone.text.length ==
+                                                      10) {
+                                                    setState(() {
+                                                      FirebaseFirestore.instance
+                                                          .collection('users')
+                                                          .doc(widget
+                                                              .document.id)
+                                                          .update({
+                                                        'phonenumber':
+                                                            _phone.text
+                                                      });
+                                                    });
+
+                                                    Navigator.pop(context);
+                                                  } else {}
+                                                },
                                               ),
-                                              onPressed: () {
-                                                if (_phone.text.length == 10) {
-                                                  FirebaseFirestore.instance
-                                                      .collection('users')
-                                                      .doc(widget.document.id)
-                                                      .update({
-                                                    'phonenumber': _phone.text
-                                                  });
-                                                  Navigator.pop(context);
-                                                } else {}
-                                              },
                                             ),
                                           ],
                                         );

@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_const_constructors
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
@@ -182,6 +181,18 @@ class _NewChatScreenState extends State<NewChatScreen> {
     searchresult();
   }
 
+  getterminalsites(List terminals) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var terminal in terminals) {
+        if (element.terminalID + " ${element.terminalName}" == terminal) {
+          sitedesc.add(element);
+        }
+      }
+    }
+    return sitedesc;
+  }
+
   serchrole() {
     searchresult();
   }
@@ -230,6 +241,16 @@ class _NewChatScreenState extends State<NewChatScreen> {
     });
   }
 
+  getsitesdescrpp() {
+    List<SitesDetails> sitedesc = [];
+    for (var element in sitedetails!) {
+      sitedesc.add(element);
+      // print(sitedesc);
+    }
+
+    return sitedesc;
+  }
+
   FToast? fToast;
   @override
   void initState() {
@@ -239,6 +260,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
     getData();
     _SEARCH.addListener(_onsearchange);
     fToast = FToast();
+    //getsitesdescrpp();
     fToast!.init(context);
   }
 
@@ -262,9 +284,44 @@ class _NewChatScreenState extends State<NewChatScreen> {
     return sitedesc;
   }
 
+  ontapterminal(String uid, double width, int index, List sites) {
+    setState(() {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update({'currentsite': getterminalsites(sites)[index].sitename});
+
+      adddata();
+      fToast!.showToast(
+        child: ToastMessage().show(width, context, "Site Updated"),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 3),
+      );
+    });
+  }
+
+  ontapadmin(String uid, double width, int index) {
+    setState(() {
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update({'currentsite': getsitesdescrpp()[index].sitename});
+
+      adddata();
+      fToast!.showToast(
+        child: ToastMessage().show(width, context, "Site Updated"),
+        gravity: ToastGravity.BOTTOM,
+        toastDuration: Duration(seconds: 3),
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
+    List siteImg = ["site1", "site2"];
+    List siteName = ["Acres Marathon", "Akron Marathon"];
+    List sitelocation = ["Tampa,FL", "Leesburg,FL"];
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -309,185 +366,380 @@ class _NewChatScreenState extends State<NewChatScreen> {
                 SizedBox(
                   height: height * 0.02,
                 ),
-                Visibility(
-                  visible: Responsive.isDesktop(context) ||
-                      Responsive.isTablet(context),
-                  child: GestureDetector(
-                    onTap: () {
-                      showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            height: height * 0.5,
-                            color: Color(0xff3F4850),
-                            child: SingleChildScrollView(
-                              child: SizedBox(
-                                // height: height * 0.48,
-                                child: Column(
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: height * 0.03,
-                                    ),
-                                    Text(
-                                      "Choose another site",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white,
-                                          fontSize: 18),
-                                    ),
-                                    SizedBox(
-                                      height: height * 0.05,
-                                    ),
-                                    ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: width * 0.08),
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        return InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              FirebaseFirestore.instance
-                                                  .collection('users')
-                                                  .doc(user!.uid)
-                                                  .update({
-                                                'currentsite': getsitesdescrp(
-                                                        user.sites)[index]
-                                                    .sitename
-                                              });
-                                              adddata();
-                                              fToast!.showToast(
-                                                child: ToastMessage().show(
-                                                    width,
-                                                    context,
-                                                    "Site Updated"),
-                                                gravity: ToastGravity.BOTTOM,
-                                                toastDuration:
-                                                    Duration(seconds: 3),
-                                              );
-                                            });
-                                          },
-                                          child: Padding(
-                                            padding:
-                                                EdgeInsets.only(bottom: 14.0),
-                                            child: Container(
-                                              width: width * 0.9,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Container(
+                user!.userRole == "SiteOwner" ||
+                        user.userRole == "SiteManager" ||
+                        user.userRole == "SiteUser"
+                    ? Visibility(
+                        visible: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context),
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: height * 0.5,
+                                  color: Color(0xff3F4850),
+                                  child: SingleChildScrollView(
+                                    child: SizedBox(
+                                      // height: height * 0.48,
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: height * 0.03,
+                                          ),
+                                          Text(
+                                            "Choose another site",
+                                            style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                                fontSize: 18),
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.05,
+                                          ),
+                                          ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.08),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  setState(() {
+                                                    FirebaseFirestore.instance
+                                                        .collection('users')
+                                                        .doc(user.uid)
+                                                        .update({
+                                                      'currentsite':
+                                                          getsitesdescrp(user
+                                                                  .sites)[index]
+                                                              .sitename
+                                                    });
+                                                    adddata();
+                                                    fToast!.showToast(
+                                                      child: ToastMessage()
+                                                          .show(width, context,
+                                                              "Site Updated"),
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      toastDuration:
+                                                          Duration(seconds: 3),
+                                                    );
+                                                  });
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 14.0),
+                                                  child: Container(
+                                                    width: width * 0.9,
                                                     child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
-                                                        Image.asset(
-                                                          Common.assetImages +
-                                                              "site1.png",
-                                                          width: Responsive
-                                                                  .isDesktop(
-                                                                      context)
-                                                              ? width * 0.06
-                                                              : width * 0.14,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10.0,
-                                                        ),
-                                                        Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              getsitesdescrp(user!
-                                                                          .sites)[
-                                                                      index]
-                                                                  .sitename,
-                                                              style: TextStyle(
-                                                                fontSize: 17.0,
-                                                                fontFamily:
-                                                                    "Poppins",
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
+                                                        Container(
+                                                          child: Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                Common.assetImages +
+                                                                    "site1.png",
+                                                                width: Responsive
+                                                                        .isDesktop(
+                                                                            context)
+                                                                    ? width *
+                                                                        0.06
+                                                                    : width *
+                                                                        0.14,
                                                               ),
-                                                            ),
-                                                            Text(
-                                                              getsitesdescrp(user
-                                                                          .sites)[
-                                                                      index]
-                                                                  .sitelocation,
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      13.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontFamily:
-                                                                      "Poppins",
-                                                                  color: Color(
-                                                                      0xFFd9dbe9)),
-                                                            ),
-                                                          ],
+                                                              SizedBox(
+                                                                width: 10.0,
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    getsitesdescrp(
+                                                                            user.sites)[index]
+                                                                        .sitename,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          17.0,
+                                                                      fontFamily:
+                                                                          "Poppins",
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    getsitesdescrp(
+                                                                            user.sites)[index]
+                                                                        .sitelocation,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            13.0,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontFamily:
+                                                                            "Poppins",
+                                                                        color: Color(
+                                                                            0xFFd9dbe9)),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount:
+                                                getsitesdescrp(user.sites)
+                                                    .length,
                                           ),
-                                        );
-                                      },
-                                      itemCount:
-                                          getsitesdescrp(user!.sites).length,
+                                        ],
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        user.currentsite,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Image.asset("assets/down.png"),
+                                    ],
+                                  ),
+                                  // Text(
+                                  //   getsiteloc(user.currentsite),
+                                  //   style: TextStyle(
+                                  //       color: Color(0xff6E7191),
+                                  //       fontFamily: "Poppins",
+                                  //       fontWeight: FontWeight.w500),
+                                  // ),
+                                ],
                               ),
                             ),
-                          );
-                        },
-                      );
-                    },
-                    child: MouseRegion(
-                      cursor: SystemMouseCursors.click,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  user!.currentsite,
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Image.asset("assets/down.png"),
-                              ],
+                          ),
+                        ),
+                      )
+                    : Visibility(
+                        visible: Responsive.isDesktop(context) ||
+                            Responsive.isTablet(context),
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet<void>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: height * 0.5,
+                                  color: Color(0xff3F4850),
+                                  child: SingleChildScrollView(
+                                    child: SizedBox(
+                                      // height: height * 0.48,
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: height * 0.03,
+                                          ),
+                                          Text(
+                                            "Choose another site",
+                                            style: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                                fontSize: 18),
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.05,
+                                          ),
+                                          ListView.builder(
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
+                                            shrinkWrap: true,
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: width * 0.08),
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  user.userRole == "AppAdmin" ||
+                                                          user.userRole ==
+                                                              "SuperAdmin"
+                                                      ? ontapadmin(user.uid,
+                                                          width, index)
+                                                      : ontapterminal(
+                                                          user.uid,
+                                                          width,
+                                                          index,
+                                                          user.sites);
+                                                },
+                                                child: Padding(
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 14.0),
+                                                  child: Container(
+                                                    width: width * 0.9,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Container(
+                                                          child: Row(
+                                                            children: [
+                                                              Image.asset(
+                                                                Common.assetImages +
+                                                                    "site1.png",
+                                                                width: Responsive
+                                                                        .isDesktop(
+                                                                            context)
+                                                                    ? width *
+                                                                        0.06
+                                                                    : width *
+                                                                        0.14,
+                                                              ),
+                                                              SizedBox(
+                                                                width: 10.0,
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Text(
+                                                                    user.userRole ==
+                                                                                "AppAdmin" ||
+                                                                            user.userRole ==
+                                                                                "SuperAdmin"
+                                                                        ? getsitesdescrpp()[index]
+                                                                            .sitename
+                                                                        : getterminalsites(user.sites)[index]
+                                                                            .sitename,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          17.0,
+                                                                      fontFamily:
+                                                                          "Poppins",
+                                                                      color: Colors
+                                                                          .white,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    user.userRole ==
+                                                                                "AppAdmin" ||
+                                                                            user.userRole ==
+                                                                                "SuperAdmin"
+                                                                        ? getsitesdescrpp()[index]
+                                                                            .sitelocation
+                                                                        : getterminalsites(user.sites)[index]
+                                                                            .sitelocation,
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            13.0,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontFamily:
+                                                                            "Poppins",
+                                                                        color: Color(
+                                                                            0xFFd9dbe9)),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                            itemCount: user.userRole ==
+                                                        "AppAdmin" ||
+                                                    user.userRole ==
+                                                        "SuperAdmin"
+                                                ? getsitesdescrpp().length
+                                                : getterminalsites(user.sites)
+                                                    .length,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: MouseRegion(
+                            cursor: SystemMouseCursors.click,
+                            child: Container(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        user.currentsite,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Image.asset("assets/down.png"),
+                                    ],
+                                  ),
+                                  // Text(
+                                  //   getsiteloc(user.currentsite),
+                                  //   style: TextStyle(
+                                  //       color: Color(0xff6E7191),
+                                  //       fontFamily: "Poppins",
+                                  //       fontWeight: FontWeight.w500),
+                                  // ),
+                                ],
+                              ),
                             ),
-                            // Text(
-                            //   getsiteloc(user.currentsite),
-                            //   style: TextStyle(
-                            //       color: Color(0xff6E7191),
-                            //       fontFamily: "Poppins",
-                            //       fontWeight: FontWeight.w500),
-                            // ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: EdgeInsets.only(
                       left: Responsive.isDesktop(context) ||

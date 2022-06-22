@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'dart:convert';
 // import 'dart:io' as prefix;
 
@@ -10,7 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 // import 'package:testttttt/Routes/approutes.dart';
 import 'package:testttttt/Services/Crud_functions.dart';
@@ -23,6 +20,7 @@ import 'package:testttttt/UI/Widgets/customsubmitbutton.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/invitation.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Notifications/createNotification.dart';
 // import 'package:testttttt/UI/views/post_auth_screens/Sites/sites.dart';
 // import 'package:testttttt/Utils/common.dart';
@@ -35,14 +33,14 @@ import 'package:testttttt/Utils/InviteCSV.dart';
 
 import '../../../../../../Models/sites.dart';
 
-class AddNewUserByOwner extends StatefulWidget {
-  AddNewUserByOwner({Key? key}) : super(key: key);
+class AddTerminalUser extends StatefulWidget {
+  AddTerminalUser({Key? key}) : super(key: key);
 
   @override
-  State<AddNewUserByOwner> createState() => _AddNewUserByOwnerState();
+  State<AddTerminalUser> createState() => _AddTerminalUserState();
 }
 
-class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
+class _AddTerminalUserState extends State<AddTerminalUser> {
   bool isselect = false;
   FToast? fToast;
 
@@ -60,6 +58,65 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
       allsitename.add(document.sitename);
     }
     print(allsitename);
+  }
+
+  List terminal = [];
+  getTerminalData() async {
+    sitedetails = await SiteCall().getSites();
+
+    for (var document in sitedetails!) {
+      if (terminal
+          .contains(document.terminalID + " ${document.terminalName}")) {
+      } else {
+        terminal.add(document.terminalID + " ${document.terminalName}");
+      }
+    }
+
+    print(terminal);
+  }
+
+  void _showSiteSelect(List allsitename) async {
+    final List _items = allsitename;
+
+    for (var element in _items) {
+      element = element.toString().replaceAll(" ", "");
+    }
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SiteSelectCrud(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItems2.addAll(results);
+      });
+    }
+  }
+
+  searchSites(String terminalname) {
+    List siteslist = [];
+    for (var doc in sitedetails!) {
+      if (doc.terminalID + " ${doc.terminalName}" == terminalname) {
+        siteslist.add(doc.siteid + " ${doc.sitename}");
+      }
+    }
+    return siteslist;
+  }
+
+  getsitesdescrp(List sites) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var site in sites) {
+        if (element.sitename == site) {
+          sitedesc.add(element.siteid + " ${element.sitename}");
+        }
+      }
+    }
+    return sitedesc;
   }
 
   _buildsiteschip(List site) {
@@ -179,51 +236,44 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
   }
 
   late Future<ListResult> file;
-
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     fToast = FToast();
     fToast!.init(context);
     file = FirebaseStorage.instance.ref('/Templates').list();
     getData();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      ShowCaseWidget.of(context)!.startShowCase([_key1, _key2, _key3, _key4]);
-    });
+    getTerminalData();
   }
-
-  final _key2 = GlobalKey();
-  final _key1 = GlobalKey();
-  final _key3 = GlobalKey();
-  final _key4 = GlobalKey();
 
   List inviteData = [];
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
-    _showSiteSelect() async {
-      final List _items =
-          user!.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
-              ? allsitename
-              : user.sites;
-      for (var element in _items) {
-        element = element.toString().replaceAll(" ", "");
-      }
+    // _showSiteSelect() async {
+    //   final List _items =
+    //       user!.userRole == "AppAdmin" || user.userRole == "SuperAdmin"
+    //           ? allsitename
+    //           : user.sites;
+    //   for (var element in _items) {
+    //     element = element.toString().replaceAll(" ", "");
+    //   }
 
-      final List<String>? results = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SiteSelect(items: _items);
-        },
-      );
+    //   final List<String>? results = await showDialog(
+    //     context: context,
+    //     builder: (BuildContext context) {
+    //       return SiteSelect(items: _items);
+    //     },
+    //   );
 
-      // Update UI
-      if (results != null) {
-        setState(() {
-          _selectedItems2 = results;
-        });
-      }
-    }
+    //   // Update UI
+    //   if (results != null) {
+    //     setState(() {
+    //       _selectedItems2 = results;
+    //     });
+    //   }
+    // }
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -238,10 +288,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
           color: backGround_color,
           child: Column(
             children: [
-              Navbar(
-                width: width,
-                height: height,
-              ),
+              Navbar(width: width, height: height),
               Container(
                 height: height * 1.4,
                 color: backGround_color,
@@ -267,7 +314,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                               width: width * 0.24,
                             ),
                             Text(
-                              "Add new User",
+                              "Add new Terminal User",
                               style: TextStyle(
                                   fontFamily: "Poppins",
                                   color: Colors.white,
@@ -299,27 +346,10 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                   }));
                                 }
                               },
-                              child: Showcase(
-                                key: _key3,
-                                description:
-                                    "You can also import the CSV file with users details and Invite will be sent to them automatically",
-                                titleTextStyle: TextStyle(
-                                  fontSize: 17.0,
-                                  color: Colors.white,
-                                ),
-                                descTextStyle: TextStyle(
-                                  fontSize: 16.0,
-                                  color: Colors.white,
-                                ),
-                                shapeBorder: RoundedRectangleBorder(),
-                                overlayPadding: EdgeInsets.all(8.0),
-                                showcaseBackgroundColor: Color(0xFF5081DB),
-                                contentPadding: EdgeInsets.all(8.0),
-                                child: customfab(
-                                    width: width,
-                                    text: "Import CSV",
-                                    height: height),
-                              ),
+                              child: customfab(
+                                  width: width,
+                                  text: "Import CSV",
+                                  height: height),
                             ),
                             InkWell(
                                 onTap: () async {
@@ -337,51 +367,29 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                   // anchorElement.download = downloadURL;
                                   // anchorElement.click();
                                 },
-                                child: Showcase(
-                                  key: _key4,
-                                  titleTextStyle: TextStyle(
-                                    fontSize: 17.0,
-                                    color: Colors.white,
+                                child: Container(
+                                  // alignment: Alignment.center,
+                                  width: Responsive.isDesktop(context)
+                                      ? width * 0.13
+                                      : width * 0.42,
+                                  height: height * 0.064,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff5081DB),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
                                   ),
-                                  descTextStyle: TextStyle(
-                                    fontSize: 16.0,
-                                    color: Colors.white,
-                                  ),
-                                  onTargetClick: () {
-                                    Navigator.pop(context);
-                                  },
-                                  disposeOnTap: true,
-                                  shapeBorder: RoundedRectangleBorder(),
-                                  overlayPadding: EdgeInsets.all(8.0),
-                                  showcaseBackgroundColor: Color(0xFF5081DB),
-                                  contentPadding: EdgeInsets.all(8.0),
-                                  description:
-                                      "Tap to download the CSV Template for IMPORT CSV. Tap button to continue",
-                                  child: Container(
-                                    // alignment: Alignment.center,
-                                    width: Responsive.isDesktop(context)
-                                        ? width * 0.13
-                                        : width * 0.42,
-                                    height: height * 0.064,
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff5081DB),
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Download CSV Template",
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.white,
-                                              fontFamily: "Poppins",
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Download CSV Template",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.white,
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ],
                                   ),
                                 )),
                           ],
@@ -500,39 +508,93 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       //     ),
                       //   ],
                       // ),
+                      Text(
+                        "Assign Terminal",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                        ),
+                      ),
+
                       SizedBox(
                         height: height * 0.04,
                       ),
-                      Showcase(
-                        key: _key1,
-                        description:
-                            "You can select the site and the role for the user you want to send an invitation to",
-                        // disposeOnTap: true,
-                        titleTextStyle: TextStyle(
-                          fontSize: 17.0,
-                          color: Colors.white,
-                        ),
-                        descTextStyle: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.white,
-                        ),
-                        shapeBorder: RoundedRectangleBorder(),
-                        overlayPadding: EdgeInsets.all(8.0),
-                        showcaseBackgroundColor: Color(0xFF5081DB),
-                        contentPadding: EdgeInsets.all(8.0),
-                        child: Text(
-                          "Site",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
+                      SizedBox(
+                        height: 50,
+                        width: width * 0.5,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: terminal.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return InkWell(
+                                onTap: () {
+                                  _showSiteSelect(terminal);
+                                },
+                                child: Container(
+                                  width: 150,
+                                  height: 20,
+                                  decoration: BoxDecoration(
+                                      color: Colors.grey.shade300,
+                                      border: Border.all(),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: Center(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          "Select Terminals",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        Icon(
+                                            Icons.keyboard_arrow_down_outlined),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                       ),
                       SizedBox(
-                        height: 10.0,
+                        height: height * 0.04,
                       ),
+
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Wrap(
+                        children: [
+                          for (var name in _selectedItems2)
+                            Container(
+                              //color: Color(0xFF5081db),
+                              padding: EdgeInsets.all(3.0),
+                              child: ChoiceChip(
+                                label: Text(
+                                  name + " ",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Poppins"),
+                                ),
+                                selectedColor: Color(0xFF5081db),
+                                // disabledColor: Color(0xFF535c65),
+                                // backgroundColor: Color(0xFF535c65),
+                                selected: true,
+                              ),
+                            )
+                        ],
+                      ),
+
+                      SizedBox(
+                        height: height * 0.04,
+                      ),
+
                       /*
                       ChipsChoice<String>.multiple(
                         wrapped: true,
@@ -548,34 +610,34 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                         ),
                       ),
                       */
-                      Wrap(
-                        children: [
-                          user.userRole == "AppAdmin" ||
-                                  user.userRole == "SuperAdmin"
-                              // ||
-                              // user.userRole == "TerminalManager" ||
-                              // user.userRole == "TerminalUser"
-                              ? Wrap(
-                                  runSpacing: 10,
-                                  children: _buildall(allsitename),
-                                )
-                              : Wrap(
-                                  children: _buildall(sites),
-                                ),
-                          user.userRole == "AppAdmin" ||
-                                  user.userRole == "SuperAdmin"
-                              // ||
-                              // user.userRole == "TerminalManager" ||
-                              // user.userRole == "TerminalUser"
-                              ? Wrap(
-                                  runSpacing: 10,
-                                  children: _buildsiteschip(allsitename),
-                                )
-                              : Wrap(
-                                  children: _buildsiteschip(sites),
-                                ),
-                        ],
-                      ),
+                      // Wrap(
+                      //   children: [
+                      //     user.userRole == "AppAdmin" ||
+                      //             user.userRole == "SuperAdmin"
+                      //         // ||
+                      //         // user.userRole == "TerminalManager" ||
+                      //         // user.userRole == "TerminalUser"
+                      //         ? Wrap(
+                      //             runSpacing: 10,
+                      //             children: _buildall(allsitename),
+                      //           )
+                      //         : Wrap(
+                      //             children: _buildall(sites),
+                      //           ),
+                      //     user.userRole == "AppAdmin" ||
+                      //             user.userRole == "SuperAdmin"
+                      //         // ||
+                      //         // user.userRole == "TerminalManager" ||
+                      //         // user.userRole == "TerminalUser"
+                      //         ? Wrap(
+                      //             runSpacing: 10,
+                      //             children: _buildsiteschip(allsitename),
+                      //           )
+                      //         : Wrap(
+                      //             children: _buildsiteschip(sites),
+                      //           ),
+                      //   ],
+                      // ),
 
                       /*
                       Wrap(
@@ -637,19 +699,20 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                       */
                       Wrap(
                         children:
-                            _buildRolechip(CrudFunction().visibleRole(user)),
+                            _buildRolechip(["TerminalManager", "TerminalUser"]),
                       ),
                       SizedBox(
                         height: Responsive.isDesktop(context)
-                            ? height * 0.22
-                            : height * 0.2,
+                            ? height * 0.08
+                            : height * 0.08,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           InkWell(
                             onTap: () {
-                              if (selectedrOLE == "" || selectedsites.isEmpty) {
+                              if (selectedrOLE == "" ||
+                                  _selectedItems2.isEmpty) {
                                 fToast!.showToast(
                                     child: ToastMessage().show(width, context,
                                         "Please select the site and Role for your new user"),
@@ -667,62 +730,25 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => Invitation(
-                                        sites: selectedsites,
+                                        sites: _selectedItems2,
                                         role: selectedrOLE,
                                       ),
                                     ));
                               }
                             },
-                            child: Showcase(
-                              key: _key2,
-                              description:
-                                  "Tap to enter the details of the user",
-                              disposeOnTap: true,
-                              onTargetClick: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ShowCaseWidget(builder: Builder(
-                                              builder: (context) {
-                                                return Invitation(
-                                                  sites: selectedsites,
-                                                  role: selectedrOLE,
-                                                );
-                                              },
-                                            )))).then((_) {
-                                  setState(() {
-                                    ShowCaseWidget.of(context)!
-                                        .startShowCase([_key3, _key4]);
-                                  });
-                                });
-                              },
-                              titleTextStyle: TextStyle(
-                                fontSize: 17.0,
-                                color: Colors.white,
+                            child: Card(
+                              elevation: 5.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
                               ),
-                              descTextStyle: TextStyle(
-                                fontSize: 16.0,
-                                color: Colors.white,
-                              ),
-                              shapeBorder: RoundedRectangleBorder(),
-                              overlayPadding: EdgeInsets.all(8.0),
-                              showcaseBackgroundColor: Color(0xFF5081DB),
-                              contentPadding: EdgeInsets.all(8.0),
-                              child: Card(
-                                elevation: 5.0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15.0),
-                                ),
-                                child: Responsive.isDesktop(context)
-                                    ? customfab(
-                                        width: width,
-                                        text: "Next",
-                                        height: height,
-                                      )
-                                    : CustomSubmitButton(
-                                        width: width, title: "Next"),
-                              ),
+                              child: Responsive.isDesktop(context)
+                                  ? customfab(
+                                      width: width,
+                                      text: "Next",
+                                      height: height,
+                                    )
+                                  : CustomSubmitButton(
+                                      width: width, title: "Next"),
                             ),
                           ),
                         ],

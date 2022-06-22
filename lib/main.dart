@@ -24,6 +24,7 @@ import 'package:testttttt/UI/views/on-borading-tour/webuser/final_tour_web.dart'
 import 'package:testttttt/UI/views/on-borading-tour/welcome_tour.dart';
 
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUser.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addterminal.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/invitation.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/sent_to.dart';
@@ -171,8 +172,8 @@ class MyApp extends StatelessWidget {
                 frienduid: "",
                 index: 0,
               ),
-          AppRoutes.addUserOwner: (context) => AddNewUserByOwner(),
-
+          AppRoutes.addSiteUser: (context) => AddNewUserByOwner(),
+          AppRoutes.addterminaluser: (context) => AddTerminalUser(),
           AppRoutes.newchat: (context) => NewChatScreen(),
           // AppRoutes.chattingscreen: (context) => ChatScreenn(),
           AppRoutes.crudscreen: (context) => CrudScreen(),

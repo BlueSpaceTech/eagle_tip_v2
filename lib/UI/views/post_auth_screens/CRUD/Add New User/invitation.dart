@@ -43,7 +43,11 @@ class _InvitationState extends State<Invitation> {
     super.initState();
     fToast = FToast();
     fToast!.init(context);
-    trimsites();
+    widget.role == "SiteUser" ||
+            widget.role == "SiteManager" ||
+            widget.role == "SiteOwner"
+        ? trimsites()
+        : print("");
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ShowCaseWidget.of(context)!.startShowCase([_key1]);
     });

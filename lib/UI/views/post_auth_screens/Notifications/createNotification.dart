@@ -17,6 +17,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customtoast.dart';
+import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
 import 'package:testttttt/UI/views/post_auth_screens/Chat/message_model.dart';
 import 'package:testttttt/Utils/constants.dart';
 import 'package:testttttt/Utils/responsive.dart';
@@ -142,6 +143,16 @@ class _CreateNotificationState extends State<CreateNotification> {
   // var scheduledtime;
   List newdates = [];
   List daysname = [];
+  searchSites(String terminalname) {
+    List siteslist = [];
+    for (var doc in sitedetails!) {
+      if (doc.terminalID + " ${doc.terminalName}" == terminalname) {
+        siteslist.add(doc.siteid + " ${doc.sitename}");
+      }
+    }
+    return siteslist;
+  }
+
   newnotifys(List daysofweek, List dates) {
     for (int i = 0; i < dates.length; i++) {
       print(DateFormat('EEEE').format(dates[i]));
@@ -152,6 +163,28 @@ class _CreateNotificationState extends State<CreateNotification> {
       }
     }
     print(newdates);
+  }
+
+  void _showSiteSelect2(List allsitename) async {
+    final List _items = allsitename;
+
+    for (var element in _items) {
+      element = element.toString().replaceAll(" ", "");
+    }
+
+    final List<String>? results = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return SiteSelect(items: _items);
+      },
+    );
+
+    // Update UI
+    if (results != null) {
+      setState(() {
+        _selectedItems2 = results;
+      });
+    }
   }
 
   @override
@@ -201,6 +234,18 @@ class _CreateNotificationState extends State<CreateNotification> {
         days.add(startDate.add(Duration(days: i)));
       }
       return days;
+    }
+
+    getterminalsites(List terminals) {
+      List sitedesc = [];
+      for (var element in sitedetails ?? []) {
+        for (var terminal in terminals) {
+          if (element.terminalID + " ${element.terminalName}" == terminal) {
+            sitedesc.add(element.sitename);
+          }
+        }
+      }
+      return sitedesc;
     }
 
     double height = MediaQuery.of(context).size.height;
@@ -411,7 +456,14 @@ class _CreateNotificationState extends State<CreateNotification> {
                                             color: Color(0xFF6E7191),
                                           ),
                                         ),
-                                        onPressed: _showSiteSelect,
+                                        onPressed: () {
+                                          user!.userRole == "TerminalManager" ||
+                                                  user.userRole ==
+                                                      "TerminalUser"
+                                              ? _showSiteSelect2(
+                                                  getterminalsites(user.sites))
+                                              : _showSiteSelect();
+                                        },
                                       ),
                                       Row(
                                         children: [
