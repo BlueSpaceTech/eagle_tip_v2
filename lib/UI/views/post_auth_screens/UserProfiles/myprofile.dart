@@ -476,6 +476,8 @@ class _MyProfileState extends State<MyProfile> {
                                         child: ClosedTickets(
                                           width: width * 0,
                                           height: height,
+                                          userrole: user.userRole,
+                                          sites: user.sites,
                                         ),
                                       ),
                               ],
