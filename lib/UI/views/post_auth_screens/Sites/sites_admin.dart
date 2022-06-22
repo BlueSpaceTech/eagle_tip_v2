@@ -168,7 +168,7 @@ class _SitesAdminState extends State<SitesAdmin> {
                     top: Responsive.isDesktop(context) ||
                             Responsive.isTablet(context)
                         ? height * 0.04
-                        : height * 0.1,
+                        : height * 0.06,
                     left: Responsive.isDesktop(context) ||
                             Responsive.isTablet(context)
                         ? 0.0
@@ -338,7 +338,7 @@ class _SitesAdminState extends State<SitesAdmin> {
                                                       context) ||
                                                   Responsive.isTablet(context)
                                               ? height * 0.6
-                                              : height * 0.5,
+                                              : height * 0.6,
                                           child: Scrollbar(
                                             showTrackOnHover: true,
                                             trackVisibility: true,
@@ -545,8 +545,8 @@ class _SitesAdminState extends State<SitesAdmin> {
                                     : 0.0),
                             child: SizedBox(
                               height: Responsive.isDesktop(context)
-                                  ? height * 0.7
-                                  : height * 0.8,
+                                  ? height * 0.6
+                                  : height * 0.6,
                               child: Scrollbar(
                                 showTrackOnHover: true,
                                 trackVisibility: true,

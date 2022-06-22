@@ -78,7 +78,7 @@ class _SitesState extends State<Sites> {
                     top: Responsive.isDesktop(context) ||
                             Responsive.isTablet(context)
                         ? height * 0.04
-                        : height * 0.1,
+                        : height * 0.06,
                     left: Responsive.isDesktop(context) ||
                             Responsive.isTablet(context)
                         ? 0.0
@@ -151,7 +151,7 @@ class _SitesState extends State<Sites> {
                                     height: Responsive.isDesktop(context) ||
                                             Responsive.isTablet(context)
                                         ? height * 0.6
-                                        : height * 0.5,
+                                        : height * 0.6,
                                     child: Scrollbar(
                                       trackVisibility: true,
                                       showTrackOnHover: true,
@@ -253,7 +253,7 @@ class _SitesState extends State<Sites> {
                             child: Container(
                               height: Responsive.isDesktop(context)
                                   ? height * 0.6
-                                  : height * 0.5,
+                                  : height * 0.6,
                               child: Scrollbar(
                                 showTrackOnHover: true,
                                 isAlwaysShown: true,

@@ -3,7 +3,9 @@
 // import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
+import 'package:testttttt/Services/site_call.dart';
 import 'package:testttttt/UI/Widgets/customContainer.dart';
 import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/customTextField.dart';
@@ -34,11 +36,31 @@ class _SupportScreenState extends State<SupportScreen> {
   String? Subject;
   String? Message;
   FToast? fToast;
+  List<SitesDetails>? sitedetails;
+  List allsitename = [];
+
+  getData() async {
+    sitedetails = await SiteCall().getSites();
+  }
+
+  getterminalsites(List terminals) {
+    List sitedesc = [];
+    for (var element in sitedetails ?? []) {
+      for (var terminal in terminals) {
+        if (element.terminalID + " ${element.terminalName}" == terminal) {
+          sitedesc.add(element.sitename);
+        }
+      }
+    }
+    return sitedesc;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     fToast = FToast();
+    getData();
     fToast!.init(context);
   }
 
@@ -83,7 +105,10 @@ class _SupportScreenState extends State<SupportScreen> {
           }
         ],
         "name": user.name,
-        "sites": user.sites,
+        "sites": user.userRole == "TerminalManager" ||
+                user.userRole == "TerminalUser"
+            ? getterminalsites(user.sites)
+            : user.sites,
         "timestamp": FieldValue.serverTimestamp(),
         "visibleto": visible(user),
       }).then((value) {
@@ -193,7 +218,8 @@ class _SupportScreenState extends State<SupportScreen> {
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    if (Message != null || Subject != null) {
+                                    if (Message!.isNotEmpty &&
+                                        Subject!.isNotEmpty) {
                                       addTicket(context);
                                       fToast!.showToast(
                                         child: ToastMessage().show(
@@ -207,7 +233,7 @@ class _SupportScreenState extends State<SupportScreen> {
                                         child: ToastMessage().show(
                                             width,
                                             context,
-                                            "Please enter all detailss"),
+                                            "Please enter all details"),
                                         gravity: ToastGravity.BOTTOM,
                                         toastDuration: Duration(seconds: 3),
                                       );

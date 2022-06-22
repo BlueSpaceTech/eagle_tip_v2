@@ -81,7 +81,7 @@ class EmailSent extends StatelessWidget {
                       width: width * 0.75,
                       alignment: Alignment.center,
                       child: Text(
-                        "An email has been sent. Please click the link when you get it.",
+                        "We have sent and email with a link to recover your password. If you don't see your email on your inbox within 5 mins, check you Spam folder",
                         style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,

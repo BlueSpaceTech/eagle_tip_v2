@@ -569,7 +569,10 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: MenuButton(isTapped: false, width: width),
+      floatingActionButton:
+          Responsive.isDesktop(context) || Responsive.isTablet(context)
+              ? MenuButton(isTapped: false, width: width)
+              : Container(),
       body: user == null
           ? Container(
               height: height,

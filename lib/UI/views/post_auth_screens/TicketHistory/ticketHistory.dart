@@ -391,7 +391,11 @@ class _ClosedTicketsState extends State<ClosedTickets> {
                 .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Text("Something Went wrong");
+            return Center(
+                child: Text(
+              "Something Went Wrong",
+              style: TextStyle(color: Colors.white, fontSize: 13.0),
+            ));
           }
           if (!snapshot.hasData) {
             return Center(
