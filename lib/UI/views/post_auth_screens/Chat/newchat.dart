@@ -265,9 +265,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
-    List siteImg = ["site1", "site2"];
-    List siteName = ["Acres Marathon", "Akron Marathon"];
-    List sitelocation = ["Tampa,FL", "Leesburg,FL"];
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(

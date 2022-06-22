@@ -1,11 +1,13 @@
-// ignore_for_file: prefer_const_constructors, duplicate_ignore, unused_import, prefer_const_literals_to_create_immutables, avoid_print
+// ignore_for_file: prefer_const_constructors, duplicate_ignore, unused_import, prefer_const_literals_to_create_immutables, avoid_print, deprecated_member_use
 
 import 'dart:async';
 import 'dart:convert';
 // import 'dart:convert';
 // import 'dart:html' as html;
+import 'package:universal_html/html.dart' as htm1;
 import 'dart:typed_data';
 import 'package:badges/badges.dart';
+
 import 'package:csv/csv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -149,8 +151,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       // print(csvdata);
       // print(csvdata.length);
       String csv = ListToCsvConverter().convert(csvdata);
-      // final bytes = utf8.encode(csv);
-      // final text = utf8.decode(bytes);
+      final bytes = utf8.encode(csv);
+      final text = utf8.decode(bytes);
       // final blob = html.Blob([text]);
       // final url = html.Url.createObjectUrlFromBlob(blob);
       // html.AnchorElement(href: url)
@@ -202,12 +204,18 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
     return null;
   }
 
+  final keyIsFirstLoaded = "is_first_loaded";
+
   @override
   void initState() {
     super.initState();
     getData();
     addData();
+    // showDialogIfFirstLoaded(context);
     checkupdateTC();
+    _showDialog1();
+
+    // showupdatedialogue();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       ShowCaseWidget.of(context)!
           .startShowCase([_key1, _key2, _key3, _key4, _key5]);
@@ -395,6 +403,152 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
         });
   }
 
+  _showDialog1() async {
+    var dbRef = await FirebaseFirestore.instance
+        .collection('updates')
+        .doc("3WDuJB2PqMU7kot0fn6I")
+        .get();
+    List visibles = await dbRef.get("isVisible");
+    print(visibles);
+    if (!visibles.contains(auth.currentUser!.uid + "Web")) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        if (true && PlatformInfo().isWeb()) {
+          // await _showDialog1();
+          visibles.add(auth.currentUser!.uid + "Web");
+          FirebaseFirestore.instance
+              .collection("updates")
+              .doc("3WDuJB2PqMU7kot0fn6I")
+              .update({"isVisible": visibles});
+          return showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: Responsive.isDesktop(context) ? 400 : 400,
+                    height: Responsive.isDesktop(context) ? 300 : 350,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Website Updated",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                              fontSize:
+                                  Responsive.isDesktop(context) ? 24 : 20),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Some changes have been done in the website. Kindly press on Reload button to see the live changes.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            // decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              htm1.window.location.reload();
+                            },
+                            child: CustomSubmitButton(
+                              width: 200,
+                              title: "Reload",
+                            )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        }
+      });
+    }
+    if (!visibles.contains(auth.currentUser!.uid + "Phone")) {
+      WidgetsBinding.instance?.addPostFrameCallback((_) async {
+        if (true && PlatformInfo().isAppOS()) {
+          // await _showDialog1();
+          visibles.add(auth.currentUser!.uid + "Phone");
+          FirebaseFirestore.instance
+              .collection("updates")
+              .doc("3WDuJB2PqMU7kot0fn6I")
+              .update({"isVisible": visibles});
+          return showDialog(
+              barrierDismissible: false,
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    width: Responsive.isDesktop(context) ? 400 : 300,
+                    height: Responsive.isDesktop(context) ? 300 : 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                    ),
+                    child: Column(
+                      //crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "App Updated",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "Poppins",
+                              fontSize:
+                                  Responsive.isDesktop(context) ? 24 : 20),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Some changes have been done in the App. Kindly press on Update button to update the app.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            // decoration: TextDecoration.underline,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                        ),
+                        InkWell(
+                            onTap: () {
+                              Navigator.pop(context);
+                              // htm1.window.location.reload();
+                            },
+                            child: CustomSubmitButton(
+                              width: 200,
+                              title: "Update",
+                            )),
+                        SizedBox(
+                          height: 5,
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              });
+        }
+      });
+    }
+  }
+
   @override
   void didChangeDependencies() {
     addData();
@@ -410,58 +564,12 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
-
+    // Future.delayed(Duration.zero, () => showDialogIfFirstLoaded(context));
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
-      floatingActionButton: Responsive.isDesktop(context) ||
-              Responsive.isTablet(context)
-          ? Stack(
-              children: [
-                Positioned.fill(
-                    child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: MenuButton(isTapped: false, width: width))),
-                Visibility(
-                  visible: isvisible,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 50, bottom: 25),
-                    child: Container(
-                      width: 300,
-                      height: 180,
-                      decoration: BoxDecoration(
-                        color: Color(0xff20272C),
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(20.0),
-                            bottomRight: Radius.circular(20.0),
-                            topLeft: Radius.circular(20.0)),
-                      ),
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      setState(() {
-                                        isvisible = false;
-                                      });
-                                    },
-                                    child:
-                                        Icon(Icons.remove, color: Colors.white))
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            )
-          : SizedBox(),
+      floatingActionButton: MenuButton(isTapped: false, width: width),
       body: user == null
           ? Container(
               height: height,

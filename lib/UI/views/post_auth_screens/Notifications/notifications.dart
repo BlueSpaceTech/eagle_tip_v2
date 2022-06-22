@@ -104,7 +104,9 @@ class _NotificationsState extends State<Notifications> {
               overlayPadding: EdgeInsets.all(8.0),
               showcaseBackgroundColor: Color(0xFF5081DB),
               contentPadding: EdgeInsets.all(8.0),
-              description: "You can rewatch the tour here",
+              title: "Eagle TIP is in Beta Testing stage:",
+              description:
+                  "Your feedback is welcome. Feel free to report any issues or glitches using the ‘Support Ticket’ feature. We will be working on the background to promptly improve the app. Thanks for your valuable input.           ~Eagle TIP Development Team.",
               key: _key2,
               child: MenuButton(isTapped: false, width: width))
           : SizedBox(),
