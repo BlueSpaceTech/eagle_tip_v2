@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 // import 'dart:convert';
-// import 'dart:html' as html;
+import 'dart:html' as html;
 import 'package:universal_html/html.dart' as htm1;
 import 'dart:typed_data';
 import 'package:badges/badges.dart';
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   final RestorableDateTimeN _startDate = RestorableDateTimeN(
       DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day));
   final RestorableDateTimeN _endDate = RestorableDateTimeN(
-      DateTime(DateTime.now().year, DateTime.now().month, 15));
+      DateTime(DateTime.now().year, DateTime.now().month, 30));
   late final RestorableRouteFuture<DateTimeRange?>
       _restorableDateRangePickerRouteFuture =
       RestorableRouteFuture<DateTimeRange?>(
@@ -153,11 +153,11 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
       String csv = ListToCsvConverter().convert(csvdata);
       final bytes = utf8.encode(csv);
       final text = utf8.decode(bytes);
-      // final blob = html.Blob([text]);
-      // final url = html.Url.createObjectUrlFromBlob(blob);
-      // html.AnchorElement(href: url)
-      //   ..setAttribute("download", "file.csv")
-      //   ..click();
+      final blob = html.Blob([text]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      html.AnchorElement(href: url)
+        ..setAttribute("download", "file.csv")
+        ..click();
       csvdata.clear();
     }
   }
