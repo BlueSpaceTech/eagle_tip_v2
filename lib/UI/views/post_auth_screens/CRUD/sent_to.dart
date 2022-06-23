@@ -1119,7 +1119,8 @@ class _CRUDtile2State extends State<CRUDtile2> {
     return choicess;
   }
 
-  deletUserDialog(double height, double width, String name, String uid) {
+  deletUserDialog(
+      double height, double width, String name, String employercode) {
     // Future<void> del(String message) async {
     //   HttpsCallable callable =
     //       FirebaseFunctions.instance.httpsCallable('deleteUser');
@@ -1211,7 +1212,7 @@ class _CRUDtile2State extends State<CRUDtile2> {
                       Navigator.pop(context);
                       FirebaseFirestore.instance
                           .collection("invitations")
-                          .doc(uid)
+                          .doc(employercode)
                           .delete();
                       fToast!.showToast(
                           child: ToastMessage().show(
@@ -1360,8 +1361,11 @@ class _CRUDtile2State extends State<CRUDtile2> {
               children: [
                 InkWell(
                   onTap: () {
-                    deletUserDialog(widget.height, widget.width,
-                        widget.document["name"], widget.document["uid"]);
+                    deletUserDialog(
+                        widget.height,
+                        widget.width,
+                        widget.document["name"],
+                        widget.document["employercode"]);
                   },
                   child: Container(
                       width: Responsive.isDesktop(context)
