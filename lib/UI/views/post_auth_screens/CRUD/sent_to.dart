@@ -3,6 +3,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:testttttt/Models/sites.dart';
 import 'package:testttttt/Providers/user_provider.dart';
 import 'package:testttttt/Routes/approutes.dart';
@@ -12,6 +13,7 @@ import 'package:testttttt/UI/Widgets/customNav.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/crudmain.dart';
 import 'package:testttttt/UI/views/post_auth_screens/TicketHistory/ticketHistoryDetail.dart';
@@ -1211,6 +1213,11 @@ class _CRUDtile2State extends State<CRUDtile2> {
                           .collection("invitations")
                           .doc(uid)
                           .delete();
+                      fToast!.showToast(
+                          child: ToastMessage().show(
+                              widget.width, context, "User will delete soon"),
+                          gravity: ToastGravity.BOTTOM,
+                          toastDuration: Duration(seconds: 3));
 
                       // del("message");
                     },
@@ -1273,6 +1280,11 @@ class _CRUDtile2State extends State<CRUDtile2> {
     // Update UI
     if (results != null) {
       setState(() {
+        fToast!.showToast(
+            child: ToastMessage()
+                .show(widget.width, context, "Information Updating soon"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
         FirebaseFirestore.instance
             .collection('users')
             .doc(widget.document.id)
@@ -1281,10 +1293,19 @@ class _CRUDtile2State extends State<CRUDtile2> {
     }
   }
 
+  FToast? fToast;
   double hh = 0;
   bool isvisibleRole = false;
   bool isvisibleSite = false;
   List<String> _selectedItems2 = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    fToast = FToast();
+    fToast!.init(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     model.User? user = Provider.of<UserProvider>(context).getUser;
@@ -1306,6 +1327,11 @@ class _CRUDtile2State extends State<CRUDtile2> {
 
       // Update UI
       if (results != null) {
+        fToast!.showToast(
+            child: ToastMessage()
+                .show(widget.width, context, "Information Updating soon"),
+            gravity: ToastGravity.BOTTOM,
+            toastDuration: Duration(seconds: 3));
         FirebaseFirestore.instance
             .collection('invitations')
             .doc(widget.document.id)
@@ -1579,6 +1605,15 @@ class _CRUDtile2State extends State<CRUDtile2> {
                                                       .update({
                                                     'phonenumber': _phone.text
                                                   });
+                                                  fToast!.showToast(
+                                                      child: ToastMessage().show(
+                                                          widget.width,
+                                                          context,
+                                                          "Information Updating soon"),
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      toastDuration:
+                                                          Duration(seconds: 3));
                                                   Navigator.pop(context);
                                                 } else {}
                                               },
@@ -1626,6 +1661,11 @@ class _CRUDtile2State extends State<CRUDtile2> {
                                 setState(() {
                                   isvisibleRole = false;
                                 });
+                                fToast!.showToast(
+                                    child: ToastMessage().show(widget.width,
+                                        context, "Information Updating soon"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3));
                               } else {
                                 setState(() {
                                   isvisibleRole = false;

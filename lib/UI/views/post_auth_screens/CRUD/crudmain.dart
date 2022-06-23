@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'package:testttttt/Models/sites.dart';
@@ -16,6 +17,7 @@ import 'package:testttttt/UI/Widgets/customTextField.dart';
 import 'package:testttttt/UI/Widgets/custom_webbg.dart';
 import 'package:testttttt/UI/Widgets/customappheader.dart';
 import 'package:testttttt/UI/Widgets/customfab.dart';
+import 'package:testttttt/UI/Widgets/customtoast.dart';
 import 'package:testttttt/UI/Widgets/logo.dart';
 import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUser.dart';
 //import 'package:testttttt/UI/views/post_auth_screens/CRUD/Add%20New%20User/Owner/addUserOwner.dart';
@@ -1441,7 +1443,16 @@ class CRUDtile extends StatefulWidget {
 }
 
 class _CRUDtileState extends State<CRUDtile> {
+  FToast? fToast;
   bool _loading = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    fToast = FToast();
+    fToast!.init(context);
+    super.initState();
+  }
+
   void callChatScreen(String uid, String name, String currentusername,
       String photoUrlfriend, String photourluser) async {
     setState(() {
@@ -1648,6 +1659,11 @@ class _CRUDtileState extends State<CRUDtile> {
                           .collection("users")
                           .doc(uid)
                           .delete();
+                      fToast!.showToast(
+                          child: ToastMessage().show(
+                              width, context, "User will be deleted soon"),
+                          gravity: ToastGravity.BOTTOM,
+                          toastDuration: Duration(seconds: 3));
 
                       // del("message");
                     },
@@ -1721,6 +1737,11 @@ class _CRUDtileState extends State<CRUDtile> {
               .collection('users')
               .doc(widget.document.id)
               .update({'sites': results});
+          fToast!.showToast(
+              child: ToastMessage()
+                  .show(widget.width, context, "Information Updating soon"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
         });
       }
     }
@@ -1748,6 +1769,11 @@ class _CRUDtileState extends State<CRUDtile> {
               .collection('users')
               .doc(widget.document.id)
               .update({'sites': results});
+          fToast!.showToast(
+              child: ToastMessage()
+                  .show(widget.width, context, "Information Updating soon"),
+              gravity: ToastGravity.BOTTOM,
+              toastDuration: Duration(seconds: 3));
         });
       }
     }
@@ -2025,6 +2051,15 @@ class _CRUDtileState extends State<CRUDtile> {
                                                             _phone.text
                                                       });
                                                     });
+                                                    fToast!.showToast(
+                                                        child: ToastMessage().show(
+                                                            widget.width,
+                                                            context,
+                                                            "Information Updating soon"),
+                                                        gravity:
+                                                            ToastGravity.BOTTOM,
+                                                        toastDuration: Duration(
+                                                            seconds: 3));
 
                                                     Navigator.pop(context);
                                                   } else {}
@@ -2105,6 +2140,11 @@ class _CRUDtileState extends State<CRUDtile> {
                                 setState(() {
                                   isvisibleRole = false;
                                 });
+                                fToast!.showToast(
+                                    child: ToastMessage().show(widget.width,
+                                        context, "Information Updating soon"),
+                                    gravity: ToastGravity.BOTTOM,
+                                    toastDuration: Duration(seconds: 3));
                               } else {
                                 setState(() {
                                   isvisibleRole = false;

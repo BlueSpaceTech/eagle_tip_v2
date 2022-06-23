@@ -191,7 +191,7 @@ class _OpenTicketsState extends State<OpenTickets> {
         user!.userRole == "TerminalManager" || user.userRole == "TerminalUser"
             ? getterminalsites(user.sites)
             : user.sites;
-    print(sites);
+    //  print(sites);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -210,13 +210,13 @@ class _OpenTicketsState extends State<OpenTickets> {
                 ? FirebaseFirestore.instance
                     .collection("tickets")
                     .where("isopen", isEqualTo: true)
-                    .orderBy("timestamp")
+                    .orderBy("timestamp", descending: true)
                     .snapshots()
                 : FirebaseFirestore.instance
                     .collection("tickets")
                     .where("sites", arrayContainsAny: sites)
                     .where("isopen", isEqualTo: true)
-                    .orderBy("timestamp")
+                    .orderBy("timestamp", descending: true)
                     .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -422,7 +422,7 @@ class _ClosedTicketsState extends State<ClosedTickets> {
         user!.userRole == "TerminalManager" || user.userRole == "TerminalUser"
             ? getterminalsites(user.sites)
             : user.sites;
-    print(sites);
+    // print(sites);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
@@ -446,13 +446,13 @@ class _ClosedTicketsState extends State<ClosedTickets> {
                 ? FirebaseFirestore.instance
                     .collection("tickets")
                     .where("isopen", isEqualTo: false)
-                    .orderBy("timestamp")
+                    .orderBy("timestamp", descending: true)
                     .snapshots()
                 : FirebaseFirestore.instance
                     .collection("tickets")
                     .where("sites", arrayContainsAny: sites)
                     .where("isopen", isEqualTo: false)
-                    .orderBy("timestamp")
+                    .orderBy("timestamp", descending: true)
                     .snapshots(),
             builder:
                 (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

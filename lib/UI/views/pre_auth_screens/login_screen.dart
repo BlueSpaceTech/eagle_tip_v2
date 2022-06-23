@@ -431,40 +431,40 @@ class _LoginScreenState extends State<LoginScreen> {
         if (PlatformInfo().isWeb()) {
           // print("isweb");
 
-          // AuthFunctions.signOut;
-          // // print(phone);
-          // // print(userRole);
-          // ConfirmationResult result =
-          //     await OtpFucnctions().sendOTPLogin("+1 ${phone}");
-          // if (result == null) {
-          //   fToast!.showToast(
-          //       child: ToastMessage()
-          //           .show(200, context, "Please try some time later"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
-          // } else {
-          //   fToast!.showToast(
-          //       child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
-          //       gravity: ToastGravity.BOTTOM,
-          //       toastDuration: Duration(seconds: 3));
+          AuthFunctions.signOut;
+          // print(phone);
+          // print(userRole);
+          ConfirmationResult result =
+              await OtpFucnctions().sendOTPLogin("+1 ${phone}");
+          if (result == null) {
+            fToast!.showToast(
+                child: ToastMessage()
+                    .show(200, context, "Please try some time later"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
+          } else {
+            fToast!.showToast(
+                child: ToastMessage().show(200, context, "Otp Sent ${phone}"),
+                gravity: ToastGravity.BOTTOM,
+                toastDuration: Duration(seconds: 3));
 
-          //   setState(() {
-          //     ress = result;
-          //   });
-          //   setState(() {
-          //     _loading = false;
-          //   });
-          //   addData();
+            setState(() {
+              ress = result;
+            });
+            setState(() {
+              _loading = false;
+            });
+            addData();
 
-          //   print(ress);
-          // }
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context) ||
-                          Responsive.isTablet(context)
-                      ? HomeScreen(showdialog: false, sites: sites)
-                      : BottomNav()));
+            // print(ress);
+          }
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Responsive.isDesktop(context) ||
+          //                 Responsive.isTablet(context)
+          //             ? HomeScreen(showdialog: false, sites: sites)
+          //             : BottomNav()));
         } else {
           AuthFunctions.signOut;
           registerUser(phone, context);
@@ -490,7 +490,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() {
                     checkk = data.get("id");
                   });
-                  print("dataexts");
+                  //   print("dataexts");
                 }
               });
               if (checkk.contains(deviceId) && doc["isSubscribed"]) {
@@ -532,15 +532,15 @@ class _LoginScreenState extends State<LoginScreen> {
             //  confirmotp();
             print("web");
           }
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Responsive.isDesktop(context)
-                      ? HomeScreen(
-                          showdialog: true,
-                          sites: sites,
-                        )
-                      : BottomNav()));
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context) => Responsive.isDesktop(context)
+          //             ? HomeScreen(
+          //                 showdialog: true,
+          //                 sites: sites,
+          //               )
+          //             : BottomNav()));
         }
 
         try {
@@ -562,11 +562,11 @@ class _LoginScreenState extends State<LoginScreen> {
             }
           } else {
             // confirmotp();
-            print("webbb");
+            //  print("webbb");
           }
         } catch (e) {
           //  confirmotp();
-          print("web");
+          //    print("web");
         }
         //  ignore: unrelated_type_equality_checks
 
