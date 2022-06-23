@@ -1322,27 +1322,9 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                         showcaseBackgroundColor:
                                             Color(0xFF5081DB),
                                         contentPadding: EdgeInsets.all(8.0),
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            Image.asset(
-                                              Common.assetImages +
-                                                  "Ellipse 49.png",
-                                              width: width * 0.16,
-                                            ),
-                                            SizedBox(
-                                              width: width * 0.08,
-                                              child: Text(
-                                                "Submit Inventory",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: width * 0.0135,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.white,
-                                                    fontFamily: "Poppins"),
-                                              ),
-                                            ),
-                                          ],
+                                        child: SvgPicture.asset(
+                                          "assets/Button.svg",
+                                          width: width * 0.16,
                                         ),
                                       ),
                                     ),
