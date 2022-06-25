@@ -170,7 +170,7 @@ class _OpenTicketsState extends State<OpenTickets> {
     for (var element in sitedetails ?? []) {
       for (var terminal in terminals) {
         if (element.terminalID + " ${element.terminalName}" == terminal) {
-          sitedesc.add(element.sitename);
+          sitedesc.add(element.siteid);
         }
       }
     }
@@ -379,7 +379,7 @@ class _ClosedTicketsState extends State<ClosedTickets> {
     for (var element in sitedetails!) {
       for (var terminal in terminals) {
         if (element.terminalID + " ${element.terminalName}" == terminal) {
-          sitedesc.add(element.sitename);
+          sitedesc.add(element.siteid);
         }
       }
     }

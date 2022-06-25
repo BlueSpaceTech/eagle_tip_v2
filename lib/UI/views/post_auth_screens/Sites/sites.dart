@@ -35,7 +35,7 @@ class _SitesState extends State<Sites> {
     List<SitesDetails> sitedesc = [];
     for (var element in sitedetails ?? []) {
       for (var site in sites) {
-        if (element.sitename == site) {
+        if (element.siteid == site) {
           sitedesc.add(element);
         }
       }
@@ -170,6 +170,10 @@ class _SitesState extends State<Sites> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         SiteDetails(
+                                                      siteid: getsitesdescrp(
+                                                              user?.sites ??
+                                                                  [])[index]
+                                                          .siteid,
                                                       currentSite:
                                                           getsitesdescrp(
                                                                   user?.sites ??
@@ -271,6 +275,10 @@ class _SitesState extends State<Sites> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => SiteDetails(
+                                                siteid: getsitesdescrp(
+                                                        user?.sites ??
+                                                            [])[index]
+                                                    .siteid,
                                                 currentSite: getsitesdescrp(
                                                         user?.sites ??
                                                             [])[index]

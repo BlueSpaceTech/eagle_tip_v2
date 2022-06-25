@@ -56,7 +56,7 @@ class _InvitationState extends State<Invitation> {
   List trimedsites = [];
   trimsites() {
     for (int i = 0; i < widget.sites.length; i++) {
-      trimedsites.add(widget.sites[i].toString().substring(8));
+      trimedsites.add(widget.sites[i].toString().substring(0, 7));
     }
     //  print(trimedsites);
   }

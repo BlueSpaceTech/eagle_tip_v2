@@ -266,7 +266,7 @@ class _CrudScreenState extends State<CrudScreen> {
     List sitedesc = [];
     for (var element in sitedetails ?? []) {
       for (var site in sites) {
-        if (element.sitename == site) {
+        if (element.siteid == site) {
           sitedesc.add(element.siteid + " ${element.sitename}");
         }
       }
@@ -310,7 +310,7 @@ class _CrudScreenState extends State<CrudScreen> {
     sitedetails = await SiteCall().getSites();
 
     for (var document in sitedetails!) {
-      allsitename.add(document.sitename);
+      allsitename.add(document.siteid);
     }
     // print(allsitename);
   }
@@ -462,7 +462,7 @@ class _CrudScreenState extends State<CrudScreen> {
   trimsites(List sites) {
     List trimedsites = [];
     for (int i = 0; i < sites.length; i++) {
-      trimedsites.add(sites[i].toString().substring(8));
+      trimedsites.add(sites[i].toString().substring(0, 7));
     }
     return trimedsites;
   }
@@ -1702,7 +1702,7 @@ class _CRUDtileState extends State<CRUDtile> {
     for (var element in widget.sitedetiails) {
       for (var terminal in terminals) {
         if (element.terminalID + " ${element.terminalName}" == terminal) {
-          sitedesc.add(element.sitename);
+          sitedesc.add(element.siteid);
         }
       }
     }

@@ -228,9 +228,9 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   getsiteID(String currentsite) {
     String siteID = "";
     for (var element in sitedetails ?? []) {
-      if (element.sitename == currentsite) {
+      if (element.siteid == currentsite) {
         setState(() {
-          siteID = element.siteid;
+          siteID = element.sitename;
         });
       }
     }
@@ -240,7 +240,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   getsiteloc(String currentsite) {
     String siteloc = "";
     for (var element in sitedetails ?? []) {
-      if (element.sitename == currentsite) {
+      if (element.siteid == currentsite) {
         setState(() {
           siteloc = element.sitelocation;
         });
@@ -252,7 +252,7 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   sendsitedetails(String currentsite) {
     SitesDetails? sitedetail;
     for (var element in sitedetails ?? []) {
-      if (element.sitename == currentsite) {
+      if (element.siteid == currentsite) {
         sitedetail = element;
       }
     }
@@ -404,149 +404,151 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
   }
 
   _showDialog1() async {
-    var dbRef = await FirebaseFirestore.instance
-        .collection('updates')
-        .doc("3WDuJB2PqMU7kot0fn6I")
-        .get();
-    List visibles = await dbRef.get("isVisible");
-    print(visibles);
-    if (!visibles.contains(auth.currentUser!.uid + "Web")) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) async {
-        if (true && PlatformInfo().isWeb()) {
-          // await _showDialog1();
-          visibles.add(auth.currentUser!.uid + "Web");
-          FirebaseFirestore.instance
-              .collection("updates")
-              .doc("3WDuJB2PqMU7kot0fn6I")
-              .update({"isVisible": visibles});
-          return showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    width: Responsive.isDesktop(context) ? 400 : 400,
-                    height: Responsive.isDesktop(context) ? 300 : 350,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Website Updated",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins",
-                              fontSize:
-                                  Responsive.isDesktop(context) ? 24 : 20),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Some changes have been done in the website. Kindly press on Reload button to see the live changes.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            // decoration: TextDecoration.underline,
+    if (widget.showdialog) {
+      var dbRef = await FirebaseFirestore.instance
+          .collection('updates')
+          .doc("3WDuJB2PqMU7kot0fn6I")
+          .get();
+      List visibles = await dbRef.get("isVisible");
+      print(visibles);
+      if (!visibles.contains(auth.currentUser!.uid + "Web")) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+          if (true && PlatformInfo().isWeb()) {
+            // await _showDialog1();
+            visibles.add(auth.currentUser!.uid + "Web");
+            FirebaseFirestore.instance
+                .collection("updates")
+                .doc("3WDuJB2PqMU7kot0fn6I")
+                .update({"isVisible": visibles});
+            return showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      width: Responsive.isDesktop(context) ? 400 : 400,
+                      height: Responsive.isDesktop(context) ? 300 : 350,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        //crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Website Updated",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins",
+                                fontSize:
+                                    Responsive.isDesktop(context) ? 24 : 20),
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        InkWell(
-                            onTap: () {
-                              htm1.window.location.reload();
-                            },
-                            child: CustomSubmitButton(
-                              width: 200,
-                              title: "Reload",
-                            )),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              });
-        }
-      });
-    }
-    if (!visibles.contains(auth.currentUser!.uid + "Phone")) {
-      WidgetsBinding.instance?.addPostFrameCallback((_) async {
-        if (true && PlatformInfo().isAppOS()) {
-          // await _showDialog1();
-          visibles.add(auth.currentUser!.uid + "Phone");
-          FirebaseFirestore.instance
-              .collection("updates")
-              .doc("3WDuJB2PqMU7kot0fn6I")
-              .update({"isVisible": visibles});
-          return showDialog(
-              barrierDismissible: false,
-              context: context,
-              builder: (BuildContext context) {
-                return Dialog(
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    width: Responsive.isDesktop(context) ? 400 : 300,
-                    height: Responsive.isDesktop(context) ? 300 : 300,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: Column(
-                      //crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "App Updated",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontFamily: "Poppins",
-                              fontSize:
-                                  Responsive.isDesktop(context) ? 24 : 20),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Some changes have been done in the App. Kindly press on Update button to update the app.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            // decoration: TextDecoration.underline,
+                          SizedBox(
+                            height: 20,
                           ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                        ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                              // htm1.window.location.reload();
-                            },
-                            child: CustomSubmitButton(
-                              width: 200,
-                              title: "Update",
-                            )),
-                        SizedBox(
-                          height: 5,
-                        ),
-                      ],
+                          Text(
+                            "Some changes have been done in the website. Kindly press on Reload button to see the live changes.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              // decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          InkWell(
+                              onTap: () {
+                                htm1.window.location.reload();
+                              },
+                              child: CustomSubmitButton(
+                                width: 200,
+                                title: "Reload",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              });
-        }
-      });
-    }
+                  );
+                });
+          }
+        });
+      }
+      if (!visibles.contains(auth.currentUser!.uid + "Phone")) {
+        WidgetsBinding.instance?.addPostFrameCallback((_) async {
+          if (true && PlatformInfo().isAppOS()) {
+            // await _showDialog1();
+            visibles.add(auth.currentUser!.uid + "Phone");
+            FirebaseFirestore.instance
+                .collection("updates")
+                .doc("3WDuJB2PqMU7kot0fn6I")
+                .update({"isVisible": visibles});
+            return showDialog(
+                barrierDismissible: false,
+                context: context,
+                builder: (BuildContext context) {
+                  return Dialog(
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      width: Responsive.isDesktop(context) ? 400 : 300,
+                      height: Responsive.isDesktop(context) ? 300 : 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Column(
+                        //crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "App Updated",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontFamily: "Poppins",
+                                fontSize:
+                                    Responsive.isDesktop(context) ? 24 : 20),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            "Some changes have been done in the App. Kindly press on Update button to update the app.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black,
+                              // decoration: TextDecoration.underline,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                                // htm1.window.location.reload();
+                              },
+                              child: CustomSubmitButton(
+                                width: 200,
+                                title: "Update",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                });
+          }
+        });
+      }
+    } else {}
   }
 
   @override
@@ -1246,6 +1248,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => SiteDetails(
+                                                  // requestSite: user.currentsite,
+                                                  siteid: user.currentsite,
                                                   sitedetail: sendsitedetails(
                                                       user.currentsite),
                                                   currentSite:
@@ -1263,12 +1267,17 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                     builder: (context) =>
                                                         ShowCaseWidget(
                                                       builder: Builder(
-                                                          builder: (context) => SiteDetails(
-                                                              sitedetail:
-                                                                  sendsitedetails(user
-                                                                      .currentsite),
-                                                              currentSite: user
-                                                                  .currentsite)),
+                                                          builder: (context) =>
+                                                              SiteDetails(
+                                                                  siteid:
+                                                                      siteId,
+                                                                  // requestSite: user
+                                                                  //     .currentsite,
+                                                                  sitedetail:
+                                                                      sendsitedetails(user
+                                                                          .currentsite),
+                                                                  currentSite: user
+                                                                      .currentsite)),
                                                     ),
                                                   )).then((_) {
                                                   setState(() {
@@ -1287,12 +1296,17 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                     builder: (context) =>
                                                         ShowCaseWidget(
                                                       builder: Builder(
-                                                          builder: (context) => SiteDetails(
-                                                              sitedetail:
-                                                                  sendsitedetails(user
-                                                                      .currentsite),
-                                                              currentSite: user
-                                                                  .currentsite)),
+                                                          builder: (context) =>
+                                                              SiteDetails(
+                                                                  // requestSite: user
+                                                                  //     .currentsite,
+                                                                  siteid: user
+                                                                      .currentsite,
+                                                                  sitedetail:
+                                                                      sendsitedetails(user
+                                                                          .currentsite),
+                                                                  currentSite: user
+                                                                      .currentsite)),
                                                     ),
                                                   )).then((_) {
                                                   setState(() {
@@ -1725,6 +1739,8 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                           MaterialPageRoute(
                                             builder: (context) => SiteDetails(
                                               currentSite: user.currentsite,
+                                              // requestSite: user.currentsite,
+                                              siteid: siteId,
                                               sitedetail: sendsitedetails(
                                                   user.currentsite),
                                             ),
@@ -1741,12 +1757,16 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                   builder: (context) =>
                                                       ShowCaseWidget(
                                                     builder: Builder(
-                                                        builder: (context) => SiteDetails(
-                                                            sitedetail:
-                                                                sendsitedetails(user
-                                                                    .currentsite),
-                                                            currentSite: user
-                                                                .currentsite)),
+                                                        builder: (context) =>
+                                                            SiteDetails(
+                                                                siteid: siteId,
+                                                                // requestSite: user
+                                                                //     .currentsite,
+                                                                sitedetail:
+                                                                    sendsitedetails(user
+                                                                        .currentsite),
+                                                                currentSite: user
+                                                                    .currentsite)),
                                                   ),
                                                 )).then((_) {
                                                 setState(() {
@@ -1765,12 +1785,16 @@ class _HomeScreenState extends State<HomeScreen> with RestorationMixin {
                                                   builder: (context) =>
                                                       ShowCaseWidget(
                                                     builder: Builder(
-                                                        builder: (context) => SiteDetails(
-                                                            sitedetail:
-                                                                sendsitedetails(user
-                                                                    .currentsite),
-                                                            currentSite: user
-                                                                .currentsite)),
+                                                        builder: (context) =>
+                                                            SiteDetails(
+                                                                // requestSite: user
+                                                                //     .currentsite,
+                                                                siteid: siteId,
+                                                                sitedetail:
+                                                                    sendsitedetails(user
+                                                                        .currentsite),
+                                                                currentSite: user
+                                                                    .currentsite)),
                                                   ),
                                                 )).then((_) {
                                                 setState(() {

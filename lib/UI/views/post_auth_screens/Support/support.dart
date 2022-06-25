@@ -48,7 +48,7 @@ class _SupportScreenState extends State<SupportScreen> {
     for (var element in sitedetails ?? []) {
       for (var terminal in terminals) {
         if (element.terminalID + " ${element.terminalName}" == terminal) {
-          sitedesc.add(element.sitename);
+          sitedesc.add(element.siteid);
         }
       }
     }

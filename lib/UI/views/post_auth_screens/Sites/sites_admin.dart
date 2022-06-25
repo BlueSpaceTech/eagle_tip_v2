@@ -60,7 +60,7 @@ class _SitesAdminState extends State<SitesAdmin> {
   }
 
   getsiteelementdrop(String terminalinfo) {
-    siteelements.clear();
+    siteelementter.clear();
     for (var document in sitedetails!) {
       if (document.terminalID + " ${document.terminalName}" == terminalinfo) {
         siteelements.add(document);
@@ -87,7 +87,7 @@ class _SitesAdminState extends State<SitesAdmin> {
           .contains(document.terminalID + " ${document.terminalName}")) {
       } else {
         terminal.insert(0, document.terminalID + " ${document.terminalName}");
-        dropdownValue = terminal[0];
+        // dropdownValue = terminal[0];
       }
     }
     getsiteelement(terminal[0]);
@@ -95,8 +95,8 @@ class _SitesAdminState extends State<SitesAdmin> {
     //  print(terminal);
   }
 
-  List<String> terminal = [""];
-  String dropdownValue = "";
+  List<String> terminal = ["Select Terminal"];
+  String dropdownValue = "Select Terminal";
   @override
   void initState() {
     // TODO: implement initState
@@ -121,22 +121,24 @@ class _SitesAdminState extends State<SitesAdmin> {
     getsiteelementter(terminal[0]);
   }
 
-  List<String> forterminal = [""];
+  List<String> forterminal = ["Select Value"];
   final ScrollController _firstController = ScrollController();
-  String dropdownValue1 = "";
+  String dropdownValue1 = "Select Value";
   @override
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     model.User? user = Provider.of<UserProvider>(context).getUser;
     for (var site in user!.sites) {
       if (forterminal.contains(site)) {
-        print(site);
+        //print(site);
       } else {
-        print(site);
-        forterminal.insert(0, site);
+        //print(site);
+        forterminal.insert(forterminal.length, site);
         dropdownValue1 = forterminal[0];
+        // getsiteelementter(terminal[0]);
       }
     }
+
     // getsiteelementter(forterminal[0]);
 
     super.didChangeDependencies();
@@ -223,7 +225,7 @@ class _SitesAdminState extends State<SitesAdmin> {
                                           Color(0xFF5081DB),
                                       contentPadding: EdgeInsets.all(8.0),
                                       child: Text(
-                                        "All Sites",
+                                        "All Sitess",
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 18.0,
@@ -298,8 +300,8 @@ class _SitesAdminState extends State<SitesAdmin> {
                                             onChanged: (String? newValue) {
                                               setState(() {
                                                 dropdownValue = newValue!;
+                                                getsiteelementdrop(newValue!);
                                               });
-                                              getsiteelementdrop(newValue!);
                                             },
                                             // items: List.generate(user.sites.length, (index) {
                                             //   return DropdownMenuItem<String>(
@@ -360,6 +362,10 @@ class _SitesAdminState extends State<SitesAdmin> {
                                                             builder:
                                                                 (context) =>
                                                                     SiteDetails(
+                                                              siteid:
+                                                                  siteelementter[
+                                                                          index]
+                                                                      .siteid,
                                                               currentSite:
                                                                   siteelementter[
                                                                           index]
@@ -413,35 +419,47 @@ class _SitesAdminState extends State<SitesAdmin> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                return InkWell(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder:
-                                                                (context) =>
-                                                                    SiteDetails(
-                                                              currentSite:
-                                                                  siteelements[
+                                                return dropdownValue ==
+                                                        "Select Terminal"
+                                                    ? Container()
+                                                    : InkWell(
+                                                        onTap: () {
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        SiteDetails(
+                                                                  siteid: siteelementter[
                                                                           index]
-                                                                      .sitename,
-                                                              sitedetail:
-                                                                  siteelements[
-                                                                      index],
-                                                            ),
-                                                          ));
-                                                    },
-                                                    child: SiteDet(
-                                                      width: width,
-                                                      height: height,
-                                                      index: index,
-                                                      siteName:
-                                                          siteelements[index]
-                                                              .sitename,
-                                                      sitelocation:
-                                                          siteelements[index]
-                                                              .sitelocation,
-                                                    ));
+                                                                      .siteid,
+                                                                  // requestSite:
+                                                                  //     siteelementter[
+                                                                  //             index]
+                                                                  //         .sitename,
+                                                                  currentSite:
+                                                                      siteelements[
+                                                                              index]
+                                                                          .sitename,
+                                                                  sitedetail:
+                                                                      siteelements[
+                                                                          index],
+                                                                ),
+                                                              ));
+                                                        },
+                                                        child: SiteDet(
+                                                          width: width,
+                                                          height: height,
+                                                          index: index,
+                                                          siteName:
+                                                              siteelements[
+                                                                      index]
+                                                                  .sitename,
+                                                          sitelocation:
+                                                              siteelements[
+                                                                      index]
+                                                                  .sitelocation,
+                                                        ));
                                               },
                                               itemCount: siteelements.length,
                                             ),
@@ -538,56 +556,124 @@ class _SitesAdminState extends State<SitesAdmin> {
                           SizedBox(
                             height: height * 0.05,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(
-                                top: Responsive.isDesktop(context)
-                                    ? height * 0.03
-                                    : 0.0),
-                            child: SizedBox(
-                              height: Responsive.isDesktop(context)
-                                  ? height * 0.6
-                                  : height * 0.6,
-                              child: Scrollbar(
-                                showTrackOnHover: true,
-                                trackVisibility: true,
-                                isAlwaysShown: true,
-                                controller: _firstController,
-                                child: ListView.builder(
-                                  controller: _firstController,
-                                  // physics:
-                                  // NeverScrollableScrollPhysics(),
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SiteDetails(
-                                                  currentSite:
-                                                      sitedetails![index]
-                                                          .sitename,
-                                                  sitedetail:
-                                                      sitedetails![index],
-                                                ),
+                          user!.userRole == "TerminalManager" ||
+                                  user.userRole == "TerminalUser"
+                              ? Padding(
+                                  padding: EdgeInsets.only(
+                                      top: Responsive.isDesktop(context) ||
+                                              Responsive.isTablet(context)
+                                          ? height * 0.03
+                                          : 0.0),
+                                  child: Container(
+                                    height: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
+                                        ? height * 0.6
+                                        : height * 0.6,
+                                    child: Scrollbar(
+                                      showTrackOnHover: true,
+                                      trackVisibility: true,
+                                      isAlwaysShown: true,
+                                      controller: _firstController,
+                                      child: ListView.builder(
+                                        controller: _firstController,
+
+                                        // physics:
+                                        //     NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SiteDetails(
+                                                        siteid: siteelementter[
+                                                                index]
+                                                            .siteid,
+                                                        currentSite:
+                                                            siteelementter[
+                                                                    index]
+                                                                .sitename,
+                                                        sitedetail:
+                                                            siteelementter[
+                                                                index],
+                                                      ),
+                                                    ));
+                                              },
+                                              child: SiteDet(
+                                                width: width,
+                                                height: height,
+                                                index: index,
+                                                siteName: siteelementter[index]
+                                                    .sitename,
+                                                sitelocation:
+                                                    siteelementter[index]
+                                                        .sitelocation,
                                               ));
                                         },
-                                        child: SiteDet(
-                                          width: width,
-                                          height: height,
-                                          index: index,
-                                          siteName:
-                                              sitedetails![index].sitename,
-                                          sitelocation:
-                                              sitedetails![index].sitelocation,
-                                        ));
-                                  },
-                                  itemCount: sitedetails!.length,
+                                        itemCount: siteelementter.length,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.only(
+                                      top: Responsive.isDesktop(context) ||
+                                              Responsive.isTablet(context)
+                                          ? height * 0.03
+                                          : 0.0),
+                                  child: Container(
+                                    height: Responsive.isDesktop(context) ||
+                                            Responsive.isTablet(context)
+                                        ? height * 0.6
+                                        : height * 0.5,
+                                    child: Scrollbar(
+                                      showTrackOnHover: true,
+                                      trackVisibility: true,
+                                      isAlwaysShown: true,
+                                      controller: _firstController,
+                                      child: ListView.builder(
+                                        controller: _firstController,
+
+                                        // physics:
+                                        //     NeverScrollableScrollPhysics(),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return InkWell(
+                                              onTap: () {
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          SiteDetails(
+                                                        siteid: siteelementter[
+                                                                index]
+                                                            .sitename,
+                                                        currentSite:
+                                                            siteelements[index]
+                                                                .sitename,
+                                                        sitedetail:
+                                                            siteelements[index],
+                                                      ),
+                                                    ));
+                                              },
+                                              child: SiteDet(
+                                                width: width,
+                                                height: height,
+                                                index: index,
+                                                siteName: siteelements[index]
+                                                    .sitename,
+                                                sitelocation:
+                                                    siteelements[index]
+                                                        .sitelocation,
+                                              ));
+                                        },
+                                        itemCount: siteelements.length,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
                         ],
                       ),
               ),

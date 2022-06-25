@@ -192,6 +192,19 @@ class _OpenCSVState extends State<OpenCSV> {
                                         fontWeight: FontWeight.w600),
                                   ),
                                 ),
+                                Container(
+                                  width: Responsive.isDesktop(context)
+                                      ? width * 0.32
+                                      : width * 0.52,
+                                  child: Text(
+                                    "Current Site",
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        color: Colors.white.withOpacity(0.5),
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -297,6 +310,16 @@ class _OpenCSVState extends State<OpenCSV> {
                                                 : width * 0.52,
                                             child: Text(
                                                 widget.inviteData[index][2],
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontFamily: "Poppins")),
+                                          ),
+                                          Container(
+                                            width: Responsive.isDesktop(context)
+                                                ? width * 0.32
+                                                : width * 0.52,
+                                            child: Text(
+                                                widget.inviteData[index][5],
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontFamily: "Poppins")),

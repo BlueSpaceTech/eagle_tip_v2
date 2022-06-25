@@ -31,7 +31,7 @@ import 'package:testttttt/Utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:testttttt/Models/user.dart' as model;
 import 'package:testttttt/Utils/InviteCSV.dart';
-// import 'package:universal_html/html.dart';
+import 'package:universal_html/html.dart';
 
 import '../../../../../../Models/sites.dart';
 
@@ -113,7 +113,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
     List sitedesc = [];
     for (var element in sitedetails ?? []) {
       for (var site in sites) {
-        if (element.sitename == site) {
+        if (element.siteid == site) {
           sitedesc.add(element.siteid + " ${element.sitename}");
         }
       }
@@ -341,6 +341,7 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                       inviteData
                                           .add(rowsAsListOfValues.elementAt(i));
                                     });
+                                    print(inviteData[0].length);
                                   }
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
@@ -363,11 +364,11 @@ class _AddNewUserByOwnerState extends State<AddNewUserByOwner> {
                                       .child("/Templates")
                                       .child("Template.csv")
                                       .getDownloadURL();
-                                  print(downloadURL);
-                                  // AnchorElement anchorElement =
-                                  //     AnchorElement(href: downloadURL);
-                                  // anchorElement.download = downloadURL;
-                                  // anchorElement.click();
+                                  //  print(downloadURL);
+                                  AnchorElement anchorElement =
+                                      AnchorElement(href: downloadURL);
+                                  anchorElement.download = downloadURL;
+                                  anchorElement.click();
                                 },
                                 child: Container(
                                   // alignment: Alignment.center,

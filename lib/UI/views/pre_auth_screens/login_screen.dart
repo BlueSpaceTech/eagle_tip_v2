@@ -53,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
     //     (_) => _email.text = c.get("email") == null ? "" : c.get("email"));
     // print(c.get("email"));
     fToast!.init(context);
+
     _loadUserEmailPassword();
     _setUserDetails();
     _email.addListener(getColor);
@@ -543,31 +544,31 @@ class _LoginScreenState extends State<LoginScreen> {
           //             : BottomNav()));
         }
 
-        try {
-          if (Platform.isAndroid || Platform.isIOS) {
-            final doc = await FirebaseFirestore.instance
-                .collection("users")
-                .doc(uid)
-                .get()
-                .then((value) => value);
-            if (!doc["isSubscribed"]) {
-              _subscribeAllUsers();
-              _subscribetotopic();
-              FirebaseFirestore.instance
-                  .collection("users")
-                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                  .update({
-                "isSubscribed": true,
-              });
-            }
-          } else {
-            // confirmotp();
-            //  print("webbb");
-          }
-        } catch (e) {
-          //  confirmotp();
-          //    print("web");
-        }
+        // try {
+        //   if (Platform.isAndroid || Platform.isIOS) {
+        //     final doc = await FirebaseFirestore.instance
+        //         .collection("users")
+        //         .doc(uid)
+        //         .get()
+        //         .then((value) => value);
+        //     if (!doc["isSubscribed"]) {
+        //       _subscribeAllUsers();
+        //       _subscribetotopic();
+        //       FirebaseFirestore.instance
+        //           .collection("users")
+        //           .doc(FirebaseAuth.instance.currentUser!.uid)
+        //           .update({
+        //         "isSubscribed": true,
+        //       });
+        //     }
+        //   } else {
+        //     // confirmotp();
+        //     //  print("webbb");
+        //   }
+        // } catch (e) {
+        //   //  confirmotp();
+        //   //    print("web");
+        // }
         //  ignore: unrelated_type_equality_checks
 
       } else {

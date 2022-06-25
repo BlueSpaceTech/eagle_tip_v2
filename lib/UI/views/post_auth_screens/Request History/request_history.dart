@@ -33,15 +33,17 @@ class Requests extends StatelessWidget {
         stream: FirebaseFirestore.instance
             .collection("requesthistory")
             .where("site", isEqualTo: currentSite)
-            .orderBy("date")
+            .orderBy("date", descending: true)
             .limit(10)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+          }
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
           return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: snapshot.data?.docs.length,
             itemBuilder: (BuildContext context, int index) {

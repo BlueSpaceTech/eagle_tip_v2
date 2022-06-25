@@ -339,7 +339,7 @@ class _SentToState extends State<SentTo> {
     List sitedesc = [];
     for (var element in sitedetails ?? []) {
       for (var site in sites) {
-        if (element.sitename == site) {
+        if (element.siteid == site) {
           sitedesc.add(element.siteid + " ${element.sitename}");
         }
       }
@@ -425,7 +425,7 @@ class _SentToState extends State<SentTo> {
   trimsites(List sites) {
     List trimedsites = [];
     for (int i = 0; i < sites.length; i++) {
-      trimedsites.add(sites[i].toString().substring(8));
+      trimedsites.add(sites[i].toString().substring(0, 7));
     }
     return trimedsites;
   }
@@ -1257,7 +1257,7 @@ class _CRUDtile2State extends State<CRUDtile2> {
     for (var element in widget.sitedetiails) {
       for (var terminal in terminals) {
         if (element.terminalID + " ${element.terminalName}" == terminal) {
-          sitedesc.add(element.sitename);
+          sitedesc.add(element.siteid);
         }
       }
     }

@@ -42,9 +42,16 @@ CollectionReference notifys =
     FirebaseFirestore.instance.collection("9pmNotifys");
 
 class SiteDetails extends StatelessWidget {
-  SiteDetails({Key? key, required this.sitedetail, required this.currentSite})
+  SiteDetails(
+      {Key? key,
+      // required this.requestSite,
+      required this.sitedetail,
+      required this.siteid,
+      required this.currentSite})
       : super(key: key);
   SitesDetails sitedetail;
+  // final String requestSite;
+  final String siteid;
   String currentSite;
   @override
   Widget build(BuildContext context) {
@@ -52,14 +59,17 @@ class SiteDetails extends StatelessWidget {
     return Responsive(
       mobile: MobileSiteDet(
         sitedetail: sitedetail,
+        siteId: siteid,
         currentsite: currentSite,
       ),
       tablet: MobileSiteDet(
         sitedetail: sitedetail,
         currentsite: currentSite,
+        siteId: siteid,
       ),
       desktop: MobileSiteDet(
         sitedetail: sitedetail,
+        siteId: siteid,
         currentsite: currentSite,
       ),
     );
@@ -68,11 +78,18 @@ class SiteDetails extends StatelessWidget {
 
 class MobileSiteDet extends StatefulWidget {
   final String? restorationId = "";
-
-  MobileSiteDet({Key? key, required this.sitedetail, required this.currentsite})
+  final String siteId;
+  MobileSiteDet(
+      {Key? key,
+      // required this.reqsiteid,
+      required this.sitedetail,
+      required this.siteId,
+      required this.currentsite})
       : super(key: key);
   SitesDetails sitedetail;
   String currentsite;
+  // final String reqsiteid;
+  // String reqsite;
 
   @override
   State<MobileSiteDet> createState() => _MobileSiteDetState();
@@ -87,7 +104,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
   getData(String currentsite) async {
     sitedetails = await SiteCall().getSites() ?? [];
     for (var element in sitedetails ?? []) {
-      if (element.sitename == currentsite) {
+      if (element.siteid == currentsite) {
         setState(() {
           sitedetail = element;
         });
@@ -223,6 +240,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                       user?.userRole == "SiteUser"
                                           ? Center(
                                               child: FuelRequestPart(
+                                                reqsite: widget.siteId,
                                                 sitedetail: widget.sitedetail,
                                                 valueChanged: (val) {
                                                   setState(() {
@@ -234,6 +252,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                                               ),
                                             )
                                           : FuelRequestPart(
+                                              reqsite: widget.siteId,
                                               sitedetail: widget.sitedetail,
                                               valueChanged: (val) {
                                                 setState(() {
@@ -392,6 +411,7 @@ class _MobileSiteDetState extends State<MobileSiteDet> {
                         child: TabBarView(
                           children: [
                             FuelRequestPart(
+                              reqsite: widget.siteId,
                               sitedetail: widget.sitedetail,
                               valueChanged: (val) {
                                 setState(() {
@@ -428,19 +448,21 @@ class FuelRequestPart extends StatelessWidget {
     required this.height,
     required this.valueChanged,
     required this.sitedetail,
+    required this.reqsite,
   }) : super(key: key);
 
   final double width;
   final SitesDetails sitedetail;
   final double height;
   final ValueChanged valueChanged;
-
+  final String reqsite;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
           left: width * 0.05, right: width * 0.03, top: height * 0.03),
       child: FuelReqColumn(
+        reqSite: reqsite,
         sitedetail: sitedetail,
         valueChanged: (val) {
           valueChanged(val);
@@ -485,12 +507,14 @@ class FuelReqColumn extends StatefulWidget {
     required this.width,
     required this.sitedetail,
     required this.valueChanged,
+    required this.reqSite,
   }) : super(key: key);
 
   final double height;
   final double width;
   final SitesDetails sitedetail;
   final ValueChanged valueChanged;
+  final String reqSite;
 
   @override
   State<FuelReqColumn> createState() => _FuelReqColumnState();
@@ -1027,7 +1051,7 @@ class _FuelReqColumnState extends State<FuelReqColumn>
                                       "id":
                                           Random().nextInt(10000000).toString(),
                                       "requestby": user?.name,
-                                      "site": user?.currentsite,
+                                      "site": widget.reqSite,
                                     },
                                   );
 

@@ -276,7 +276,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
     List<SitesDetails> sitedesc = [];
     sitedetails!.forEach((element) {
       for (var site in sites) {
-        if (element.sitename == site) {
+        if (element.siteid == site) {
           sitedesc.add(element);
         }
       }
@@ -289,7 +289,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
       FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
-          .update({'currentsite': getterminalsites(sites)[index].sitename});
+          .update({'currentsite': getterminalsites(sites)[index].siteid});
 
       adddata();
       fToast!.showToast(
@@ -305,7 +305,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
       FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
-          .update({'currentsite': getsitesdescrpp()[index].sitename});
+          .update({'currentsite': getsitesdescrpp()[index].siteid});
 
       adddata();
       fToast!.showToast(
@@ -417,7 +417,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                                       'currentsite':
                                                           getsitesdescrp(user
                                                                   .sites)[index]
-                                                              .sitename
+                                                              .siteid
                                                     });
                                                     adddata();
                                                     fToast!.showToast(
@@ -483,7 +483,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                                                   Text(
                                                                     getsitesdescrp(
                                                                             user.sites)[index]
-                                                                        .sitelocation,
+                                                                        .siteid,
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             13.0,
@@ -664,9 +664,9 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                                                             user.userRole ==
                                                                                 "SuperAdmin"
                                                                         ? getsitesdescrpp()[index]
-                                                                            .sitelocation
+                                                                            .siteid
                                                                         : getterminalsites(user.sites)[index]
-                                                                            .sitelocation,
+                                                                            .siteid,
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             13.0,
@@ -835,7 +835,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                                       'currentsite':
                                                           getsitesdescrp(user
                                                                   .sites)[index]
-                                                              .sitename
+                                                              .siteid
                                                     });
                                                     adddata();
                                                     fToast!.showToast(
@@ -901,7 +901,7 @@ class _NewChatScreenState extends State<NewChatScreen> {
                                                                   Text(
                                                                     getsitesdescrp(
                                                                             user.sites)[index]
-                                                                        .sitelocation,
+                                                                        .siteid,
                                                                     style: TextStyle(
                                                                         fontSize:
                                                                             13.0,
